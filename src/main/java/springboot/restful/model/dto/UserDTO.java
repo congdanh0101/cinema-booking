@@ -1,5 +1,8 @@
 package springboot.restful.model.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -7,6 +10,7 @@ import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import springboot.restful.model.enums.EGender;
 
 @Data
 @NoArgsConstructor
@@ -31,4 +35,12 @@ public class UserDTO {
 	@NotBlank
 	@Email
 	private String email;
+
+	@NotBlank
+//	@Size(min = 3)
+	private String password;
+
+	private EGender gender;
+
+	private Set<RoleDTO> roles = new HashSet<>();
 }

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,10 +55,21 @@ public class GlobalExceptionHandler {
 			mess += "email'. Please enter another email";
 		else // phone number
 			mess += "phoneNumber'. Please enter another phone number";
-		
+
 		ErrorDetails errorDetails = new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
 				mess, request.getRequestURI(), request.getMethod());
-		return new ResponseEntity<ErrorDetails>(errorDetails,HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
 
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
+		return new ResponseEntity<ErrorDetails>
+		(new ErrorDetails(
+				new Date().toLocaleString(),
+				HttpStatus.BAD_REQUEST.toString(),
+				ex.getLocalizedMessage(),
+				request.getRequestURI(),
+				request.getMethod()), HttpStatus.BAD_REQUEST);
 	}
 }

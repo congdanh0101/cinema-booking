@@ -8,4 +8,9 @@ import springboot.restful.model.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+//	Optional<User> findByPhoneNumber(String phoneNumber);
+	Boolean existsByEmail(String email);
+
+	Boolean existsByPhoneNumber(String phoneNumber);
+
 }
