@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,7 +82,18 @@ public class UserController {
 		return new ResponseEntity<UserDTO>(userService.getUserById(id), HttpStatus.OK);
 	}
 
-	public boolean checkPhone(String phoneNumber) {
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody UserDTO userDTO) {
+		if (checkPhone(userDTO.getPhoneNumber()))
+			return new ResponseEntity<UserDTO>(userService.updateUser(id, userDTO), HttpStatus.OK);
+		else
+			return new ResponseEntity<ErrorDetails>(
+					new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
+							"Phone number is not suitable", request.getRequestURI(), request.getMethod()),
+					HttpStatus.BAD_REQUEST);
+	}
+
+	private boolean checkPhone(String phoneNumber) {
 		String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
 		return phoneNumber.matches(reg);
 	}

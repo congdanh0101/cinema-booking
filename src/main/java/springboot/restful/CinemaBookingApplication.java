@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import springboot.restful.model.entity.User;
 import springboot.restful.repository.RoleRepository;
+import springboot.restful.repository.UserRepository;
 
 @SpringBootApplication
 public class CinemaBookingApplication implements CommandLineRunner {
@@ -20,6 +23,8 @@ public class CinemaBookingApplication implements CommandLineRunner {
 	@Autowired
 	private RoleRepository roleRepository;
 
+	@Autowired
+	private UserRepository userRepository;
 
 
 	public static void main(String[] args) {
@@ -30,6 +35,7 @@ public class CinemaBookingApplication implements CommandLineRunner {
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
+
 
 	public boolean checkPhone(String phoneNumber) {
 		String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
@@ -83,9 +89,11 @@ public class CinemaBookingApplication implements CommandLineRunner {
 		LocalDate localDate = LocalDate.of(2022, 9, 4);
 		Calendar calendar = Calendar.getInstance();
 //		calendar.get(Calendar.DAY_OF_WEEK);
-
 		System.out.println(calendar);
-
+		Optional<User> u = userRepository.findById(10);
+		if (u.isPresent()) {
+			System.out.println(u.get().getEmail());
+		}
 
 	}
 
