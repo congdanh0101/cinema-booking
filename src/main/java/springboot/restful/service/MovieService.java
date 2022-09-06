@@ -14,4 +14,7 @@ public interface MovieService {
 
 	List<MovieDTO> getAllMovie();
 
+	// update
+	MovieDTO updateMovie(Integer id, MovieDTO movieDTO);
+
 }

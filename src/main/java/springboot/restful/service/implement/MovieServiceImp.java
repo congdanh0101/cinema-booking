@@ -40,9 +40,11 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 		if (now.before(movieDTO.getReleases())) {
 			System.out.println("comming soon");
 			movie.setComming(true);
+			movie.setShowing(false);
 		} else {
 			System.out.println("now showing");
 			movie.setShowing(true);
+			movie.setComming(false);
 		}
 
 		movieDTO.getGenres().stream().forEach(g -> {
@@ -53,9 +55,6 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 			movie.getGenres().add(genre);
 		});
 
-//		movie.getGenres().add(null);
-		
-//		movie.getGenres().addAll(movieDTO.getGenres().stream().map(g -> modelMapper.map(g, Genre.class)).toList());
 
 		return entityToDTO(movieRepository.save(movie));
 	}
@@ -71,6 +70,48 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 	@Override
 	public List<MovieDTO> getAllMovie() {
 		return movieRepository.findAll().stream().map(movie -> entityToDTO(movie)).collect(Collectors.toList());
+	}
+
+	@Override
+	public MovieDTO updateMovie(Integer id, MovieDTO movieDTO) {
+
+		Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+
+		movie.setDescription(movieDTO.getDescription());
+		movie.setName(movieDTO.getName());
+		movie.setDuration(movieDTO.getDuration());
+		movie.setImage(movieDTO.getImage());
+		movie.setTrailer(movieDTO.getTrailer());
+		movie.setReleases(movieDTO.getReleases());
+		movie.setShowing(movieDTO.isShowing());
+		movie.setComming(movieDTO.isComming());
+		movie.setDisplay(movieDTO.isDisplay());
+
+		movie.getGenres().clear();
+
+		movieDTO.getGenres().stream().forEach(g -> {
+			Genre genre = genreRepository.findById(g.getId())
+					.orElseThrow(() -> new ResourceNotFoundException("Genre", "id", g.getId()));
+			movie.getGenres().add(genre);
+		});
+
+		if (movieDTO.isDisplay() == false) {
+			movie.setShowing(false);
+			movie.setComming(false);
+		} else {
+			Date now = new Date();
+			if (now.before(movieDTO.getReleases())) {
+				System.out.println("comming soon");
+				movie.setComming(true);
+				movie.setShowing(false);
+			} else {
+				System.out.println("now showing");
+				movie.setShowing(true);
+				movie.setComming(false);
+			}
+		}
+
+		return entityToDTO(movieRepository.save(movie));
 	}
 
 	@Override
