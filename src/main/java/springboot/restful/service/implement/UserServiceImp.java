@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import springboot.restful.config.AppConstant;
 import springboot.restful.exception.ResourceNotFoundException;
@@ -30,6 +31,7 @@ public class UserServiceImp implements UserService, ModelMapping<User, UserDTO> 
 	private RoleRepository roleRepository;
 
 	@Override
+	@Transactional
 	public UserDTO createUser(UserDTO userDTO) {
 
 		if (userDTO.getPhoneNumber().startsWith("+84")) {
@@ -41,7 +43,6 @@ public class UserServiceImp implements UserService, ModelMapping<User, UserDTO> 
 		user.getRoles().add(role);
 		User savedUser = this.userRepository.save(user);
 		return this.entityToDTO(savedUser);
-
 	}
 
 	@Override

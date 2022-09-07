@@ -8,7 +8,6 @@ import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
-
 @Entity
 @Data
 public class Ticket {

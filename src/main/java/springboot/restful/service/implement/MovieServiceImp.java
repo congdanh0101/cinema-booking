@@ -115,6 +115,13 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 	}
 
 	@Override
+	public void deleteMovie(Integer id) {
+		// TODO Auto-generated method stub
+		Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+		movieRepository.delete(movie);
+	}
+
+	@Override
 	public Movie dtoToEntity(MovieDTO dto) {
 		return this.modelMapper.map(dto, Movie.class);
 	}

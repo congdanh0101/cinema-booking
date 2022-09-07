@@ -1,8 +1,8 @@
 package springboot.restful.model.entity;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -41,5 +41,5 @@ public class ShowTime {
 	private Theater theater;
 
 	@OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Ticket> tickets = new ArrayList<>();
+	private Collection<Ticket> tickets = new HashSet<>();
 }
