@@ -1,7 +1,7 @@
 package springboot.restful.model.entity;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -20,7 +20,7 @@ public class Seat {
 	private String name; // A1, A2, B1, B2, ...
 
 	@OneToMany(mappedBy = "seat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Collection<Ticket> tickets = new HashSet<>();
+	private List<Ticket> tickets = new ArrayList<>();
 
 //	@OneToOne(mappedBy = "seat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //	private Ticket ticket;

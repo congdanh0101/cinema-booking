@@ -14,10 +14,11 @@ import lombok.NoArgsConstructor;
 public class ShowTimeDTO {
 	private int id;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+//	@JsonFormat(pattern = "EEE")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "EEE dd/MM/yyyy")
 	private Date showDate;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+	@JsonFormat(pattern = "HH:mm:ss")
 	private Date showTime;
 
 	private MovieDTO movie;

@@ -63,13 +63,16 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
-		return new ResponseEntity<ErrorDetails>
-		(new ErrorDetails(
-				new Date().toLocaleString(),
-				HttpStatus.BAD_REQUEST.toString(),
-				ex.getLocalizedMessage(),
-				request.getRequestURI(),
-				request.getMethod()), HttpStatus.BAD_REQUEST);
+	public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+		return new ResponseEntity<ErrorDetails>(
+				new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
+						ex.getLocalizedMessage(), request.getRequestURI(), request.getMethod()),
+				HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ApiException.class)
+	public ResponseEntity<?> handleApiException(ApiException ex) {
+		return new ResponseEntity<ApiRespone>(new ApiRespone(new Date().toLocaleString(), ex.getMessage(), false),
+				HttpStatus.NOT_ACCEPTABLE);
 	}
 }

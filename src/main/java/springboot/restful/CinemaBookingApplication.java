@@ -1,7 +1,9 @@
 package springboot.restful;
 
 import java.sql.Time;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -24,7 +26,6 @@ public class CinemaBookingApplication implements CommandLineRunner {
 	@Autowired
 	private UserRepository userRepository;
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(CinemaBookingApplication.class, args);
 	}
@@ -33,7 +34,6 @@ public class CinemaBookingApplication implements CommandLineRunner {
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
-
 
 	public boolean checkPhone(String phoneNumber) {
 		String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
@@ -53,40 +53,48 @@ public class CinemaBookingApplication implements CommandLineRunner {
 //		roleRepository.saveAll(roles);
 //		roles.forEach(r -> System.out.println(r));
 
-
 		Date dt = new Date();
 		java.sql.Date date = new java.sql.Date(dt.getTime());
 		Time tim = new Time(dt.getTime());
 		Time t = new Time(0);
-		
+
 		int hour = t.getHours();
 		int min = t.getMinutes();
-		
-//		int id = 1;
-//		for(int i = hour; i<=22;i++) {
-//			for(int j = min;j<=55;j+=5) {
-//				workingDay.setId(id);
-//				workingDay.setDate(new Date());
-//				workingDay.setTime(new Time(i,j,00));
-//				workingDayRepository.save(workingDay);
-//				id++;
-//			}
-//		}
-		
-		
-//		workingDay.setId(1);
-//		workingDay.setDate(new Date());
-//		workingDay.setTime(tim);
-//
-//		workingDayRepository.save(workingDay);
-//
-//		workingDayRepository.findAll().stream().forEach(time -> {
-//			System.out.println(time);
-//		});
 
 		LocalDate localDate = LocalDate.of(2022, 9, 4);
 		Calendar calendar = Calendar.getInstance();
-		System.out.println(calendar);
+		System.out.println(tim);
+
+		LocalDate today = LocalDate.now();
+
+		System.out.println(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY);
+
+		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+				|| calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
+				|| calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+			System.out.println(123);
+		}
+
+		if (today.getDayOfWeek() == DayOfWeek.FRIDAY) {
+			System.out.println("haha");
+		}
+
+		LocalDateTime localDateTime = LocalDateTime.now();
+
+		Time start = new Time(1, 0, 0);
+		Time stop = new Time(15, 00, 00);
+
+		Time t3 = new Time(dt.getTime());
+
+		Date date3 = new Date();
+
+		System.out.println(start);
+
+		if (t3.after(start) && t3.before(stop)) {
+			System.out.println("t3 true");
+		} else
+			System.out.println("t3 false");
+
 
 	}
 

@@ -22,9 +22,11 @@ public class TicketController {
 	private TicketService ticketService;
 
 	@PostMapping("/showtime/{idShowTime}/seat/{idSeat}")
-	public ResponseEntity<?> createTicket(@PathVariable(value = "idShowTime") int idShowTime,
+	public ResponseEntity<TicketDTO> createTicket(@PathVariable(value = "idShowTime") int idShowTime,
 			@PathVariable(value = "idSeat") int idSeat, @Valid @RequestBody TicketDTO ticketDTO) {
-		return new ResponseEntity<TicketDTO>(ticketService.createTicket(idShowTime, idSeat, ticketDTO),
+		TicketDTO ticket = ticketService.createTicket(idShowTime, idSeat, ticketDTO);
+		ticket.getShowTime().getShowDate().setDate((ticket.getShowTime().getShowDate().getDate() + 1));
+		return new ResponseEntity<TicketDTO>(ticket,
 				HttpStatus.CREATED);
 	}
 }
