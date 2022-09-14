@@ -41,7 +41,6 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
     @Autowired
     private TheaterService theaterService;
 
-
     @Autowired
     private TicketRepository ticketRepository;
 
@@ -83,45 +82,17 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
         return entityToDTO(showTimeRepository.save(showTime));
     }
 
-    private Date setAllTimeEqualShowDate(Date time, Date showDate) {
-
-        time.setDate(showDate.getDate());
-        time.setMonth(showDate.getMonth());
-        time.setYear(showDate.getYear());
-        return time;
-
-    }
-
-    @SuppressWarnings("deprecation")
-    private Date getTimeEnd(Date showDate, Date timeStart, int duration) {
-
-        Date timeEnd = new Date();
-        timeEnd = setAllTimeEqualShowDate(timeEnd, showDate);
-        timeStart = setAllTimeEqualShowDate(timeStart, showDate);
-
-        int newDuration = duration + 30;
-        int hour = newDuration / 60;
-        int minute = newDuration % 60;
-
-        timeEnd.setHours(timeStart.getHours() + hour - 1);
-        timeEnd.setMinutes(timeStart.getMinutes() + minute);
-        timeEnd.setSeconds(0);
-//		System.out.println("Time end: " + timeEnd);
-        return timeEnd;
-    }
-
     @Override
     public List<ShowTimeDTO> getAllShowTime() {
 
-        return showTimeRepository.findAll().stream().map(st -> entityToDTO(st)).collect(Collectors.toList());
+        return showTimeRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<ShowTimeDTO> getAllShowTimeByShowDate(Date showDate) {
 
         List<ShowTime> showTimes = showTimeRepository.findByShowDate(showDate);
-        List<ShowTimeDTO> showTimeDTOs = showTimes.stream().map(st -> entityToDTO(st)).collect(Collectors.toList());
-        return showTimeDTOs;
+        return showTimes.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -129,8 +100,7 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
         Theater theater = modelMapper.map(theaterService.geTheaterById(idTheater), Theater.class);
         List<ShowTime> showTimes = showTimeRepository.findByShowDateAndTheaterOrderByTimeStartAsc(showDate, theater);
-        List<ShowTimeDTO> showTimeDTOs = showTimes.stream().map(st -> entityToDTO(st)).collect(Collectors.toList());
-        return showTimeDTOs;
+        return showTimes.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
 
@@ -205,7 +175,6 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
     private String getTimeEnd(String timeStart, int duration) {
 
         int newDuration = duration + 30;
-
 
         LocalTime lc = LocalTime.parse(timeStart);
 
@@ -407,7 +376,7 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
         return entityToDTO(showTimeRepository.save(showTime));
     }
 
-    public List<TicketDTO> getAllTicketsByShowTime(int idShowTime) {
+    private List<TicketDTO> getAllTicketsByShowTime(int idShowTime) {
 
         ShowTime showTime = showTimeRepository.findById(idShowTime).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
 

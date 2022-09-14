@@ -53,7 +53,7 @@ public class UserServiceImp implements UserService, ModelMapping<User, UserDTO> 
 
 	@Override
 	public List<UserDTO> getAllUsers() {
-		return userRepository.findAll().stream().map(u -> entityToDTO(u)).collect(Collectors.toList());
+		return userRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
 	@Override

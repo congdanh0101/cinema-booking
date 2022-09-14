@@ -66,9 +66,9 @@ public class TicketServiceImp implements TicketService, ModelMapping<Ticket, Tic
 
 	private boolean isSeatAvailable(List<TicketDTO> listTicketDTOs, Seat seat) {
 
-		List<Ticket> listTickets = listTicketDTOs.stream().map(t -> dtoToEntity(t))
+		List<Ticket> listTickets = listTicketDTOs.stream().map(this::dtoToEntity)
 				.filter(t -> t.getSeat().equals(seat)).collect(Collectors.toList());
-		return (listTickets == null || listTickets.size() == 0 || listTickets.isEmpty());
+		return listTickets == null || listTickets.size() == 0 || listTickets.isEmpty();
 
 	}
 
@@ -78,25 +78,13 @@ public class TicketServiceImp implements TicketService, ModelMapping<Ticket, Tic
 		ShowTime showTime = modelMapper.map(showTimeService.getShowTimeById(idShowTime), ShowTime.class);
 
 		List<Ticket> tickets = ticketRepository.findByShowTime(showTime);
-		List<TicketDTO> ticketDTOs = tickets.stream().map(t -> entityToDTO(t)).collect(Collectors.toList());
 
-		return ticketDTOs;
+		return tickets.stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<TicketDTO> getAllTickets() {
-		return ticketRepository.findAll().stream().map(ticket -> entityToDTO(ticket)).collect(Collectors.toList());
+		return ticketRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
-	private void setTimeStartAndTimeEnd(Date timeStart, Date timeEnd) {
-		if (timeStart.getHours() < 8)
-			timeStart.setHours(timeStart.getHours() + 16);
-		else
-			timeStart.setHours(timeStart.getHours() - 8);
-		
-		if (timeEnd.getHours() < 8)
-			timeEnd.setHours(timeEnd.getHours() + 16);
-		else
-			timeEnd.setHours(timeEnd.getHours() - 8);
-	}
 }

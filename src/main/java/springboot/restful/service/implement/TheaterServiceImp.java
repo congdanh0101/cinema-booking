@@ -45,7 +45,7 @@ public class TheaterServiceImp implements TheaterService, ModelMapping<Theater, 
 
 	@Override
 	public List<TheaterDTO> getAllTheaters() {
-		return theaterRepository.findAll().stream().map(th -> entityToDTO(th)).collect(Collectors.toList());
+		return theaterRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
 }

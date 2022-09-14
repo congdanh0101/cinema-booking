@@ -69,7 +69,7 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 
 	@Override
 	public List<MovieDTO> getAllMovie() {
-		return movieRepository.findAll().stream().map(movie -> entityToDTO(movie)).collect(Collectors.toList());
+		return movieRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 			movie.getGenres().add(genre);
 		});
 
-		if (movieDTO.isDisplay() == false) {
+		if (!movieDTO.isDisplay()) {
 			movie.setShowing(false);
 			movie.setComming(false);
 		} else {
