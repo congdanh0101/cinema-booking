@@ -1,5 +1,6 @@
 package springboot.restful.service.implement;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,12 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import springboot.restful.exception.ApiException;
 import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.dto.ShowTimeDTO;
+import springboot.restful.model.dto.TicketDTO;
 import springboot.restful.model.entity.Movie;
 import springboot.restful.model.entity.ShowTime;
 import springboot.restful.model.entity.Theater;
+import springboot.restful.model.entity.Ticket;
 import springboot.restful.repository.ShowTimeRepository;
+import springboot.restful.repository.TicketRepository;
 import springboot.restful.service.MovieService;
 import springboot.restful.service.ShowTimeService;
 import springboot.restful.service.TheaterService;
@@ -24,202 +29,405 @@ import springboot.restful.util.ModelMapping;
 @Slf4j
 public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTime, ShowTimeDTO> {
 
-	@Autowired
-	private ModelMapper modelMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
-	@Autowired
-	private ShowTimeRepository showTimeRepository;
+    @Autowired
+    private ShowTimeRepository showTimeRepository;
 
-	@Autowired
-	private MovieService movieService;
+    @Autowired
+    private MovieService movieService;
 
-	@Autowired
-	private TheaterService theaterService;
-
-	@Override
-	public ShowTimeDTO getShowTimeById(int id) {
-
-		ShowTime showTime = showTimeRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", id));
-
-		return entityToDTO(showTime);
-	}
-
-	@Override
-	public ShowTime dtoToEntity(ShowTimeDTO dto) {
-		return this.modelMapper.map(dto, ShowTime.class);
-	}
-
-	@Override
-	public ShowTimeDTO entityToDTO(ShowTime entity) {
-		return this.modelMapper.map(entity, ShowTimeDTO.class);
-	}
-
-	@Override
-	public ShowTimeDTO createShowTime(ShowTimeDTO showTimeDTO, int idMovie, int idTheater) {
-
-		Movie movie = modelMapper.map(movieService.getMovieById(idMovie), Movie.class);
-		Theater theater = modelMapper.map(theaterService.geTheaterById(idTheater), Theater.class);
-		ShowTime showTime = dtoToEntity(showTimeDTO);
-
-//		if (!isShowTimeAvailable(getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater),
-//				showTimeDTO.getTimeStart(), movie))
-//			throw new ApiException("Can not create new show time");
-
-		showTime.setPrice(getPrice(showTimeDTO.getShowDate(), showTimeDTO.getTimeStart()));
-		showTime.setTimeEnd(getTimeEnd(showTimeDTO.getTimeStart(), movie.getDuration()));
-		showTime.setTheater(theater);
-		showTime.setMovie(movie);
-
-		return entityToDTO(showTimeRepository.save(showTime));
-	}
-
-	@SuppressWarnings("deprecation")
-	private Date getTimeEnd(Date timeStart, int duration) {
-
-//		timeStart.setDate(new Date().getDate());
-//		timeStart.setMonth(new Date().getMonth());
-//		timeStart.setYear(new Date().getYear());
-//		timeStart.setHours(timeStart.getHours() - 1);
-
-		Date timeEnd = new Date();
-		int newDuration = duration + 30;
-		int hour = newDuration / 60;
-		int minute = newDuration % 60;
-
-		timeEnd.setHours(timeStart.getHours() + hour - 1);
-		timeEnd.setMinutes(timeStart.getMinutes() + minute);
-		timeEnd.setSeconds(0);
-		System.out.println("Time end: " + timeEnd);
-		return timeEnd;
-	}
-
-	@Override
-	public List<ShowTimeDTO> getAllShowTime() {
-
-		return showTimeRepository.findAll().stream().map(st -> entityToDTO(st)).collect(Collectors.toList());
-	}
-
-	private int getPrice(Date showDate, Date showTime) {
-
-//		LocalDate today = LocalDate.now();
-
-		Date start = new Date();
-		Date stop = new Date();
-		Date now = new Date();
-
-		if (showTime.getHours() < 8) {
-			now.setDate(showDate.getDate() + 1);
-		} else {
-			now.setDate(showDate.getDate());
-		}
-		now.setHours(showTime.getHours() - 8);
-		now.setMinutes(showTime.getMinutes());
-		now.setSeconds(showTime.getSeconds());
-		now.setMonth(showDate.getMonth());
-		now.setYear(showDate.getYear());
-
-		if (now.toString().contains("Fri") || now.toString().contains("Sat") || now.toString().contains("Sun")) {
-
-			// price 20 from 8am -> 17pm
-
-			morningShift(start, stop);
-			if (isBetweenTwosTimes(start, stop, now))
-				return 20;
-
-			// price 25 from 17pm -> 22pm
-
-			eveningShift(start, stop);
-			if (isBetweenTwosTimes(start, stop, now))
-				return 25;
-
-			// price 15 after 22pm
-			nightShift(start, stop);
-			if (isBetweenTwosTimes(start, stop, now))
-				return 15;
-
-		} else if (now.toString().contains("Tue")) {
-
-			// price 10 all day
-			return 10;
-
-		} else {
-
-			// price 15 from 8am -> 17pm
-			morningShift(start, stop);
-			if (isBetweenTwosTimes(start, stop, now))
-				return 15;
-
-			// price 20 from 17pm -> 22pm
-			eveningShift(start, stop);
-			if (isBetweenTwosTimes(start, stop, now))
-				return 20;
-
-			// price 10 after 22pm
-			nightShift(start, stop);
-
-			if (isBetweenTwosTimes(start, stop, now))
-				return 10;
-		}
-		return 0;
-	}
-
-	private boolean isBetweenTwosTimes(Date start, Date stop, Date now) {
-		return (now.getHours() >= start.getHours() && now.getHours() < stop.getHours());
-	}
-
-	private void morningShift(Date start, Date stop) {
-		start.setHours(0);
-		start.setMinutes(0);
-		start.setSeconds(0);
-		stop.setHours(17);
-		stop.setMinutes(0);
-		stop.setSeconds(0);
-	}
-
-	private void eveningShift(Date start, Date stop) {
-		start.setHours(17);
-		start.setMinutes(0);
-		start.setSeconds(0);
-		stop.setHours(22);
-		stop.setMinutes(0);
-		stop.setSeconds(0);
-	}
-
-	private void nightShift(Date start, Date stop) {
-		start.setHours(22);
-		start.setMinutes(0);
-		start.setSeconds(0);
-		stop.setHours(23);
-		stop.setMinutes(59);
-		stop.setSeconds(59);
-	}
-
-	private boolean isShowTimeAvailable(List<ShowTimeDTO> showTimeDTOs, Date timeStart, Movie movie) {
-
-		if (showTimeDTOs.size() == 0 || showTimeDTOs == null || showTimeDTOs.isEmpty())
-			return true;
+    @Autowired
+    private TheaterService theaterService;
 
 
+    @Autowired
+    private TicketRepository ticketRepository;
 
-		return false;
-	}
+    @Override
+    public ShowTimeDTO getShowTimeById(int id) {
 
-	@Override
-	public List<ShowTimeDTO> getAllShowTimeByShowDate(Date showDate) {
+        ShowTime showTime = showTimeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", id));
 
-		List<ShowTime> showTimes = showTimeRepository.findByShowDate(showDate);
-		List<ShowTimeDTO> showTimeDTOs = showTimes.stream().map(st -> entityToDTO(st)).collect(Collectors.toList());
-		return showTimeDTOs;
-	}
+        return entityToDTO(showTime);
+    }
 
-	@Override
-	public List<ShowTimeDTO> getAllShowTimeByShowDateAndTheater(Date showDate, int idTheater) {
+    @Override
+    public ShowTime dtoToEntity(ShowTimeDTO dto) {
+        return this.modelMapper.map(dto, ShowTime.class);
+    }
 
-		Theater theater = modelMapper.map(theaterService.geTheaterById(idTheater), Theater.class);
-		List<ShowTime> showTimes = showTimeRepository.findByShowDateAndTheaterOrderByTimeEndAsc(showDate, theater);
-		List<ShowTimeDTO> showTimeDTOs = showTimes.stream().map(st -> entityToDTO(st)).collect(Collectors.toList());
-		return showTimeDTOs;
-	}
+    @Override
+    public ShowTimeDTO entityToDTO(ShowTime entity) {
+        return this.modelMapper.map(entity, ShowTimeDTO.class);
+    }
 
+    @Override
+    public ShowTimeDTO createShowTime(ShowTimeDTO showTimeDTO, int idMovie, int idTheater) {
+
+        Movie movie = modelMapper.map(movieService.getMovieById(idMovie), Movie.class);
+        Theater theater = modelMapper.map(theaterService.geTheaterById(idTheater), Theater.class);
+        ShowTime showTime = dtoToEntity(showTimeDTO);
+
+        if (!isShowTimeAvailable(getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater),
+                showTimeDTO.getTimeStart(), movie))
+            throw new ApiException("Can not create new show time");
+
+        showTime.setPrice(getPrice(showTimeDTO.getShowDate(), showTimeDTO.getTimeStart()));
+        showTime.setTimeEnd(getTimeEnd(showTimeDTO.getTimeStart(), movie.getDuration()));
+        showTime.setTheater(theater);
+        showTime.setMovie(movie);
+
+        return entityToDTO(showTimeRepository.save(showTime));
+    }
+
+    private Date setAllTimeEqualShowDate(Date time, Date showDate) {
+
+        time.setDate(showDate.getDate());
+        time.setMonth(showDate.getMonth());
+        time.setYear(showDate.getYear());
+        return time;
+
+    }
+
+    @SuppressWarnings("deprecation")
+    private Date getTimeEnd(Date showDate, Date timeStart, int duration) {
+
+        Date timeEnd = new Date();
+        timeEnd = setAllTimeEqualShowDate(timeEnd, showDate);
+        timeStart = setAllTimeEqualShowDate(timeStart, showDate);
+
+        int newDuration = duration + 30;
+        int hour = newDuration / 60;
+        int minute = newDuration % 60;
+
+        timeEnd.setHours(timeStart.getHours() + hour - 1);
+        timeEnd.setMinutes(timeStart.getMinutes() + minute);
+        timeEnd.setSeconds(0);
+//		System.out.println("Time end: " + timeEnd);
+        return timeEnd;
+    }
+
+    @Override
+    public List<ShowTimeDTO> getAllShowTime() {
+
+        return showTimeRepository.findAll().stream().map(st -> entityToDTO(st)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ShowTimeDTO> getAllShowTimeByShowDate(Date showDate) {
+
+        List<ShowTime> showTimes = showTimeRepository.findByShowDate(showDate);
+        List<ShowTimeDTO> showTimeDTOs = showTimes.stream().map(st -> entityToDTO(st)).collect(Collectors.toList());
+        return showTimeDTOs;
+    }
+
+    @Override
+    public List<ShowTimeDTO> getAllShowTimeByShowDateAndTheater(Date showDate, int idTheater) {
+
+        Theater theater = modelMapper.map(theaterService.geTheaterById(idTheater), Theater.class);
+        List<ShowTime> showTimes = showTimeRepository.findByShowDateAndTheaterOrderByTimeStartAsc(showDate, theater);
+        List<ShowTimeDTO> showTimeDTOs = showTimes.stream().map(st -> entityToDTO(st)).collect(Collectors.toList());
+        return showTimeDTOs;
+    }
+
+
+    private int getPrice(Date showDate, String timeStart) {
+
+        String EEE = showDate.toString().substring(0, 3);
+        String start = "";
+        String stop = "";
+
+        if (EEE.contains("Fri") || EEE.contains("Sat") || EEE.contains("Sun")) {
+
+            //from 8AM -> 17PM => 20
+            start = "08:00";
+            stop = "17:00";
+            if (isBeetwenTwosTime(start, stop, timeStart))
+                return 20;
+            //from 17PM -> 22PM => 25
+
+            start = "17:00";
+            stop = "22:00";
+            if (isBeetwenTwosTime(start, stop, timeStart))
+                return 25;
+
+            //after 22PM => 15
+            start = "22:00";
+            stop = "23:59";
+            if (isBeetwenTwosTime(start, stop, timeStart))
+                return 15;
+
+        } else if (EEE.contains("Tue")) {
+
+            //10 for all day
+            return 10;
+
+        } else {
+
+            //from 8AM -> 17PM => 15
+
+            start = "08:00";
+            stop = "17:00";
+            if (isBeetwenTwosTime(start, stop, timeStart))
+                return 15;
+
+            //from 17PM -> 22PM => 20
+
+            start = "17:00";
+            stop = "22:00";
+            if (isBeetwenTwosTime(start, stop, timeStart))
+                return 20;
+
+            //after 22PM => 10
+            start = "22:00";
+            stop = "23:59";
+            if (isBeetwenTwosTime(start, stop, timeStart))
+                return 10;
+
+
+        }
+
+        return 0;
+    }
+
+    private boolean isBeetwenTwosTime(String start, String stop, String timeStart) {
+
+        LocalTime startLC = LocalTime.parse(start);
+        LocalTime stopLC = LocalTime.parse(stop);
+        LocalTime timeStartLC = LocalTime.parse(timeStart);
+
+        return (timeStartLC.getHour() >= startLC.getHour() && timeStartLC.getHour() < stopLC.getHour());
+    }
+
+    private String getTimeEnd(String timeStart, int duration) {
+
+        int newDuration = duration + 30;
+
+
+        LocalTime lc = LocalTime.parse(timeStart);
+
+        int hour = lc.getHour() + (newDuration / 60);
+        int minute = lc.getMinute() + (newDuration % 60);
+
+        if (minute >= 60) {
+            minute = minute % 60;
+            hour += 1;
+        }
+
+        if (hour >= 24) hour = hour % 24;
+
+        String strTimeEndHour = String.valueOf(hour);
+        String strTimeEndMinute = String.valueOf(minute);
+
+        if (strTimeEndMinute.length() == 1) {
+            strTimeEndMinute = "0" + strTimeEndMinute;
+        }
+        if (strTimeEndHour.length() == 1) {
+            strTimeEndHour = "0" + strTimeEndHour;
+
+        }
+
+        String timeEnd = "";
+        timeEnd += strTimeEndHour + ":" + strTimeEndMinute;
+
+        return timeEnd;
+
+    }
+
+    private boolean isShowTimeAvailable(List<ShowTimeDTO> showTimeDTOs, String timeStart, Movie movie) {
+        LocalTime lcNewTimeStart = LocalTime.parse(timeStart);
+        LocalTime lcNewTimeEnd = LocalTime.parse(getTimeEnd(timeStart, movie.getDuration()));
+
+        String timeEnd = getTimeEnd(timeStart, movie.getDuration());
+
+        int hourNewTimeStart = Integer.parseInt(timeStart.substring(0, 2));
+        int minuteNewTimeStart = Integer.parseInt(timeStart.substring(3));
+
+        int hourNewTimeEnd = Integer.parseInt(timeEnd.substring(0, 2));
+        int minuteNewTimeEnd = Integer.parseInt(timeEnd.substring(3));
+
+
+        if (hourNewTimeEnd < 8) hourNewTimeEnd += 24;
+
+//        String newTimeEnd = String.valueOf(hourNewTimeEnd)+":"+timeEnd.substring(3);
+
+
+        if (showTimeDTOs.isEmpty() || showTimeDTOs.size() == 0 || showTimeDTOs == null) {
+            return true;
+        }
+
+        if (showTimeDTOs.size() == 1) {
+
+            //for show time
+            LocalTime lcShowTimeStart = LocalTime.parse(showTimeDTOs.get(0).getTimeStart());
+            LocalTime lcShowTimeEnd = LocalTime.parse(showTimeDTOs.get(0).getTimeEnd());
+
+            int hourShowTimeStart = Integer.parseInt(showTimeDTOs.get(0).getTimeStart().substring(0, 2));
+            int minuteShowTimeStart = Integer.parseInt(showTimeDTOs.get(0).getTimeStart().substring(3));
+
+            int hourShowTimeEnd = Integer.parseInt(showTimeDTOs.get(0).getTimeEnd().substring(0, 2));
+            int minuteShowTimeEnd = Integer.parseInt(showTimeDTOs.get(0).getTimeEnd().substring(3));
+
+
+//            if (lcNewTimeEnd.isBefore(lcShowTimeStart) || lcNewTimeStart.isAfter(lcShowTimeEnd) || lcNewTimeEnd.equals(lcShowTimeStart) || lcNewTimeStart.equals(lcShowTimeEnd))
+//                return true;
+
+            if (hourNewTimeEnd < hourShowTimeStart)
+                return true;
+
+
+            if (hourNewTimeEnd == hourShowTimeStart && minuteNewTimeEnd <= minuteShowTimeStart)
+                return true;
+
+            if (hourNewTimeStart > hourShowTimeEnd)
+                return true;
+
+            if (hourNewTimeStart == hourShowTimeEnd && minuteNewTimeStart >= minuteShowTimeEnd)
+                return true;
+        }
+
+        int check = 1;
+
+        for (ShowTimeDTO st : showTimeDTOs) {
+            int hourShowTimeStart = Integer.parseInt(st.getTimeStart().substring(0, 2));
+            int minuteShowTimeStart = Integer.parseInt(st.getTimeStart().substring(3));
+
+            if (hourNewTimeEnd > hourShowTimeStart) {
+                check = -1;
+                break;
+            }
+            if (hourNewTimeEnd == hourShowTimeStart) {
+                if (minuteNewTimeEnd > minuteNewTimeStart) {
+                    check = -1;
+                    break;
+                }
+            }
+        }
+
+        if (check == 1) return true;
+
+
+        int i = 0;
+        int j = 1;
+        while (i < showTimeDTOs.size() - 1 && j < showTimeDTOs.size()) {
+
+//            LocalTime lcShowTimeStartBefore = LocalTime.parse(showTimeDTOs.get(i).getTimeStart());
+            LocalTime lcShowTimeEndBefore = LocalTime.parse(showTimeDTOs.get(i).getTimeEnd());
+
+            LocalTime lcShowTimeStartAfter = LocalTime.parse(showTimeDTOs.get(j).getTimeStart());
+//            LocalTime lcShowTimeEndAfter = LocalTime.parse(showTimeDTOs.get(j).getTimeEnd());
+
+
+            int hourShowTimeStartAfter = Integer.parseInt(showTimeDTOs.get(j).getTimeStart().substring(0, 2));
+            int minuteShowTimeStartAfter = Integer.parseInt(showTimeDTOs.get(j).getTimeStart().substring(3));
+
+            int hourShowTimeEndBefore = Integer.parseInt(showTimeDTOs.get(i).getTimeEnd().substring(0, 2));
+            int minuteShowTimeEndBefore = Integer.parseInt(showTimeDTOs.get(i).getTimeEnd().substring(3));
+
+//
+//            if (lcNewTimeStart.isAfter(lcShowTimeEndBefore) || lcNewTimeStart.equals(lcShowTimeEndBefore))
+//                if (lcNewTimeEnd.isBefore(lcShowTimeStartAfter) || lcNewTimeEnd.equals(lcShowTimeStartAfter))
+//                    return true;
+
+
+            if (hourNewTimeStart > hourShowTimeEndBefore) {
+                if (hourNewTimeEnd < hourShowTimeStartAfter)
+                    return true;
+                if (hourNewTimeEnd == hourShowTimeStartAfter)
+                    if (minuteNewTimeEnd <= minuteShowTimeStartAfter)
+                        return true;
+            }
+
+
+            if (hourNewTimeStart == hourShowTimeEndBefore && minuteNewTimeStart >= minuteShowTimeEndBefore) {
+                if (hourNewTimeEnd < hourShowTimeStartAfter)
+                    return true;
+
+                if (hourNewTimeEnd == hourShowTimeStartAfter)
+                    if (minuteNewTimeEnd < minuteShowTimeStartAfter)
+                        return true;
+            }
+
+
+            i++;
+            j++;
+        }
+
+        if (i == showTimeDTOs.size() - 1) {
+            LocalTime lcShowTimeEndLast = LocalTime.parse(showTimeDTOs.get(i).getTimeEnd());
+
+            int hourShowTimeEndLast = Integer.parseInt(showTimeDTOs.get(i).getTimeEnd().substring(0, 2));
+
+            if (hourShowTimeEndLast < 8) hourShowTimeEndLast += 24;
+            int minuteShowTimeEndLast = Integer.parseInt(showTimeDTOs.get(i).getTimeEnd().substring(3));
+
+//            if (lcNewTimeStart.isAfter(lcShowTimeEndLast) || lcNewTimeStart.equals(lcShowTimeEndLast))
+//                return true;
+
+            if (hourNewTimeStart >= hourShowTimeEndLast && minuteNewTimeStart >= minuteShowTimeEndLast)
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public ShowTimeDTO updateShowTime(ShowTimeDTO showTimeDTO, int idMovie, int idTheater, int idShowTime) {
+        Movie movie = modelMapper.map(movieService.getMovieById(idMovie), Movie.class);
+        Theater theater = modelMapper.map(theaterService.geTheaterById(idTheater), Theater.class);
+        ShowTime showTime = showTimeRepository.findById(idShowTime).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
+
+        if (getAllTicketsByShowTime(idShowTime).isEmpty() || getAllTicketsByShowTime(idShowTime).size() == 0 || getAllTicketsByShowTime(idShowTime) == null) {
+
+            if (getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater).size() > 1) {
+                if (!isShowTimeAvailableForUpdate(idShowTime,getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater),
+                        showTimeDTO.getTimeStart(), movie)) {
+                    throw new ApiException("Can not update show time because time overlap");
+                }
+            }
+
+
+            if (showTimeDTO.getPrice() == null) {
+                showTime.setPrice(getPrice(showTimeDTO.getShowDate(), showTimeDTO.getTimeStart()));
+            } else {
+                showTime.setPrice(showTimeDTO.getPrice());
+            }
+            showTime.setShowDate(showTimeDTO.getShowDate());
+            showTime.setTimeStart(showTimeDTO.getTimeStart());
+            showTime.setTimeEnd(getTimeEnd(showTimeDTO.getTimeStart(), movie.getDuration()));
+            showTime.setTheater(theater);
+            showTime.setMovie(movie);
+        } else {
+            throw new ApiException("Can not update show time because clients had bought ticket");
+        }
+
+        return entityToDTO(showTimeRepository.save(showTime));
+    }
+
+    public List<TicketDTO> getAllTicketsByShowTime(int idShowTime) {
+
+        ShowTime showTime = showTimeRepository.findById(idShowTime).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
+
+        List<Ticket> tickets = ticketRepository.findByShowTime(showTime);
+        List<TicketDTO> ticketDTOs = tickets.stream().map(t -> modelMapper.map(t, TicketDTO.class)).collect(Collectors.toList());
+        return ticketDTOs;
+    }
+
+    private boolean isShowTimeAvailableForUpdate(int idShowTime, List<ShowTimeDTO> showTimeDTOS, String timeStart, Movie movie) {
+
+        ShowTime showTime = showTimeRepository.findById(idShowTime).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
+
+        ShowTimeDTO showTimeDTO = entityToDTO(showTime);
+
+        for(int i = 0 ;i<showTimeDTOS.size();i++){
+			if (showTimeDTO.equals(showTimeDTOS.get(i))) {
+                showTimeDTOS.remove(i);
+                break;
+            }
+        }
+        return isShowTimeAvailable(showTimeDTOS,timeStart,movie);
+    }
 }

@@ -17,5 +17,5 @@ public interface ShowTimeRepository extends JpaRepository<ShowTime, Integer> {
 
 	List<ShowTime> findByTheater(Theater theater);
 
-	List<ShowTime> findByShowDateAndTheaterOrderByTimeEndAsc(Date showDate, Theater theater);
+	List<ShowTime> findByShowDateAndTheaterOrderByTimeStartAsc(Date showDate, Theater theater);
 }

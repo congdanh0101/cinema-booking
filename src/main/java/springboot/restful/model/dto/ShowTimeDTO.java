@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,12 +22,14 @@ public class ShowTimeDTO {
 	private Date showDate;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-	private Date timeStart;
+	@Size(min = 5,max = 5)
+	@Pattern(regexp = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",message = "Time start is not accepted")
+	private String timeStart;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-	private Date timeEnd;
+	private String timeEnd;
 
-	private int price;
+	private Integer price;
 
 	private MovieDTO movie;
 

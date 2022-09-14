@@ -36,16 +36,16 @@ public class ShowTime {
 	private Date showDate;
 
 
-//	@Temporal(TemporalType.TIMESTAMP)
+//	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	@JsonFormat(pattern = "HH:mm")
-	private Date timeStart;
+	private String timeStart;
 
 
-//	@Temporal(TemporalType.TIMESTAMP)
+//	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	@JsonFormat(pattern = "HH:mm")
-	private Date timeEnd;
+	private String timeEnd;
 
 	@Column(nullable = false)
 	private int price;
