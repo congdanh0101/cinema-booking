@@ -1,10 +1,13 @@
 package springboot.restful.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +18,7 @@ import springboot.restful.model.dto.TicketDTO;
 import springboot.restful.service.TicketService;
 
 @RestController
-@RequestMapping("/api/ticket")
+@RequestMapping("/api/tickets")
 public class TicketController {
 
 	@Autowired
@@ -28,5 +31,10 @@ public class TicketController {
 		ticket.getShowTime().getShowDate().setDate((ticket.getShowTime().getShowDate().getDate() + 1));
 		return new ResponseEntity<TicketDTO>(ticket,
 				HttpStatus.CREATED);
+	}
+
+	@GetMapping("")
+	public ResponseEntity<?> getAllTickets() {
+		return new ResponseEntity<List<TicketDTO>>(ticketService.getAllTickets(), HttpStatus.OK);
 	}
 }

@@ -1,5 +1,8 @@
 package springboot.restful.service.implement;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,11 @@ public class TheaterServiceImp implements TheaterService, ModelMapping<Theater, 
 
 		return entityToDTO(theater);
 
+	}
+
+	@Override
+	public List<TheaterDTO> getAllTheaters() {
+		return theaterRepository.findAll().stream().map(th -> entityToDTO(th)).collect(Collectors.toList());
 	}
 
 }

@@ -12,4 +12,6 @@ public interface TicketService {
 	// get
 	List<TicketDTO> getAllTicketsByShowTime(int idShowTime);
 
+	List<TicketDTO> getAllTickets();
+
 }

@@ -1,23 +1,21 @@
 package springboot.restful;
 
-import java.sql.Time;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
+import lombok.extern.slf4j.Slf4j;
+import springboot.restful.model.dto.ShowTimeDTO;
 import springboot.restful.repository.RoleRepository;
 import springboot.restful.repository.UserRepository;
+import springboot.restful.service.ShowTimeService;
 
 @SpringBootApplication
+@Slf4j
 public class CinemaBookingApplication implements CommandLineRunner {
 
 	@Autowired
@@ -26,13 +24,11 @@ public class CinemaBookingApplication implements CommandLineRunner {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private ShowTimeService showTimeService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CinemaBookingApplication.class, args);
-	}
-
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
 	}
 
 	public boolean checkPhone(String phoneNumber) {
@@ -46,55 +42,21 @@ public class CinemaBookingApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		System.out.println(checkPhone("84902891404"));
-//		Collection<Role> roles = new ArrayList<>();
-//		roles.add(new Role(AppConstant.ROLE_ADMIN, ERole.ROLE_ADMIN));
-//		roles.add(new Role(AppConstant.ROLE_USER, ERole.ROLE_USER));
-//		roleRepository.saveAll(roles);
-//		roles.forEach(r -> System.out.println(r));
 
-		Date dt = new Date();
-		java.sql.Date date = new java.sql.Date(dt.getTime());
-		Time tim = new Time(dt.getTime());
-		Time t = new Time(0);
+		List<ShowTimeDTO> showTimeDTOs = showTimeService.getAllShowTime();
+		Date date = new Date(2022, 9, 14);
+//		showTimeDTOs.stream()
+//				.filter(st -> st.getShowDate().getDate() == date.getDate()
+//						&& st.getShowDate().getMonth() == date.getMonth()
+//						&& st.getShowDate().getYear() == date.getYear())
+//				.collect(Collectors.toList()).stream().forEach(st -> log.warn(st.toString()));
 
-		int hour = t.getHours();
-		int min = t.getMinutes();
-
-		LocalDate localDate = LocalDate.of(2022, 9, 4);
-		Calendar calendar = Calendar.getInstance();
-		System.out.println(tim);
-
-		LocalDate today = LocalDate.now();
-
-		System.out.println(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY);
-
-		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
-				|| calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
-				|| calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
-			System.out.println(123);
+		for (ShowTimeDTO st : showTimeDTOs) {
+			if (st.getShowDate().getDate() == date.getDate())
+				log.warn(st.toString());
 		}
 
-		if (today.getDayOfWeek() == DayOfWeek.FRIDAY) {
-			System.out.println("haha");
-		}
-
-		LocalDateTime localDateTime = LocalDateTime.now();
-
-		Time start = new Time(1, 0, 0);
-		Time stop = new Time(15, 00, 00);
-
-		Time t3 = new Time(dt.getTime());
-
-		Date date3 = new Date();
-
-		System.out.println(start);
-
-		if (t3.after(start) && t3.before(stop)) {
-			System.out.println("t3 true");
-		} else
-			System.out.println("t3 false");
-
+//		System.out.println(new Date().getTime());
 
 	}
 

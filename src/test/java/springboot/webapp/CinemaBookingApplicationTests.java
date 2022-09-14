@@ -8,6 +8,7 @@ class CinemaBookingApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
