@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import springboot.restful.model.dto.ShowTimeDTO;
 import springboot.restful.service.ShowTimeService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/showtimes")
 @Slf4j
@@ -33,6 +35,12 @@ public class ShowTimeController {
 //		log.error(showTimeDTO.getTimeStart().toLocaleString());
         return new ResponseEntity<ShowTimeDTO>(showTimeService.updateShowTime(showTimeDTO, idMovie, idTheater,idShowTime),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllShowTimes(){
+        return new ResponseEntity<List<ShowTimeDTO>>(showTimeService.getAllShowTime(),HttpStatus.OK);
+
     }
 
 }
