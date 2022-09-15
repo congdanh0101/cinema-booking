@@ -15,15 +15,5 @@ import java.util.List;
 //@Component
 public class InitRoleData{
 
-    @Autowired
-    private RoleRepository roleRepository;
 
-
-    public void initData() {
-
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role(AppConstant.ROLE_ADMIN, ERole.ROLE_ADMIN));
-        roles.add(new Role(AppConstant.ROLE_USER,ERole.ROLE_USER));
-        roleRepository.saveAll(roles);
-    }
 }
