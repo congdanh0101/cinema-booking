@@ -8,13 +8,12 @@ import springboot.restful.model.entity.Seat;
 import springboot.restful.repository.SeatRepository;
 
 //@Component
-public class InitSeatData implements CommandLineRunner {
+public class InitSeatData {
 
 	@Autowired
 	private SeatRepository seatRepository;
 
-	@Override
-	public void run(String... args) throws Exception {
+	public void initData(){
 		// TODO Auto-generated method stub
 
 		Seat seat = new Seat();

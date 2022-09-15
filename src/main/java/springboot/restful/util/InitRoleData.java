@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 //@Component
-public class InitRoleData implements CommandLineRunner {
+public class InitRoleData{
 
     @Autowired
     private RoleRepository roleRepository;
 
-    @Override
-    public void run(String... args) throws Exception {
+
+    public void initData() {
 
         List<Role> roles = new ArrayList<>();
         roles.add(new Role(AppConstant.ROLE_ADMIN, ERole.ROLE_ADMIN));

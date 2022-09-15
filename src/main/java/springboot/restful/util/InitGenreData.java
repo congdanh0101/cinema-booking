@@ -11,20 +11,20 @@ import springboot.restful.repository.GenreRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class InitGenreData implements CommandLineRunner {
+//@Component
+public class InitGenreData{
 
     @Autowired
     private GenreRepository genreRepository;
 
-    @Override
-    public void run(String... args) throws Exception {
+
+    public void initData(){
 
         List<Genre> genres = new ArrayList<>();
 
-//        genres.add(new Genre(1,String.valueOf(EGenre.ACTION)));
-//        genres.add(new Genre(2,String.valueOf(EGenre.COMEDIES)));
-//        genres.add(new Genre(3,String.valueOf(EGenre.ANIMATION)));
+        genres.add(new Genre(1,String.valueOf(EGenre.ACTION)));
+        genres.add(new Genre(2,String.valueOf(EGenre.COMEDIES)));
+        genres.add(new Genre(3,String.valueOf(EGenre.ANIMATION)));
         genres.add(new Genre(4,String.valueOf(EGenre.DOCUMENTARIES)));
         genres.add(new Genre(5,String.valueOf(EGenre.ROMANACE)));
         genres.add(new Genre(6,String.valueOf(EGenre.HOLLYWOOD)));

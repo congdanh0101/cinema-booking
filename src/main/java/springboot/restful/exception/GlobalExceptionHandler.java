@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -60,6 +61,17 @@ public class GlobalExceptionHandler {
 				mess, request.getRequestURI(), request.getMethod());
 		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
 
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex){
+		ex.printStackTrace();
+		String message = ex.getCause() == null ? ex.getMessage() : ex.getCause().getLocalizedMessage();
+
+		ErrorDetails errorDetails = new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
+				message, request.getRequestURI(), request.getMethod());
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)

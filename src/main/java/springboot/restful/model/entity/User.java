@@ -3,18 +3,7 @@ package springboot.restful.model.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 import org.hibernate.validator.constraints.Email;
 
@@ -24,6 +13,7 @@ import springboot.restful.model.enums.EGender;
 @SuppressWarnings("deprecation")
 @Entity
 @Data
+@Table(name = "users")
 public class User {
 
 	@Id
@@ -51,7 +41,7 @@ public class User {
 	private EGender gender;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "id"))
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "users", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roles", referencedColumnName = "id"))
 	private Set<Role> roles = new HashSet<>();
 
 }

@@ -7,14 +7,13 @@ import org.springframework.stereotype.Component;
 import springboot.restful.model.entity.Theater;
 import springboot.restful.repository.TheaterRepository;
 
-//@Component
-public class InitTheaterData implements CommandLineRunner {
+
+public class InitTheaterData{
 
 	@Autowired
 	private TheaterRepository theaterRepository;
 
-	@Override
-	public void run(String... args) throws Exception {
+	public void initData() {
 		// TODO Auto-generated method stub
 		Theater theater = new Theater();
 
