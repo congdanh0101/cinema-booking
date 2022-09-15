@@ -19,9 +19,4 @@ public class InitBean {
 		return new ModelMapper();
 	}
 
-	@PostConstruct
-	void postConstruct() {
-		log.warn("PostContruct");
-		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
-	}
 }
