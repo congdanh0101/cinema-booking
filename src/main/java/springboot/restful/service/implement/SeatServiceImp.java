@@ -11,6 +11,9 @@ import springboot.restful.repository.SeatRepository;
 import springboot.restful.service.SeatService;
 import springboot.restful.util.ModelMapping;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class SeatServiceImp implements SeatService, ModelMapping<Seat, SeatDTO> {
 
@@ -24,6 +27,11 @@ public class SeatServiceImp implements SeatService, ModelMapping<Seat, SeatDTO> 
 	public SeatDTO getSeatById(int id) {
 		Seat seat = seatRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Seat", "id", id));
 		return entityToDTO(seat);
+	}
+
+	@Override
+	public List<SeatDTO> getAllSeats() {
+		return seatRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
 	@Override

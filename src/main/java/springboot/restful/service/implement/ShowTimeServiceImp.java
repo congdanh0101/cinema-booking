@@ -376,6 +376,26 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
         return entityToDTO(showTimeRepository.save(showTime));
     }
 
+    @Override
+    public void deleteShowTime(int id) {
+
+        ShowTime showTime = showTimeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("ShowTime","id",id));
+        if(!getAllTicketsByShowTime(id).isEmpty())
+            throw new ApiException("Can not delete this show time");
+        showTimeRepository.delete(showTime);
+
+    }
+
+    @Override
+    public void deleteShowTimeForce(int id) {
+        ShowTime showTime = showTimeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("ShowTime","id",id));
+//        List<Ticket> tickets = getAllTicketsByShowTime(id).stream().map(t->modelMapper.map(t,Ticket.class)).collect(Collectors.toList());
+//        if(!tickets.isEmpty()){
+//            tickets.forEach(t->ticketRepository.delete(t));
+//        }
+        showTimeRepository.delete(showTime);
+    }
+
     private List<TicketDTO> getAllTicketsByShowTime(int idShowTime) {
 
         ShowTime showTime = showTimeRepository.findById(idShowTime).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));

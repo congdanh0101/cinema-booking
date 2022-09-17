@@ -18,7 +18,7 @@ import springboot.restful.repository.TheaterRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 public class InitData implements CommandLineRunner {
 
     @Autowired

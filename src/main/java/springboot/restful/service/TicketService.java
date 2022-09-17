@@ -14,4 +14,9 @@ public interface TicketService {
 
 	List<TicketDTO> getAllTickets();
 
+	TicketDTO getTicketById(int id);
+
+	//delete
+	void deleteTicket(int id);
+
 }

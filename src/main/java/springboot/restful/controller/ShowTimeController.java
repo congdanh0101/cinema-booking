@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
+import springboot.restful.exception.ApiRespone;
 import springboot.restful.model.dto.ShowTimeDTO;
 import springboot.restful.service.ShowTimeService;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -40,7 +42,22 @@ public class ShowTimeController {
     @GetMapping("")
     public ResponseEntity<?> getAllShowTimes(){
         return new ResponseEntity<List<ShowTimeDTO>>(showTimeService.getAllShowTime(),HttpStatus.OK);
-
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getShowTimeById(@PathVariable int id){
+        return new ResponseEntity<ShowTimeDTO>(showTimeService.getShowTimeById(id),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteShowTime(@PathVariable int id){
+        showTimeService.deleteShowTime(id);
+        return new ResponseEntity<ApiRespone>(new ApiRespone(new Date().toLocaleString(),"Show time was deleted with id: "+ id,true),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/force/{id}")
+    public ResponseEntity<?> deleteShowTimeForce(@PathVariable int id){
+        showTimeService.deleteShowTimeForce(id);
+        return new ResponseEntity<ApiRespone>(new ApiRespone(new Date().toLocaleString(),"Show time was force-deleted with id: "+ id,true),HttpStatus.OK);
+    }
 }

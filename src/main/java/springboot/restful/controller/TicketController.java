@@ -24,7 +24,7 @@ public class TicketController {
 	@Autowired
 	private TicketService ticketService;
 
-	@PostMapping("/showtime/{idShowTime}/seat/{idSeat}")
+	@PostMapping("/showtimes/{idShowTime}/seats/{idSeat}")
 	public ResponseEntity<TicketDTO> createTicket(@PathVariable(value = "idShowTime") int idShowTime,
 			@PathVariable(value = "idSeat") int idSeat, @Valid @RequestBody TicketDTO ticketDTO) {
 		TicketDTO ticket = ticketService.createTicket(idShowTime, idSeat, ticketDTO);

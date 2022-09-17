@@ -10,4 +10,6 @@ public class AppConstant {
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 	public static final DateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 	public static final DateFormat DATE_TIME_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+	public static final String AUTHORIZATION_HEADER = "Authorization";
 }

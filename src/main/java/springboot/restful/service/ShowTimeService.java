@@ -21,4 +21,9 @@ public interface ShowTimeService {
 
 	//update
 	ShowTimeDTO updateShowTime(ShowTimeDTO showTimeDTO, int idMovie,int idTheater,int idShowTime);
+
+	//delete
+	void deleteShowTime(int id);
+
+	void deleteShowTimeForce(int id);
 }

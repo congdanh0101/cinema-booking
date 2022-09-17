@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import springboot.restful.exception.ApiException;
+import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.dto.TicketDTO;
 import springboot.restful.model.entity.Seat;
 import springboot.restful.model.entity.ShowTime;
@@ -85,6 +86,18 @@ public class TicketServiceImp implements TicketService, ModelMapping<Ticket, Tic
 	@Override
 	public List<TicketDTO> getAllTickets() {
 		return ticketRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
+	}
+
+	@Override
+	public TicketDTO getTicketById(int id) {
+		Ticket ticket = ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket","id",id));
+		return entityToDTO(ticket);
+	}
+
+	@Override
+	public void deleteTicket(int id) {
+		Ticket ticket = ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket","id",id));
+		ticketRepository.delete(ticket);
 	}
 
 }

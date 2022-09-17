@@ -18,7 +18,6 @@ public interface MovieService {
 	MovieDTO updateMovie(Integer id, MovieDTO movieDTO);
 
 	// delete
-
 	void deleteMovie(Integer id);
 
 }
