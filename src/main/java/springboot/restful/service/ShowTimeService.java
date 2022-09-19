@@ -1,9 +1,9 @@
 package springboot.restful.service;
 
+import springboot.restful.model.dto.ShowTimeDTO;
+
 import java.util.Date;
 import java.util.List;
-
-import springboot.restful.model.dto.ShowTimeDTO;
 
 public interface ShowTimeService {
 
@@ -20,10 +20,11 @@ public interface ShowTimeService {
 	List<ShowTimeDTO> getAllShowTimeByShowDateAndTheater(Date showDate, int idTheater);
 
 	//update
-	ShowTimeDTO updateShowTime(ShowTimeDTO showTimeDTO, int idMovie,int idTheater,int idShowTime);
+	ShowTimeDTO updateShowTime(ShowTimeDTO showTimeDTO, int idMovie, int idTheater, int idShowTime);
 
 	//delete
 	void deleteShowTime(int id);
 
 	void deleteShowTimeForce(int id);
+
 }

@@ -1,15 +1,9 @@
 package springboot.restful.service.implement;
 
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import lombok.extern.slf4j.Slf4j;
 import springboot.restful.exception.ApiException;
 import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.dto.ShowTimeDTO;
@@ -24,6 +18,11 @@ import springboot.restful.service.MovieService;
 import springboot.restful.service.ShowTimeService;
 import springboot.restful.service.TheaterService;
 import springboot.restful.util.ModelMapping;
+
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -269,7 +268,7 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
                 break;
             }
             if (hourNewTimeEnd == hourShowTimeStart) {
-                if (minuteNewTimeEnd > minuteNewTimeStart) {
+                if (minuteNewTimeEnd > minuteShowTimeStart) {
                     check = -1;
                     break;
                 }
@@ -336,8 +335,7 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 //            if (lcNewTimeStart.isAfter(lcShowTimeEndLast) || lcNewTimeStart.equals(lcShowTimeEndLast))
 //                return true;
 
-            if (hourNewTimeStart >= hourShowTimeEndLast && minuteNewTimeStart >= minuteShowTimeEndLast)
-                return true;
+            return hourNewTimeStart >= hourShowTimeEndLast && minuteNewTimeStart >= minuteShowTimeEndLast;
         }
 
         return false;
@@ -352,7 +350,7 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
         if (getAllTicketsByShowTime(idShowTime).isEmpty() || getAllTicketsByShowTime(idShowTime).size() == 0 || getAllTicketsByShowTime(idShowTime) == null) {
 
             if (getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater).size() > 1) {
-                if (!isShowTimeAvailableForUpdate(idShowTime,getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater),
+                if (!isShowTimeAvailableForUpdate(idShowTime, getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater),
                         showTimeDTO.getTimeStart(), movie)) {
                     throw new ApiException("Can not update show time because time overlap");
                 }
@@ -379,8 +377,8 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
     @Override
     public void deleteShowTime(int id) {
 
-        ShowTime showTime = showTimeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("ShowTime","id",id));
-        if(!getAllTicketsByShowTime(id).isEmpty())
+        ShowTime showTime = showTimeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", id));
+        if (!getAllTicketsByShowTime(id).isEmpty())
             throw new ApiException("Can not delete this show time");
         showTimeRepository.delete(showTime);
 
@@ -388,7 +386,7 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
     @Override
     public void deleteShowTimeForce(int id) {
-        ShowTime showTime = showTimeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("ShowTime","id",id));
+        ShowTime showTime = showTimeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", id));
 //        List<Ticket> tickets = getAllTicketsByShowTime(id).stream().map(t->modelMapper.map(t,Ticket.class)).collect(Collectors.toList());
 //        if(!tickets.isEmpty()){
 //            tickets.forEach(t->ticketRepository.delete(t));
@@ -411,12 +409,12 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
         ShowTimeDTO showTimeDTO = entityToDTO(showTime);
 
-        for(int i = 0 ;i<showTimeDTOS.size();i++){
-			if (showTimeDTO.equals(showTimeDTOS.get(i))) {
+        for (int i = 0; i < showTimeDTOS.size(); i++) {
+            if (showTimeDTO.equals(showTimeDTOS.get(i))) {
                 showTimeDTOS.remove(i);
                 break;
             }
         }
-        return isShowTimeAvailable(showTimeDTOS,timeStart,movie);
+        return isShowTimeAvailable(showTimeDTOS, timeStart, movie);
     }
 }

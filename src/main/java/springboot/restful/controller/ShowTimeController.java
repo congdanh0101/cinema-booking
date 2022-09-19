@@ -33,30 +33,38 @@ public class ShowTimeController {
     public ResponseEntity<?> updateShowTime(@Valid @RequestBody ShowTimeDTO showTimeDTO, @PathVariable(value = "idShowTime") int idShowTime,
                                             @PathVariable(value = "idMovie") int idMovie, @PathVariable(value = "idTheater") int idTheater) {
 //		log.error(showTimeDTO.getTimeStart().toLocaleString());
-        return new ResponseEntity<ShowTimeDTO>(showTimeService.updateShowTime(showTimeDTO, idMovie, idTheater,idShowTime),
+        return new ResponseEntity<ShowTimeDTO>(showTimeService.updateShowTime(showTimeDTO, idMovie, idTheater, idShowTime),
                 HttpStatus.OK);
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getAllShowTimes(){
+    public ResponseEntity<?> getAllShowTimes() {
 
-        return new ResponseEntity<List<ShowTimeDTO>>(showTimeService.getAllShowTime(),HttpStatus.OK);
+        return new ResponseEntity<List<ShowTimeDTO>>(showTimeService.getAllShowTime(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getShowTimeById(@PathVariable int id){
-        return new ResponseEntity<ShowTimeDTO>(showTimeService.getShowTimeById(id),HttpStatus.OK);
+    public ResponseEntity<?> getShowTimeById(@PathVariable int id) {
+        return new ResponseEntity<ShowTimeDTO>(showTimeService.getShowTimeById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteShowTime(@PathVariable int id){
+    public ResponseEntity<?> deleteShowTime(@PathVariable int id) {
         showTimeService.deleteShowTime(id);
-        return new ResponseEntity<ApiRespone>(new ApiRespone(new Date().toLocaleString(),"Show time was deleted with id: "+ id,true),HttpStatus.OK);
+        return new ResponseEntity<ApiRespone>(new ApiRespone(new Date().toLocaleString(), "Show time was deleted with id: " + id, true), HttpStatus.OK);
     }
 
     @DeleteMapping("/force/{id}")
-    public ResponseEntity<?> deleteShowTimeForce(@PathVariable int id){
+    public ResponseEntity<?> deleteShowTimeForce(@PathVariable int id) {
         showTimeService.deleteShowTimeForce(id);
-        return new ResponseEntity<ApiRespone>(new ApiRespone(new Date().toLocaleString(),"Show time was force-deleted with id: "+ id,true),HttpStatus.OK);
+        return new ResponseEntity<ApiRespone>(new ApiRespone(new Date().toLocaleString(), "Show time was force-deleted with id: " + id, true), HttpStatus.OK);
+    }
+
+    @PutMapping("/{idShowTime}")
+    public ResponseEntity<?> updateShowTimes(@Valid @RequestBody ShowTimeDTO showTimeDTO, @PathVariable int idShowTime, @RequestParam(value = "movies", required = true) Integer idMovie, @RequestParam(value = "theaters", required = true) Integer idTheater) {
+        if (idMovie != null && idTheater != null)
+            return new ResponseEntity<ShowTimeDTO>(showTimeService.updateShowTime(showTimeDTO, idMovie, idTheater, idShowTime), HttpStatus.OK);
+        else
+            return new ResponseEntity<ApiRespone>(new ApiRespone(new Date().toLocaleString(), "please enter movie and theater", false), HttpStatus.BAD_REQUEST);
     }
 }

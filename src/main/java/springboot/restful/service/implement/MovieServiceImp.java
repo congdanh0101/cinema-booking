@@ -1,13 +1,8 @@
 package springboot.restful.service.implement;
 
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.dto.MovieDTO;
 import springboot.restful.model.entity.Genre;
@@ -16,6 +11,10 @@ import springboot.restful.repository.GenreRepository;
 import springboot.restful.repository.MovieRepository;
 import springboot.restful.service.MovieService;
 import springboot.restful.util.ModelMapping;
+
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieDTO> {
