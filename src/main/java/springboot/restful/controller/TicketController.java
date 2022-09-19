@@ -1,5 +1,6 @@
 package springboot.restful.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,14 +8,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import springboot.restful.exception.ApiRespone;
 import springboot.restful.model.dto.TicketDTO;
+import springboot.restful.model.entity.Ticket;
 import springboot.restful.service.TicketService;
 
 @RestController
@@ -36,5 +34,16 @@ public class TicketController {
 	@GetMapping("")
 	public ResponseEntity<?> getAllTickets() {
 		return new ResponseEntity<List<TicketDTO>>(ticketService.getAllTickets(), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteTicket(@PathVariable int id){
+		ticketService.deleteTicket(id);
+		return new ResponseEntity<ApiRespone>(new ApiRespone(new Date().toLocaleString(),"Ticket was deleted with id: "+id,true),HttpStatus.OK);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getTicketById(@PathVariable int id){
+		return new ResponseEntity<TicketDTO>(ticketService.getTicketById(id),HttpStatus.OK);
 	}
 }
