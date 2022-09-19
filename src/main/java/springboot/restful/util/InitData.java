@@ -2,7 +2,6 @@ package springboot.restful.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 import springboot.restful.config.AppConstant;
 import springboot.restful.model.entity.Genre;
 import springboot.restful.model.entity.Role;

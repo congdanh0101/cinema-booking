@@ -1,11 +1,8 @@
 package springboot.restful.model.entity;
 
-import javax.persistence.*;
-
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -25,7 +22,7 @@ public class Ticket {
 
 	private boolean isSold;
 
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "ticket")
-	private Set<OrderDetail> orderDetails = new HashSet<>();
+//	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "ticket")
+//	private Set<OrderDetail> orderDetails = new HashSet<>();
 
 }

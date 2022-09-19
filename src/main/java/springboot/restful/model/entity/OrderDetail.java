@@ -21,4 +21,7 @@ public class OrderDetail {
 
     @ManyToOne
     private Ticket ticket;
+
+    @ManyToOne
+    private Order order;
 }
