@@ -25,7 +25,7 @@ public class Ticket {
 
 	private boolean isSold;
 
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "ticket")
-	private Set<OrderDetail> orderDetails = new HashSet<>();
+//	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "ticket")
+//	private Set<OrderDetail> orderDetails = new HashSet<>();
 
 }
