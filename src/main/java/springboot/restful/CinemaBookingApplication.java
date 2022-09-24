@@ -5,16 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import springboot.restful.model.dto.ShowTimeDTO;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springboot.restful.repository.RoleRepository;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.service.ShowTimeService;
 
 import java.time.LocalTime;
-import java.util.*;
 
 @SpringBootApplication
 @Slf4j
+@EnableWebMvc
 public class CinemaBookingApplication implements CommandLineRunner {
 
     @Autowired
