@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springboot.restful.exception.ApiRespone;
-import springboot.restful.model.dto.TicketDTO;
+import springboot.restful.model.payloads.TicketDTO;
 import springboot.restful.service.TicketService;
 
 import javax.validation.Valid;
@@ -41,5 +41,10 @@ public class TicketController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getTicketById(@PathVariable int id) {
         return new ResponseEntity<TicketDTO>(ticketService.getTicketById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/showtimes/{idShowTime}")
+    public ResponseEntity<?> getAllTicketsByShowTimes(@PathVariable int idShowTime) {
+        return new ResponseEntity<List<TicketDTO>>(ticketService.getAllTicketsByShowTime(idShowTime), HttpStatus.OK);
     }
 }

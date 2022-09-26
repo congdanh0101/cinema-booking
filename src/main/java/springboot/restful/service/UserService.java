@@ -1,21 +1,21 @@
 package springboot.restful.service;
 
-import java.util.List;
+import springboot.restful.model.payloads.UserDTO;
 
-import springboot.restful.model.dto.UserDTO;
+import java.util.List;
 
 public interface UserService {
 
-	// Create
+    // Create
 
-	UserDTO createUser(UserDTO userDTO);
+    UserDTO createUser(UserDTO userDTO);
 
-	// get
-	UserDTO getUserById(Integer id);
+    // get
+    UserDTO getUserById(Integer id);
 
-	List<UserDTO> getAllUsers();
+    List<UserDTO> getAllUsers();
 
-	// update
-	UserDTO updateUser(Integer id, UserDTO userDTO);
+    // update
+    UserDTO updateUser(Integer id, UserDTO userDTO);
 
 }

@@ -1,18 +1,17 @@
 package springboot.restful.service.implement;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import springboot.restful.exception.ResourceNotFoundException;
-import springboot.restful.model.dto.TheaterDTO;
 import springboot.restful.model.entity.Theater;
+import springboot.restful.model.payloads.TheaterDTO;
 import springboot.restful.repository.TheaterRepository;
 import springboot.restful.service.TheaterService;
 import springboot.restful.util.ModelMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TheaterServiceImp implements TheaterService, ModelMapping<Theater, TheaterDTO> {

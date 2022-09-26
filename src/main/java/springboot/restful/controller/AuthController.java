@@ -1,10 +1,22 @@
 package springboot.restful.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import springboot.restful.config.security.JwtTokenHelper;
+import springboot.restful.exception.ApiException;
 import springboot.restful.exception.ErrorDetails;
+import springboot.restful.model.payloads.LoginRequest;
 import springboot.restful.model.payloads.UserDTO;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.service.UserService;
@@ -12,11 +24,21 @@ import springboot.restful.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    @Autowired
+    private JwtTokenHelper jwtTokenHelper;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private UserService userService;
@@ -27,13 +49,29 @@ public class UserController {
     @Autowired
     private HttpServletRequest request;
 
-    @GetMapping("")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return new ResponseEntity<List<UserDTO>>(userService.getAllUsers(), HttpStatus.OK);
-
+    private void authenticate(String username, String password) throws Exception {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        try {
+            this.authenticationManager.authenticate(authenticationToken);
+        } catch (BadCredentialsException e) {
+            throw new ApiException("Invalid username or password");
+        }
     }
 
-    @SuppressWarnings("deprecation")
+
+    @PostMapping("/login")
+    public ResponseEntity<?> createToken(@Valid @RequestBody LoginRequest request) throws Exception {
+        this.authenticate(request.getUsername(), request.getPassword());
+
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
+
+        String token = jwtTokenHelper.generateToken(userDetails);
+
+        Map<String, String> respone = new HashMap<>();
+        respone.put("token", token);
+        return new ResponseEntity<>(respone, HttpStatus.OK);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO) {
 //		if (checkPhone(userDTO.getPhoneNumber()))
@@ -67,22 +105,6 @@ public class UserController {
                             "Phone number is not suitable", request.getRequestURI(), request.getMethod()),
                     HttpStatus.BAD_REQUEST);
 
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {
-        return new ResponseEntity<UserDTO>(userService.getUserById(id), HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody UserDTO userDTO) {
-        if (checkPhone(userDTO.getPhoneNumber()))
-            return new ResponseEntity<UserDTO>(userService.updateUser(id, userDTO), HttpStatus.OK);
-        else
-            return new ResponseEntity<ErrorDetails>(
-                    new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
-                            "Phone number is not suitable", request.getRequestURI(), request.getMethod()),
-                    HttpStatus.BAD_REQUEST);
     }
 
     private boolean checkPhone(String phoneNumber) {

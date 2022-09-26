@@ -1,18 +1,18 @@
-package springboot.restful.model.dto;
-
-import javax.validation.constraints.NotBlank;
+package springboot.restful.model.payloads;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenreDTO {
 
-	private int id;
+    private int id;
 
-	@NotBlank
-	private String name;
+    @NotBlank
+    private String name;
 }

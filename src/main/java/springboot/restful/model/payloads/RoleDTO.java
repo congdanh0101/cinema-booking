@@ -1,4 +1,4 @@
-package springboot.restful.model.dto;
+package springboot.restful.model.payloads;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +10,6 @@ import springboot.restful.model.enums.ERole;
 @AllArgsConstructor
 public class RoleDTO {
 
-	private int id;
-	private ERole name;
+    private int id;
+    private ERole name;
 }
