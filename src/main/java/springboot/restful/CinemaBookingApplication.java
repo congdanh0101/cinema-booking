@@ -7,9 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import springboot.restful.repository.RoleRepository;
 import springboot.restful.repository.UserRepository;
+import springboot.restful.service.EmailSenderService;
 import springboot.restful.service.ShowTimeService;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @SpringBootApplication
 @Slf4j
@@ -23,6 +27,9 @@ public class CinemaBookingApplication implements CommandLineRunner {
 
     @Autowired
     private ShowTimeService showTimeService;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     public static void main(String[] args) {
         SpringApplication.run(CinemaBookingApplication.class, args);
@@ -66,6 +73,15 @@ public class CinemaBookingApplication implements CommandLineRunner {
 
         System.out.println(timeStartLC.equals(startLC));
 
+        SecureRandom random = new SecureRandom();
+        String randomCode = new BigInteger(30, random).toString(32).toUpperCase();
+
+        System.out.println(UUID.randomUUID().toString().substring(0, 8).toUpperCase());
     }
+
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void sendMail() {
+//        emailSenderService.sendEmail("danhrow001@gmail.com", "this is subject", "hello Danh");
+//    }
 
 }
