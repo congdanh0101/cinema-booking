@@ -5,15 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import springboot.restful.model.entity.User;
 import springboot.restful.repository.RoleRepository;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.service.EmailSenderService;
 import springboot.restful.service.ShowTimeService;
 
-import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.time.LocalTime;
-import java.util.UUID;
 
 @SpringBootApplication
 @Slf4j
@@ -30,6 +30,9 @@ public class CinemaBookingApplication implements CommandLineRunner {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
         SpringApplication.run(CinemaBookingApplication.class, args);
@@ -71,12 +74,19 @@ public class CinemaBookingApplication implements CommandLineRunner {
 
 //        System.out.println(timeStartLC.isAfter(startLC) && timeStartLC.isBefore(stopLC) );
 
-        System.out.println(timeStartLC.equals(startLC));
+//        System.out.println(timeStartLC.equals(startLC));
 
         SecureRandom random = new SecureRandom();
-        String randomCode = new BigInteger(30, random).toString(32).toUpperCase();
+//        String randomCode = new BigInteger(30, random).toString(32).toUpperCase();
+//
+//        System.out.println(UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+//
+//        System.out.println(new Date(System.currentTimeMillis() + 60 * 1000).getTime());
 
-        System.out.println(UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+        User user = userRepository.findById(1).get();
+
+        System.out.println(passwordEncoder.matches("123", user.getPassword()));
+
     }
 
 //    @EventListener(ApplicationReadyEvent.class)

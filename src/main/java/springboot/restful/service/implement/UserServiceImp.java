@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.restful.config.AppConstant;
+import springboot.restful.exception.ApiException;
 import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.entity.Role;
 import springboot.restful.model.entity.User;
@@ -69,12 +70,38 @@ public class UserServiceImp implements UserService, ModelMapping<User, UserDTO> 
         user.setLastName(userDTO.getLastName());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         User updatedUser = userRepository.save(user);
 
         return entityToDTO(updatedUser);
 
+    }
+
+    @Override
+    public UserDTO changePassword(Integer id, String oldPassword, String newPassword, String confirmPassword) {
+
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+
+            if (newPassword.equals(confirmPassword))
+                user.setPassword(passwordEncoder.encode(newPassword));
+            else throw new ApiException("New password is not match with confirm password. Please try again!");
+
+        } else throw new ApiException("Your password invalid. Please try again!");
+
+        return entityToDTO(userRepository.save(user));
+    }
+
+    @Override
+    public UserDTO resetPassword(Integer id, String newPassword, String confirmPassword) {
+
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+        if (newPassword.equals(confirmPassword))
+            user.setPassword(passwordEncoder.encode(confirmPassword));
+        else throw new ApiException("New password is not match with confirm password. Please try again!");
+
+        return entityToDTO(userRepository.save(user));
     }
 
     @Override

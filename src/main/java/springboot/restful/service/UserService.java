@@ -18,4 +18,8 @@ public interface UserService {
     // update
     UserDTO updateUser(Integer id, UserDTO userDTO);
 
+    UserDTO changePassword(Integer id, String oldPassword, String newPassword, String confirmPassword);
+
+    UserDTO resetPassword(Integer id, String newPassword, String confirmPassword);
+
 }
