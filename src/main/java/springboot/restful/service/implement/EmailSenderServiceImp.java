@@ -38,6 +38,8 @@ public class EmailSenderServiceImp implements EmailSenderService {
 //        message.setSubject(subject);
 //        message.setText(body);
         mailSender.send(mess);
+//        mailSender.send(message);
+
         System.out.println("Mail was sent successfully");
     }
 

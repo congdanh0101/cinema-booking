@@ -3,6 +3,7 @@ package springboot.restful.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springboot.restful.exception.ApiRespone;
 import springboot.restful.model.payloads.TicketDTO;
@@ -32,6 +33,7 @@ public class TicketController {
         return new ResponseEntity<List<TicketDTO>>(ticketService.getAllTickets(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTicket(@PathVariable int id) {
         ticketService.deleteTicket(id);

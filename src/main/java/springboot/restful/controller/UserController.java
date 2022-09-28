@@ -33,41 +33,41 @@ public class UserController {
 
     }
 
-    @SuppressWarnings("deprecation")
-    @PostMapping("/register")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO) {
-//		if (checkPhone(userDTO.getPhoneNumber()))
-//			return new ResponseEntity<UserDTO>(userService.createUser(userDTO), HttpStatus.CREATED);
-//		else
-//			return new ResponseEntity<ErrorDetails>(new ErrorDetails(new Date().toLocaleString(),
-//					HttpStatus.BAD_REQUEST.toString(), "Phone number is not suitable", request.getRequestURI(),
-//					request.getMethod()),
-//					HttpStatus.BAD_REQUEST);
-
-        if (checkPhone(userDTO.getPhoneNumber()) && !userRepository.existsByEmail(userDTO.getEmail())
-                && !userRepository.existsByPhoneNumber(userDTO.getPhoneNumber()))
-            return new ResponseEntity<UserDTO>(userService.createUser(userDTO), HttpStatus.CREATED);
-        else if (userRepository.existsByEmail(userDTO.getEmail()))
-            return new ResponseEntity<ErrorDetails>(
-                    new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
-                            "Duplicate entry '" + userDTO.getEmail()
-                                    + "' for field 'email'. Please enter another email!",
-                            request.getRequestURI(), request.getMethod()),
-                    HttpStatus.BAD_REQUEST);
-        else if (userRepository.existsByPhoneNumber(userDTO.getPhoneNumber()))
-            return new ResponseEntity<ErrorDetails>(
-                    new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
-                            "Duplicate entry '" + userDTO.getPhoneNumber()
-                                    + "' for field 'phoneNumber'. Please enter another phone number!",
-                            request.getRequestURI(), request.getMethod()),
-                    HttpStatus.BAD_REQUEST);
-        else
-            return new ResponseEntity<ErrorDetails>(
-                    new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
-                            "Phone number is not suitable", request.getRequestURI(), request.getMethod()),
-                    HttpStatus.BAD_REQUEST);
-
-    }
+//    @SuppressWarnings("deprecation")
+//    @PostMapping("/register")
+//    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO) {
+////		if (checkPhone(userDTO.getPhoneNumber()))
+////			return new ResponseEntity<UserDTO>(userService.createUser(userDTO), HttpStatus.CREATED);
+////		else
+////			return new ResponseEntity<ErrorDetails>(new ErrorDetails(new Date().toLocaleString(),
+////					HttpStatus.BAD_REQUEST.toString(), "Phone number is not suitable", request.getRequestURI(),
+////					request.getMethod()),
+////					HttpStatus.BAD_REQUEST);
+//
+//        if (checkPhone(userDTO.getPhoneNumber()) && !userRepository.existsByEmail(userDTO.getEmail())
+//                && !userRepository.existsByPhoneNumber(userDTO.getPhoneNumber()))
+//            return new ResponseEntity<UserDTO>(userService.createUser(userDTO), HttpStatus.CREATED);
+//        else if (userRepository.existsByEmail(userDTO.getEmail()))
+//            return new ResponseEntity<ErrorDetails>(
+//                    new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
+//                            "Duplicate entry '" + userDTO.getEmail()
+//                                    + "' for field 'email'. Please enter another email!",
+//                            request.getRequestURI(), request.getMethod()),
+//                    HttpStatus.BAD_REQUEST);
+//        else if (userRepository.existsByPhoneNumber(userDTO.getPhoneNumber()))
+//            return new ResponseEntity<ErrorDetails>(
+//                    new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
+//                            "Duplicate entry '" + userDTO.getPhoneNumber()
+//                                    + "' for field 'phoneNumber'. Please enter another phone number!",
+//                            request.getRequestURI(), request.getMethod()),
+//                    HttpStatus.BAD_REQUEST);
+//        else
+//            return new ResponseEntity<ErrorDetails>(
+//                    new ErrorDetails(new Date().toLocaleString(), HttpStatus.BAD_REQUEST.toString(),
+//                            "Phone number is not suitable", request.getRequestURI(), request.getMethod()),
+//                    HttpStatus.BAD_REQUEST);
+//
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {

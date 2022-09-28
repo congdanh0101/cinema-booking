@@ -3,6 +3,7 @@ package springboot.restful.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springboot.restful.exception.ApiRespone;
 import springboot.restful.model.payloads.MovieDTO;
@@ -20,6 +21,7 @@ public class MovieController {
     private MovieService movieService;
 
     //create movie
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> createMovie(@Valid @RequestBody MovieDTO movieDTO) {
 
@@ -41,12 +43,14 @@ public class MovieController {
     }
 
     // update movie
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateMovie(@PathVariable int id, @Valid @RequestBody MovieDTO movieDTO) {
         return ResponseEntity.ok().body(movieService.updateMovie(id, movieDTO));
     }
 
     // delete movie
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMovie(@PathVariable int id) {
         movieService.deleteMovie(id);

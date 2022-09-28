@@ -175,11 +175,16 @@ public class AuthController {
 
                         expired = new Date(System.currentTimeMillis() + 10 * 60 * 1000);
                         session.setAttribute("expired", expired);
-
+                        boolean exist = userRepository.existsByEmail(userDTO.getEmail());
                         Map<String, String> res = new HashMap<>();
+                        //reset
                         res.put("expired", expired.toString());
-                        res.put("message", "Reset your password!");
-                        return new ResponseEntity<>(res, HttpStatus.OK);
+                        if (exist) {
+                            res.put("message", "Reset your password!");
+                            return new ResponseEntity<>(res, HttpStatus.OK);
+                        } else throw new ApiException("You cannot reset password");
+
+
                     } else return null;
 
                 } else throw new ApiException("Verification code is not match");
