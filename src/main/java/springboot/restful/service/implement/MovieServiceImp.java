@@ -2,11 +2,16 @@ package springboot.restful.service.implement;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.entity.Genre;
 import springboot.restful.model.entity.Movie;
 import springboot.restful.model.payloads.MovieDTO;
+import springboot.restful.model.payloads.MovieRespone;
 import springboot.restful.repository.GenreRepository;
 import springboot.restful.repository.MovieRepository;
 import springboot.restful.service.MovieService;
@@ -19,116 +24,156 @@ import java.util.stream.Collectors;
 @Service
 public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieDTO> {
 
-    @Autowired
-    private MovieRepository movieRepository;
+	@Autowired
+	private MovieRepository movieRepository;
 
-    @Autowired
-    private GenreRepository genreRepository;
+	@Autowired
+	private GenreRepository genreRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+	@Autowired
+	private ModelMapper modelMapper;
 
-    @Override
-    public MovieDTO createMovie(MovieDTO movieDTO) {
+	@Override
+	public MovieDTO createMovie(MovieDTO movieDTO) {
 
-        Movie movie = dtoToEntity(movieDTO);
+		Movie movie = dtoToEntity(movieDTO);
 
-        movie.setDisplay(true);
+		movie.setDisplay(true);
 
-        Date now = new Date();
-        if (now.before(movieDTO.getReleases())) {
-            System.out.println("comming soon");
-            movie.setComming(true);
-            movie.setShowing(false);
-        } else {
-            System.out.println("now showing");
-            movie.setShowing(true);
-            movie.setComming(false);
-        }
+		Date now = new Date();
+		if (now.before(movieDTO.getReleases())) {
+			System.out.println("comming soon");
+			movie.setComing(true);
+			movie.setShowing(false);
+		} else {
+			System.out.println("now showing");
+			movie.setShowing(true);
+			movie.setComing(false);
+		}
 
-        movieDTO.getGenres().forEach(g -> {
-            System.out.println("id = " + g.getId() + " ;name = " + g.getName());
-            Genre genre = genreRepository.findById(g.getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Genre", "id", g.getId()));
-            System.out.println(genre);
-            movie.getGenres().add(genre);
-        });
+		movieDTO.getGenres().forEach(g -> {
+			System.out.println("id = " + g.getId() + " ;name = " + g.getName());
+			Genre genre = genreRepository.findById(g.getId())
+					.orElseThrow(() -> new ResourceNotFoundException("Genre", "id", g.getId()));
+			System.out.println(genre);
+			movie.getGenres().add(genre);
+		});
 
 
-        return entityToDTO(movieRepository.save(movie));
-    }
+		return entityToDTO(movieRepository.save(movie));
+	}
 
-    @Override
-    public MovieDTO getMovieById(Integer id) {
+	@Override
+	public MovieDTO getMovieById(Integer id) {
 
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+		Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
 
-        return entityToDTO(movie);
-    }
+		return entityToDTO(movie);
+	}
 
-    @Override
-    public List<MovieDTO> getAllMovie() {
-        return movieRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
-    }
+	@Override
+	public List<MovieDTO> getAllMovie() {
+		return movieRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
+	}
 
-    @Override
-    public MovieDTO updateMovie(Integer id, MovieDTO movieDTO) {
+	@Override
+	public List<MovieDTO> getAllMovieByDisplay(boolean isDisplay) {
+		return movieRepository.findByIsDisplay(isDisplay).stream().map(this::entityToDTO).collect(Collectors.toList());
+	}
 
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+	@Override
+	public List<MovieDTO> getAllMovieByShowing(boolean isShowing) {
+		return null;
+	}
 
-        movie.setDescription(movieDTO.getDescription());
-        movie.setName(movieDTO.getName());
-        movie.setDuration(movieDTO.getDuration());
-        movie.setImage(movieDTO.getImage());
-        movie.setTrailer(movieDTO.getTrailer());
-        movie.setReleases(movieDTO.getReleases());
-        movie.setShowing(movieDTO.isShowing());
-        movie.setComming(movieDTO.isComming());
-        movie.setDisplay(movieDTO.isDisplay());
+	@Override
+	public List<MovieDTO> getAllMovieByComing(boolean isComing) {
+		return null;
+	}
 
-        movie.getGenres().clear();
+	@Override
+	public MovieRespone getAllMovies(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
-        movieDTO.getGenres().stream().forEach(g -> {
-            Genre genre = genreRepository.findById(g.getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Genre", "id", g.getId()));
-            movie.getGenres().add(genre);
-        });
+		Sort sort = (sortDir.equalsIgnoreCase("asc"))
+				? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
-        if (!movieDTO.isDisplay()) {
-            movie.setShowing(false);
-            movie.setComming(false);
-        } else {
-            Date now = new Date();
-            if (now.before(movieDTO.getReleases())) {
-                System.out.println("comming soon");
-                movie.setComming(true);
-                movie.setShowing(false);
-            } else {
-                System.out.println("now showing");
-                movie.setShowing(true);
-                movie.setComming(false);
-            }
-        }
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-        return entityToDTO(movieRepository.save(movie));
-    }
+		Page<Movie> pageMovies = movieRepository.findAll(pageable);
 
-    @Override
-    public void deleteMovie(Integer id) {
-        // TODO Auto-generated method stub
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
-        movieRepository.delete(movie);
-    }
+		List<Movie> allMovies = pageMovies.getContent();
 
-    @Override
-    public Movie dtoToEntity(MovieDTO dto) {
-        return this.modelMapper.map(dto, Movie.class);
-    }
+		List<MovieDTO> allMoviesDTO = allMovies.stream().map(this::entityToDTO).collect(Collectors.toList());
 
-    @Override
-    public MovieDTO entityToDTO(Movie entity) {
-        return this.modelMapper.map(entity, MovieDTO.class);
-    }
+		MovieRespone movieRespone = new MovieRespone();
+
+		movieRespone.setContent(allMoviesDTO);
+		movieRespone.setPageNumber(pageMovies.getNumber());
+		movieRespone.setPageSize(pageMovies.getSize());
+		movieRespone.setTotalElements(pageMovies.getTotalElements());
+		movieRespone.setLastPage(pageMovies.isLast());
+
+		return null;
+	}
+
+	@Override
+	public MovieDTO updateMovie(Integer id, MovieDTO movieDTO) {
+
+		Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+
+		movie.setDescription(movieDTO.getDescription());
+		movie.setName(movieDTO.getName());
+		movie.setDuration(movieDTO.getDuration());
+		movie.setImage(movieDTO.getImage());
+		movie.setTrailer(movieDTO.getTrailer());
+		movie.setReleases(movieDTO.getReleases());
+		movie.setShowing(movieDTO.isShowing());
+		movie.setComing(movieDTO.isComing());
+		movie.setDisplay(movieDTO.isDisplay());
+
+		movie.getGenres().clear();
+
+		movieDTO.getGenres().stream().forEach(g -> {
+			Genre genre = genreRepository.findById(g.getId())
+					.orElseThrow(() -> new ResourceNotFoundException("Genre", "id", g.getId()));
+			movie.getGenres().add(genre);
+		});
+
+		if (!movieDTO.isDisplay()) {
+			movie.setShowing(false);
+			movie.setComing(false);
+		} else {
+			Date now = new Date();
+			if (now.before(movieDTO.getReleases())) {
+				System.out.println("comming soon");
+				movie.setComing(true);
+				movie.setShowing(false);
+			} else {
+				System.out.println("now showing");
+				movie.setShowing(true);
+				movie.setComing(false);
+			}
+		}
+
+		return entityToDTO(movieRepository.save(movie));
+	}
+
+	@Override
+	public void deleteMovie(Integer id) {
+		// TODO Auto-generated method stub
+		Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+		movieRepository.delete(movie);
+	}
+
+	@Override
+	public Movie dtoToEntity(MovieDTO dto) {
+		return this.modelMapper.map(dto, Movie.class);
+	}
+
+	@Override
+	public MovieDTO entityToDTO(Movie entity) {
+		return this.modelMapper.map(entity, MovieDTO.class);
+	}
 
 
 }

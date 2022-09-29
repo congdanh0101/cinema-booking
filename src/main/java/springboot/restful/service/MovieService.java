@@ -1,23 +1,34 @@
 package springboot.restful.service;
 
 import springboot.restful.model.payloads.MovieDTO;
+import springboot.restful.model.payloads.MovieRespone;
 
 import java.util.List;
 
 public interface MovieService {
 
-    // create
-    MovieDTO createMovie(MovieDTO movieDTO);
+	// create
+	MovieDTO createMovie(MovieDTO movieDTO);
 
-    // get
-    MovieDTO getMovieById(Integer id);
+	// get
+	MovieDTO getMovieById(Integer id);
 
-    List<MovieDTO> getAllMovie();
+	//
+	List<MovieDTO> getAllMovie();
 
-    // update
-    MovieDTO updateMovie(Integer id, MovieDTO movieDTO);
+	List<MovieDTO> getAllMovieByDisplay(boolean isDisplay);
 
-    // delete
-    void deleteMovie(Integer id);
+	List<MovieDTO> getAllMovieByShowing(boolean isShowing);
+
+	List<MovieDTO> getAllMovieByComing(boolean isComing);
+
+	MovieRespone getAllMovies(int pageNumber, int pageSize, String sortBy, String sortDir);
+
+	// update
+	MovieDTO updateMovie(Integer id, MovieDTO movieDTO);
+
+	// delete
+	void deleteMovie(Integer id);
+
 
 }

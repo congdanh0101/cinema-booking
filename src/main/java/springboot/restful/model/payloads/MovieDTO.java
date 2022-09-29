@@ -34,7 +34,7 @@ public class MovieDTO {
 
     private Set<GenreDTO> genres = new HashSet<>();
     private boolean isShowing;
-    private boolean isComming;
+    private boolean isComing;
     private boolean isDisplay;
 
 

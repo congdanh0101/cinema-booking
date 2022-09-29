@@ -17,46 +17,53 @@ import java.util.List;
 @RequestMapping("/api/movies")
 public class MovieController {
 
-    @Autowired
-    private MovieService movieService;
+	@Autowired
+	private MovieService movieService;
 
-    //create movie
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("")
-    public ResponseEntity<?> createMovie(@Valid @RequestBody MovieDTO movieDTO) {
+	//create movie
+	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping("")
+	public ResponseEntity<?> createMovie(@Valid @RequestBody MovieDTO movieDTO) {
 
-        return new ResponseEntity<MovieDTO>(movieService.createMovie(movieDTO), HttpStatus.CREATED);
-    }
-
-
-    //get all movies List<Movie>
-    @GetMapping()
-    public ResponseEntity<?> getAllMovies() {
-        return new ResponseEntity<List<MovieDTO>>(movieService.getAllMovie(), HttpStatus.OK);
-    }
+		return new ResponseEntity<MovieDTO>(movieService.createMovie(movieDTO), HttpStatus.CREATED);
+	}
 
 
-    //get by id
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getMovieById(@PathVariable int id) {
-        return ResponseEntity.ok().body(movieService.getMovieById(id));
-    }
+	//get all movies List<Movie>
+	@GetMapping()
+	public ResponseEntity<?> getAllMovies() {
+		return new ResponseEntity<List<MovieDTO>>(movieService.getAllMovie(), HttpStatus.OK);
+	}
 
-    // update movie
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateMovie(@PathVariable int id, @Valid @RequestBody MovieDTO movieDTO) {
-        return ResponseEntity.ok().body(movieService.updateMovie(id, movieDTO));
-    }
 
-    // delete movie
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMovie(@PathVariable int id) {
-        movieService.deleteMovie(id);
-        return new ResponseEntity<ApiRespone>(
-                new ApiRespone(new Date().toLocaleString(), "Movie was deleted with id : " + id, true),
-                HttpStatus.OK);
-    }
+	//get by id
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getMovieById(@PathVariable int id) {
+		return ResponseEntity.ok().body(movieService.getMovieById(id));
+	}
+
+	// update movie
+	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateMovie(@PathVariable int id, @Valid @RequestBody MovieDTO movieDTO) {
+		return ResponseEntity.ok().body(movieService.updateMovie(id, movieDTO));
+	}
+
+	// delete movie
+	@PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteMovie(@PathVariable int id) {
+		movieService.deleteMovie(id);
+		return new ResponseEntity<ApiRespone>(
+				new ApiRespone(new Date().toLocaleString(), "Movie was deleted with id : " + id, true),
+				HttpStatus.OK);
+	}
+
+//	@GetMapping("/")
+//	public ResponseEntity<?> getAllMoviesByDisplay(@RequestParam(value = "display", required = true, defaultValue = "true") boolean isDisplay) {
+//		System.out.println("display: " + isDisplay);
+//		return ResponseEntity.ok().body(movieService.getAllMovieByDisplay(isDisplay));
+//	}
+
 
 }
