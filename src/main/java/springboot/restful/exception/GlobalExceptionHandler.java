@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.util.HashMap;
@@ -94,4 +95,12 @@ public class GlobalExceptionHandler {
         String mess = ex.getMessage();
         return ResponseEntity.ok().body(new ApiRespone(new Date().toLocaleString(), mess, false));
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public ResponseEntity<?> handlerAccessDeniedException(AccessDeniedException e) {
+        String mess = e.getMessage();
+        return ResponseEntity.status(403).body(new ApiRespone(new Date().toLocaleString(), mess, false));
+    }
+
 }

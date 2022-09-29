@@ -28,7 +28,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         Map<String, String> res = new HashMap<>();
-        res.put("message", "Access Denied Handler!");
+        res.put("message", accessDeniedException.getMessage());
         res.put("timestamp", new Date().toLocaleString());
         res.put("error", "Failed to authorize your ROLE!");
         res.put("path", request.getRequestURI());
