@@ -14,7 +14,7 @@ public interface MovieService {
 	MovieDTO getMovieById(Integer id);
 
 	//
-	List<MovieDTO> getAllMovie();
+	List<MovieDTO> getAllMovies();
 
 	List<MovieDTO> getAllMovieByDisplay(boolean isDisplay);
 

@@ -23,80 +23,80 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TicketServiceImp implements TicketService, ModelMapping<Ticket, TicketDTO> {
 
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private TicketRepository ticketRepository;
+	@Autowired
+	private ModelMapper modelMapper;
+	@Autowired
+	private TicketRepository ticketRepository;
 
-    @Autowired
-    private SeatService seatService;
+	@Autowired
+	private SeatService seatService;
 
-    @Autowired
-    private ShowTimeService showTimeService;
+	@Autowired
+	private ShowTimeService showTimeService;
 
-    @Override
-    public TicketDTO createTicket(int idShowTime, int idSeat, TicketDTO ticketDTO) {
+	@Override
+	public TicketDTO createTicket(int idShowTime, int idSeat, TicketDTO ticketDTO) {
 
-        ShowTime showTime = modelMapper.map(showTimeService.getShowTimeById(idShowTime), ShowTime.class);
+		ShowTime showTime = modelMapper.map(showTimeService.getShowTimeById(idShowTime), ShowTime.class);
 
-        Seat seat = modelMapper.map(seatService.getSeatById(idSeat), Seat.class);
+		Seat seat = modelMapper.map(seatService.getSeatById(idSeat), Seat.class);
 
-        Ticket ticket = dtoToEntity(ticketDTO);
+		Ticket ticket = dtoToEntity(ticketDTO);
 
-        if (isSeatAvailable(getAllTicketsByShowTime(idShowTime), seat))
-            ticket.setSeat(seat);
-        else
-            throw new ApiException("Not avalable");
+		if (isSeatAvailable(getAllTicketsByShowTime(idShowTime), seat))
+			ticket.setSeat(seat);
+		else
+			throw new ApiException("Not available");
 
 
-        ticket.setShowTime(showTime);
-        ticket.setPrice(showTime.getPrice());
-        return entityToDTO(ticketRepository.save(ticket));
-    }
+		ticket.setShowTime(showTime);
+		ticket.setPrice(showTime.getPrice());
+		return entityToDTO(ticketRepository.save(ticket));
+	}
 
-    @Override
-    public Ticket dtoToEntity(TicketDTO dto) {
-        return this.modelMapper.map(dto, Ticket.class);
-    }
+	@Override
+	public Ticket dtoToEntity(TicketDTO dto) {
+		return this.modelMapper.map(dto, Ticket.class);
+	}
 
-    @Override
-    public TicketDTO entityToDTO(Ticket entity) {
-        return this.modelMapper.map(entity, TicketDTO.class);
-    }
+	@Override
+	public TicketDTO entityToDTO(Ticket entity) {
+		return this.modelMapper.map(entity, TicketDTO.class);
+	}
 
-    private boolean isSeatAvailable(List<TicketDTO> listTicketDTOs, Seat seat) {
+	private boolean isSeatAvailable(List<TicketDTO> listTicketDTOs, Seat seat) {
 
-        List<Ticket> listTickets = listTicketDTOs.stream().map(this::dtoToEntity)
-                .filter(t -> t.getSeat().equals(seat)).collect(Collectors.toList());
-        return listTickets == null || listTickets.size() == 0 || listTickets.isEmpty();
+		List<Ticket> listTickets = listTicketDTOs.stream().map(this::dtoToEntity)
+				.filter(t -> t.getSeat().equals(seat)).collect(Collectors.toList());
+		return listTickets == null || listTickets.size() == 0 || listTickets.isEmpty();
 
-    }
+	}
 
-    @Override
-    public List<TicketDTO> getAllTicketsByShowTime(int idShowTime) {
+	@Override
+	public List<TicketDTO> getAllTicketsByShowTime(int idShowTime) {
 
-        ShowTime showTime = modelMapper.map(showTimeService.getShowTimeById(idShowTime), ShowTime.class);
+		ShowTime showTime = modelMapper.map(showTimeService.getShowTimeById(idShowTime), ShowTime.class);
 
-        List<Ticket> tickets = ticketRepository.findByShowTime(showTime);
+		List<Ticket> tickets = ticketRepository.findByShowTime(showTime);
 
-        return tickets.stream().map(this::entityToDTO).collect(Collectors.toList());
-    }
+		return tickets.stream().map(this::entityToDTO).collect(Collectors.toList());
+	}
 
-    @Override
-    public List<TicketDTO> getAllTickets() {
-        return ticketRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
-    }
+	@Override
+	public List<TicketDTO> getAllTickets() {
+		return ticketRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
+	}
 
-    @Override
-    public TicketDTO getTicketById(int id) {
-        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
-        return entityToDTO(ticket);
-    }
+	@Override
+	public TicketDTO getTicketById(int id) {
+		Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
+		return entityToDTO(ticket);
+	}
 
-    @Override
-    public void deleteTicket(int id) {
-        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
-        ticketRepository.delete(ticket);
-    }
+	@Override
+	public void deleteTicket(int id) {
+		Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
+		ticketRepository.delete(ticket);
+	}
 
 }

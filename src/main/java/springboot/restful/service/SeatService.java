@@ -6,13 +6,15 @@ import java.util.List;
 
 public interface SeatService {
 
-    // create
+	// create
 //	SeatDTO createSeat(SeatDTO seatDTO);
 
-    // get
-    SeatDTO getSeatById(int id);
+	// get
+	SeatDTO getSeatById(int id);
 
-    List<SeatDTO> getAllSeats();
+	List<SeatDTO> getAllSeats();
 
+	List<SeatDTO> getAllSeatsAvailableByShowTime(int idShowTime);
 
+	List<SeatDTO> getAllSeatsOrderedByShowTime(int idShowTime);
 }

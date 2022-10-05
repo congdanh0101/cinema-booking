@@ -72,7 +72,7 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 	}
 
 	@Override
-	public List<MovieDTO> getAllMovie() {
+	public List<MovieDTO> getAllMovies() {
 		return movieRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
@@ -83,12 +83,13 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 
 	@Override
 	public List<MovieDTO> getAllMovieByShowing(boolean isShowing) {
-		return null;
+		return movieRepository.findByIsShowing(isShowing).stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<MovieDTO> getAllMovieByComing(boolean isComing) {
-		return null;
+		return movieRepository.findByIsComing(isComing).stream().map(this::entityToDTO).collect(Collectors.toList());
+
 	}
 
 	@Override
@@ -105,15 +106,21 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 
 		List<MovieDTO> allMoviesDTO = allMovies.stream().map(this::entityToDTO).collect(Collectors.toList());
 
-		MovieRespone movieRespone = new MovieRespone();
+		MovieRespone movieRespone = MovieRespone.builder()
+				.content(allMoviesDTO)
+				.pageNumber(pageMovies.getNumber())
+				.lastPage(pageMovies.isLast())
+				.pageSize(pageMovies.getSize())
+				.totalElements(pageMovies.getTotalElements())
+				.build();
 
-		movieRespone.setContent(allMoviesDTO);
-		movieRespone.setPageNumber(pageMovies.getNumber());
-		movieRespone.setPageSize(pageMovies.getSize());
-		movieRespone.setTotalElements(pageMovies.getTotalElements());
-		movieRespone.setLastPage(pageMovies.isLast());
+//		movieRespone.setContent(allMoviesDTO);
+//		movieRespone.setPageNumber(pageMovies.getNumber());
+//		movieRespone.setPageSize(pageMovies.getSize());
+//		movieRespone.setTotalElements(pageMovies.getTotalElements());
+//		movieRespone.setLastPage(pageMovies.isLast());
 
-		return null;
+		return movieRespone;
 	}
 
 	@Override
