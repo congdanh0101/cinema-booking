@@ -173,6 +173,12 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 	}
 
 	@Override
+	public List<MovieDTO> searchMovieByName(String name) {
+		List<Movie> movies = movieRepository.searchByName("%" + name + "%");
+		return movies.stream().map(this::entityToDTO).collect(Collectors.toList());
+	}
+
+	@Override
 	public Movie dtoToEntity(MovieDTO dto) {
 		return this.modelMapper.map(dto, Movie.class);
 	}

@@ -1,6 +1,7 @@
 package springboot.restful;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,6 +11,7 @@ import springboot.restful.repository.RoleRepository;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.service.EmailSenderService;
 import springboot.restful.service.ShowTimeService;
+import springboot.restful.service.UserService;
 
 import java.security.SecureRandom;
 import java.time.LocalTime;
@@ -32,6 +34,13 @@ public class CinemaBookingApplication implements CommandLineRunner {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private ModelMapper modelMapper;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(CinemaBookingApplication.class, args);
@@ -85,6 +94,14 @@ public class CinemaBookingApplication implements CommandLineRunner {
 //        User user = userRepository.findById(1).get();
 //
 //        System.out.println(passwordEncoder.matches("123", user.getPassword()));
+//
+//		User user = User.builder().email("congdanh.01.01.2001@gmail.com").firstName("Danh").lastName("Bui").gender(EGender.MALE).phoneNumber("0902891404").password("congdanh010101").build();
+//
+//		UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+//
+//		userService.createUser(userDTO);
+
+		System.out.println(passwordEncoder.encode("congdanh010101"));
 
 	}
 

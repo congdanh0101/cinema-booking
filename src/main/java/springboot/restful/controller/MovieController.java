@@ -1,5 +1,6 @@
 package springboot.restful.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/api/movies")
+@Slf4j
 public class MovieController {
 
 	@Autowired
@@ -83,5 +85,9 @@ public class MovieController {
 		return ResponseEntity.ok().body(movieService.getAllMovieByDisplay(isComing));
 	}
 
-
+	@GetMapping("/search/{keyword}")
+	public ResponseEntity<?> searchMoviesByName(@PathVariable String keyword) {
+		log.error(keyword);
+		return ResponseEntity.ok().body(movieService.searchMovieByName(keyword));
+	}
 }

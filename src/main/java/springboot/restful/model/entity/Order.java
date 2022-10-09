@@ -13,13 +13,20 @@ import java.util.Set;
 @Table(name = "orders")
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @Temporal(TemporalType.DATE)
-    private Date date;
+	@Temporal(TemporalType.DATE)
+	private Date date;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
-    private Set<OrderDetail> orderDetails = new HashSet<>();
+	@Temporal(TemporalType.TIME)
+	private Date time;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
+	private Set<OrderDetail> orderDetails = new HashSet<>();
+
+//    @ManyToOne
+//    private User user;
+
 }

@@ -30,5 +30,7 @@ public interface MovieService {
 	// delete
 	void deleteMovie(Integer id);
 
+	//search
+	List<MovieDTO> searchMovieByName(String keyword);
 
 }

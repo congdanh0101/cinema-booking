@@ -1,18 +1,11 @@
 package springboot.restful.exception;
 
-import java.nio.file.AccessDeniedException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.mail.MailSendException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -20,6 +13,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import javax.servlet.http.HttpServletRequest;
+import java.nio.file.AccessDeniedException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -111,5 +111,12 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<?> handlerMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
 		String mess = e.getMessage();
 		return ResponseEntity.badRequest().body(new ApiRespone(new Date().toLocaleString(), mess, false));
+	}
+
+	@ExceptionHandler(MailSendException.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	public ResponseEntity<?> handlerMailSendException(MailSendException e) {
+		String mess = e.getMessage();
+		return ResponseEntity.internalServerError().body(new ApiRespone(new Date().toLocaleString(), mess, false));
 	}
 }
