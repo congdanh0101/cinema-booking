@@ -8,10 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import springboot.restful.model.enums.EGender;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
@@ -48,8 +45,8 @@ public class User implements UserDetails {
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "users", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roles", referencedColumnName = "id"))
 	private Set<Role> roles = new HashSet<>();
 
-//	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//	private List<Order> orders = new ArrayList<>();
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<Order> orders = new ArrayList<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

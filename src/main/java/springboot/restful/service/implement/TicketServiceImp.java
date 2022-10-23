@@ -9,6 +9,7 @@ import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.entity.Seat;
 import springboot.restful.model.entity.ShowTime;
 import springboot.restful.model.entity.Ticket;
+import springboot.restful.model.payloads.SeatDTO;
 import springboot.restful.model.payloads.TicketDTO;
 import springboot.restful.repository.TicketRepository;
 import springboot.restful.service.SeatService;
@@ -16,6 +17,7 @@ import springboot.restful.service.ShowTimeService;
 import springboot.restful.service.TicketService;
 import springboot.restful.util.ModelMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,23 +37,32 @@ public class TicketServiceImp implements TicketService, ModelMapping<Ticket, Tic
 	private ShowTimeService showTimeService;
 
 	@Override
-	public TicketDTO createTicket(int idShowTime, int idSeat, TicketDTO ticketDTO) {
+	public TicketDTO createTicket(int idShowTime, int idSeat) {
 
 		ShowTime showTime = modelMapper.map(showTimeService.getShowTimeById(idShowTime), ShowTime.class);
 
 		Seat seat = modelMapper.map(seatService.getSeatById(idSeat), Seat.class);
 
-		Ticket ticket = dtoToEntity(ticketDTO);
+		Ticket ticket = new Ticket();
 
-		if (isSeatAvailable(getAllTicketsByShowTime(idShowTime), seat))
+		if (isSeatAvailable(seatService.getAllSeatsOrderedByShowTime(idShowTime), seat))
 			ticket.setSeat(seat);
 		else
-			throw new ApiException("Not available");
+			throw new ApiException("The seat " + seat.getName() + " was ordered! Please try the other seat!");
 
 
 		ticket.setShowTime(showTime);
 		ticket.setPrice(showTime.getPrice());
 		return entityToDTO(ticketRepository.save(ticket));
+	}
+
+	@Override
+	public List<TicketDTO> createManyTicket(int idShowTime, List<SeatDTO> seatDTOS) {
+
+		ShowTime showTime = modelMapper.map(showTimeService.getShowTimeById(idShowTime), ShowTime.class);
+		List<TicketDTO> listTicketDTOS = new ArrayList<>();
+		seatDTOS.forEach(s -> listTicketDTOS.add(createTicket(idShowTime, s.getId())));
+		return listTicketDTOS;
 	}
 
 	@Override
@@ -64,12 +75,9 @@ public class TicketServiceImp implements TicketService, ModelMapping<Ticket, Tic
 		return this.modelMapper.map(entity, TicketDTO.class);
 	}
 
-	private boolean isSeatAvailable(List<TicketDTO> listTicketDTOs, Seat seat) {
-
-		List<Ticket> listTickets = listTicketDTOs.stream().map(this::dtoToEntity)
-				.filter(t -> t.getSeat().equals(seat)).collect(Collectors.toList());
-		return listTickets == null || listTickets.size() == 0 || listTickets.isEmpty();
-
+	private boolean isSeatAvailable(List<SeatDTO> listSeatOrderedDTO, Seat seat) {
+		List<Seat> listSeatOrdered = listSeatOrderedDTO.stream().map(s -> modelMapper.map(s, Seat.class)).filter(s -> s.equals(seat)).collect(Collectors.toList());
+		return listSeatOrdered.isEmpty();
 	}
 
 	@Override
@@ -98,5 +106,13 @@ public class TicketServiceImp implements TicketService, ModelMapping<Ticket, Tic
 		Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
 		ticketRepository.delete(ticket);
 	}
+
+	@Override
+	public void deleteAllTicketNotSold(int idShowTime, int idSeat) {
+		ShowTime showTime = modelMapper.map(showTimeService.getShowTimeById(idShowTime), ShowTime.class);
+		Seat seat = modelMapper.map(seatService.getSeatById(idSeat), Seat.class);
+		ticketRepository.findByShowTimeAndSeat(showTime, seat).stream().filter(ticket -> !ticket.isSold()).forEach(ticket -> deleteTicket(ticket.getId()));
+	}
+
 
 }

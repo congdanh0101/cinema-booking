@@ -65,7 +65,9 @@ public class SeatServiceImp implements SeatService, ModelMapping<Seat, SeatDTO> 
 
 		List<Seat> seatsOrdered = new ArrayList<>();
 
-		tickets.forEach(t -> seatsOrdered.add(t.getSeat()));
+//		tickets.forEach(t -> seatsOrdered.add(t.getSeat()));
+
+		tickets.stream().filter(t -> t.isSold() == true).forEach(t -> seatsOrdered.add(t.getSeat()));
 
 		return seatsOrdered.stream().map(this::entityToDTO).collect(Collectors.toList());
 

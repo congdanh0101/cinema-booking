@@ -23,66 +23,65 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String[] PUBLIC_URLS = {
-            "/api/auth/**",
-            "/v2/api-docs",
-            "/v3/api-docs",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/webjars/**"
-    };
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-    @Autowired
-    private CustomUserDetailService customUserDetailService;
-    @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
+	public static final String[] PUBLIC_URLS = {
+			"/api/auth/**",
+			"/v2/api-docs",
+			"/v3/api-docs",
+			"/swagger-resources/**",
+			"/swagger-ui/**",
+			"/webjars/**"
+	};
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	@Autowired
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
+	@Autowired
+	private CustomUserDetailService customUserDetailService;
+	@Autowired
+	private CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable()
-                .authorizeHttpRequests()
-                .antMatchers(PUBLIC_URLS).permitAll()
-                .antMatchers(HttpMethod.GET).permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(customAccessDeniedHandler)
-                .and()
+		http.csrf().disable()
+				.authorizeHttpRequests()
+				.antMatchers(PUBLIC_URLS).permitAll()
+				.antMatchers(HttpMethod.GET).permitAll()
+				.anyRequest()
+				.authenticated()
+				.and()
+				.exceptionHandling()
+				.authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
+				.accessDeniedHandler(customAccessDeniedHandler)
+				.and()
 //                .logout().permitAll()
 //                .and()
-                .logout()
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.logout()
+				.invalidateHttpSession(true)
+				.clearAuthentication(true)
+				.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-
-    }
-
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailService).passwordEncoder(passwordEncoder());
-    }
+	}
 
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(customUserDetailService).passwordEncoder(passwordEncoder());
+	}
+
+
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 }

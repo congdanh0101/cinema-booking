@@ -11,20 +11,16 @@ import javax.persistence.*;
 public class OrderDetail {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @ManyToOne
-    private Drink drink;
+	@ManyToOne
+	private Product product;
+	private int price;
+	private int quantity;
 
-    @ManyToOne
-    private JunkFood junkFood;
-
-    @ManyToOne
-    private Ticket ticket;
-
-    @ManyToOne
-    private Order order;
+	@ManyToOne
+	private Order order;
 
 }

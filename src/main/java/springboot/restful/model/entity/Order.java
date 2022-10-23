@@ -1,6 +1,7 @@
 package springboot.restful.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,13 +21,17 @@ public class Order {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
-	@Temporal(TemporalType.TIME)
-	private Date time;
+	@JsonFormat(pattern = "HH:mm:ss")
+	private String time;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
 	private Set<OrderDetail> orderDetails = new HashSet<>();
 
-//    @ManyToOne
-//    private User user;
+	@ManyToOne
+	private User user;
+
+	private boolean isPaid;
+
+	private int total;
 
 }

@@ -11,6 +11,7 @@ import springboot.restful.repository.RoleRepository;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.service.EmailSenderService;
 import springboot.restful.service.ShowTimeService;
+import springboot.restful.service.TicketService;
 import springboot.restful.service.UserService;
 
 import java.security.SecureRandom;
@@ -40,6 +41,9 @@ public class CinemaBookingApplication implements CommandLineRunner {
 
 	@Autowired
 	private ModelMapper modelMapper;
+
+	@Autowired
+	private TicketService ticketService;
 
 
 	public static void main(String[] args) {
