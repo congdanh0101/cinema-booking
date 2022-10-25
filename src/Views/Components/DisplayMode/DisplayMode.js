@@ -3,7 +3,32 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
 import { List as ListIcon, Apps as AppsIcon } from '@material-ui/icons';
-import styles from './styles';
+
+const styles = (theme) => ({
+	root: {
+		flexGrow: 0,
+		flexShrink: 0,
+		overflow: 'hidden',
+		borderRadius: '5px',
+		display: 'inline-flex',
+		border: `1px solid ${theme.palette.border}`,
+	},
+	option: {
+		cursor: 'pointer',
+		display: 'flex',
+		alignItems: 'center',
+		padding: theme.spacing(1),
+		backgroundColor: theme.palette.background.paper,
+	},
+	optionSelected: {
+		backgroundColor: theme.palette.background.default,
+		color: theme.palette.primary.main,
+	},
+	divider: {
+		width: '1px',
+		backgroundColor: theme.palette.divider,
+	},
+});
 
 const DisplayMode = (props) => {
 	const { classes, className, mode, onChange } = props;
