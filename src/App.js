@@ -1,31 +1,42 @@
 import './App.css';
+import './Assets/scss/index.scss';
 import logo from './logo.svg';
-// import { Provider } from 'react-redux';
 
-// import Routes from './Routes';
+import React, { Component } from 'react';
 
-// import { ThemeProvider } from '@material-ui/core/styles';
-// import { CssBaseline } from '@material-ui/core';
+import { Provider } from 'react-redux';
 
-function App() {
-	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
-		</div>
-	);
+import theme from './Utils/Themes';
+import { Alert } from './Views/Components';
+import { pageCursors } from './Utils';
+import Routes from './Routes';
+
+import { ThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
+
+class App extends Component {
+	componentDidMount() {
+		pageCursors();
+	}
+	render() {
+		return (
+			<div className="App">
+				<header className="App-header">
+					<img src={logo} className="App-logo" alt="logo" />
+					<Provider>
+						<ThemeProvider theme={theme}>
+							<CssBaseline />
+							<Alert />
+							<Routes />
+							<div className="cursor" id="cursor" />
+							<div className="cursor2" id="cursor2" />
+							<div className="cursor3" id="cursor3" />
+						</ThemeProvider>
+					</Provider>
+				</header>
+			</div>
+		);
+	}
 }
 
 export default App;
