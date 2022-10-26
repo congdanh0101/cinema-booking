@@ -1,2 +1,2 @@
-export { default as Admin } from './Admin';
-export { default as Client } from './Client';
+export { default as AdminLayout } from './AdminLayout';
+export { default as PublicLayout } from './PublicLayout';

@@ -4,32 +4,32 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const ProtectedRoute = ({
-	layout: Layout,
-	component: Component,
-	isAuthenticated,
-	...rest
+  layout: Layout,
+  component: Component,
+  isAuthenticated,
+  ...rest
 }) => (
-	<Route
-		{...rest}
-		render={(props) =>
-			isAuthenticated ? (
-				<Layout>
-					<Component {...props} />
-				</Layout>
-			) : (
-				<Redirect to={{ pathname: '/', state: { from: props.location } }} />
-			)
-		}
-	/>
+  <Route
+    {...rest}
+    render={props =>
+      isAuthenticated ? (
+        <Layout>
+          <Component {...props} />
+        </Layout>
+      ) : (
+        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+      )
+    }
+  />
 );
 
 ProtectedRoute.propTypes = {
-	isAuthenticated: PropTypes.bool,
+  isAuthenticated: PropTypes.bool
 };
 ProtectedRoute.defaultProps = {
-	isAuthenticated: false,
+  isAuthenticated: false
 };
-const mapStateToProps = (state) => ({
-	isAuthenticated: state.authState.isAuthenticated,
+const mapStateToProps = state => ({
+  isAuthenticated: state.authState.isAuthenticated
 });
 export default connect(mapStateToProps)(ProtectedRoute);
