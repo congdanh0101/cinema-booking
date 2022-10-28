@@ -21,8 +21,8 @@ public class OrderDTO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
 	private String time;
 
-	private Set<OrderDetailDTO> orderDetailDTOSs = new HashSet<>();
-	private UserDTO userDTO;
+	private Set<OrderDetailDTO> orderDetail = new HashSet<>();
+	private UserDTO user;
 	private boolean isPaid;
 	private int total;
 }

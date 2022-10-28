@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,7 +25,7 @@ public class Order {
 	private String time;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
-	private Set<OrderDetail> orderDetails = new HashSet<>();
+	private List<OrderDetail> orderDetails = new ArrayList<>();
 
 	@ManyToOne
 	private User user;

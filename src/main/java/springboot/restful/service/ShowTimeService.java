@@ -19,6 +19,8 @@ public interface ShowTimeService {
 
     List<ShowTimeDTO> getAllShowTimeByShowDateAndTheater(Date showDate, int idTheater);
 
+    List<ShowTimeDTO> getAllShowTimeByShowDateAndMovie(Date showDate, int idMovie);
+
     //update
     ShowTimeDTO updateShowTime(ShowTimeDTO showTimeDTO, int idMovie, int idTheater, int idShowTime);
 

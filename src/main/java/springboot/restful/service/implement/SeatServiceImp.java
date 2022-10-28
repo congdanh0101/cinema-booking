@@ -61,7 +61,7 @@ public class SeatServiceImp implements SeatService, ModelMapping<Seat, SeatDTO> 
 		List<Ticket> tickets = ticketRepository.findByShowTime(showTime);
 		List<Seat> seats = seatRepository.findAll();
 
-		if (tickets.isEmpty()) return seats.stream().map(this::entityToDTO).collect(Collectors.toList());
+		if (tickets.isEmpty()) return new ArrayList<>();
 
 		List<Seat> seatsOrdered = new ArrayList<>();
 

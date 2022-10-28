@@ -18,6 +18,7 @@ import springboot.restful.service.TicketService;
 import springboot.restful.util.ModelMapping;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,12 +88,30 @@ public class TicketServiceImp implements TicketService, ModelMapping<Ticket, Tic
 
 		List<Ticket> tickets = ticketRepository.findByShowTime(showTime);
 
-		return tickets.stream().map(this::entityToDTO).collect(Collectors.toList());
+		List<TicketDTO> ticketDTOS = tickets.stream().map(this::entityToDTO).collect(Collectors.toList());
+		ticketDTOS.forEach(t -> {
+			Date date = t.getShowTime().getShowDate();
+			Date newDate = new Date();
+			newDate.setDate(date.getDate());
+			newDate.setMonth(date.getMonth());
+			newDate.setYear(date.getYear());
+			t.getShowTime().setShowDate(newDate);
+		});
+		return ticketDTOS;
 	}
 
 	@Override
 	public List<TicketDTO> getAllTickets() {
-		return ticketRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
+		List<TicketDTO> ticketDTOS = ticketRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
+		ticketDTOS.forEach(t -> {
+			Date date = t.getShowTime().getShowDate();
+			Date newDate = new Date();
+			newDate.setDate(date.getDate());
+			newDate.setMonth(date.getMonth());
+			newDate.setYear(date.getYear());
+			t.getShowTime().setShowDate(newDate);
+		});
+		return ticketDTOS;
 	}
 
 	@Override

@@ -49,7 +49,14 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 		ShowTime showTime = showTimeRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", id));
 
-		return entityToDTO(showTime);
+		ShowTimeDTO showTimeDTO = entityToDTO(showTime);
+		Date date = showTimeDTO.getShowDate();
+		Date newDate = new Date();
+		newDate.setDate(date.getDate());
+		newDate.setMonth(date.getMonth());
+		newDate.setYear(date.getYear());
+		showTimeDTO.setShowDate(newDate);
+		return showTimeDTO;
 	}
 
 	@Override
@@ -69,7 +76,8 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 		Theater theater = modelMapper.map(theaterService.geTheaterById(idTheater), Theater.class);
 		ShowTime showTime = dtoToEntity(showTimeDTO);
 
-		if (!movie.isDisplay()) throw new ApiException("The movie is not display! Please update the movie!");
+		if (!movie.isDisplay())
+			throw new ApiException("The movie is not display! Please update the movie!");
 
 		if (!isShowTimeAvailable(getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater),
 				showTimeDTO.getTimeStart(), movie))
@@ -85,8 +93,18 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
 	@Override
 	public List<ShowTimeDTO> getAllShowTime() {
+		List<ShowTimeDTO> showTimeDTOs = showTimeRepository.findAll().stream().map(this::entityToDTO)
+				.collect(Collectors.toList());
+		showTimeDTOs.stream().forEach(s -> {
+			Date date = s.getShowDate();
+			Date newDate = new Date();
+			newDate.setDate(date.getDate());
+			newDate.setMonth(date.getMonth());
+			newDate.setYear(date.getYear());
+			s.setShowDate(newDate);
+		});
 
-		return showTimeRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
+		return showTimeDTOs;
 	}
 
 	@Override
@@ -104,6 +122,21 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 		return showTimes.stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
+	@Override
+	public List<ShowTimeDTO> getAllShowTimeByShowDateAndMovie(Date showDate, int idMovie) {
+		Movie movie = modelMapper.map(movieService.getMovieById(idMovie), Movie.class);
+		List<ShowTime> showTimes = showTimeRepository.findByShowDateAndMovieOrderByTimeStartAsc(showDate, movie);
+		List<ShowTimeDTO> showTimeDTOS = showTimes.stream().filter(st -> st.getMovie().isDisplay()).map(this::entityToDTO).collect(Collectors.toList());
+		showTimeDTOS.forEach(st -> {
+			Date date = st.getShowDate();
+			Date newDate = new Date();
+			newDate.setDate(date.getDate());
+			newDate.setMonth(date.getMonth());
+			newDate.setYear(date.getYear());
+			st.setShowDate(newDate);
+		});
+		return showTimeDTOS;
+	}
 
 	private int getPrice(Date showDate, String timeStart) {
 
@@ -113,19 +146,19 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
 		if (EEE.contains("Fri") || EEE.contains("Sat") || EEE.contains("Sun")) {
 
-			//from 8AM -> 17PM => 20
+			// from 8AM -> 17PM => 20
 			start = "08:00";
 			stop = "17:00";
 			if (isBeetwenTwosTime(start, stop, timeStart))
 				return 20;
-			//from 17PM -> 22PM => 25
+			// from 17PM -> 22PM => 25
 
 			start = "17:00";
 			stop = "22:00";
 			if (isBeetwenTwosTime(start, stop, timeStart))
 				return 25;
 
-			//after 22PM => 15
+			// after 22PM => 15
 			start = "22:00";
 			stop = "23:59";
 			if (isBeetwenTwosTime(start, stop, timeStart))
@@ -133,31 +166,30 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
 		} else if (EEE.contains("Tue")) {
 
-			//10 for all day
+			// 10 for all day
 			return 10;
 
 		} else {
 
-			//from 8AM -> 17PM => 15
+			// from 8AM -> 17PM => 15
 
 			start = "08:00";
 			stop = "17:00";
 			if (isBeetwenTwosTime(start, stop, timeStart))
 				return 15;
 
-			//from 17PM -> 22PM => 20
+			// from 17PM -> 22PM => 20
 
 			start = "17:00";
 			stop = "22:00";
 			if (isBeetwenTwosTime(start, stop, timeStart))
 				return 20;
 
-			//after 22PM => 10
+			// after 22PM => 10
 			start = "22:00";
 			stop = "23:59";
 			if (isBeetwenTwosTime(start, stop, timeStart))
 				return 10;
-
 
 		}
 
@@ -187,7 +219,8 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 			hour += 1;
 		}
 
-		if (hour >= 24) hour = hour % 24;
+		if (hour >= 24)
+			hour = hour % 24;
 
 		String strTimeEndHour = String.valueOf(hour);
 		String strTimeEndMinute = String.valueOf(minute);
@@ -219,11 +252,10 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 		int hourNewTimeEnd = Integer.parseInt(timeEnd.substring(0, 2));
 		int minuteNewTimeEnd = Integer.parseInt(timeEnd.substring(3));
 
+		if (hourNewTimeEnd < 8)
+			hourNewTimeEnd += 24;
 
-		if (hourNewTimeEnd < 8) hourNewTimeEnd += 24;
-
-//        String newTimeEnd = String.valueOf(hourNewTimeEnd)+":"+timeEnd.substring(3);
-
+		// String newTimeEnd = String.valueOf(hourNewTimeEnd)+":"+timeEnd.substring(3);
 
 		if (showTimeDTOs.isEmpty() || showTimeDTOs.size() == 0 || showTimeDTOs == null) {
 			return true;
@@ -231,7 +263,7 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
 		if (showTimeDTOs.size() == 1) {
 
-			//for show time
+			// for show time
 			LocalTime lcShowTimeStart = LocalTime.parse(showTimeDTOs.get(0).getTimeStart());
 			LocalTime lcShowTimeEnd = LocalTime.parse(showTimeDTOs.get(0).getTimeEnd());
 
@@ -241,13 +273,13 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 			int hourShowTimeEnd = Integer.parseInt(showTimeDTOs.get(0).getTimeEnd().substring(0, 2));
 			int minuteShowTimeEnd = Integer.parseInt(showTimeDTOs.get(0).getTimeEnd().substring(3));
 
-
-//            if (lcNewTimeEnd.isBefore(lcShowTimeStart) || lcNewTimeStart.isAfter(lcShowTimeEnd) || lcNewTimeEnd.equals(lcShowTimeStart) || lcNewTimeStart.equals(lcShowTimeEnd))
-//                return true;
+			// if (lcNewTimeEnd.isBefore(lcShowTimeStart) ||
+			// lcNewTimeStart.isAfter(lcShowTimeEnd) || lcNewTimeEnd.equals(lcShowTimeStart)
+			// || lcNewTimeStart.equals(lcShowTimeEnd))
+			// return true;
 
 			if (hourNewTimeEnd < hourShowTimeStart)
 				return true;
-
 
 			if (hourNewTimeEnd == hourShowTimeStart && minuteNewTimeEnd <= minuteShowTimeStart)
 				return true;
@@ -277,19 +309,20 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 			}
 		}
 
-		if (check == 1) return true;
-
+		if (check == 1)
+			return true;
 
 		int i = 0;
 		int j = 1;
 		while (i < showTimeDTOs.size() - 1 && j < showTimeDTOs.size()) {
 
-//            LocalTime lcShowTimeStartBefore = LocalTime.parse(showTimeDTOs.get(i).getTimeStart());
+			// LocalTime lcShowTimeStartBefore =
+			// LocalTime.parse(showTimeDTOs.get(i).getTimeStart());
 			LocalTime lcShowTimeEndBefore = LocalTime.parse(showTimeDTOs.get(i).getTimeEnd());
 
 			LocalTime lcShowTimeStartAfter = LocalTime.parse(showTimeDTOs.get(j).getTimeStart());
-//            LocalTime lcShowTimeEndAfter = LocalTime.parse(showTimeDTOs.get(j).getTimeEnd());
-
+			// LocalTime lcShowTimeEndAfter =
+			// LocalTime.parse(showTimeDTOs.get(j).getTimeEnd());
 
 			int hourShowTimeStartAfter = Integer.parseInt(showTimeDTOs.get(j).getTimeStart().substring(0, 2));
 			int minuteShowTimeStartAfter = Integer.parseInt(showTimeDTOs.get(j).getTimeStart().substring(3));
@@ -297,11 +330,12 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 			int hourShowTimeEndBefore = Integer.parseInt(showTimeDTOs.get(i).getTimeEnd().substring(0, 2));
 			int minuteShowTimeEndBefore = Integer.parseInt(showTimeDTOs.get(i).getTimeEnd().substring(3));
 
-//
-//            if (lcNewTimeStart.isAfter(lcShowTimeEndBefore) || lcNewTimeStart.equals(lcShowTimeEndBefore))
-//                if (lcNewTimeEnd.isBefore(lcShowTimeStartAfter) || lcNewTimeEnd.equals(lcShowTimeStartAfter))
-//                    return true;
-
+			//
+			// if (lcNewTimeStart.isAfter(lcShowTimeEndBefore) ||
+			// lcNewTimeStart.equals(lcShowTimeEndBefore))
+			// if (lcNewTimeEnd.isBefore(lcShowTimeStartAfter) ||
+			// lcNewTimeEnd.equals(lcShowTimeStartAfter))
+			// return true;
 
 			if (hourNewTimeStart > hourShowTimeEndBefore) {
 				if (hourNewTimeEnd < hourShowTimeStartAfter)
@@ -310,7 +344,6 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 					if (minuteNewTimeEnd <= minuteShowTimeStartAfter)
 						return true;
 			}
-
 
 			if (hourNewTimeStart == hourShowTimeEndBefore && minuteNewTimeStart >= minuteShowTimeEndBefore) {
 				if (hourNewTimeEnd < hourShowTimeStartAfter)
@@ -321,7 +354,6 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 						return true;
 			}
 
-
 			i++;
 			j++;
 		}
@@ -331,11 +363,13 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
 			int hourShowTimeEndLast = Integer.parseInt(showTimeDTOs.get(i).getTimeEnd().substring(0, 2));
 
-			if (hourShowTimeEndLast < 8) hourShowTimeEndLast += 24;
+			if (hourShowTimeEndLast < 8)
+				hourShowTimeEndLast += 24;
 			int minuteShowTimeEndLast = Integer.parseInt(showTimeDTOs.get(i).getTimeEnd().substring(3));
 
-//            if (lcNewTimeStart.isAfter(lcShowTimeEndLast) || lcNewTimeStart.equals(lcShowTimeEndLast))
-//                return true;
+			// if (lcNewTimeStart.isAfter(lcShowTimeEndLast) ||
+			// lcNewTimeStart.equals(lcShowTimeEndLast))
+			// return true;
 
 			return hourNewTimeStart >= hourShowTimeEndLast && minuteNewTimeStart >= minuteShowTimeEndLast;
 		}
@@ -347,17 +381,19 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 	public ShowTimeDTO updateShowTime(ShowTimeDTO showTimeDTO, int idMovie, int idTheater, int idShowTime) {
 		Movie movie = modelMapper.map(movieService.getMovieById(idMovie), Movie.class);
 		Theater theater = modelMapper.map(theaterService.geTheaterById(idTheater), Theater.class);
-		ShowTime showTime = showTimeRepository.findById(idShowTime).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
+		ShowTime showTime = showTimeRepository.findById(idShowTime)
+				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
 
-		if (getAllTicketsByShowTime(idShowTime).isEmpty() || getAllTicketsByShowTime(idShowTime).size() == 0 || getAllTicketsByShowTime(idShowTime) == null) {
+		if (getAllTicketsByShowTime(idShowTime).isEmpty() || getAllTicketsByShowTime(idShowTime).size() == 0
+				|| getAllTicketsByShowTime(idShowTime) == null) {
 
 			if (getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater).size() > 1) {
-				if (!isShowTimeAvailableForUpdate(idShowTime, getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater),
+				if (!isShowTimeAvailableForUpdate(idShowTime,
+						getAllShowTimeByShowDateAndTheater(showTimeDTO.getShowDate(), idTheater),
 						showTimeDTO.getTimeStart(), movie)) {
 					throw new ApiException("Can not update show time because time overlap");
 				}
 			}
-
 
 			if (showTimeDTO.getPrice() == null) {
 				showTime.setPrice(getPrice(showTimeDTO.getShowDate(), showTimeDTO.getTimeStart()));
@@ -379,7 +415,8 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 	@Override
 	public void deleteShowTime(int id) {
 
-		ShowTime showTime = showTimeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", id));
+		ShowTime showTime = showTimeRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", id));
 		if (!getAllTicketsByShowTime(id).isEmpty())
 			throw new ApiException("Can not delete this show time");
 		showTimeRepository.delete(showTime);
@@ -388,26 +425,32 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
 	@Override
 	public void deleteShowTimeForce(int id) {
-		ShowTime showTime = showTimeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", id));
-//        List<Ticket> tickets = getAllTicketsByShowTime(id).stream().map(t->modelMapper.map(t,Ticket.class)).collect(Collectors.toList());
-//        if(!tickets.isEmpty()){
-//            tickets.forEach(t->ticketRepository.delete(t));
-//        }
+		ShowTime showTime = showTimeRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", id));
+		// List<Ticket> tickets =
+		// getAllTicketsByShowTime(id).stream().map(t->modelMapper.map(t,Ticket.class)).collect(Collectors.toList());
+		// if(!tickets.isEmpty()){
+		// tickets.forEach(t->ticketRepository.delete(t));
+		// }
 		showTimeRepository.delete(showTime);
 	}
 
 	private List<TicketDTO> getAllTicketsByShowTime(int idShowTime) {
 
-		ShowTime showTime = showTimeRepository.findById(idShowTime).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
+		ShowTime showTime = showTimeRepository.findById(idShowTime)
+				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
 
 		List<Ticket> tickets = ticketRepository.findByShowTime(showTime);
-		List<TicketDTO> ticketDTOs = tickets.stream().map(t -> modelMapper.map(t, TicketDTO.class)).collect(Collectors.toList());
+		List<TicketDTO> ticketDTOs = tickets.stream().map(t -> modelMapper.map(t, TicketDTO.class)).filter(t -> t.isSold() == true)
+				.collect(Collectors.toList());
 		return ticketDTOs;
 	}
 
-	private boolean isShowTimeAvailableForUpdate(int idShowTime, List<ShowTimeDTO> showTimeDTOS, String timeStart, Movie movie) {
+	private boolean isShowTimeAvailableForUpdate(int idShowTime, List<ShowTimeDTO> showTimeDTOS, String timeStart,
+	                                             Movie movie) {
 
-		ShowTime showTime = showTimeRepository.findById(idShowTime).orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
+		ShowTime showTime = showTimeRepository.findById(idShowTime)
+				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
 
 		ShowTimeDTO showTimeDTO = entityToDTO(showTime);
 

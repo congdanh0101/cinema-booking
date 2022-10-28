@@ -16,9 +16,7 @@ public class OrderDetail {
 	private int id;
 
 	@ManyToOne
-	private Product product;
-	private int price;
-	private int quantity;
+	private Ticket ticket;
 
 	@ManyToOne
 	private Order order;
