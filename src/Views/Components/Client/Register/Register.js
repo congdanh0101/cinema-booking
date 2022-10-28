@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import AuthService from '../../../../Services/Auth';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import Form from 'react-validation/build/form';
 import Input from 'react-validation/build/input';
 import CheckButton from 'react-validation/build/button';
 import { isEmail } from 'validator';
-import { ArrowBack as ArrowBackIcon } from '@material-ui/icons';
 import styles from './styles';
+import AuthService from '../../../../Services/Auth/Auth';
 
 const required = (value) => {
 	if (!value) {
@@ -77,7 +75,7 @@ class Register extends Component {
 		this.state = {
 			firstName: '',
 			lastName: '',
-			phone: '',
+			phoneNumber: '',
 			email: '',
 			password: '',
 			gender: '',
@@ -133,7 +131,13 @@ class Register extends Component {
 		});
 	}
 
-	handleRegister = () => {
+	onChangeGender(e) {
+		this.setState({
+			gender: e.target.value,
+		});
+	}
+
+	handleRegister = (e) => {
 		e.preventDefault();
 
 		this.setState({ message: '', successful: false });
@@ -143,7 +147,7 @@ class Register extends Component {
 		let user = {
 			firstName: this.state.firstName,
 			lastName: this.state.lastName,
-			phone: this.state.phone,
+			phoneNumber: this.state.phoneNumber,
 			email: this.state.email,
 			password: this.state.password,
 			gender: this.state.gender,
@@ -151,11 +155,13 @@ class Register extends Component {
 
 		if (this.checkBtn.context._errors.length === 0) {
 			AuthService.userRegister(user).then(
-				(response) => {
+				(res) => {
 					this.setState({
-						message: response.data.message,
+						message: res.data.message,
 						successful: true,
 					});
+					let token = res.data.token;
+					console.log(token);
 				},
 				(error) => {
 					const resMessage =
@@ -183,7 +189,6 @@ class Register extends Component {
 						alt="profile-img"
 						className="profile-img-card"
 					/>
-
 					<Form
 						onSubmit={this.handleRegister}
 						ref={(c) => {
@@ -193,14 +198,26 @@ class Register extends Component {
 						{!this.state.successful && (
 							<div>
 								<div className="form-group">
-									<label htmlFor="username">Username</label>
+									<label htmlFor="firstName">FirstName</label>
 									<Input
 										type="text"
 										className="form-control"
-										name="username"
-										value={this.state.username}
-										onChange={this.onChangeUsername}
-										validations={[required, vusername]}
+										name="firstName"
+										value={this.state.firstName}
+										onChange={this.onChangeFirstName}
+										validations={[required, vfirstName]}
+									/>
+								</div>
+
+								<div className="form-group">
+									<label htmlFor="lastName">LastName</label>
+									<Input
+										type="text"
+										className="form-control"
+										name="lastName"
+										value={this.state.lastName}
+										onChange={this.onChangeLastName}
+										validations={[required, vlastName]}
 									/>
 								</div>
 
@@ -213,6 +230,29 @@ class Register extends Component {
 										value={this.state.email}
 										onChange={this.onChangeEmail}
 										validations={[required, email]}
+									/>
+								</div>
+
+								<div className="form-group">
+									<label htmlFor="phone">Phone</label>
+									<Input
+										type="text"
+										className="form-control"
+										name="phone"
+										value={this.state.phoneNumber}
+										onChange={this.onChangePhone}
+										validations={[required, phone]}
+									/>
+								</div>
+
+								<div className="form-group">
+									<label htmlFor="gender">Gender</label>
+									<Input
+										type="text"
+										className="form-control"
+										name="gender"
+										value={this.state.gender}
+										onChange={this.onChangeGender}
 									/>
 								</div>
 

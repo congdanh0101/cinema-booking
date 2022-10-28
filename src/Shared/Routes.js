@@ -7,9 +7,9 @@ import { WithLayoutRoute } from '../Routers';
 import { PublicLayout } from '../Views/Layout';
 
 // Client
-import ListMovie from '../Views/Components/Client/Movies';
+import ListMovie from '../Views/Components/Client/MoviePage';
 import Login from '../Views/Components/Client/Login';
-import Register from '../Views/Components/Client/Login';
+import Register from '../Views/Components/Client/Register';
 // import HomePage from '../Views/Components/Client/HomePage';
 
 const Routes = () => {
@@ -17,8 +17,8 @@ const Routes = () => {
 		<Router>
 			<div className="container">
 				<Switch>
-					<Route path="/register" layout={PublicLayout} component={Login} />
-					<Route path="/register" layout={PublicLayout} component={Register} />
+					<Route path="/login" component={Login} />
+					<Route path="/register" component={Register} />
 
 					{/* <Route path="/" exact component={HomePage} /> */}
 

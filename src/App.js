@@ -11,13 +11,10 @@ import { Alert } from './Views/Common';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 
-import ListMovie from './Views/Components/Client/Movies';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
 function App() {
 	return (
 		<ThemeProvider theme={Theme}>
-			<CssBaseline />
+			{/* <CssBaseline /> */}
 			<Routes />
 			<div className="cursor" id="cursor" />
 			<div className="cursor2" id="cursor2" />
