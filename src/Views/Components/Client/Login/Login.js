@@ -1,95 +1,83 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles, Grid } from '@material-ui/core';
-import { IconButton } from '@material-ui/core';
-import { ArrowBack as ArrowBackIcon } from '@material-ui/icons';
-import LoginForm from './components/LoginForm';
-
-const styles = theme => ({
-  root: {
-    backgroundColor: theme.palette.background.default,
-    height: '100vh'
-  },
-  grid: {
-    height: '100%'
-  },
-  bgWrapper: {
-    [theme.breakpoints.down('md')]: {
-      display: 'none'
-    }
-  },
-  bg: {
-    backgroundColor: theme.palette.common.neutral,
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: 'url(https://source.unsplash.com/featured/?cinema)',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    opacity: 0.5
-  },
-  content: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  contentHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingTop: theme.spacing(5),
-    paddingBototm: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2)
-  },
-
-  contentBody: {
-    flexGrow: 1,
-    display: 'flex',
-    alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      justifyContent: 'center'
-    }
-  }
-});
+import { withStyles } from '@material-ui/core';
+import { Button, TextField, Typography } from '@material-ui/core';
+import AuthService from '../../../../Services/Auth';
+import { Link } from 'react-router-dom';
+import styles from './styles';
 
 class Login extends Component {
-  handleBack = () => {
-    const { history } = this.props;
-    history.goBack();
-  };
+	constructor(props) {
+		super(props);
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <div className={classes.root}>
-        <Grid className={classes.grid} container>
-          <Grid className={classes.bgWrapper} item lg={5}>
-            <div className={classes.bg} />
-          </Grid>
-          <Grid className={classes.content} item lg={7} xs={12}>
-            <div className={classes.contentHeader}>
-              <IconButton
-                className={classes.backButton}
-                onClick={this.handleBack}>
-                <ArrowBackIcon />
-              </IconButton>
-            </div>
-            <div className={classes.contentBody}>
-              <LoginForm redirect />
-            </div>
-          </Grid>
-        </Grid>
-      </div>
-    );
-  }
+		this.state = {
+			username: '',
+			password: '',
+		};
+
+		this.changeUsernameHandler = this.changeUsernameHandler.bind(this);
+		this.changePasswordHandler = this.changePasswordHandler.bind(this);
+		this.handleLogin = this.handleLogin.bind(this);
+	}
+
+	handleLogin = (e) => {
+		e.preventDefault();
+		let user = {
+			username: this.state.username,
+			password: this.state.password,
+		};
+		AuthService.userLogin(user).then((res) => {
+			let token = res.data.token;
+			console.log(token);
+		});
+	};
+
+	changeUsernameHandler = (event) => {
+		this.setState({ username: event.target.value });
+	};
+
+	changePasswordHandler = (event) => {
+		this.setState({ password: event.target.value });
+	};
+
+	render() {
+		return (
+			<form>
+				<Typography variant="h2">Sign In</Typography>
+
+				<div>
+					<TextField
+						type="text"
+						label="Username"
+						name="username"
+						value={this.state.username}
+						onChange={this.changeUsernameHandler}
+						variant="outlined"
+					/>
+					<TextField
+						type="password"
+						name="password"
+						label="Password"
+						value={this.state.password}
+						onChange={this.changePasswordHandler}
+						variant="outlined"
+					/>
+				</div>
+
+				<Button
+					className="btn btn-success"
+					color="primary"
+					onClick={this.handleLogin}
+					size="large"
+					variant="contained"
+				>
+					Login Now
+				</Button>
+				<Typography variant="body1">
+					Don't have an account ?<Link to="/register">Register</Link>
+				</Typography>
+			</form>
+		);
+	}
 }
-
-Login.propTypes = {
-  className: PropTypes.string,
-  classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(Login);

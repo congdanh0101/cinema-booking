@@ -17,12 +17,12 @@ const styles = (theme) => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+		backgroundImage: 'url(https://source.unsplash.com/featured/?cinema)',
 		backgroundSize: 'cover',
 		backgroundRepeat: 'no-repeat',
 		backgroundPosition: 'center',
 		opacity: 0.5,
 	},
-
 	content: {
 		height: '100%',
 		display: 'flex',
@@ -32,14 +32,11 @@ const styles = (theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		paddingTop: theme.spacing(5),
-		paddingBottom: theme.spacing(2),
+		paddingBototm: theme.spacing(2),
 		paddingLeft: theme.spacing(2),
 		paddingRight: theme.spacing(2),
 	},
-	backButton: {},
-	logoImage: {
-		marginLeft: theme.spacing(4),
-	},
+
 	contentBody: {
 		flexGrow: 1,
 		display: 'flex',
@@ -48,6 +45,7 @@ const styles = (theme) => ({
 			justifyContent: 'center',
 		},
 	},
+
 	form: {
 		paddingLeft: '100px',
 		paddingRight: '100px',
@@ -62,39 +60,16 @@ const styles = (theme) => ({
 		color: theme.palette.common.contrastText,
 		marginTop: theme.spacing(3),
 	},
-	subtitle: {
-		color: theme.palette.text.secondary,
-		marginTop: theme.spacing(0.5),
+	socialLogin: {
+		margin: theme.spacing(4, 0),
 	},
 	fields: {
-		marginTop: theme.spacing(5),
+		marginTop: theme.spacing(2),
 	},
 	textField: {
 		width: '100%',
 		'& + & ': {
 			marginTop: theme.spacing(2),
-		},
-	},
-	upload: {
-		width: '100%',
-		marginTop: theme.spacing(2),
-	},
-	policy: {
-		display: 'flex',
-		alignItems: 'center',
-	},
-	policyCheckbox: {
-		marginLeft: '-14px',
-	},
-	policyText: {
-		display: 'inline',
-		color: theme.palette.text.secondary,
-	},
-	policyUrl: {
-		color: theme.palette.text.primary,
-		'&:hover': {
-			cursor: 'pointer',
-			color: theme.palette.primary.main,
 		},
 	},
 	progress: {
@@ -103,26 +78,31 @@ const styles = (theme) => ({
 		marginLeft: 'auto',
 		marginRight: 'auto',
 	},
-	registerButton: {
+
+	loginButton: {
 		marginTop: theme.spacing(2),
 		width: '100%',
 	},
-	login: {
+
+	register: {
 		marginTop: theme.spacing(2),
 		color: theme.palette.text.secondary,
 	},
-	loginUrl: {
+
+	registerUrl: {
 		color: theme.palette.primary.main,
 		fontWeight: 'bold',
 		'&:hover': {
 			color: theme.palette.primary.main,
 		},
 	},
+
 	fieldError: {
 		color: theme.palette.danger.main,
 		marginBottom: theme.spacing(2),
 		marginTop: theme.spacing(1),
 	},
+
 	submitError: {
 		color: theme.palette.danger.main,
 		alignText: 'center',
