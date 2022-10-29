@@ -15,6 +15,8 @@ import {
 	isLoggedIn,
 } from '../../shared/utils';
 
+const URL = 'http://localhost:8888/api';
+
 export const uploadImage = (id, image) => async (dispatch) => {
 	try {
 		const data = new FormData();
@@ -39,7 +41,7 @@ export const uploadImage = (id, image) => async (dispatch) => {
 // Login user
 export const login = (username, password) => async (dispatch) => {
 	try {
-		const url = process.env.URL + '/auth/login';
+		const url = URL + '/auth/login';
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },

@@ -16,10 +16,12 @@ export const selectShowtime = showtime => ({
 
 export const selectAllShowtimes = () => ({ type: SELECT_ALL_SHOWTIMES });
 
+const URL = 'http://localhost:8888/api';
+
 export const getShowtimes = () => async dispatch => {
   try {
     const token = localStorage.getItem('jwtToken');
-    const url = '/showtimes';
+    const url = URL + '/showtimes';
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -38,7 +40,7 @@ export const getShowtimes = () => async dispatch => {
 export const addShowtime = showtime => async dispatch => {
   try {
     const token = localStorage.getItem('jwtToken');
-    const url = '/showtimes/';
+    const url = URL + '/showtimes/';
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -63,7 +65,7 @@ export const addShowtime = showtime => async dispatch => {
 export const updateShowtime = (showtime, id) => async dispatch => {
   try {
     const token = localStorage.getItem('jwtToken');
-    const url = '/showtimes/' + id;
+    const url = URL + '/showtimes/' + id;
     const response = await fetch(url, {
       method: 'PATCH',
       headers: {
@@ -88,7 +90,7 @@ export const updateShowtime = (showtime, id) => async dispatch => {
 export const deleteShowtime = id => async dispatch => {
   try {
     const token = localStorage.getItem('jwtToken');
-    const url = '/showtimes/' + id;
+    const url = URL + '/showtimes/' + id;
     const response = await fetch(url, {
       method: 'DELETE',
       headers: {
