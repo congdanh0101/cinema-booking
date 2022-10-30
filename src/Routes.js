@@ -22,10 +22,10 @@ const Login = lazy(() => import('./pages/Public/Login'));
 // Public
 const HomePage = lazy(() => import('./pages/Public/HomePage'));
 const MoviePage = lazy(() => import('./pages/Public/MoviePage'));
+const NowShowing = lazy(() => import('./pages/Public/NowShowingPage'));
+const ComingSoon = lazy(() => import('./pages/Public/ComingPage'));
 const MyDashboard = lazy(() => import('./pages/Public/MyDashboard'));
-const MovieCategoryPage = lazy(() =>
-	import('./pages/Public/MovieCategoryPage')
-);
+
 const CinemasPage = lazy(() => import('./pages/Public/CinemasPage'));
 const BookingPage = lazy(() => import('./pages/Public/BookingPage'));
 
@@ -66,9 +66,15 @@ const Routes = () => {
 					/>
 					<WithLayoutRoute
 						exact
-						path="/movie/category/:category"
+						path="/movie/category/nowShowing"
 						layout={PublicLayout}
-						component={MovieCategoryPage}
+						component={NowShowing}
+					/>
+					<WithLayoutRoute
+						exact
+						path="/movie/category/comingSoon"
+						layout={PublicLayout}
+						component={ComingSoon}
 					/>
 					<WithLayoutRoute
 						exact

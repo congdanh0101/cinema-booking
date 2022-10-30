@@ -1,6 +1,8 @@
 import { GET_CINEMAS, GET_CINEMA } from '../types';
 import { setAlert } from './alert';
 
+const URL = 'http://localhost:8888/api';
+
 export const uploadCinemaImage = (id, image) => async dispatch => {
   try {
     const data = new FormData();
@@ -24,7 +26,7 @@ export const uploadCinemaImage = (id, image) => async dispatch => {
 
 export const getCinemas = () => async dispatch => {
   try {
-    const url = '/cinemas';
+    const url = URL + '/cinemas';
     const response = await fetch(url, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }

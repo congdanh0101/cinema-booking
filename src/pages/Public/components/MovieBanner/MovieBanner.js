@@ -26,7 +26,7 @@ const StyledRating = withStyles({
 })(Rating);
 
 function MovieBanner(props) {
-	const { movie, fullDescription } = props;
+	const { movie, description } = props;
 	const classes = useStyles(props);
 	if (!movie) return null;
 
@@ -34,7 +34,7 @@ function MovieBanner(props) {
 		<div className={classes.movieHero}>
 			<div className={classes.infoSection}>
 				<header className={classes.movieHeader}>
-					{fullDescription && (
+					{description && (
 						<Box mb={3} display="flex" alignItems="center" flexWrap="wrap">
 							{movie.genre.split(',').map((genre, index) => (
 								<Typography
@@ -43,10 +43,9 @@ function MovieBanner(props) {
 									variant="body1"
 									color="inherit"
 								>
-									{genre}
+									{movie.genre}
 								</Typography>
 							))}
-
 							<StyledRating
 								value={4}
 								readOnly
@@ -60,7 +59,7 @@ function MovieBanner(props) {
 						variant="h1"
 						color="inherit"
 					>
-						{movie.title}
+						{movie.name}
 					</Typography>
 					<Typography
 						className={classes.descriptionText}
@@ -69,9 +68,7 @@ function MovieBanner(props) {
 					>
 						{textTruncate(movie.description, 450)}
 					</Typography>
-					<Typography className={classes.director} variant="h4" color="inherit">
-						By: {movie.director}
-					</Typography>
+
 					<Typography
 						className={classes.duration}
 						variant="body1"
@@ -80,7 +77,7 @@ function MovieBanner(props) {
 						{movie.duration} min
 					</Typography>
 					<Typography className={classes.genre} variant="body1" color="inherit">
-						{movie.genre}
+						{movie.releases}
 					</Typography>
 				</header>
 			</div>
@@ -91,7 +88,7 @@ function MovieBanner(props) {
 				}}
 			/>
 			<div className={classes.movieActions}>
-				{fullDescription ? (
+				{description ? (
 					<Link to={`booking/${movie._id}`} style={{ textDecoration: 'none' }}>
 						<Button variant="contained" className={classes.button}>
 							Buy Tickets

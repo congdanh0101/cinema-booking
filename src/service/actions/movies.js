@@ -29,7 +29,8 @@ export const getMovies = () => async (dispatch) => {
 	try {
 		const url = URL + '/movies';
 		const response = await axios.get(url);
-		const movies = await response.data.json;
+		const movies = await response.data.content;
+		console.log(movies);
 		if (response.ok) {
 			dispatch({ type: GET_MOVIES, payload: movies });
 		}
@@ -46,12 +47,8 @@ export const onSelectMovie = (movie) => ({
 export const getMovie = (id) => async (dispatch) => {
 	try {
 		const url = URL + '/movies/' + id;
-		const response = await fetch(url, {
-			method: 'GET',
-			mode: 'no-cors',
-			headers: { 'Content-Type': 'application/json' },
-		});
-		const movie = await response.json();
+		const response = await axios.get(url);
+		const movie = await response.data;
 		if (response.ok) {
 			dispatch({ type: SELECT_MOVIE, payload: movie });
 		}

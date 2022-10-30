@@ -79,7 +79,7 @@ function MovieCarousel({ carouselClass, movies = [], title, to = null }) {
 			</div>
 			<Slider {...settings} className={classes.slider}>
 				{movies.map((movie) => (
-					<MovieCardSimple key={movie._id} movie={movie} />
+					<MovieCardSimple key={movie.id} movie={movie} />
 				))}
 			</Slider>
 		</div>

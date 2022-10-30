@@ -52,9 +52,9 @@ class Navbar extends Component {
 						<Link className={classes.navLink} to="/movie/category/comingSoon">
 							Coming Soon
 						</Link>
-						<Link className={classes.navLink} to="/cinemas">
+						{/* <Link className={classes.navLink} to="/cinemas">
 							Cinemas
-						</Link>
+						</Link> */}
 					</div>
 
 					<div className={classes.navAccount}>

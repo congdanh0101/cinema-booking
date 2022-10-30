@@ -1,44 +1,72 @@
 import React, { Fragment, Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import MoviesService from '../../../service/axios/Movies';
+import styles from './styles';
 import { withStyles, Box, Grid } from '@material-ui/core';
-import { getMovies, getShowtimes } from '../../../service/actions';
 import MovieCarousel from '../components/MovieCarousel/MovieCarousel';
 import MovieBanner from '../components/MovieBanner/MovieBanner';
-import styles from './styles';
 
 class HomePage extends Component {
-	componentDidMount() {
-		const { movies, showtimes, getMovies, getShowtimes } = this.props;
-		if (!movies.length) getMovies();
-		if (!showtimes.length) getShowtimes();
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			movies: [],
+			latestMovies: [],
+			nowShowing: [],
+			comingSoon: [],
+			randomMovie: null,
+		};
 	}
 
-	componentDidUpdate(prevProps) {
-		if (this.props.user !== prevProps.user) {
-			this.props.user &&
-				this.props.getMovieSuggestion(this.props.user.username);
-		}
+	componentDidMount() {
+		MoviesService.getAllMovies().then((res) => {
+			const latestMovies = res.data.content
+				.sort((a, b) => Date.parse(b.releases) - Date.parse(a.releases))
+				.slice(0, 5);
+
+			const nowShowing = res.data.content.filter(
+				(movie) => movie.showing === true && movie.coming === false
+			);
+
+			const comingSoon = res.data.content.filter(
+				(movie) => movie.coming === true && movie.showing === false
+			);
+
+			const randomMovie =
+				res.data.content[Math.floor(Math.random() * res.data.content.length)];
+
+			this.setState({
+				movies: res.data.content,
+				randomMovie,
+				latestMovies,
+				nowShowing,
+				comingSoon,
+			});
+		});
 	}
 
 	render() {
-		const { classes, randomMovie, comingSoon, nowShowing } = this.props;
+		const { classes } = this.props;
 		return (
 			<Fragment>
-				<MovieBanner movie={randomMovie} height="85vh" />
+				<MovieBanner movie={this.state.randomMovie} height="85vh" />
+
 				<Box height={60} />
+
 				<MovieCarousel
 					carouselClass={classes.carousel}
 					title="Now Showing"
-					// to="/movies"
-					movies={nowShowing}
+					to="/movie/category/nowShowing"
+					movies={this.state.nowShowing}
 				/>
+
 				<MovieCarousel
 					carouselClass={classes.carousel}
 					title="Coming Soon"
-					// to="/movie/category/comingSoon"
-					movies={comingSoon}
+					to="/movie/category/comingSoon"
+					movies={this.state.comingSoon}
 				/>
+
 				{false && (
 					<Grid container style={{ height: 500 }}>
 						<Grid item xs={7} style={{ background: '#131334' }}></Grid>
@@ -50,27 +78,4 @@ class HomePage extends Component {
 	}
 }
 
-HomePage.propTypes = {
-	className: PropTypes.string,
-	classes: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
-	movies: PropTypes.array.isRequired,
-	latestMovies: PropTypes.array.isRequired,
-};
-
-const mapStateToProps = ({ movieState, showtimeState, authState }) => ({
-	movies: movieState.movies,
-	randomMovie: movieState.randomMovie,
-	latestMovies: movieState.latestMovies,
-	comingSoon: movieState.comingSoon,
-	nowShowing: movieState.nowShowing,
-	showtimes: showtimeState.showtimes,
-	user: authState.user,
-});
-
-const mapDispatchToProps = { getMovies, getShowtimes };
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(withStyles(styles)(HomePage));
+export default withStyles(styles)(HomePage);
