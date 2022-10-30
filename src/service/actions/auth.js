@@ -48,6 +48,9 @@ export const login = (username, password) => async (dispatch) => {
 			body: JSON.stringify({ username, password }),
 		});
 		const responseData = await response.json();
+		// const response = await axios.post(url, { username, password });
+		// const responseData = await response.data;
+		console.log(responseData);
 		if (response.ok) {
 			const { user } = responseData;
 			user && setUser(user);

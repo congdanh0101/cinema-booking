@@ -18,14 +18,14 @@ const MovieCard = (props) => {
 							variant="h1"
 							color="inherit"
 						>
-							{movie.title}
+							{movie.name}
 						</Typography>
 						<Typography
 							className={classes.director}
 							variant="h4"
 							color="inherit"
 						>
-							By: {movie.director}
+							Genre: {movie.genre}
 						</Typography>
 						<Typography
 							className={classes.duration}

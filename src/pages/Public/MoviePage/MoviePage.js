@@ -1,34 +1,35 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import MovieBanner from '../components/MovieBanner/MovieBanner';
-import { getMovie, onSelectMovie } from '../../../service/actions';
+import MoviesService from '../../../service/axios/Movies';
 
 class MoviePage extends Component {
-	componentDidMount() {
-		this.props.getMovie(this.props.match.params.id);
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			id: this.props.match.params.id,
+			movie: {},
+		};
 	}
 
-	componentWillUnmount() {
-		this.props.onSelectMovie(null);
+	componentDidMount() {
+		MoviesService.getMoviesById(this.state.id).then((res) => {
+			this.setState({
+				movie: res.data,
+			});
+		});
 	}
 
 	render() {
-		const { movie } = this.props;
-		return <>{movie && <MovieBanner movie={movie} fullDescription />}</>;
+		return (
+			<>
+				{this.state.movie.id && (
+					<MovieBanner movie={this.state.movie} fullDescription />
+				)}
+			</>
+		);
 	}
 }
 
-MoviePage.propTypes = {
-	className: PropTypes.string,
-	history: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = ({ movieState }) => ({
-	movie: movieState.selectedMovie,
-});
-
-const mapDispatchToProps = { getMovie, onSelectMovie };
-
-export default connect(mapStateToProps, mapDispatchToProps)(MoviePage);
+export default MoviePage;

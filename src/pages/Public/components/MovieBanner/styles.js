@@ -41,7 +41,7 @@ export default (theme) => ({
 	},
 	movieTitle: {
 		maxWidth: '100%',
-		fontSize: '3rem',
+		fontSize: '2rem',
 		lineHeight: 1.2,
 		fontWeight: 400,
 		textTransform: 'capitalize',
@@ -67,7 +67,7 @@ export default (theme) => ({
 	descriptionText: {
 		color: '#cfd6e1',
 		padding: theme.spacing(2, 0),
-		maxWidth: '60%',
+		maxWidth: '100%',
 	},
 	footer: {
 		position: 'absolute',

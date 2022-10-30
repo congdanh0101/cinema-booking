@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import MoviesService from '../../../service/axios/Movies';
+import ShowtimeService from '../../../service/axios/Showtime';
 import styles from './styles';
 import { withStyles, Box, Grid } from '@material-ui/core';
 import MovieCarousel from '../components/MovieCarousel/MovieCarousel';
@@ -11,6 +12,7 @@ class HomePage extends Component {
 
 		this.state = {
 			movies: [],
+			showtimes: [],
 			latestMovies: [],
 			nowShowing: [],
 			comingSoon: [],
@@ -43,13 +45,24 @@ class HomePage extends Component {
 				comingSoon,
 			});
 		});
+
+		ShowtimeService.getShowtimes().then((res) => {
+			this.setState({ showtimes: res.data.content });
+		});
 	}
+
+	// componentDidUpdate(prevProps) {
+	// 	if (this.props.user !== prevProps.user) {
+	// 		this.props.user &&
+	// 			this.props.getMovieSuggestion(this.props.user.username);
+	// 	}
+	// }
 
 	render() {
 		const { classes } = this.props;
 		return (
 			<Fragment>
-				<MovieBanner movie={this.state.randomMovie} height="85vh" />
+				<MovieBanner movie={this.state.randomMovie} height="90vh" />
 
 				<Box height={60} />
 

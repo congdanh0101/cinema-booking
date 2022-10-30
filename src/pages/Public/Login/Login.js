@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withStyles, Grid } from '@material-ui/core';
 import { IconButton } from '@material-ui/core';
 import { ArrowBack as ArrowBackIcon } from '@material-ui/icons';
@@ -86,11 +85,5 @@ class Login extends Component {
 		);
 	}
 }
-
-Login.propTypes = {
-	className: PropTypes.string,
-	classes: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(Login);

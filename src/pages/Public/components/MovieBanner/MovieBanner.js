@@ -43,7 +43,7 @@ function MovieBanner(props) {
 									variant="body1"
 									color="inherit"
 								>
-									{movie.genre}
+									{movie.genre.name}
 								</Typography>
 							))}
 							<StyledRating
@@ -77,7 +77,7 @@ function MovieBanner(props) {
 						{movie.duration} min
 					</Typography>
 					<Typography className={classes.genre} variant="body1" color="inherit">
-						{movie.releases}
+						Releases Date: {movie.releases}
 					</Typography>
 				</header>
 			</div>
@@ -89,14 +89,14 @@ function MovieBanner(props) {
 			/>
 			<div className={classes.movieActions}>
 				{description ? (
-					<Link to={`booking/${movie._id}`} style={{ textDecoration: 'none' }}>
+					<Link to={`booking/${movie.id}`} style={{ textDecoration: 'none' }}>
 						<Button variant="contained" className={classes.button}>
 							Buy Tickets
 							<ArrowRightAlt className={classes.buttonIcon} />
 						</Button>
 					</Link>
 				) : (
-					<Link to={`movie/${movie._id}`} style={{ textDecoration: 'none' }}>
+					<Link to={`movie/${movie.id}`} style={{ textDecoration: 'none' }}>
 						<Button className={classnames(classes.button, classes.learnMore)}>
 							Learn More
 							<ArrowRightAlt className={classes.buttonIcon} />
