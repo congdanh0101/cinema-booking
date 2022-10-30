@@ -2,31 +2,16 @@ import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles, Box, Grid } from '@material-ui/core';
-import {
-	getMovies,
-	getShowtimes,
-	getMovieSuggestion,
-} from '../../../service/actions';
+import { getMovies, getShowtimes } from '../../../service/actions';
 import MovieCarousel from '../components/MovieCarousel/MovieCarousel';
 import MovieBanner from '../components/MovieBanner/MovieBanner';
 import styles from './styles';
 
 class HomePage extends Component {
 	componentDidMount() {
-		const {
-			movies,
-			showtimes,
-			suggested,
-			getMovies,
-			getShowtimes,
-			getMovieSuggestion,
-			user,
-		} = this.props;
+		const { movies, showtimes, getMovies, getShowtimes } = this.props;
 		if (!movies.length) getMovies();
 		if (!showtimes.length) getShowtimes();
-		if (user) {
-			if (!suggested.length) getMovieSuggestion(user.username);
-		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -37,27 +22,21 @@ class HomePage extends Component {
 	}
 
 	render() {
-		const { classes, randomMovie, comingSoon, nowShowing, suggested } =
-			this.props;
+		const { classes, randomMovie, comingSoon, nowShowing } = this.props;
 		return (
 			<Fragment>
 				<MovieBanner movie={randomMovie} height="85vh" />
 				<Box height={60} />
 				<MovieCarousel
 					carouselClass={classes.carousel}
-					title="Suggested for you"
-					movies={suggested}
-				/>
-				<MovieCarousel
-					carouselClass={classes.carousel}
 					title="Now Showing"
-					to="/movie/category/nowShowing"
+					// to="/movies"
 					movies={nowShowing}
 				/>
 				<MovieCarousel
 					carouselClass={classes.carousel}
 					title="Coming Soon"
-					to="/movie/category/comingSoon"
+					// to="/movie/category/comingSoon"
 					movies={comingSoon}
 				/>
 				{false && (
@@ -86,11 +65,10 @@ const mapStateToProps = ({ movieState, showtimeState, authState }) => ({
 	comingSoon: movieState.comingSoon,
 	nowShowing: movieState.nowShowing,
 	showtimes: showtimeState.showtimes,
-	suggested: movieState.suggested,
 	user: authState.user,
 });
 
-const mapDispatchToProps = { getMovies, getShowtimes, getMovieSuggestion };
+const mapDispatchToProps = { getMovies, getShowtimes };
 
 export default connect(
 	mapStateToProps,

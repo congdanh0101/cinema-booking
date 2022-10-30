@@ -1,5 +1,6 @@
 import { GET_MOVIES, SELECT_MOVIE, GET_SUGGESTIONS } from '../types';
 import { setAlert } from './alert';
+import axios from 'axios';
 
 const URL = 'http://localhost:8888/api';
 
@@ -27,11 +28,8 @@ export const uploadMovieImage = (id, image) => async (dispatch) => {
 export const getMovies = () => async (dispatch) => {
 	try {
 		const url = URL + '/movies';
-		const response = await fetch(url, {
-			method: 'GET',
-			headers: { 'Content-Type': 'application/json' },
-		});
-		const movies = await response.json();
+		const response = await axios.get(url);
+		const movies = await response.data.json;
 		if (response.ok) {
 			dispatch({ type: GET_MOVIES, payload: movies });
 		}
@@ -50,6 +48,7 @@ export const getMovie = (id) => async (dispatch) => {
 		const url = URL + '/movies/' + id;
 		const response = await fetch(url, {
 			method: 'GET',
+			mode: 'no-cors',
 			headers: { 'Content-Type': 'application/json' },
 		});
 		const movie = await response.json();
@@ -66,6 +65,7 @@ export const getMovieSuggestion = (id) => async (dispatch) => {
 		const url = '/movies/usermodeling/' + id;
 		const response = await fetch(url, {
 			method: 'GET',
+			mode: 'no-cors',
 			headers: { 'Content-Type': 'application/json' },
 		});
 		const movies = await response.json();
