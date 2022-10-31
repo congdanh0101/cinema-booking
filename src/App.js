@@ -1,40 +1,55 @@
-// @ts-nocheck
 import React, { Component } from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-//Redux
+import HomePage from './pages/home-page/HomePage';
+import SignUp from './pages/register/SignUp';
+import SignIn from './pages/register/SignIn';
+import ForgotPassword from './pages/register/ForgotPassword';
+import MovieDetail from './pages/movie-detail/MovieDetail';
+import OrderPage from './pages/order-page/OrderPage';
+import PaymentPage from './pages/payment-page/PaymentPage';
+import TicketResult from './pages/ticket-result-page/TicketResult';
+import ProfilePage from './pages/profile-page/ProfilePage';
+import AdminPage from './pages/admin-page/AdminPage';
+import AdminPanel from './pages/admin-panel/AdminPanel';
+import Error from './pages/Error';
+import PrivateRoute from './components/privateRoute/PrivateRoute';
+import persistedStore from './redux/store';
 import { Provider } from 'react-redux';
-import store from './service';
-import { loadUser } from './service/actions';
+import { PersistGate } from 'redux-persist/integration/react';
+import ScrollToTop from './helpers/ScrollToTop';
 
-//Components
-import Theme from './shared/theme';
-import Routes from './Routes';
-import { Alert } from './components';
-import { pageCursors } from './shared/utils';
-
-//Styles
-import './assets/scss/index.scss';
-import { CssBaseline } from '@material-ui/core';
-
-class App extends Component {
-	componentDidMount() {
-		store.dispatch(loadUser());
-		pageCursors();
-	}
+export default class App extends Component {
 	render() {
+		const { store, persistor } = persistedStore();
 		return (
 			<Provider store={store}>
-				<ThemeProvider theme={Theme}>
-					<CssBaseline />
-					<Alert />
-					<Routes />
-					<div className="cursor" id="cursor" />
-					<div className="cursor2" id="cursor2" />
-					<div className="cursor3" id="cursor3" />
-				</ThemeProvider>
+				<PersistGate persistor={persistor}>
+					<BrowserRouter>
+						<ScrollToTop />
+						<Switch>
+							<Route path="/" exact component={HomePage} />
+							<Route path="/sign-up" component={SignUp} />
+							<Route path="/login" component={SignIn} />
+							<Route path="/forgot-password" component={ForgotPassword} />
+							<Route path="/movie-detail/:id" component={MovieDetail} />
+							<PrivateRoute path="/order-page" privateComponent={OrderPage} />
+							<PrivateRoute path="/payment" privateComponent={PaymentPage} />
+							<PrivateRoute
+								path="/ticket-result"
+								privateComponent={TicketResult}
+							/>
+							<PrivateRoute
+								path="/profile-page"
+								privateComponent={ProfilePage}
+							/>
+							<PrivateRoute path="/admin-page" privateComponent={AdminPage} />
+							<PrivateRoute path="/admin-panel" privateComponent={AdminPanel} />
+							<Route path="*" component={Error} />
+						</Switch>
+					</BrowserRouter>
+				</PersistGate>
 			</Provider>
 		);
 	}
 }
-export default App;
