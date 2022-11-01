@@ -2,6 +2,9 @@ package springboot.restful.service.implement;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.entity.Order;
@@ -9,9 +12,9 @@ import springboot.restful.model.entity.OrderDetail;
 import springboot.restful.model.entity.User;
 import springboot.restful.model.payloads.OrderDTO;
 import springboot.restful.model.payloads.OrderDetailDTO;
-import springboot.restful.model.payloads.UserDTO;
 import springboot.restful.repository.OrderRepository;
 import springboot.restful.repository.UserRepository;
+import springboot.restful.service.OrderDetailService;
 import springboot.restful.service.OrderService;
 import springboot.restful.util.ModelMapping;
 
@@ -30,27 +33,68 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	private UserRepository userRepository;
 
 	@Autowired
+	private OrderDetailService orderDetailService;
+
+	@Autowired
 	private ModelMapper modelMapper;
 
-	@Override
-	public OrderDTO createOrder(UserDTO userDTO) {
-		Order order = new Order();
-		Date dt = new Date();
+//	public OrderDTO createOrder(UserDTO userDTO) {
+//		Order order = new Order();
+//		Date dt = new Date();
+//
+//		java.sql.Date date = new java.sql.Date(dt.getTime());
+//		Time time = new Time(dt.getTime());
+//
+//		User user = modelMapper.map(userDTO, User.class);
+//
+//		order.setDate(date);
+//		order.setTime(String.valueOf(time));
+//		order.setUser(user);
+//		order.setTotal(0);
+//		order.setPaid(false);
+//
+//		OrderDTO orderDTO = entityToDTO(orderRepository.save(order));
+//		orderDTO.setUser(userDTO);
+//		return orderDTO;
+//	}
 
+	@Override
+	public OrderDTO createOrder(List<OrderDetailDTO> orderDetailDTOS) {
+		int total = 0;
+		Order order = new Order();
+		User user = decodeFromJwtTokenToUser();
+		Date dt = new Date();
 		java.sql.Date date = new java.sql.Date(dt.getTime());
 		Time time = new Time(dt.getTime());
-
-		User user = modelMapper.map(userDTO, User.class);
-
 		order.setDate(date);
 		order.setTime(String.valueOf(time));
 		order.setUser(user);
-		order.setTotal(0);
-		order.setPaid(false);
 
-		OrderDTO orderDTO = entityToDTO(orderRepository.save(order));
-		orderDTO.setUser(userDTO);
-		return orderDTO;
+		for (OrderDetailDTO od : orderDetailDTOS) {
+			total += od.getTicket().getPrice();
+		}
+		order.setTotal(total);
+
+//		List<OrderDetail> odds = orderDetailDTOS.stream().map(od -> modelMapper.map(od, OrderDetail.class)).collect(Collectors.toList());
+//		order.setOrderDetails(odds);
+
+		Order savedOrder = orderRepository.save(order);
+
+		orderDetailDTOS.forEach(odd -> {
+			OrderDetail orderDetail = modelMapper.map(odd, OrderDetail.class);
+			orderDetail.setOrder(savedOrder);
+//			orderDetail.setTicket(modelMapper.map(odd.getTicket(), Ticket.class));
+			OrderDetailDTO orderDetailDTO = modelMapper.map(orderDetail, OrderDetailDTO.class);
+			orderDetailService.createOrderDetail(orderDetailDTO);
+		});
+		return entityToDTO(savedOrder);
+	}
+
+	private User decodeFromJwtTokenToUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+		return user;
 	}
 
 	@Override
@@ -80,6 +124,13 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	}
 
 	@Override
+	public OrderDTO payOrder(int id, boolean isPaid) {
+		Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
+		order.setPaid(isPaid);
+		return entityToDTO(orderRepository.save(order));
+	}
+
+	@Override
 	public OrderDTO updateOrder(int id, List<OrderDetailDTO> orderDetailDTOS) {
 		int total = 0;
 		Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
@@ -89,6 +140,7 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 		}
 		order.setOrderDetails(orderDetails);
 		order.setTotal(total);
+
 		orderRepository.save(order);
 
 		return null;

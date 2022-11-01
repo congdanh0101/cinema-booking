@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +19,6 @@ public class OrderDTO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
 	private String time;
 
-	private Set<OrderDetailDTO> orderDetail = new HashSet<>();
 	private UserDTO user;
 	private boolean isPaid;
 	private int total;

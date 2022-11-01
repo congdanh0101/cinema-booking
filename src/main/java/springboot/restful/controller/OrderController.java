@@ -10,12 +10,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import springboot.restful.config.security.JwtTokenHelper;
 import springboot.restful.model.entity.User;
+import springboot.restful.model.payloads.OrderDTO;
+import springboot.restful.model.payloads.OrderDetailDTO;
 import springboot.restful.model.payloads.UserDTO;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.service.OrderService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -40,8 +43,10 @@ public class OrderController {
 	private ModelMapper modelMapper;
 
 	@PostMapping("")
-	public ResponseEntity<?> createNewOrder() {
-		return ResponseEntity.ok().body(orderService.createOrder(decodeJwtToUsername()));
+	public ResponseEntity<?> createNewOrder(@RequestBody List<OrderDetailDTO> orderDetailDTOS) {
+		UserDTO userDTO = decodeJwtToUsername();
+		OrderDTO orderDTO = orderService.createOrder(orderDetailDTOS);
+		return ResponseEntity.ok().body(orderDTO);
 	}
 
 	@GetMapping("")
