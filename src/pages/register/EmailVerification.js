@@ -12,7 +12,7 @@ import RightRegister from '../../components/register/RightRegister';
 import tickitz_white from '../../assets/images/tickitz-white.svg';
 import './styles.css';
 
-class ForgotPassword extends Component {
+class EmailVerification extends Component {
 	render() {
 		return (
 			<Row>
@@ -21,29 +21,29 @@ class ForgotPassword extends Component {
 					<Container>
 						<Image src={tickitz_white} width={250} />
 						<p className="text-display-md-bold m-0 text-white pt-5">
-							Lets reset your password
+							Lets verify your new account
 						</p>
 						<p className="text-lg text-white pb-3 opacity-70 ">
-							To be able to use your account again, please complete the
-							following steps
+							To be able to use your account, please complete the following
+							steps
 						</p>
 						<ListGroup>
 							<li>
 								<Button
 									variant="outline-light"
 									className="btn-sm rounded-circle"
-									active
 								>
 									1<div className="vertical-line"></div>
 								</Button>
 								<label className="form-check-label text-white pb-3">
-									<p className="pl-3">Fill your complete email</p>
+									<p className="pl-3">Fill your additional details</p>
 								</label>
 							</li>
 							<li>
 								<Button
 									variant="outline-light"
 									className="btn-sm rounded-circle"
+									active
 								>
 									2<div className="vertical-line"></div>
 								</Button>
@@ -58,20 +58,7 @@ class ForgotPassword extends Component {
 									variant="outline-light"
 									className="btn-sm rounded-circle"
 								>
-									3<div className="vertical-line"></div>
-								</Button>
-								<label className="form-check-label text-label-non-active text-white pb-3">
-									<p className="pl-3 text-color-placeholder">
-										Enter your new password
-									</p>
-								</label>
-							</li>
-							<li>
-								<Button
-									variant="outline-light"
-									className="btn-sm rounded-circle"
-								>
-									4
+									3
 								</Button>
 								<label className="form-check-label text-label-non-active text-white pb-3">
 									<p className="pl-3 text-color-placeholder">Done</p>
@@ -101,4 +88,4 @@ class ForgotPassword extends Component {
 	}
 }
 
-export default ForgotPassword;
+export default EmailVerification;

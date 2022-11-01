@@ -15,8 +15,10 @@ export const getAllUser = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
+				payload: message,
 			});
 		}
 	};
@@ -34,6 +36,29 @@ export const userDetail = (token) => {
 			console.log(response);
 			dispatch({
 				type: 'GET_USER',
+				payload: response.data.results,
+				message: response.data.message,
+			});
+		} catch (err) {
+			dispatch({
+				type: 'SET_USER_MESSAGE',
+			});
+		}
+	};
+};
+
+export const addUser = () => {
+	return async (dispatch) => {
+
+		try {
+			dispatch({
+				type: 'SET_USER_MESSAGE',
+				payload: '',
+				message: '',
+			});
+			const response = await http().post(`users`);
+			dispatch({
+				type: 'ADD_USER',
 				payload: response.data.results,
 				message: response.data.message,
 			});

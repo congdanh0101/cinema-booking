@@ -18,7 +18,7 @@ function OrderPage({ order }) {
 			<Navbar className="navbar-expand-lg navbar-dark bg-primary">
 				<Container>
 					<Container fluid>
-						<Link className="text-link-lg text-white">{dataMovie.title}</Link>
+						<Link className="text-link-lg text-white">{dataMovie.name}</Link>
 						<Link to="/" className="ml-auto">
 							<Button
 								variant="light"

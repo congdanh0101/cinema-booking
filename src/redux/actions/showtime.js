@@ -1,15 +1,11 @@
 import http from '../../helpers/config';
 
-export const showTime = (date, location, movie) => {
+export const getAllShowtime = () => {
 	return async (dispatch) => {
 		try {
-			const data = new URLSearchParams();
-			data.append('date', date);
-			data.append('location', location);
-			data.append('movie', movie);
-			const response = await http().get(`showtimes?${data.toString()}`);
+			const response = await http().get(`showtimes`);
 			dispatch({
-				type: 'GET_SHOWTIME',
+				type: 'GET_ALL_SHOWTIME',
 				payload: response.data.results,
 				message: response.data.message,
 			});
@@ -23,15 +19,111 @@ export const showTime = (date, location, movie) => {
 	};
 };
 
-export const movieTime = (id) => {
+export const getShowtimeById = (id) => {
 	return async (dispatch) => {
 		try {
 			dispatch({
 				type: 'SET_SHOWTIME_MESSAGE',
 			});
-			const response = await http().get(`movieShowtime/${id}`);
+			const response = await http().get(`showtimes/${id}`);
 			dispatch({
 				type: 'MOVIE_SHOWTIME',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_SHOWTIME_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const addShowtime = (movieId, theaterId) => {
+	return async (dispatch) => {
+		try {
+			const token = localStorage.getItem('jwtToken');
+			const response = await http(token).post(
+				`showtimes/movies/${movieId}/theaters/${theaterId}`,
+				{
+					movieId,
+					theaterId,
+				}
+			);
+			dispatch({
+				type: 'ADD_SHOWTIME',
+				payload: response.data.results,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_SHOWTIME_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const updateShowtime = (movieId, theaterId) => {
+	return async (dispatch) => {
+		try {
+			const token = localStorage.getItem('jwtToken');
+			const response = await http(token).post(
+				`showtimes/movies/${movieId}/theaters/${theaterId}`,
+				{
+					movieId,
+					theaterId,
+				}
+			);
+			dispatch({
+				type: 'UPDATE_SHOWTIME',
+				payload: response.data.results,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_SHOWTIME_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const deleteShowtime = (id) => {
+	return async (dispatch) => {
+		try {
+			dispatch({
+				type: 'SET_SHOWTIME_MESSAGE',
+			});
+			const response = await http().get(`showtimes/${id}`);
+			dispatch({
+				type: 'DELETE_SHOWTIME',
+				payload: response.data.results,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_SHOWTIME_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const deleteShowtimeForce = (id) => {
+	return async (dispatch) => {
+		try {
+			dispatch({
+				type: 'SET_SHOWTIME_MESSAGE',
+			});
+			const response = await http().get(`showtimes/${id}`);
+			dispatch({
+				type: 'DELETE_SHOWTIME_FORCE',
 				payload: response.data.results,
 				message: response.data.message,
 			});

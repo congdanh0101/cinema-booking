@@ -15,6 +15,7 @@ const ValidatorSchema = Yup.object().shape({
 		.min(2, 'Too Short!')
 		.max(30, 'Too Long!')
 		.required('Required'),
+	gender: Yup.string().required('Required'),
 	phoneNumber: Yup.number()
 		.min(2, 'Too Short!')
 		.max(30, 'Too Long!')
@@ -76,7 +77,7 @@ class DetailInfo extends Component {
 									<p>Details Information</p>
 									<hr />
 									<Form.Group>
-										<Row>
+										<Row className="mb-3">
 											<Col>
 												<Form.Label>First Name</Form.Label>
 												<Form.Control
@@ -108,29 +109,27 @@ class DetailInfo extends Component {
 												) : null}
 											</Col>
 										</Row>
-									</Form.Group>
-									<Form.Group>
 										<Row>
 											<Col>
-												<Form.Label>E-mail</Form.Label>
+												<Form.Label>Gender</Form.Label>
 												<Form.Control
-													type="email"
-													placeholder="Write your email"
-													name="email"
+													type="gender"
+													placeholder="Write your gender"
+													name="gender"
 													onChange={handleChange}
 													onBlur={handleBlur}
-													value={values.email}
-													isValid={touched.email && !errors.email}
+													value={values.gender}
+													isValid={touched.gender && !errors.gender}
 												/>
-												{errors.email && touched.email ? (
-													<div style={{ color: 'red' }}>{errors.email}</div>
+												{errors.gender && touched.gender ? (
+													<div style={{ color: 'red' }}>{errors.gender}</div>
 												) : null}
 											</Col>
 											<Col>
 												<Form.Label>Phone Number</Form.Label>
 												<InputGroup className="mb-3">
 													<InputGroup.Prepend className="contact">
-														<InputGroup.Text>+62</InputGroup.Text>
+														<InputGroup.Text>+84</InputGroup.Text>
 													</InputGroup.Prepend>
 													<Form.Control
 														type="number"
@@ -149,34 +148,27 @@ class DetailInfo extends Component {
 												</InputGroup>
 											</Col>
 										</Row>
+										<Row>
+											<Col>
+												<Form.Label>E-mail</Form.Label>
+												<Form.Control
+													type="email"
+													placeholder="Write your email"
+													name="email"
+													onChange={handleChange}
+													onBlur={handleBlur}
+													value={values.email}
+													isValid={touched.email && !errors.email}
+												/>
+												{errors.email && touched.email ? (
+													<div style={{ color: 'red' }}>{errors.email}</div>
+												) : null}
+											</Col>
+										</Row>
 									</Form.Group>
 								</Card.Body>
 							</Card>
-							<div className="pt-4">
-								<Card>
-									<Card.Body>
-										<p>Account and Privacy</p>
-										<hr />
-										<Form.Group>
-											<Row>
-												<Col>
-													<Form.Label>New Password</Form.Label>
-													<Form.Control
-														type="password"
-														placeholder="Write your password"
-													/>
-												</Col>
-												<Col>
-													<Form.Label>Confirm Password</Form.Label>
-													<Form.Control
-														type="password"
-														placeholder="Confirm your password"
-													/>
-												</Col>
-											</Row>
-										</Form.Group>
-									</Card.Body>
-								</Card>
+							<div className="pt-2">
 								{/* <Alert
 									className="mt-4"
 									variant="danger"

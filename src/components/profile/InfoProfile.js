@@ -16,7 +16,7 @@ class InfoProfile extends Component {
 				<Card>
 					<Card.Body>
 						<div className="d-flex justify-content-center">
-							<p className="text-color-body">INFORMATION</p>
+							<p className="text-color-body text-link-lg-20">INFO</p>
 						</div>
 						<div className="text-center">
 							<Image
@@ -26,11 +26,13 @@ class InfoProfile extends Component {
 								className="img-profile shadow"
 							/>
 							<p className="text-link-lg-20 pt-3 mb-0">
-								{data.firstName === null
-									? data.email
-									: data.firstName + ' ' + data.lastName}
+								{data.firstName + ' ' + data.lastName}
 							</p>
+							<p className="text-link-lg-20 pt-3 mb-0">{data.email}</p>
+							<p className="text-link-lg-20 pt-3 mb-0">{data.phoneNumber}</p>
+							<p className="text-link-lg-20 pt-3 mb-0">{data.gender}</p>
 							<p className="text-color-body">Moviegoers</p>
+							<p className="text-color-body">{data.role}</p>
 						</div>
 					</Card.Body>
 				</Card>

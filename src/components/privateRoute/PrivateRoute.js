@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Redirect, Route } from "react-router-dom";
-import { connect } from "react-redux";
-import { autoLogin } from "../../redux/actions/auth";
+import React, { Component } from 'react';
+import { Redirect, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { autoLogin } from '../../redux/actions/auth';
 
 class PrivateRoute extends Component {
 	render() {
@@ -15,7 +15,7 @@ class PrivateRoute extends Component {
 					} else {
 						return (
 							<Redirect
-								to={{ pathname: "/sign-up", state: { from: props.location } }}
+								to={{ pathname: '/sign-up', state: { from: props.location } }}
 							/>
 						);
 					}

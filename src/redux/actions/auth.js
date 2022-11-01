@@ -2,11 +2,8 @@ import http from '../../helpers/config';
 
 export const login = (username, password) => {
 	return async (dispatch) => {
-		const params = new URLSearchParams();
-		params.append('username', username);
-		params.append('password', password);
 		try {
-			const response = await http().post(`auth/login`, params);
+			const response = await http().post(`auth/login`, { username, password });
 			localStorage.setItem('token', response.data.token);
 			dispatch({
 				type: 'LOGIN',
@@ -23,13 +20,24 @@ export const login = (username, password) => {
 	};
 };
 
-export const register = (email, password) => {
+export const register = (
+	firstName,
+	lastName,
+	phoneNumber,
+	email,
+	password,
+	gender
+) => {
 	return async (dispatch) => {
-		const params = new URLSearchParams();
-		params.append('email', email);
-		params.append('password', password);
 		try {
-			const response = await http().post(`auth/register`, params);
+			const response = await http().post(`auth/register`, {
+				firstName,
+				lastName,
+				phoneNumber,
+				email,
+				password,
+				gender,
+			});
 			dispatch({
 				type: 'REGISTER',
 				message: response.data.message,

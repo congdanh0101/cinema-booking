@@ -6,9 +6,9 @@ import map from '../../assets/images/map.svg';
 import './styles.css';
 import http from '../../helpers/config';
 import moment from 'moment';
-import { showTime, movieTime } from '../../redux/actions/showtime';
+import { getShowtimeById } from '../../redux/actions/showtime';
 import { getMovieDetail } from '../../redux/actions/movie';
-import { createOrder } from '../../redux/actions/order';
+// import { createOrder } from '../../redux/actions/order';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
@@ -17,39 +17,36 @@ class MovieDetailComponent extends Component {
 		super(props);
 		this.state = {
 			selectValue: '',
-			listShowTime,
-			movie: {},
-			location: '',
-			date: '',
 			showResults: [],
-			showLocDate: [],
+			listShowTime,
 		};
 	}
 
 	async componentDidMount() {
 		const { id } = this.props.match.params;
 		await this.props.getMovieDetail(id);
-		this.props.movieTime(id);
+		this.props.getShowtimeById(id);
 	}
+
 	searchCinema = (e) => {
 		this.setState({ [e.target.name]: e.target.value }, async () => {
-			if (this.state.location !== '' && this.state.date !== '') {
-				const data = new URLSearchParams();
-				data.append('date', this.state.date);
-				data.append('location', this.state.location);
-				data.append('movie', this.props.match.params.id);
-				const response = await http().get(`showtimes?${data.toString()}`);
-				this.setState({
-					showResults: response.data.results,
-				});
-			}
+			const data = new URLSearchParams();
+			data.append(this.props.match.params.id);
+			const response = await http().get(`showtimes/${data.toString()}`);
+			console.log(response.data.data);
+			this.setState({
+				showResults: response.data,
+			});
 		});
 	};
 
 	render() {
 		const { movie } = this.props;
-		const { timeData } = this.props.showtime;
+		const { details } = this.props.showtime;
 		const { showResults } = this.state;
+
+		console.log('showResults', this.state.movie);
+
 		return (
 			<div>
 				<Row>
@@ -62,13 +59,13 @@ class MovieDetailComponent extends Component {
 					</Col>
 					<Col xs={12} md={8}>
 						<p className="text-display-sm-bold m-0">{movie.details.name}</p>
-						{movie.details.genres.map((subItem, subItemId) => {
+						{/* {movie.details.genres.map((subItem, subItemId) => {
 							return (
 								<p key={subItemId} class="text-md">
 									{subItem.name}
 								</p>
 							);
-						})}
+						})} */}
 						<Row xs={4} className="pt-2">
 							<Col xs={6} lg={4}>
 								<div className="flex-column justify-content-center d-flex">
@@ -94,30 +91,8 @@ class MovieDetailComponent extends Component {
 				<div className="text-center py-5">
 					<p className="text-display-xs-bold">Showtimes and Tickets</p>
 					<Row className="justify-content-center">
-						<Col lg={3} md={5} xs={12} className="d-grid pt-1">
+						<Col lg={3} md={5} xs={12} className="d-grid pt-0">
 							<Form.Group className="d-flex align-items-center">
-								<Image src={calendar} className="position-absolute pl-3" />
-								<Form.Control
-									name="date"
-									defaultValue=""
-									as="select"
-									className="border-0 pl-5 pick"
-									onChange={this.searchCinema}
-								>
-									<option value="">Select date</option>
-									{timeData.length > 0 &&
-										timeData.map((item) => (
-											<option
-												value={moment(item.showTimeDate).format('YYYY-MM-DD')}
-											>
-												{moment(item.showTimeDate).format('DD MMM YYYY')}
-											</option>
-										))}
-								</Form.Control>
-							</Form.Group>
-						</Col>
-						<Col lg={3} md={5} xs={12} className="d-grid pt-1">
-							<Form.Group className="d-flex align-items-center ">
 								<Image src={map} className="position-absolute pl-3" />
 								<Form.Control
 									name="location"
@@ -126,17 +101,31 @@ class MovieDetailComponent extends Component {
 									className="border-0 pl-5 pick"
 									onChange={this.searchCinema}
 								>
-									<option value="">Select city</option>
-									{timeData.length > 0 &&
-										timeData.map((item) => (
-											<option value={item.idLocation}>{item.location}</option>
-										))}
+									<option value="">Select theater</option>
+									{/* {details.theater.map((item) => (
+										<option key={item.id} value={item.id}>
+											{item.name}
+										</option>
+									))} */}
 								</Form.Control>
+								{/* {details.theater.map((item) => (
+									<Form.Control
+										key={item.id}
+										name="location"
+										defaultValue=""
+										as="select"
+										className="border-0 pl-5 pick"
+										onChange={this.searchCinema}
+									>
+										<option value="">Select theater</option>
+										<option value={item.id}>{item.name}</option>
+									</Form.Control>
+								))} */}
 							</Form.Group>
 						</Col>
 					</Row>
 
-					{showResults.length > 0 ? (
+					{/* {showResults.length > 0 ? (
 						<Row xs={1} md={2} lg={3} className="g-3">
 							{showResults.map((item) => (
 								<Col className="pt-4 col">
@@ -214,7 +203,7 @@ class MovieDetailComponent extends Component {
 						</Row>
 					) : (
 						<p>There is no data</p>
-					)}
+					)} */}
 				</div>
 			</div>
 		);
@@ -224,14 +213,13 @@ class MovieDetailComponent extends Component {
 const mapStateToProps = (state) => ({
 	movie: state.movie,
 	showtime: state.showtime,
-	order: state.order,
+	// order: state.order,
 });
 
 const mapDispatchToProps = {
 	getMovieDetail,
-	showTime,
-	createOrder,
-	movieTime,
+	getShowtimeById,
+	// createOrder,
 };
 
 export default withRouter(

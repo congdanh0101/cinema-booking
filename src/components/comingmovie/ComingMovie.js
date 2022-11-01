@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Image, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import listMonth from '../../utils/listMonth';
+// import listMonth from '../../utils/listMonth';
 import { getAllMovie } from '../../redux/actions/movie';
 import './styles.css';
 
@@ -25,7 +25,7 @@ class ComingMovie extends Component {
 					</Col>
 				</Row>
 
-				<div className="scrollmenu">
+				{/* <div className="scrollmenu">
 					{listMonth.map((item, itemId) => {
 						return (
 							<Button
@@ -37,7 +37,7 @@ class ComingMovie extends Component {
 							</Button>
 						);
 					})}
-				</div>
+				</div> */}
 
 				<div className="scrollmenu text-center">
 					{movie.comingSoon.map((item, itemId) => {
@@ -45,10 +45,10 @@ class ComingMovie extends Component {
 							<Card key={itemId} className="scroll card mr-4">
 								<Card.Body className="card-body">
 									<Image src={item.image} className="img-fluid img-resize" />
-									<p class="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
+									<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
 										{item.title}
 									</p>
-									<p class="text-xs-13 text-color-placeholder card-text pb-2 m-0">
+									<p className="text-xs-13 text-color-placeholder card-text pb-2 m-0">
 										{item.name}
 									</p>
 									<Link

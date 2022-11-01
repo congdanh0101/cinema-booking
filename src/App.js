@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from './pages/home-page/HomePage';
 import SignUp from './pages/register/SignUp';
 import SignIn from './pages/register/SignIn';
+import MoviePage from './pages/movie-page/MoviePage';
 import ForgotPassword from './pages/register/ForgotPassword';
 import MovieDetail from './pages/movie-detail/MovieDetail';
 import OrderPage from './pages/order-page/OrderPage';
@@ -32,6 +33,7 @@ export default class App extends Component {
 							<Route path="/sign-up" component={SignUp} />
 							<Route path="/login" component={SignIn} />
 							<Route path="/forgot-password" component={ForgotPassword} />
+							<Route path="/movies" component={MoviePage} />
 							<Route path="/movie-detail/:id" component={MovieDetail} />
 							<PrivateRoute path="/order-page" privateComponent={OrderPage} />
 							<PrivateRoute path="/payment" privateComponent={PaymentPage} />

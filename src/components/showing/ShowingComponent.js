@@ -3,11 +3,13 @@ import { Card, Col, Image, Row, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getAllMovie } from '../../redux/actions/movie';
+import { getAllShowtime } from '../../redux/actions/showtime';
 import './styles.css';
 
 class ShowingComponent extends Component {
 	async componentDidMount() {
 		this.props.getAllMovie();
+		this.props.getAllShowtime();
 	}
 	render() {
 		const { movie } = this.props;
@@ -15,9 +17,7 @@ class ShowingComponent extends Component {
 			<div>
 				<Row>
 					<Col>
-						<p className="text-display-xs-bold bottom-line float-left">
-							Now Showing
-						</p>
+						<p className="text-display-xs-bold float-left">Now Showing</p>
 					</Col>
 					<Col>
 						<Link to="#">
@@ -32,10 +32,10 @@ class ShowingComponent extends Component {
 							<Card key={itemId} className="scroll card mr-4">
 								<Card.Body className="card-body">
 									<Image src={item.image} className="img-fluid img-resize" />
-									<p class="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
+									<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
 										{item.title}
 									</p>
-									<p class="text-xs-13 text-color-placeholder card-text pb-2 m-0">
+									<p className="text-xs-13 text-color-placeholder card-text pb-2 m-0">
 										{item.name}
 									</p>
 									<Link
@@ -60,10 +60,12 @@ class ShowingComponent extends Component {
 
 const mapStateToProps = (state) => ({
 	movie: state.movie,
+	showTime: state.showTime,
 });
 
 const mapDispatchToProps = {
 	getAllMovie,
+	getAllShowtime,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShowingComponent);

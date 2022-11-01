@@ -3,7 +3,6 @@ import { Row, Image, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { login } from '../../redux/actions/auth';
 import { connect } from 'react-redux';
-
 import LeftRegister from '../../components/register/LeftRegister';
 import RightRegister from '../../components/register/RightRegister';
 import tickitz_white from '../../assets/images/tickitz-white.svg';
@@ -23,11 +22,13 @@ class SignIn extends Component {
 		message: '',
 		isLoading: false,
 	};
+
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
 		await this.props.login(values.email, values.password);
 		this.setState({ show: true, isLoading: false });
 	};
+
 	componentDidUpdate() {
 		if (this.props.auth.token) {
 			window.alert('Success go to dashboard');
@@ -35,15 +36,18 @@ class SignIn extends Component {
 			history.push('/');
 		}
 	}
+
 	// componentDidMount() {
 	// 	const token = localStorage.getItem('token');
 	// 	if (token) {
 	// 		this.props.autoLogin(token);
 	// 	}
 	// }
+
 	changeText = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
+
 	render() {
 		const { show } = this.state;
 		return (

@@ -6,7 +6,7 @@
 }
 .img-gradient:after {
 	border-radius: 16px;
-	content: "";
+	content: '';
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -30,7 +30,7 @@
 	display: inline-block;
 }
 section {
-	padding-top: 100px;
+	padding-top: 80px;
 }
 .btn-nav {
 	min-width: 120px;

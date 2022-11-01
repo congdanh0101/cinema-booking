@@ -18,7 +18,7 @@ class MovieDetail extends Component {
 					<div className="d-flex py-2">
 						<hr className="my-auto flex-grow-1" />
 						<div className="px-3 text-primary">
-							<Link to="/">View More</Link>
+							<Link to="/">View more</Link>
 						</div>
 						<hr className="my-auto flex-grow-1" />
 					</div>
