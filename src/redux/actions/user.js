@@ -1,13 +1,8 @@
-import http from '../../helpers/config';
+import http from '../../shared/helpers/config';
 
 export const getAllUser = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_USER_MESSAGE',
-				payload: '',
-				message: '',
-			});
 			const response = await http().get(`users`);
 			dispatch({
 				type: 'GET_ALL_USER',
@@ -24,82 +19,115 @@ export const getAllUser = () => {
 	};
 };
 
-export const userDetail = (token) => {
+export const getUserDetail = (token) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_USER_MESSAGE',
-				payload: '',
-				message: '',
-			});
-			const response = await http(token).get(`users`);
+			const response = await http(token).post(`users`, token);
 			console.log(response);
 			dispatch({
-				type: 'GET_USER',
+				type: 'GET_USER_DETAIL',
 				payload: response.data.results,
 				message: response.data.message,
 			});
 		} catch (err) {
 			dispatch({
 				type: 'SET_USER_MESSAGE',
+				payload: err,
 			});
 		}
 	};
 };
 
-export const addUser = () => {
+export const addUser = (
+	firstName,
+	lastName,
+	phoneNumber,
+	email,
+	password,
+	gender
+) => {
 	return async (dispatch) => {
-
 		try {
 			dispatch({
 				type: 'SET_USER_MESSAGE',
 				payload: '',
 				message: '',
 			});
-			const response = await http().post(`users`);
+			const token = localStorage.getItem('jwtToken');
+			const response = await http(token).post(`users`, {
+				firstName,
+				lastName,
+				phoneNumber,
+				email,
+				password,
+				gender,
+			});
 			dispatch({
 				type: 'ADD_USER',
 				payload: response.data.results,
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
+				payload: message,
 			});
 		}
 	};
 };
 
-export const updateUser = (token, data) => {
+export const updateUser = (
+	userId,
+	firstName,
+	lastName,
+	phoneNumber,
+	email,
+	password,
+	gender
+) => {
 	return async (dispatch) => {
-		const params = new FormData();
-		if (data.firstName) {
-			params.append(data.firstName);
-		}
-		if (data.lastName) {
-			params.append(data.lastName);
-		}
-		if (data.phoneNumber) {
-			params.append(data.phoneNumber);
-		}
-		if (data.email) {
-			params.append(data.email);
-		}
-		if (data.password) {
-			params.append(data.password);
-		}
-		if (data.gender) {
-			params.append(data.gender);
-		}
 		try {
 			dispatch({
 				type: 'SET_USER_MESSAGE',
 				message: '',
 			});
-			const response = await http(token).patch('user', params);
+			const token = localStorage.getItem('jwtToken');
+			const response = await http(token).put(`user/${userId}`, {
+				firstName,
+				lastName,
+				phoneNumber,
+				email,
+				password,
+				gender,
+			});
 			dispatch({
 				type: 'UPDATE_USER',
 				payload: response.data.results,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_USER_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const deleteUser = (userId) => {
+	return async (dispatch) => {
+		try {
+			dispatch({
+				type: 'SET_USER_MESSAGE',
+				message: '',
+			});
+			const token = localStorage.getItem('jwtToken');
+			const response = await http(token).delete(`user/${userId}`);
+			dispatch({
+				type: 'DELETE_MOVIE',
+				payload: response.data,
 				message: response.data.message,
 			});
 		} catch (err) {

@@ -1,5 +1,5 @@
 const initialState = {
-	data: [],
+	users: [],
 	detail: {},
 	message: '',
 	errorMsg: '',
@@ -10,19 +10,32 @@ const userReducer = (state = initialState, action) => {
 		case 'GET_ALL_USER': {
 			return {
 				...state,
-				data: action.payload,
+				users: action.payload,
 				message: action.message,
 			};
 		}
-		case 'GET_USER': {
+		case 'GET_USER_DETAIL': {
 			return {
 				...state,
-				data: action.payload,
-        detail: action.payload,
+				users: action.payload,
+				message: action.message,
+			};
+		}
+		case 'ADD_USER': {
+			return {
+				...state,
+				detail: action.payload,
 				message: action.message,
 			};
 		}
 		case 'UPDATE_USER': {
+			return {
+				...state,
+				detail: action.payload,
+				message: action.message,
+			};
+		}
+		case 'DELETE_USER': {
 			return {
 				...state,
 				detail: action.payload,

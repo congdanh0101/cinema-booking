@@ -1,4 +1,4 @@
-import http from '../../helpers/config';
+import http from '../../shared/helpers/config';
 
 export const login = (username, password) => {
 	return async (dispatch) => {

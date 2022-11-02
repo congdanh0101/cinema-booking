@@ -1,6 +1,5 @@
 const initialState = {
 	showtimes: [],
-	timeData: [],
 	details: {},
 	message: '',
 	errorMsg: '',
@@ -14,7 +13,7 @@ const showtimeReducer = (state = initialState, action) => {
 				showtimes: action.payload,
 			};
 		}
-		case 'MOVIE_SHOWTIME': {
+		case 'GET_SHOWTIME_DETAIL': {
 			return {
 				...state,
 				details: action.payload,
@@ -24,35 +23,34 @@ const showtimeReducer = (state = initialState, action) => {
 		case 'ADD_SHOWTIME': {
 			return {
 				...state,
-				showtimes: action.payload,
+				details: action.payload,
 				message: action.message,
 			};
 		}
 		case 'UPDATE_SHOWTIME': {
 			return {
 				...state,
-				showtimes: action.payload,
+				details: action.payload,
 				message: action.message,
 			};
 		}
 		case 'DELETE_SHOWTIME': {
 			return {
 				...state,
-				showtimes: action.payload,
+				details: action.payload,
 				message: action.message,
 			};
 		}
 		case 'DELETE_SHOWTIME_FORCE': {
 			return {
 				...state,
-				showtimes: action.payload,
+				details: action.payload,
 				message: action.message,
 			};
 		}
 		case 'SET_SHOWTIME_MESSAGE': {
 			return {
 				...state,
-				timeData: [],
 				errorMsg: action.payload,
 			};
 		}

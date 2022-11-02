@@ -1,52 +1,229 @@
-import http from '../../helpers/config';
+import http from '../../shared/helpers/config';
 
-export const movie = (title) => {
+export const getAllMovie = () => {
 	return async (dispatch) => {
-		const params = new URLSearchParams();
-		params.append('title', title);
 		try {
 			dispatch({
-				type: 'SET_CREATE_MOVIE_MESSAGE',
-				payload: '',
+				type: 'SET_MOVIE_MESSAGE',
 			});
-			const results = await http(this.props.auth.token).post(`movies`, params);
-			localStorage.setItem('token', results.data.token);
+			const response = await http().get(`movies`);
 			dispatch({
-				type: 'CREATE_MOVIE',
-				payload: results.data.token,
+				type: 'GET_ALL_MOVIE',
+				payload: response.data.content,
+				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
+			const { message } = err.response.data.content;
 			dispatch({
-				type: 'SET_CREATE_MOVIE_MESSAGE',
+				type: 'SET_MOVIE_MESSAGE',
 				payload: message,
 			});
 		}
 	};
 };
 
-export const getAllMovie = () => {
+export const getMovieByDisplay = () => {
 	return async (dispatch) => {
-		const response = await http().get(`movies`);
-		dispatch({
-			type: 'GET_ALL_MOVIE',
-			payload: response.data.content,
-		});
-		dispatch({
-			type: 'TOGGLE_MOVIE_LOADING',
-		});
+		try {
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+			});
+			const response = await http().get(`movies/display=true`);
+			dispatch({
+				type: 'GET_MOVIE_BY_DISPLAY',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const getMovieByShowing = () => {
+	return async (dispatch) => {
+		try {
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+			});
+			const response = await http().get(`movies/showing=true`);
+			dispatch({
+				type: 'GET_MOVIE_BY_SHOWING',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const getMovieByComing = () => {
+	return async (dispatch) => {
+		try {
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+			});
+			const response = await http().get(`movies/coming=true`);
+			dispatch({
+				type: 'GET_MOVIE_BY_COMING',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: message,
+			});
+		}
 	};
 };
 
 export const getMovieDetail = (id) => {
 	return async (dispatch) => {
-		const response = await http().get(`movies/${id}`);
-		dispatch({
-			type: 'GET_MOVIE_DETAIL',
-			payload: response.data,
-		});
-		dispatch({
-			type: 'TOGGLE_MOVIE_LOADING',
-		});
+		try {
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+			});
+			const response = await http().get(`movies/${id}`);
+			dispatch({
+				type: 'GET_MOVIE_DETAIL',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const addMovie = (
+	name,
+	duration,
+	description,
+	image,
+	trailer,
+	releases,
+	genres,
+	display,
+	showing,
+	coming
+) => {
+	return async (dispatch) => {
+		try {
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: '',
+				message: '',
+			});
+			const token = localStorage.getItem('jwtToken');
+			const response = await http(token).post(`movies`, {
+				name,
+				duration,
+				description,
+				image,
+				trailer,
+				releases,
+				genres,
+				display,
+				showing,
+				coming,
+			});
+			dispatch({
+				type: 'ADD_SHOWTIME',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const updateMovie = (
+	movieId,
+	name,
+	duration,
+	description,
+	image,
+	trailer,
+	releases,
+	genres,
+	display,
+	showing,
+	coming
+) => {
+	return async (dispatch) => {
+		try {
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: '',
+			});
+			const token = localStorage.getItem('jwtToken');
+			const response = await http(token).put(`movies/${movieId}`, {
+				name,
+				duration,
+				description,
+				image,
+				trailer,
+				releases,
+				genres,
+				display,
+				showing,
+				coming,
+			});
+			dispatch({
+				type: 'UPDATE_MOVIE',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const deleteMovie = (movieId) => {
+	return async (dispatch) => {
+		try {
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: '',
+			});
+			const token = localStorage.getItem('jwtToken');
+			const response = await http(token).delete(`movies/${movieId}`);
+			dispatch({
+				type: 'DELETE_MOVIE',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: message,
+			});
+		}
 	};
 };

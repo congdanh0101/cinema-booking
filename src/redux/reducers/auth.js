@@ -6,13 +6,6 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case 'LOGOUT': {
-			return {
-				...state,
-				token: null,
-				message: action.message,
-			};
-		}
 		case 'LOGIN': {
 			return {
 				...state,
@@ -28,19 +21,26 @@ const authReducer = (state = initialState, action) => {
 				errorMsg: '',
 			};
 		}
+		case 'LOGOUT': {
+			return {
+				...state,
+				token: null,
+				message: action.message,
+			};
+		}
 		case 'EMAIL_VERIFY': {
 			return {
 				...state,
 				message: action.message,
 			};
 		}
-		case 'FORGET_PASSWORD_VERIFY': {
+		case 'FORGET_PASSWORD': {
 			return {
 				...state,
 				message: action.message,
 			};
 		}
-		case 'FORGET_PASSWORD': {
+		case 'FORGET_PASSWORD_VERIFY': {
 			return {
 				...state,
 				message: action.message,
