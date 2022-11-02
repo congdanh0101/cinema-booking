@@ -1,6 +1,6 @@
-import ebv from "../assets/images/ebv.png";
-import cineone from "../assets/images/cineone.png";
-import hiflix from "../assets/images/hiflix.png";
+import ebv from "../../assets/images/ebv.png";
+import cineone from "../../assets/images/cineone.png";
+import hiflix from "../../assets/images/hiflix.png";
 const listShowTime = [
 	{
 		id: 1,
