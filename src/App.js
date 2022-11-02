@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from './pages/home-page/HomePage';
 import SignUp from './pages/register/SignUp';
 import SignIn from './pages/register/SignIn';
+import EmailVerification from './pages/register/EmailVerification';
 import MoviePage from './pages/movie-page/MoviePage';
 import ForgotPassword from './pages/register/ForgotPassword';
 import MovieDetail from './pages/movie-detail/MovieDetail';
@@ -30,8 +31,11 @@ export default class App extends Component {
 						<ScrollToTop />
 						<Switch>
 							<Route path="/" exact component={HomePage} />
+
 							<Route path="/sign-up" component={SignUp} />
 							<Route path="/login" component={SignIn} />
+							<Route path="/email-verify" component={EmailVerification} />
+
 							<Route path="/forgot-password" component={ForgotPassword} />
 							<Route path="/movies" component={MoviePage} />
 							<Route path="/movie-detail/:id" component={MovieDetail} />

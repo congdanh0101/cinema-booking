@@ -30,6 +30,9 @@ const ValidatorSchema = Yup.object().shape({
 		.min(2, 'Too Short!')
 		.max(30, 'Too Long!')
 		.required('Required'),
+	phoneNumber: Yup.string()
+		.min(9, ({ min }) => `Phone number must be at least ${min} characters`)
+		.required('Required'),
 	gender: Yup.string().required('Required'),
 	email: Yup.string().email('Invalid email').required('Required'),
 	password: Yup.string()
@@ -45,8 +48,17 @@ class SignUp extends Component {
 	};
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
-		await this.props.register(values.email, values.password);
+		await this.props.register(
+			values.firstName,
+			values.lastName,
+			values.phoneNumber,
+			values.email,
+			values.password,
+			values.gender
+		);
 		this.setState({ show: true, isLoading: false });
+		const { history } = this.props;
+		history.push('/email-verify');
 	};
 	render() {
 		const { show } = this.state;
@@ -54,7 +66,7 @@ class SignUp extends Component {
 			<Row className="container-fluid">
 				<LeftRegister>
 					<Container>
-						<Image src={tickitz_white} width={200} />
+						<Image src={tickitz_white} width={250} />
 						<p className="text-display-md-bold m-0 text-white pt-5">
 							Lets build your account
 						</p>
@@ -124,10 +136,10 @@ class SignUp extends Component {
 						initialValues={{
 							firstName: '',
 							lastName: '',
-							phone: '',
-							gender: '',
+							phoneNumber: '',
 							email: '',
 							password: '',
+							gender: '',
 						}}
 						validationSchema={ValidatorSchema}
 						onSubmit={(values) => {
@@ -199,7 +211,7 @@ class SignUp extends Component {
 													<InputGroup.Text>+84</InputGroup.Text>
 												</InputGroup.Prepend>
 												<Form.Control
-													type="number"
+													type="string"
 													placeholder="Write your phone number"
 													name="phoneNumber"
 													onChange={handleChange}
@@ -207,6 +219,11 @@ class SignUp extends Component {
 													value={values.phoneNumber}
 													isValid={touched.phoneNumber && !errors.phoneNumber}
 												/>
+												{errors.phoneNumber && touched.phoneNumber ? (
+													<div style={{ color: 'red' }}>
+														{errors.phoneNumber}
+													</div>
+												) : null}
 											</InputGroup>
 										</Col>
 									</Row>

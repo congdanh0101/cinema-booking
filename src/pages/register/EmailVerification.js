@@ -6,16 +6,47 @@ import {
 	Button,
 	ListGroup,
 	Form,
+	Spinner,
+	Alert,
 } from 'react-bootstrap';
 import LeftRegister from '../../components/register/LeftRegister';
 import RightRegister from '../../components/register/RightRegister';
 import tickitz_white from '../../assets/images/tickitz-white.svg';
+import { connect } from 'react-redux';
+import { Formik } from 'formik';
+import { emailVerify } from '../../redux/actions/auth';
 import './styles.css';
+import * as Yup from 'yup';
+
+const ValidatorSchema = Yup.object().shape({
+	code: Yup.string().required('Required'),
+});
 
 class EmailVerification extends Component {
+	state = {
+		show: false,
+		message: '',
+		isLoading: false,
+	};
+	submitData = async (values) => {
+		this.setState({ isLoading: true });
+		await this.props.emailVerify(values.code);
+		this.setState({ show: true, isLoading: false });
+	};
+	componentDidUpdate() {
+		if (this.props.auth.token) {
+			window.alert('Success go to dashboard');
+			const { history } = this.props;
+			history.push('/');
+		}
+	}
+	changeText = (event) => {
+		this.setState({ [event.target.name]: event.target.value });
+	};
 	render() {
+		const { show } = this.state;
 		return (
-			<Row>
+			<Row className="container-fluid">
 				{/* Left Side */}
 				<LeftRegister>
 					<Container>
@@ -35,8 +66,10 @@ class EmailVerification extends Component {
 								>
 									1<div className="vertical-line"></div>
 								</Button>
-								<label className="form-check-label text-white pb-3">
-									<p className="pl-3">Fill your additional details</p>
+								<label className="form-check-label text-label-non-active text-white pb-3">
+									<p className="pl-3 text-color-placeholder">
+										Fill your additional details
+									</p>
 								</label>
 							</li>
 							<li>
@@ -47,10 +80,8 @@ class EmailVerification extends Component {
 								>
 									2<div className="vertical-line"></div>
 								</Button>
-								<label className="form-check-label text-label-non-active text-white pb-3">
-									<p className="pl-3 text-color-placeholder">
-										Activate your account
-									</p>
+								<label className="form-check-label text-white pb-3">
+									<p className="pl-3 ">Activate your account</p>
 								</label>
 							</li>
 							<li>
@@ -69,23 +100,74 @@ class EmailVerification extends Component {
 				</LeftRegister>
 				{/* Right side */}
 				<RightRegister>
-					<p class="text-link-lg-26 pt-3 m-0">Fill your complete email</p>
-					<p class="opacity-70 text-md pb-4 m-0">
+					<p className="text-link-lg-26 pt-3 m-0">
+						Fill your complete code verification
+					</p>
+					<p className="opacity-70 text-md pb-4 m-0">
 						we'll send a link to your email shortly
 					</p>
-					<Form.Group>
-						<Form.Group controlId="formBasicEmail">
-							<Form.Label>Email</Form.Label>
-							<Form.Control type="email" placeholder="Write your email" />
-						</Form.Group>
-						<Button variant="primary" type="submit" block>
-							Activate now
-						</Button>
-					</Form.Group>
+					{show === true && (
+						<Alert
+							className="pb-0"
+							variant={this.props.auth.message !== '' ? 'success' : 'danger'}
+							onClose={() => this.setState({ show: false })}
+							dismissible
+						>
+							<p>
+								{this.props.auth.message !== ''
+									? this.props.auth.message + ', now you can login'
+									: this.props.auth.errorMsg}
+							</p>
+						</Alert>
+					)}
+					<Formik
+						initialValues={{
+							code: '',
+						}}
+						validationSchema={ValidatorSchema}
+						onSubmit={(values) => {
+							this.submitData(values);
+						}}
+					>
+						{({ values, errors, touched, handleChange, handleSubmit }) => (
+							<Form.Group>
+								<Form.Group controlId="formBasicEmail">
+									<Form.Label>Verify Code</Form.Label>
+									<Form.Control
+										name="code"
+										type="string"
+										placeholder="Input your code here"
+										onChange={handleChange}
+										value={values.code}
+									/>
+									{errors.code && touched.code ? (
+										<p style={{ color: 'red' }}>{errors.code}</p>
+									) : null}
+								</Form.Group>
+								{this.state.isLoading === false ? (
+									<Button
+										variant="primary"
+										type="submit"
+										block
+										onClick={handleSubmit}
+									>
+										Activate now
+									</Button>
+								) : (
+									<Spinner animation="border" variant="primary" />
+								)}
+							</Form.Group>
+						)}
+					</Formik>
 				</RightRegister>
 			</Row>
 		);
 	}
 }
 
-export default EmailVerification;
+const mapStateToProps = (state) => ({
+	auth: state.auth,
+});
+const mapDispatchToProps = { emailVerify };
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmailVerification);

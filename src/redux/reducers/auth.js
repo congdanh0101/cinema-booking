@@ -28,6 +28,30 @@ const authReducer = (state = initialState, action) => {
 				errorMsg: '',
 			};
 		}
+		case 'EMAIL_VERIFY': {
+			return {
+				...state,
+				message: action.message,
+			};
+		}
+		case 'FORGET_PASSWORD_VERIFY': {
+			return {
+				...state,
+				message: action.message,
+			};
+		}
+		case 'FORGET_PASSWORD': {
+			return {
+				...state,
+				message: action.message,
+			};
+		}
+		case 'RESET_PASSWORD': {
+			return {
+				...state,
+				message: action.message,
+			};
+		}
 		case 'SET_AUTH_MESSAGE': {
 			return {
 				...state,

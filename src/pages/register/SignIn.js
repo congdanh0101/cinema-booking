@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Image, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { login } from '../../redux/actions/auth';
+import { login, autoLogin } from '../../redux/actions/auth';
 import { connect } from 'react-redux';
 import LeftRegister from '../../components/register/LeftRegister';
 import RightRegister from '../../components/register/RightRegister';
@@ -22,13 +22,11 @@ class SignIn extends Component {
 		message: '',
 		isLoading: false,
 	};
-
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
 		await this.props.login(values.email, values.password);
 		this.setState({ show: true, isLoading: false });
 	};
-
 	componentDidUpdate() {
 		if (this.props.auth.token) {
 			window.alert('Success go to dashboard');
@@ -36,18 +34,15 @@ class SignIn extends Component {
 			history.push('/');
 		}
 	}
-
-	// componentDidMount() {
-	// 	const token = localStorage.getItem('token');
-	// 	if (token) {
-	// 		this.props.autoLogin(token);
-	// 	}
-	// }
-
+	componentDidMount() {
+		const token = localStorage.getItem('token');
+		if (token) {
+			this.props.autoLogin(token);
+		}
+	}
 	changeText = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
-
 	render() {
 		const { show } = this.state;
 		return (
@@ -155,6 +150,6 @@ class SignIn extends Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
-const mapDispatchToProps = { login };
+const mapDispatchToProps = { login, autoLogin };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
