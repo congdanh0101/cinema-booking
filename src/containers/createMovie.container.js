@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import http from '../helpers/config';
-import { movie } from '../redux/actions/movie';
+import http from '../shared/helpers/config';
+import { addMovie } from '../redux/actions/movie';
 
 class CreateMovie extends Component {
 	state = {
-		title: '',
+		name: '',
+		duration: '',
+		description: '',
+		image: '',
+		trailer: '',
+		releases: '',
+		genres: '',
+		display: '',
+		showing: '',
+		coming: '',
 	};
+
 	// submitData = (e) => {
 	// 	e.preventDefault();
 	// 	const { name } = this.state;
 	// 	this.props.movie(name);
 	// };
+
 	changeText = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
+
 	saveData = async (e) => {
 		e.preventDefault();
 		const data = new URLSearchParams();
@@ -24,6 +36,7 @@ class CreateMovie extends Component {
 		const response = await http(this.props.auth.token).post('movies', data);
 		window.alert(response.data.message);
 	};
+
 	render() {
 		return (
 			<div>
@@ -48,6 +61,6 @@ class CreateMovie extends Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
-const mapDispatchToProps = { movie };
+const mapDispatchToProps = { addMovie };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateMovie);

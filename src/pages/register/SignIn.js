@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Image, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { login, autoLogin } from '../../redux/actions/auth';
+import { login } from '../../redux/actions/auth';
 import { connect } from 'react-redux';
 import LeftRegister from '../../components/register/LeftRegister';
 import RightRegister from '../../components/register/RightRegister';
@@ -32,12 +32,6 @@ class SignIn extends Component {
 			window.alert('Success go to dashboard');
 			const { history } = this.props;
 			history.push('/');
-		}
-	}
-	componentDidMount() {
-		const token = localStorage.getItem('token');
-		if (token) {
-			this.props.autoLogin(token);
 		}
 	}
 	changeText = (event) => {
@@ -150,6 +144,6 @@ class SignIn extends Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
-const mapDispatchToProps = { login, autoLogin };
+const mapDispatchToProps = { login };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

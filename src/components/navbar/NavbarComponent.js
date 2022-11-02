@@ -3,15 +3,10 @@ import { Navbar, Nav, Image, Container, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import tickitz_purple from '../../assets/images/tickitz-purple.svg';
 import { connect } from 'react-redux';
-import { userDetail } from '../../redux/actions/user';
 import { logout } from '../../redux/actions/auth';
 import './styles.css';
 
 class NavbarComponent extends Component {
-	async componentDidMount() {
-		this.props.userDetail(this.props.auth.token);
-	}
-
 	render() {
 		return (
 			<Navbar expand="lg">
@@ -75,6 +70,6 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = { userDetail, logout };
+const mapDispatchToProps = { logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarComponent);

@@ -4,7 +4,7 @@ import ButtonLeft from '../splitpanel/ButtonLeft';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
-import { getAllUser, updateUser } from '../../redux/actions/user';
+import { getUserDetail, updateUser } from '../../redux/actions/user';
 
 const ValidatorSchema = Yup.object().shape({
 	firstName: Yup.string()
@@ -44,6 +44,10 @@ class DetailInfo extends Component {
 			console.log('gagal');
 		}
 	};
+	async componentDidMount() {
+		this.props.getUserDetail(this.props.auth.token);
+		// this.props.getAllUser();
+	}
 	render() {
 		const { data } = this.props.user;
 		return (
@@ -199,6 +203,6 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = { getAllUser, updateUser };
+const mapDispatchToProps = { getUserDetail, updateUser };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailInfo);

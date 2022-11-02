@@ -4,7 +4,6 @@ import { Button, Col, Container, Navbar, Row, Nav } from 'react-bootstrap';
 import { Switch, Route, Link } from 'react-router-dom';
 import CreateMovie from '../../containers/createMovie.container';
 import GenreTable from '../../containers/genreTable.container';
-import CreateGenre from '../../containers/createGenre.container';
 import MovieTable from '../../containers/movieTable.container';
 import EditMovie from '../../containers/editMovie.container';
 import EditGenre from '../../containers/editGenre.container';
@@ -79,10 +78,6 @@ export default class AdminPanel extends Component {
 								<Route
 									path="/admin-panel/manage_genre/edit/:id"
 									component={EditGenre}
-								/>
-								<Route
-									path="/admin-panel/manage_genre/add"
-									component={CreateGenre}
 								/>
 							</Switch>
 						</Col>

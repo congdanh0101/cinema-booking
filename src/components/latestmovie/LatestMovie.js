@@ -3,12 +3,12 @@ import { Card, Image, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import listComingMovie from '../../shared/constants/listComingMovie';
-import { getMovieByComing } from '../../redux/actions/movie';
+import { getAllMovie } from '../../redux/actions/movie';
 import './styles.css';
 
-class ComingMovie extends Component {
+class LatestComponent extends Component {
 	async componentDidMount() {
-		this.props.getMovieByComing();
+		this.props.getAllMovie();
 	}
 	render() {
 		const { movie } = this.props;
@@ -16,7 +16,7 @@ class ComingMovie extends Component {
 			<div>
 				<Row>
 					<Col>
-						<p className="text-display-xs-bold float-left">Upcoming Movies</p>
+						<p className="text-display-xs-bold float-left">Latest Movies</p>
 					</Col>
 					<Col>
 						<Link to="#">
@@ -24,9 +24,22 @@ class ComingMovie extends Component {
 						</Link>
 					</Col>
 				</Row>
+				{/* <div className="scrollmenu">
+					{listMonth.map((item, itemId) => {
+						return (
+							<Button
+								key={itemId}
+								variant="outline-primary"
+								className="scroll btn-month mr-1"
+							>
+								{item.month}
+							</Button>
+						);
+					})}
+				</div> */}
 				<div className="scrollmenu text-center">
-					{movie.comingSoon.length > 0
-						? movie.comingSoon.map((item, itemId) => {
+					{movie.nowShowing.length > 0
+						? movie.nowShowing.map((item, itemId) => {
 								return (
 									<Card key={itemId} className="scroll card mr-4">
 										<Card.Body className="card-body">
@@ -90,7 +103,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-	getMovieByComing,
+	getAllMovie,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ComingMovie);
+export default connect(mapStateToProps, mapDispatchToProps)(LatestComponent);

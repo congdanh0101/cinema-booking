@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { Card, Col, Form, Image, Row, Button } from 'react-bootstrap';
-import listShowTime from '../../utils/listShowTime';
-import calendar from '../../assets/images/calendar.svg';
+import { Card, Col, Form, Image, Row } from 'react-bootstrap';
+import listShowTime from '../../shared/constants/listShowTime';
 import map from '../../assets/images/map.svg';
-import './styles.css';
-import http from '../../helpers/config';
-import moment from 'moment';
-import { getShowtimeById } from '../../redux/actions/showtime';
+import http from '../../shared/helpers/config';
+import { getShowtimeDetail } from '../../redux/actions/showtime';
 import { getMovieDetail } from '../../redux/actions/movie';
-// import { createOrder } from '../../redux/actions/order';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import './styles.css';
 
 class MovieDetailComponent extends Component {
 	constructor(props) {
@@ -25,7 +22,7 @@ class MovieDetailComponent extends Component {
 	async componentDidMount() {
 		const { id } = this.props.match.params;
 		await this.props.getMovieDetail(id);
-		this.props.getShowtimeById(id);
+		this.props.getShowtimeDetail(id);
 	}
 
 	searchCinema = (e) => {
@@ -44,9 +41,6 @@ class MovieDetailComponent extends Component {
 		const { movie } = this.props;
 		const { details } = this.props.showtime;
 		const { showResults } = this.state;
-
-		console.log('showResults', this.state.movie);
-
 		return (
 			<div>
 				<Row>
@@ -213,13 +207,11 @@ class MovieDetailComponent extends Component {
 const mapStateToProps = (state) => ({
 	movie: state.movie,
 	showtime: state.showtime,
-	// order: state.order,
 });
 
 const mapDispatchToProps = {
 	getMovieDetail,
-	getShowtimeById,
-	// createOrder,
+	getShowtimeDetail,
 };
 
 export default withRouter(

@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import http from '../helpers/config';
+import http from '../shared/helpers/config';
 
 class MovieTable extends Component {
 	state = {
 		movies: [],
 	};
+
 	async componentDidMount() {
 		const response = await http().get('movies');
 		this.setState({
-			movies: response.data.results,
+			movies: response.data.content,
 		});
 	}
+
 	render() {
 		const { movies } = this.state;
 		console.log(movies);

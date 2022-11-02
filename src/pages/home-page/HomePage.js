@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Col, Container, Row, Image } from 'react-bootstrap';
-import ComingMovie from '../../components/comingmovie/ComingMovie';
 import FooterComponent from '../../components/footer/FooterComponent';
 import NavbarComponent from '../../components/navbar/NavbarComponent';
+import ComingMovie from '../../components/comingmovie/ComingMovie';
 import ShowingComponent from '../../components/showing/ShowingComponent';
+import LatestComponent from '../../components/latestmovie/LatestMovie';
 import SubscribeComponent from '../../components/subscribe/SubscribeComponent';
 import './styles.css';
-import { login, autoLogin } from '../../redux/actions/auth';
+import { login } from '../../redux/actions/auth';
 import { connect } from 'react-redux';
 
 class HomePage extends Component {
@@ -60,6 +61,9 @@ class HomePage extends Component {
 						</Row>
 					</section>
 					<section>
+						<LatestComponent />
+					</section>
+					<section>
 						<ShowingComponent />
 					</section>
 					<section>
@@ -80,6 +84,6 @@ class HomePage extends Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
-const mapDispatchToProps = { login, autoLogin };
+const mapDispatchToProps = { login };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
