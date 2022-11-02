@@ -29,7 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/v3/api-docs",
 			"/swagger-resources/**",
 			"/swagger-ui/**",
-			"/webjars/**"
+			"/webjars/**",
+			"/pay"
 	};
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;

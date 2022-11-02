@@ -63,8 +63,10 @@ public class TicketServiceImp implements TicketService, ModelMapping<Ticket, Tic
 		ShowTime showTime = modelMapper.map(showTimeService.getShowTimeById(idShowTime), ShowTime.class);
 		List<TicketDTO> listTicketDTOS = new ArrayList<>();
 		seatDTOS.forEach(s -> listTicketDTOS.add(createTicket(idShowTime, s.getId())));
+
 		return listTicketDTOS;
 	}
+
 
 	@Override
 	public Ticket dtoToEntity(TicketDTO dto) {

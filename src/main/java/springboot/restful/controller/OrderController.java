@@ -1,6 +1,7 @@
 package springboot.restful.controller;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,44 +15,60 @@ import springboot.restful.model.payloads.OrderDTO;
 import springboot.restful.model.payloads.OrderDetailDTO;
 import springboot.restful.model.payloads.UserDTO;
 import springboot.restful.repository.UserRepository;
+import springboot.restful.service.OrderDetailService;
 import springboot.restful.service.OrderService;
+import springboot.restful.service.PaymentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
+@Slf4j
 public class OrderController {
 
+	public static final String URL_PAYPAL_SUCCESS = "pay/success";
+	public static final String URL_PAYPAL_CANCEL = "pay/cancel";
+	@Autowired
+	private PaymentService paymentService;
 	@Autowired
 	private OrderService orderService;
-
 	@Autowired
 	private JwtTokenHelper jwtTokenHelper;
-
 	@Autowired
 	private HttpServletRequest request;
-
 	@Autowired
 	private HttpServletResponse response;
-
 	@Autowired
 	private UserRepository userRepository;
-
 	@Autowired
 	private ModelMapper modelMapper;
+
+	@Autowired
+	private OrderDetailService orderDetailService;
 
 	@PostMapping("")
 	public ResponseEntity<?> createNewOrder(@RequestBody List<OrderDetailDTO> orderDetailDTOS) {
 		UserDTO userDTO = decodeJwtToUsername();
 		OrderDTO orderDTO = orderService.createOrder(orderDetailDTOS);
+
+		HttpSession session = request.getSession(false);
+		if (session == null || !request.isRequestedSessionIdValid())
+			session = request.getSession();
+		session.setAttribute("orderId", orderDTO.getId());
 		return ResponseEntity.ok().body(orderDTO);
 	}
 
 	@GetMapping("")
 	public ResponseEntity<?> getAllOrders() {
 		return ResponseEntity.ok().body(orderService.getAllOrders());
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getOrderById(@PathVariable int id) {
+		return ResponseEntity.ok().body(orderService.getOrderById(id));
 	}
 
 	@GetMapping("/users/{idUser}")
@@ -66,4 +83,14 @@ public class OrderController {
 		return modelMapper.map(user, UserDTO.class);
 	}
 
+	@GetMapping("/{idOrder}/detail")
+	public ResponseEntity<?> getAllOrderDetailsByOrder(@PathVariable int idOrder) {
+		return ResponseEntity.ok().body(orderDetailService.getOrderDetailsByOrder(idOrder));
+	}
+
+	@GetMapping("/detail/{idOrderDetail}")
+	public ResponseEntity<?> getOrderDetailsById(@PathVariable int idOrderDetail) {
+		return ResponseEntity.ok().body(orderDetailService.getOrderDetailById(idOrderDetail));
+	}
 }
+

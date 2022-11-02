@@ -1,5 +1,6 @@
 package springboot.restful.service.implement;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,11 +20,13 @@ import springboot.restful.service.OrderService;
 import springboot.restful.util.ModelMapping;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderDTO> {
 
 	@Autowired
@@ -79,11 +82,10 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 //		order.setOrderDetails(odds);
 
 		Order savedOrder = orderRepository.save(order);
-
+		List<OrderDetail> orderDetails = new ArrayList<>();
 		orderDetailDTOS.forEach(odd -> {
 			OrderDetail orderDetail = modelMapper.map(odd, OrderDetail.class);
 			orderDetail.setOrder(savedOrder);
-//			orderDetail.setTicket(modelMapper.map(odd.getTicket(), Ticket.class));
 			OrderDetailDTO orderDetailDTO = modelMapper.map(orderDetail, OrderDetailDTO.class);
 			orderDetailService.createOrderDetail(orderDetailDTO);
 		});
@@ -120,6 +122,7 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	@Override
 	public OrderDTO getOrderById(int id) {
 		Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
+		System.out.println(order.getOrderDetails());
 		return entityToDTO(order);
 	}
 
