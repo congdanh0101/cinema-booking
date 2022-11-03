@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import { Card, Col, InputGroup, Form, Row } from 'react-bootstrap';
-import ButtonLeft from '../splitpanel/ButtonLeft';
+import {
+	Card,
+	Col,
+	InputGroup,
+	Form,
+	Row,
+	Spinner,
+	Alert,
+} from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
+import ButtonLeft from '../splitpanel/ButtonLeft';
 import { getUserDetail, updateUser } from '../../redux/actions/user';
 
 const ValidatorSchema = Yup.object().shape({
@@ -15,22 +23,27 @@ const ValidatorSchema = Yup.object().shape({
 		.min(2, 'Too Short!')
 		.max(30, 'Too Long!')
 		.required('Required'),
-	gender: Yup.string().required('Required'),
-	phoneNumber: Yup.number()
-		.min(2, 'Too Short!')
-		.max(30, 'Too Long!')
+
+	phoneNumber: Yup.string()
+		.min(9, ({ min }) => `Phone number must be at least ${min} characters`)
 		.required('Required'),
 	email: Yup.string().email('Invalid email').required('Required'),
 });
 
 class DetailInfo extends Component {
 	state = {
-		show: true,
+		show: false,
 		message: '',
+		isLoading: false,
 	};
-	update = async (values) => {
-		const { token } = this.props.auth;
-		await this.props.updateUser(token, {
+	async componentDidMount() {
+		await this.props.getUserDetail(this.props.auth.token);
+		localStorage.setItem('userId', this.props.user.detail.id);
+	}
+	submitData = async (values) => {
+		const userId = localStorage.getItem('userId');
+		this.setState({ isLoading: true });
+		await this.props.updateUser(userId, {
 			firstName: values.firstName,
 			lastName: values.lastName,
 			phoneNumber: values.phoneNumber,
@@ -38,30 +51,39 @@ class DetailInfo extends Component {
 			password: values.password,
 			gender: values.gender,
 		});
-		if (this.props.user.errorMsg === '') {
-			console.log('sukses');
-		} else {
-			console.log('gagal');
-		}
+		this.setState({ show: true, isLoading: false });
 	};
-	async componentDidMount() {
-		await this.props.getUserDetail(this.props.auth.token);
-	}
 	render() {
-		const { user } = this.props;
+		const { show } = this.state;
+
 		return (
 			<div className="pt-4">
+				{show === true && (
+					<Alert
+						className="pb-0"
+						variant="danger"
+						onClose={() => this.setState({ show: false })}
+						dismissible
+					>
+						<p>
+							{this.props.user.message !== undefined
+								? this.props.user.message
+								: this.props.user.errorMsg}
+						</p>
+					</Alert>
+				)}
+				{show === true && console.log(show.message)}
 				<Formik
 					initialValues={{
-						firstName: user.detail.firstName,
-						lastName: user.detail.lastName,
-						phoneNumber: user.detail.phoneNumber,
-						email: user.detail.email,
-						gender: user.detail.gender,
+						firstName: '',
+						lastName: '',
+						phoneNumber: '',
+						email: '',
+						gender: this.props.user.detail.gender,
 					}}
 					validationSchema={ValidatorSchema}
 					onSubmit={(values) => {
-						this.update(values);
+						this.submitData(values);
 					}}
 				>
 					{({
@@ -73,7 +95,7 @@ class DetailInfo extends Component {
 						handleSubmit,
 						isSubmitting,
 					}) => (
-						<Form.Group onSubmit={handleSubmit}>
+						<Form.Group>
 							<Card>
 								<Card.Body>
 									<p>Details Information</p>
@@ -111,21 +133,34 @@ class DetailInfo extends Component {
 												) : null}
 											</Col>
 										</Row>
+										<Row className="mb-3">
+											<Col>
+												<Form.Label>E-mail</Form.Label>
+												<Form.Control
+													type="email"
+													placeholder="Write your email"
+													name="email"
+													onChange={handleChange}
+													onBlur={handleBlur}
+													value={values.email}
+													isValid={touched.email && !errors.email}
+												/>
+												{errors.email && touched.email ? (
+													<div style={{ color: 'red' }}>{errors.email}</div>
+												) : null}
+											</Col>
+										</Row>
 										<Row>
 											<Col>
 												<Form.Label>Gender</Form.Label>
 												<Form.Control
+													readOnly
 													type="gender"
-													placeholder="Write your gender"
 													name="gender"
+													defaultValue="Unspecified"
 													onChange={handleChange}
-													onBlur={handleBlur}
 													value={values.gender}
-													isValid={touched.gender && !errors.gender}
-												/>
-												{errors.gender && touched.gender ? (
-													<div style={{ color: 'red' }}>{errors.gender}</div>
-												) : null}
+												></Form.Control>
 											</Col>
 											<Col>
 												<Form.Label>Phone Number</Form.Label>
@@ -150,44 +185,19 @@ class DetailInfo extends Component {
 												</InputGroup>
 											</Col>
 										</Row>
-										<Row>
-											<Col>
-												<Form.Label>E-mail</Form.Label>
-												<Form.Control
-													type="email"
-													placeholder="Write your email"
-													name="email"
-													onChange={handleChange}
-													onBlur={handleBlur}
-													value={values.email}
-													isValid={touched.email && !errors.email}
-												/>
-												{errors.email && touched.email ? (
-													<div style={{ color: 'red' }}>{errors.email}</div>
-												) : null}
-											</Col>
-										</Row>
+										{this.state.isLoading === false ? (
+											<ButtonLeft
+												buttontext="Update Change"
+												type="submit"
+												onClick={handleSubmit}
+												disabled={isSubmitting}
+											/>
+										) : (
+											<Spinner animation="border" variant="primary" />
+										)}
 									</Form.Group>
 								</Card.Body>
 							</Card>
-							<div className="pt-2">
-								{/* <Alert
-									className="mt-4"
-									variant="danger"
-									onClose={() => this.setState({ show: this.state.show })}
-									dismissible
-								>
-									<Alert.Heading>Oh snap! You got an error!</Alert.Heading>
-									<p>
-										Change this and that and try again.
-									</p>
-								</Alert> */}
-								<ButtonLeft
-									buttonText="Update Change"
-									type="submit"
-									disabled={isSubmitting}
-								/>
-							</div>
 						</Form.Group>
 					)}
 				</Formik>

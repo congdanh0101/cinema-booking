@@ -38,6 +38,11 @@ const ValidatorSchema = Yup.object().shape({
 	password: Yup.string()
 		.min(1, ({ min }) => `Password must be at least ${min} characters`)
 		.required('Password is required'),
+	confirmPassword: Yup.string()
+		.test('passwords-match', 'Passwords must match', function (value) {
+			return this.parent.password === value;
+		})
+		.required('Confirm password is required'),
 });
 
 class SignUp extends Component {
@@ -53,10 +58,11 @@ class SignUp extends Component {
 			values.lastName,
 			values.phoneNumber,
 			values.email,
-			values.password,
+			values.confirmPassword,
 			values.gender
 		);
 		this.setState({ show: true, isLoading: false });
+		sessionStorage.setItem(this.props.register);
 	};
 	render() {
 		const { history } = this.props;
@@ -143,6 +149,7 @@ class SignUp extends Component {
 							phoneNumber: '',
 							email: '',
 							password: '',
+							confirmPassword: '',
 							gender: '',
 						}}
 						validationSchema={ValidatorSchema}
@@ -196,14 +203,19 @@ class SignUp extends Component {
 										<Col>
 											<Form.Label>Gender</Form.Label>
 											<Form.Control
+												as="select"
 												type="gender"
-												placeholder="Write your gender"
 												name="gender"
+												defaultValue="Location"
 												onChange={handleChange}
 												onBlur={handleBlur}
 												value={values.gender}
 												isValid={touched.gender && !errors.gender}
-											/>
+											>
+												<option>--Gender--</option>
+												<option>MALE</option>
+												<option>FEMALE</option>
+											</Form.Control>
 											{errors.gender && touched.gender ? (
 												<div style={{ color: 'red' }}>{errors.gender}</div>
 											) : null}
@@ -256,6 +268,20 @@ class SignUp extends Component {
 									/>
 									{errors.password && touched.password ? (
 										<p style={{ color: 'red' }}>{errors.password}</p>
+									) : null}
+								</Form.Group>
+								<Form.Group controlId="formConfirmPassword">
+									<Form.Label>Confirm Password</Form.Label>
+									<Form.Control
+										name="confirmPassword"
+										type="password"
+										placeholder="Confirm your password"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										value={values.confirmPassword}
+									/>
+									{errors.confirmPassword && touched.confirmPassword ? (
+										<p style={{ color: 'red' }}>{errors.confirmPassword}</p>
 									) : null}
 								</Form.Group>
 								{this.state.isLoading === false ? (

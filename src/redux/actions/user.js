@@ -79,8 +79,47 @@ export const addUser = (
 	};
 };
 
+// export const updateUser = (
+// 	id,
+// 	firstName,
+// 	lastName,
+// 	phoneNumber,
+// 	email,
+// 	password,
+// 	gender
+// ) => {
+// 	return async (dispatch) => {
+// 		try {
+// 			dispatch({
+// 				type: 'SET_USER_MESSAGE',
+// 				message: '',
+// 			});
+// 			const token = localStorage.getItem('jwtToken');
+// 			const response = await http(token).put(`users/${id}`, {
+// 				firstName: firstName,
+// 				lastName: lastName,
+// 				phoneNumber: phoneNumber,
+// 				email: email,
+// 				password: password,
+// 				gender: gender,
+// 			});
+// 			dispatch({
+// 				type: 'UPDATE_USER',
+// 				payload: response.data.results,
+// 				message: response.data.message,
+// 			});
+// 		} catch (err) {
+// 			const { message } = err.response.data;
+// 			dispatch({
+// 				type: 'SET_USER_MESSAGE',
+// 				payload: message,
+// 			});
+// 		}
+// 	};
+// };
+
 export const updateUser = (
-	userId,
+	id,
 	firstName,
 	lastName,
 	phoneNumber,
@@ -92,16 +131,17 @@ export const updateUser = (
 		try {
 			dispatch({
 				type: 'SET_USER_MESSAGE',
+				payload: '',
 				message: '',
 			});
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).put(`user/${userId}`, {
-				firstName,
-				lastName,
-				phoneNumber,
-				email,
-				password,
-				gender,
+			const response = await http(token).put(`users/${id}`, {
+				firstName: firstName,
+				lastName: lastName,
+				phoneNumber: phoneNumber,
+				email: email,
+				password: password,
+				gender: gender,
 			});
 			dispatch({
 				type: 'UPDATE_USER',
@@ -129,7 +169,7 @@ export const deleteUser = (userId) => {
 			const response = await http(token).delete(`user/${userId}`);
 			dispatch({
 				type: 'DELETE_MOVIE',
-				payload: response.data,
+				payload: response.data.results,
 				message: response.data.message,
 			});
 		} catch (err) {

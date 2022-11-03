@@ -3,6 +3,7 @@ import { Card, Col } from 'react-bootstrap';
 import DetailInfo from './DetailInfo';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './styles.css';
+
 export default class AccountProfile extends Component {
 	render() {
 		return (

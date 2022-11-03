@@ -4,12 +4,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 //Register
 import SignUp from './pages/register/SignUp';
 import SignIn from './pages/register/SignIn';
+import ForgetPassword from './pages/register/ForgetPassword';
+import ResetPassword from './pages/register/ResetPassword';
 import EmailVerification from './pages/register/EmailVerification';
 
 //Public
 import HomePage from './pages/home-page/HomePage';
 import MoviePage from './pages/movie-page/MoviePage';
-import ForgotPassword from './pages/register/ForgotPassword';
 import MovieDetail from './pages/movie-detail/MovieDetail';
 import OrderPage from './pages/order-page/OrderPage';
 import PaymentPage from './pages/payment-page/PaymentPage';
@@ -42,7 +43,9 @@ export default class App extends Component {
 							<Route path="/login" component={SignIn} />
 							<Route path="/email-verify" component={EmailVerification} />
 
-							<Route path="/forgot-password" component={ForgotPassword} />
+							<Route path="/forgot-password" component={ForgetPassword} />
+							<Route path="/reset-password" component={ResetPassword} />
+
 							<Route path="/movies" component={MoviePage} />
 							<Route path="/movie-detail/:id" component={MovieDetail} />
 							<PrivateRoute path="/order-page" privateComponent={OrderPage} />

@@ -14,15 +14,15 @@ import RightRegister from '../../components/register/RightRegister';
 import tickitz_white from '../../assets/images/tickitz-white.svg';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
-import { emailVerify, login } from '../../redux/actions/auth';
+import { forgetPassword } from '../../redux/actions/auth';
 import './styles.css';
 import * as Yup from 'yup';
 
 const ValidatorSchema = Yup.object().shape({
-	code: Yup.string().required('Required'),
+	email: Yup.string().email('Invalid email').required('Required'),
 });
 
-class EmailVerification extends Component {
+class ForgetPassword extends Component {
 	state = {
 		show: false,
 		message: '',
@@ -30,11 +30,13 @@ class EmailVerification extends Component {
 	};
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
-		await this.props.emailVerify(values.code);
+		await this.props.forgetPassword(values.email);
 		this.setState({ show: true, isLoading: false });
 	};
+
 	render() {
 		const { show } = this.state;
+		console.log(this.props);
 		return (
 			<Row className="container-fluid">
 				{/* Left Side */}
@@ -53,25 +55,25 @@ class EmailVerification extends Component {
 								<Button
 									variant="outline-light"
 									className="btn-sm rounded-circle"
+									active
 								>
 									1<div className="vertical-line"></div>
 								</Button>
-								<label className="form-check-label text-label-non-active text-white pb-3">
-									<p className="pl-3 text-color-placeholder">
-										Fill your additional details
-									</p>
+								<label className="form-check-label text-white pb-3">
+									<p className="pl-3 ">Fill your additional details</p>
 								</label>
 							</li>
 							<li>
 								<Button
 									variant="outline-light"
 									className="btn-sm rounded-circle"
-									active
 								>
 									2<div className="vertical-line"></div>
 								</Button>
-								<label className="form-check-label text-white pb-3">
-									<p className="pl-3 ">Activate your account</p>
+								<label className="form-check-label text-label-non-active text-white pb-3">
+									<p className="pl-3 text-color-placeholder">
+										Activate your account
+									</p>
 								</label>
 							</li>
 							<li>
@@ -94,7 +96,7 @@ class EmailVerification extends Component {
 						Fill your complete code verification
 					</p>
 					<p className="opacity-70 text-md pb-4 m-0">
-						we'll send a link to your email shortly
+						We'll send a link to your email shortly
 					</p>
 					{show === true && (
 						<Alert
@@ -112,26 +114,34 @@ class EmailVerification extends Component {
 					)}
 					<Formik
 						initialValues={{
-							code: '',
+							email: '',
 						}}
 						validationSchema={ValidatorSchema}
 						onSubmit={(values) => {
 							this.submitData(values);
 						}}
 					>
-						{({ values, errors, touched, handleChange, handleSubmit }) => (
+						{({
+							values,
+							errors,
+							touched,
+							handleChange,
+							handleBlur,
+							handleSubmit,
+						}) => (
 							<Form.Group>
-								<Form.Group>
-									<Form.Label>Verify Code</Form.Label>
+								<Form.Group controlId="formBasicEmail">
+									<Form.Label>Email</Form.Label>
 									<Form.Control
-										name="code"
-										type="text"
-										placeholder="Input your code here"
+										name="email"
+										type="email"
+										placeholder="Write your email"
 										onChange={handleChange}
-										value={values.code}
+										onBlur={handleBlur}
+										value={values.email}
 									/>
-									{errors.code && touched.code ? (
-										<p style={{ color: 'red' }}>{errors.code}</p>
+									{errors.email && touched.email ? (
+										<p style={{ color: 'red' }}>{errors.email}</p>
 									) : null}
 								</Form.Group>
 								{this.state.isLoading === false ? (
@@ -141,7 +151,7 @@ class EmailVerification extends Component {
 										block
 										onClick={handleSubmit}
 									>
-										Activate now
+										Get your verification now
 									</Button>
 								) : (
 									<Spinner animation="border" variant="primary" />
@@ -158,6 +168,6 @@ class EmailVerification extends Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
-const mapDispatchToProps = { emailVerify, login };
+const mapDispatchToProps = { forgetPassword };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmailVerification);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgetPassword);

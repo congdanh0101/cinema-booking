@@ -147,10 +147,14 @@ export const forgetPasswordVerify = (code) => {
 	};
 };
 
-export const resetPassword = (password, token) => {
+export const resetPassword = (password, confirmPassword) => {
 	return async (dispatch) => {
 		try {
-			const response = await http(token).patch(`auth/reset`, password);
+			const token = localStorage.getItem('token');
+			const response = await http(token).patch(`auth/reset`, {
+				newPassword: password,
+				confirmPassword: confirmPassword,
+			});
 			dispatch({
 				type: 'RESET_PASSWORD',
 				message: response.data.message,
