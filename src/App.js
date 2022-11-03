@@ -21,7 +21,7 @@ import ProfilePage from './pages/profile-page/ProfilePage';
 import AdminPage from './pages/admin-page/AdminPage';
 import AdminPanel from './pages/admin-panel/AdminPanel';
 
-import PrivateRoute from './components/privateRoute/PrivateRoute';
+import PrivateRoute from './shared/router/PrivateRoute';
 import persistedStore from './redux/store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';

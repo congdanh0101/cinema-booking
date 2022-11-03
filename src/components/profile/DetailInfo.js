@@ -187,6 +187,7 @@ class DetailInfo extends Component {
 										</Row>
 										{this.state.isLoading === false ? (
 											<ButtonLeft
+												gobuttonleft="/profile-page"
 												buttontext="Update Change"
 												type="submit"
 												onClick={handleSubmit}

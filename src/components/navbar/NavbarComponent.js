@@ -10,7 +10,6 @@ import './styles.css';
 class NavbarComponent extends Component {
 	async componentDidMount() {
 		this.props.getUserDetail(this.props.auth.token);
-		localStorage.setItem('userId', this.props.user.detail.id);
 	}
 	render() {
 		return (

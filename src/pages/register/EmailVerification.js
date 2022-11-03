@@ -34,6 +34,7 @@ class EmailVerification extends Component {
 		this.setState({ show: true, isLoading: false });
 	};
 	render() {
+		const { history } = this.props;
 		const { show } = this.state;
 		return (
 			<Row className="container-fluid">
@@ -110,6 +111,9 @@ class EmailVerification extends Component {
 							</p>
 						</Alert>
 					)}
+					{(show === true) & (this.props.auth.message !== '')
+						? ('', setTimeout(() => history.push('/sign-up'), 3000))
+						: ''}
 					<Formik
 						initialValues={{
 							code: '',

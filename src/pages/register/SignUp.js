@@ -62,7 +62,6 @@ class SignUp extends Component {
 			values.gender
 		);
 		this.setState({ show: true, isLoading: false });
-		sessionStorage.setItem(this.props.register);
 	};
 	render() {
 		const { history } = this.props;
