@@ -6,6 +6,7 @@ import FooterComponent from "../../components/footer/FooterComponent";
 import NavbarComponent from "../../components/navbar/NavbarComponent";
 import "./styles.css";
 
+
 export default class AdminPage extends Component {
   render() {
     return (

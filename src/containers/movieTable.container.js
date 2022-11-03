@@ -17,7 +17,6 @@ class MovieTable extends Component {
 
 	render() {
 		const { movies } = this.state;
-		console.log(movies);
 		return (
 			<div>
 				<Link to="/admin-panel/manage_movie/add">Add Movie</Link>
@@ -34,7 +33,7 @@ class MovieTable extends Component {
 							return (
 								<tr key={String(movie.id)}>
 									<td>{movie.id}</td>
-									<td>{movie.title}</td>
+									<td>{movie.name}</td>
 									<td>
 										<Link
 											to={`/admin-panel/manage_movie/edit/${movie.id}`}

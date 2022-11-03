@@ -24,6 +24,7 @@ class CreateMovie extends Component {
 	// 	this.props.movie(name);
 	// };
 
+
 	changeText = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
@@ -40,8 +41,14 @@ class CreateMovie extends Component {
 	render() {
 		return (
 			<div>
-				<Form onSubmit={this.saveData}>
+				<Form.Group onSubmit={this.saveData}>
 					<Form.Group>
+						<Form.Label>title</Form.Label>
+						<Form.Control
+							onChange={(event) => this.changeText(event)}
+							name="title"
+							placeholder="Write your title"
+						/>
 						<Form.Label>title</Form.Label>
 						<Form.Control
 							onChange={(event) => this.changeText(event)}
@@ -52,7 +59,7 @@ class CreateMovie extends Component {
 					<Button variant="primary" type="submit" block>
 						Submit
 					</Button>
-				</Form>
+				</Form.Group>
 			</div>
 		);
 	}
