@@ -24,19 +24,6 @@ class LatestComponent extends Component {
 						</Link>
 					</Col>
 				</Row>
-				{/* <div className="scrollmenu">
-					{listMonth.map((item, itemId) => {
-						return (
-							<Button
-								key={itemId}
-								variant="outline-primary"
-								className="scroll btn-month mr-1"
-							>
-								{item.month}
-							</Button>
-						);
-					})}
-				</div> */}
 				<div className="scrollmenu text-center">
 					{movie.nowShowing.length > 0
 						? movie.nowShowing.map((item, itemId) => {

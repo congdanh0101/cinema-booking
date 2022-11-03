@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { login, autoLogin } from '../../redux/actions/auth';
+import { login } from '../../redux/actions/auth';
 import { connect } from 'react-redux';
 import MovieDetailComponent from '../../components/moviedetail/MovieDetailComponent';
 import NavbarComponent from '../../components/navbar/NavbarComponent';
@@ -32,6 +32,6 @@ class MovieDetail extends Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
-const mapDispatchToProps = { login, autoLogin };
+const mapDispatchToProps = { login };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail);

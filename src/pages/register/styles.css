@@ -34,13 +34,11 @@ ul {
 		margin-left: 6px;
 	}
 }
-
 @media (max-width: 767.98px) {
 	.text-link-lg-26 {
 		font-size: 18px;
 	}
 }
-
 .form-group .form-control {
 	min-height: 56px;
 	border-radius: 14px;

@@ -3,9 +3,6 @@ import http from '../../shared/helpers/config';
 export const getAllMovie = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-			});
 			const response = await http().get(`movies`);
 			dispatch({
 				type: 'GET_ALL_MOVIE',
@@ -25,9 +22,6 @@ export const getAllMovie = () => {
 export const getMovieByDisplay = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-			});
 			const response = await http().get(`movies/display=true`);
 			dispatch({
 				type: 'GET_MOVIE_BY_DISPLAY',
@@ -47,9 +41,6 @@ export const getMovieByDisplay = () => {
 export const getMovieByShowing = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-			});
 			const response = await http().get(`movies/showing=true`);
 			dispatch({
 				type: 'GET_MOVIE_BY_SHOWING',
@@ -69,9 +60,6 @@ export const getMovieByShowing = () => {
 export const getMovieByComing = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-			});
 			const response = await http().get(`movies/coming=true`);
 			dispatch({
 				type: 'GET_MOVIE_BY_COMING',
@@ -91,9 +79,6 @@ export const getMovieByComing = () => {
 export const getMovieDetail = (id) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-			});
 			const response = await http().get(`movies/${id}`);
 			dispatch({
 				type: 'GET_MOVIE_DETAIL',
@@ -124,11 +109,6 @@ export const addMovie = (
 ) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-				payload: '',
-				message: '',
-			});
 			const token = localStorage.getItem('jwtToken');
 			const response = await http(token).post(`movies`, {
 				name,
@@ -172,10 +152,6 @@ export const updateMovie = (
 ) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-				payload: '',
-			});
 			const token = localStorage.getItem('jwtToken');
 			const response = await http(token).put(`movies/${movieId}`, {
 				name,
@@ -207,10 +183,6 @@ export const updateMovie = (
 export const deleteMovie = (movieId) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-				payload: '',
-			});
 			const token = localStorage.getItem('jwtToken');
 			const response = await http(token).delete(`movies/${movieId}`);
 			dispatch({

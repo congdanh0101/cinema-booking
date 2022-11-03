@@ -3,9 +3,6 @@ import http from '../../shared/helpers/config';
 export const getTickets = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_TICKET_MESSAGE',
-			});
 			const response = await http().get(`tickets`);
 			dispatch({
 				type: 'GET_ALL_TICKET',
@@ -25,9 +22,6 @@ export const getTickets = () => {
 export const getTicketsByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_TICKET_MESSAGE',
-			});
 			const response = await http().get(`tickets/showtimes/${showtimeId}`);
 			dispatch({
 				type: 'GET_TICKET_BY_SHOWTIME',
@@ -78,9 +72,6 @@ export const addTicket = (showtimeId, seatId, seat, showtime) => {
 export const addManyTickets = (showtimeId) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_TICKET_MESSAGE',
-			});
 			const token = localStorage.getItem('jwtToken');
 			const response = await http(token).post(
 				`tickets/showtimes/${showtimeId}`

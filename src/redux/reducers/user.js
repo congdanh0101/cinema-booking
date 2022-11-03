@@ -17,7 +17,7 @@ const userReducer = (state = initialState, action) => {
 		case 'GET_USER_DETAIL': {
 			return {
 				...state,
-				users: action.payload,
+				detail: action.payload,
 				message: action.message,
 			};
 		}

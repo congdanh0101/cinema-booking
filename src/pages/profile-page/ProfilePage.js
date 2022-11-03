@@ -14,7 +14,7 @@ export default class ProfilePage extends Component {
 					<Container>
 						<Row>
 							<InfoProfile />
-							{/* <AccountProfile /> */}
+							<AccountProfile />
 						</Row>
 					</Container>
 				</div>

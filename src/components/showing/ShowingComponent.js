@@ -14,7 +14,6 @@ class ShowingComponent extends Component {
 	}
 	render() {
 		const { movie } = this.props;
-		console.log(movie);
 		return (
 			<div>
 				<Row>
@@ -27,7 +26,6 @@ class ShowingComponent extends Component {
 						</Link>
 					</Col>
 				</Row>
-
 				<div className="scrollmenu text-center">
 					{movie.nowShowing.length > 0
 						? movie.nowShowing.map((item, itemId) => {

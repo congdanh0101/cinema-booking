@@ -14,7 +14,7 @@ import RightRegister from '../../components/register/RightRegister';
 import tickitz_white from '../../assets/images/tickitz-white.svg';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
-import { emailVerify } from '../../redux/actions/auth';
+import { emailVerify, register } from '../../redux/actions/auth';
 import './styles.css';
 import * as Yup from 'yup';
 
@@ -27,24 +27,22 @@ class EmailVerification extends Component {
 		show: false,
 		message: '',
 		isLoading: false,
+		email: '',
+		password: '',
 	};
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
 		await this.props.emailVerify(values.code);
+		// await this.props.login(
+		// 	this.props.auth.data.email,
+		// 	this.props.auth.data.password
+		// );
 		this.setState({ show: true, isLoading: false });
 	};
-	componentDidUpdate() {
-		if (this.props.auth.token) {
-			window.alert('Success go to dashboard');
-			const { history } = this.props;
-			history.push('/');
-		}
-	}
-	changeText = (event) => {
-		this.setState({ [event.target.name]: event.target.value });
-	};
+
 	render() {
 		const { show } = this.state;
+		console.log(this.props);
 		return (
 			<Row className="container-fluid">
 				{/* Left Side */}
@@ -115,7 +113,7 @@ class EmailVerification extends Component {
 						>
 							<p>
 								{this.props.auth.message !== ''
-									? this.props.auth.message + ', now you can login'
+									? this.props.auth.message
 									: this.props.auth.errorMsg}
 							</p>
 						</Alert>
@@ -135,7 +133,7 @@ class EmailVerification extends Component {
 									<Form.Label>Verify Code</Form.Label>
 									<Form.Control
 										name="code"
-										type="string"
+										type="text"
 										placeholder="Input your code here"
 										onChange={handleChange}
 										value={values.code}
@@ -168,6 +166,6 @@ class EmailVerification extends Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
-const mapDispatchToProps = { emailVerify };
+const mapDispatchToProps = { emailVerify, register };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmailVerification);

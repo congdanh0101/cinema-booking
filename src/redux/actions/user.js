@@ -22,11 +22,13 @@ export const getAllUser = () => {
 export const getUserDetail = (token) => {
 	return async (dispatch) => {
 		try {
-			const response = await http(token).post(`users`, token);
-			console.log(response);
+			const bearerToken = localStorage.getItem('token');
+			const response = await http(bearerToken).post(`users`, {
+				token: token,
+			});
 			dispatch({
 				type: 'GET_USER_DETAIL',
-				payload: response.data.results,
+				payload: response.data,
 				message: response.data.message,
 			});
 		} catch (err) {

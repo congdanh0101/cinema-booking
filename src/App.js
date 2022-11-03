@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import HomePage from './pages/home-page/HomePage';
+//Register
 import SignUp from './pages/register/SignUp';
 import SignIn from './pages/register/SignIn';
 import EmailVerification from './pages/register/EmailVerification';
+
+//Public
+import HomePage from './pages/home-page/HomePage';
 import MoviePage from './pages/movie-page/MoviePage';
 import ForgotPassword from './pages/register/ForgotPassword';
 import MovieDetail from './pages/movie-detail/MovieDetail';
@@ -12,14 +15,17 @@ import OrderPage from './pages/order-page/OrderPage';
 import PaymentPage from './pages/payment-page/PaymentPage';
 import TicketResult from './pages/ticket-result-page/TicketResult';
 import ProfilePage from './pages/profile-page/ProfilePage';
+
+//Admin
 import AdminPage from './pages/admin-page/AdminPage';
 import AdminPanel from './pages/admin-panel/AdminPanel';
-import Error from './pages/Error';
+
 import PrivateRoute from './components/privateRoute/PrivateRoute';
 import persistedStore from './redux/store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import ScrollToTop from './shared/helpers/ScrollToTop';
+import Error from './pages/Error';
 
 export default class App extends Component {
 	render() {

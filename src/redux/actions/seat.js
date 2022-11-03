@@ -3,9 +3,6 @@ import http from '../../shared/helpers/config';
 export const getAllSeatsAvailableByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_SEAT_MESSAGE',
-			});
 			const response = await http().get(
 				`seats/available/showtimes/${showtimeId}`
 			);
@@ -27,9 +24,6 @@ export const getAllSeatsAvailableByShowtime = (showtimeId) => {
 export const getAllSeatsOrderedByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_SEAT_MESSAGE',
-			});
 			const response = await http().get(
 				`seats/available/showtimes/${showtimeId}`
 			);

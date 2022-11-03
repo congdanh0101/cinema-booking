@@ -45,21 +45,19 @@ class DetailInfo extends Component {
 		}
 	};
 	async componentDidMount() {
-		this.props.getUserDetail(this.props.auth.token);
-		// this.props.getAllUser();
+		await this.props.getUserDetail(this.props.auth.token);
 	}
 	render() {
-		const { data } = this.props.user;
+		const { user } = this.props;
 		return (
 			<div className="pt-4">
 				<Formik
 					initialValues={{
-						firstName: data.firstName,
-						lastName: data.lastName,
-						phoneNumber: data.phoneNumber,
-						email: data.email,
-						gender: data.gender,
-						password: '',
+						firstName: user.detail.firstName,
+						lastName: user.detail.lastName,
+						phoneNumber: user.detail.phoneNumber,
+						email: user.detail.email,
+						gender: user.detail.gender,
 					}}
 					validationSchema={ValidatorSchema}
 					onSubmit={(values) => {

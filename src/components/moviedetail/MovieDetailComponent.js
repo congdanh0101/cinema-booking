@@ -21,8 +21,8 @@ class MovieDetailComponent extends Component {
 
 	async componentDidMount() {
 		const { id } = this.props.match.params;
-		await this.props.getMovieDetail(id);
-		this.props.getShowtimeDetail(id);
+		this.props.getMovieDetail(id);
+		await this.props.getShowtimeDetail(id);
 	}
 
 	searchCinema = (e) => {

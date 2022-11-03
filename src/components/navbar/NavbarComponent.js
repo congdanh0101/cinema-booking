@@ -42,7 +42,7 @@ class NavbarComponent extends Component {
 									<NavDropdown.Divider />
 									<NavDropdown.Item
 										href="/"
-										onClick={(e) => this.props.logout(this.props.auth.token)}
+										onClick={(e) => this.props.logout()}
 									>
 										Sign out
 									</NavDropdown.Item>
@@ -67,7 +67,6 @@ class NavbarComponent extends Component {
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
-	user: state.user,
 });
 
 const mapDispatchToProps = { logout };

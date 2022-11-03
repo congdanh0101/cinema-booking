@@ -53,8 +53,8 @@ export const register = (
 	};
 };
 
-export const logout = (token) => (dispatch) => {
-	localStorage.removeItem(token);
+export const logout = () => (dispatch) => {
+	localStorage.clear();
 	dispatch({
 		type: 'LOGOUT',
 	});
@@ -65,19 +65,47 @@ export const autoLogin = (payload) => ({
 	payload,
 });
 
+// export const emailVerify = (code) => {
+// 	return async (dispatch) => {
+// 		try {
+// 			const response = await fetch(
+// 				`http://localhost:8888/api/auth/register/verify`,
+// 				{
+// 					method: 'POST',
+// 					headers: {
+// 						'Content-Type': 'application/json',
+// 					},
+// 					body: JSON.stringify({ code }),
+// 				}
+// 			);
+// 			dispatch({
+// 				type: 'EMAIL_VERIFY',
+// 				payload: response.data,
+// 				message: response.data.message,
+// 			});
+// 		} catch (err) {
+// 			dispatch({
+// 				type: 'SET_AUTH_MESSAGE',
+// 				payload: err,
+// 			});
+// 		}
+// 	};
+// };
+
 export const emailVerify = (code) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().post(`auth/register/verify`, code);
+			const response = await http().post(`auth/register/verify`, {
+				code: code,
+			});
 			dispatch({
 				type: 'EMAIL_VERIFY',
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};

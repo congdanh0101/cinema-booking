@@ -6,11 +6,10 @@ import { getUserDetail } from '../../redux/actions/user';
 
 class InfoProfile extends Component {
 	async componentDidMount() {
-		await this.props.getUserDetail(this.props.auth.token, this.props.auth.token);
-		// this.props.getAllUser();
+		await this.props.getUserDetail(this.props.auth.token);
 	}
 	render() {
-		const { data } = this.props.user;
+		const { user } = this.props;
 		return (
 			<Col xs={12} md={4}>
 				<Card>
@@ -25,14 +24,16 @@ class InfoProfile extends Component {
 								}
 								className="img-profile shadow"
 							/>
-							{/* <p className="text-link-lg-20 pt-3 mb-0">
-								{data.firstName + ' ' + data.lastName}
+							<p className="text-link-lg-20 pt-3 mb-0">
+								{user.detail.firstName + ' ' + user.detail.lastName}
 							</p>
-							<p className="text-link-lg-20 pt-3 mb-0">{data.email}</p>
-							<p className="text-link-lg-20 pt-3 mb-0">{data.phoneNumber}</p>
-							<p className="text-link-lg-20 pt-3 mb-0">{data.gender}</p>
+							<p className="text-link-lg-20 pt-3 mb-0">{user.detail.email}</p>
+							<p className="text-link-lg-20 pt-3 mb-0">
+								{user.detail.phoneNumber}
+							</p>
+							<p className="text-link-lg-20 pt-3 mb-0">{user.detail.gender}</p>
 							<p className="text-color-body">Moviegoers</p>
-							<p className="text-color-body">{data.role}</p> */}
+							<p className="text-color-body">{user.detail.role}</p>
 						</div>
 					</Card.Body>
 				</Card>

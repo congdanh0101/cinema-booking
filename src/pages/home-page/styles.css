@@ -44,7 +44,6 @@ section {
 		font-size: 48px;
 	}
 }
-
 @media (max-width: 767.98px) {
 	.text-display-xs {
 		font-size: 16px !important;

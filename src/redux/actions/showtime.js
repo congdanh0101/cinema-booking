@@ -3,9 +3,6 @@ import http from '../../shared/helpers/config';
 export const getAllShowtime = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-			});
 			const response = await http().get(`showtimes`);
 			dispatch({
 				type: 'GET_ALL_SHOWTIME',
@@ -24,9 +21,6 @@ export const getAllShowtime = () => {
 export const getShowtimeDetail = (id) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_SHOWTIME_MESSAGE',
-			});
 			const response = await http().get(`showtimes/${id}`);
 			dispatch({
 				type: 'GET_SHOWTIME_DETAIL',
@@ -97,9 +91,6 @@ export const updateShowtime = (movieId, theaterId) => {
 export const deleteShowtime = (id) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_SHOWTIME_MESSAGE',
-			});
 			const response = await http().delete(`showtimes/${id}`);
 			dispatch({
 				type: 'DELETE_SHOWTIME',
@@ -119,9 +110,6 @@ export const deleteShowtime = (id) => {
 export const deleteShowtimeForce = (id) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_SHOWTIME_MESSAGE',
-			});
 			const response = await http().delete(`showtimes/${id}`);
 			dispatch({
 				type: 'DELETE_SHOWTIME_FORCE',

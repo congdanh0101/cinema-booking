@@ -57,10 +57,9 @@ class SignUp extends Component {
 			values.gender
 		);
 		this.setState({ show: true, isLoading: false });
-		const { history } = this.props;
-		history.push('/email-verify');
 	};
 	render() {
+		const { history } = this.props;
 		const { show } = this.state;
 		return (
 			<Row className="container-fluid">
@@ -127,11 +126,16 @@ class SignUp extends Component {
 						>
 							<p>
 								{this.props.auth.message !== ''
-									? this.props.auth.message + ', now you can login'
+									? this.props.auth.message
 									: this.props.auth.errorMsg}
 							</p>
 						</Alert>
 					)}
+					{(show === true) &
+					(this.props.auth.message ===
+						'Please go to your email and get verification code to finish sign up a new account')
+						? ('', setTimeout(() => history.push('/email-verify'), 3000))
+						: ''}
 					<Formik
 						initialValues={{
 							firstName: '',
@@ -253,12 +257,6 @@ class SignUp extends Component {
 									{errors.password && touched.password ? (
 										<p style={{ color: 'red' }}>{errors.password}</p>
 									) : null}
-								</Form.Group>
-								<Form.Group controlId="formBasicCheckbox">
-									<Form.Check
-										type="checkbox"
-										label="I agree to terms & conditions"
-									/>
 								</Form.Group>
 								{this.state.isLoading === false ? (
 									<Button
