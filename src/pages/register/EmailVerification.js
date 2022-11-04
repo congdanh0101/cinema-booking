@@ -28,13 +28,18 @@ class EmailVerification extends Component {
 		message: '',
 		isLoading: false,
 	};
+
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
 		await this.props.emailVerify(values.code);
 		this.setState({ show: true, isLoading: false });
-	};
-	render() {
+		sessionStorage.removeItem('show');
+		window.alert('Success! Go to login');
 		const { history } = this.props;
+		history.push('/login');
+	};
+
+	render() {
 		const { show } = this.state;
 		return (
 			<Row className="container-fluid">
@@ -97,11 +102,19 @@ class EmailVerification extends Component {
 					<p className="opacity-70 text-md pb-4 m-0">
 						we'll send a link to your email shortly
 					</p>
+					<Alert
+						className="pb-0"
+						variant={this.props.auth.message !== '' ? 'success' : 'danger'}
+						onClose={() => this.setState({ show: false, message: '' })}
+						dismissible
+					>
+						<p>{sessionStorage.getItem('show')}</p>
+					</Alert>
 					{show === true && (
 						<Alert
 							className="pb-0"
 							variant={this.props.auth.message !== '' ? 'success' : 'danger'}
-							onClose={() => this.setState({ show: false })}
+							onClose={() => this.setState({ show: false, message: '' })}
 							dismissible
 						>
 							<p>
@@ -111,9 +124,7 @@ class EmailVerification extends Component {
 							</p>
 						</Alert>
 					)}
-					{(show === true) & (this.props.auth.message !== '')
-						? ('', setTimeout(() => history.push('/sign-up'), 3000))
-						: ''}
+
 					<Formik
 						initialValues={{
 							code: '',

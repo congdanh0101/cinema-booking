@@ -39,8 +39,8 @@ class MovieDetailComponent extends Component {
 
 	render() {
 		const { movie } = this.props;
-		const { details } = this.props.showtime;
-		const { showResults } = this.state;
+		// const { details } = this.props.showtime;
+		// const { showResults } = this.state;
 		return (
 			<div>
 				<Row>

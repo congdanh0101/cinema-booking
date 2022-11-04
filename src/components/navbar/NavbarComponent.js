@@ -4,13 +4,9 @@ import { Link } from 'react-router-dom';
 import tickitz_purple from '../../assets/images/tickitz-purple.svg';
 import { connect } from 'react-redux';
 import { logout } from '../../redux/actions/auth';
-import { getUserDetail } from '../../redux/actions/user';
 import './styles.css';
 
 class NavbarComponent extends Component {
-	async componentDidMount() {
-		this.props.getUserDetail(this.props.auth.token);
-	}
 	render() {
 		return (
 			<Navbar expand="lg">
@@ -74,6 +70,6 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = { logout, getUserDetail };
+const mapDispatchToProps = { logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarComponent);

@@ -62,6 +62,7 @@ class SignUp extends Component {
 			values.gender
 		);
 		this.setState({ show: true, isLoading: false });
+		sessionStorage.setItem('show', this.props.auth.message);
 	};
 	render() {
 		const { history } = this.props;
@@ -138,8 +139,8 @@ class SignUp extends Component {
 					)}
 					{(show === true) &
 					(this.props.auth.message ===
-						'Please go to your email and get verification code to finish sign up a new account')
-						? ('', setTimeout(() => history.push('/email-verify'), 3000))
+						sessionStorage.getItem('show'))
+						? ('', history.push('/email-verify'))
 						: ''}
 					<Formik
 						initialValues={{
@@ -205,7 +206,6 @@ class SignUp extends Component {
 												as="select"
 												type="gender"
 												name="gender"
-												defaultValue="Location"
 												onChange={handleChange}
 												onBlur={handleBlur}
 												value={values.gender}

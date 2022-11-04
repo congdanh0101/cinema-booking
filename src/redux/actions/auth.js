@@ -44,7 +44,11 @@ export const register = (
 			sessionStorage.setItem('email', response.data.user.email);
 			sessionStorage.setItem('password', response.data.user.password);
 			sessionStorage.setItem('gender', response.data.user.gender);
-			sessionStorage.setItem('verifyCode', response.data.verificationCode);
+			sessionStorage.setItem(
+				'verificationCode',
+				response.data.verificationCode
+			);
+			sessionStorage.setItem('expired', response.data.expired);
 			dispatch({
 				type: 'REGISTER',
 				payload: response.data,
@@ -76,21 +80,43 @@ export const autoLogin = (payload) => ({
 export const emailVerify = (code) => {
 	return async (dispatch) => {
 		try {
-			const user = {
-				firstName: sessionStorage.getItem('firstName'),
-				lastName: sessionStorage.getItem('lastName'),
-				phoneNumber: sessionStorage.getItem('phoneNumber'),
-				email: sessionStorage.getItem('email'),
-				password: sessionStorage.getItem('password'),
-				gender: sessionStorage.getItem('gender'),
-			};
-			if (code === sessionStorage.getItem('verifyCode')) {
-				const response = await http().post(`auth/register/verify`, {
-					user: user,
-				});
+			const expired = sessionStorage.getItem('expired');
+			const now = new Date().getTime();
+			if (now <= expired) {
+				if (code === sessionStorage.getItem('verificationCode')) {
+					const response = await http()
+						.post(`auth/register/verify`, {
+							firstName: sessionStorage.getItem('firstName'),
+							lastName: sessionStorage.getItem('lastName'),
+							phoneNumber: sessionStorage.getItem('phoneNumber'),
+							email: sessionStorage.getItem('email'),
+							password: sessionStorage.getItem('password'),
+							gender: sessionStorage.getItem('gender'),
+						})
+						.then((res) => {
+							sessionStorage.removeItem('firstName');
+							sessionStorage.removeItem('lastName');
+							sessionStorage.removeItem('phoneNumber');
+							sessionStorage.removeItem('email');
+							sessionStorage.removeItem('password');
+							sessionStorage.removeItem('gender');
+							sessionStorage.removeItem('expired');
+							sessionStorage.removeItem('verificationCode');
+						});
+					dispatch({
+						type: 'EMAIL_VERIFY',
+						message: response.data.message,
+					});
+				} else {
+					dispatch({
+						type: 'SET_AUTH_MESSAGE',
+						payload: 'Wrong verification code',
+					});
+				}
+			} else {
 				dispatch({
-					type: 'EMAIL_VERIFY',
-					message: response.data.message,
+					type: 'SET_AUTH_MESSAGE',
+					payload: 'Verification code expired',
 				});
 			}
 		} catch (err) {

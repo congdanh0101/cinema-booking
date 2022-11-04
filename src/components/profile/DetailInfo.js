@@ -55,7 +55,6 @@ class DetailInfo extends Component {
 	};
 	render() {
 		const { show } = this.state;
-
 		return (
 			<div className="pt-4">
 				{show === true && (
