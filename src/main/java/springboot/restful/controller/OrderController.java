@@ -1,6 +1,5 @@
 package springboot.restful.controller;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import springboot.restful.config.security.JwtTokenHelper;
+import springboot.restful.exception.ApiRespone;
 import springboot.restful.model.entity.User;
 import springboot.restful.model.payloads.OrderDTO;
 import springboot.restful.model.payloads.OrderDetailDTO;
@@ -22,11 +22,14 @@ import springboot.restful.service.PaymentService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class OrderController {
 
 	public static final String URL_PAYPAL_SUCCESS = "pay/success";
@@ -79,7 +82,8 @@ public class OrderController {
 	private UserDTO decodeJwtToUsername() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-		User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+		User user = userRepository.findByEmail(username)
+				.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 		return modelMapper.map(user, UserDTO.class);
 	}
 
@@ -92,5 +96,10 @@ public class OrderController {
 	public ResponseEntity<?> getOrderDetailsById(@PathVariable int idOrderDetail) {
 		return ResponseEntity.ok().body(orderDetailService.getOrderDetailById(idOrderDetail));
 	}
-}
 
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteOrderById(@PathVariable int id) {
+		orderService.deleteOrder(id);
+		return ResponseEntity.ok().body(new ApiRespone(new Date().toLocaleString(), "Delete was successfully", true));
+	}
+}

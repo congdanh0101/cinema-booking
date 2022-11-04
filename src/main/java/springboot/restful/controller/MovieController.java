@@ -17,6 +17,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/movies")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class MovieController {
 
 	@Autowired

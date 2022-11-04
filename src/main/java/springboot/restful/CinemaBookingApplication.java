@@ -14,9 +14,6 @@ import springboot.restful.service.ShowTimeService;
 import springboot.restful.service.TicketService;
 import springboot.restful.service.UserService;
 
-import java.security.SecureRandom;
-import java.time.LocalTime;
-
 @SpringBootApplication
 @Slf4j
 public class CinemaBookingApplication implements CommandLineRunner {
@@ -62,56 +59,7 @@ public class CinemaBookingApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-//        List<ShowTimeDTO> showTimeDTOs = showTimeService.getAllShowTime();
-//        Date date = new Date(2022, 9, 16);
-//        for (ShowTimeDTO st : showTimeDTOs) {
-//            if (st.getShowDate().getDate() == date.getDate()){
-//
-//                LocalTime t = LocalTime.parse(st.getTimeEnd());
-//
-//                log.error("Time End: "+ t.getHour());
-//
-//                log.warn(st.toString());
-//            }
-//        }
-
-		String start = "08:00";
-		String stop = "22:00";
-
-		String now = "08:01";
-
-		LocalTime startLC = LocalTime.parse(start);
-		LocalTime stopLC = LocalTime.parse(stop);
-		LocalTime timeStartLC = LocalTime.parse(now);
-
-//        System.out.println(timeStartLC.isAfter(startLC) && timeStartLC.isBefore(stopLC) );
-
-//        System.out.println(timeStartLC.equals(startLC));
-
-		SecureRandom random = new SecureRandom();
-//        String randomCode = new BigInteger(30, random).toString(32).toUpperCase();
-//
-//        System.out.println(UUID.randomUUID().toString().substring(0, 8).toUpperCase());
-//
-//        System.out.println(new Date(System.currentTimeMillis() + 60 * 1000).getTime());
-
-//        User user = userRepository.findById(1).get();
-//
-//        System.out.println(passwordEncoder.matches("123", user.getPassword()));
-//
-//		User user = User.builder().email("congdanh.01.01.2001@gmail.com").firstName("Danh").lastName("Bui").gender(EGender.MALE).phoneNumber("0902891404").password("congdanh010101").build();
-//
-//		UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-//
-//		userService.createUser(userDTO);
-
-		System.out.println(passwordEncoder.encode("congdanh010101"));
-
 	}
 
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void sendMail() {
-//        emailSenderService.sendEmail("danhrow001@gmail.com", "this is subject", "hello Danh");
-//    }
 
 }

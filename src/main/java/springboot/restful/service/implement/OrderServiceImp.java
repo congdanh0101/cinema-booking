@@ -10,10 +10,14 @@ import org.springframework.stereotype.Service;
 import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.entity.Order;
 import springboot.restful.model.entity.OrderDetail;
+import springboot.restful.model.entity.Seat;
+import springboot.restful.model.entity.ShowTime;
+import springboot.restful.model.entity.Ticket;
 import springboot.restful.model.entity.User;
 import springboot.restful.model.payloads.OrderDTO;
 import springboot.restful.model.payloads.OrderDetailDTO;
 import springboot.restful.repository.OrderRepository;
+import springboot.restful.repository.TicketRepository;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.service.OrderDetailService;
 import springboot.restful.service.OrderService;
@@ -41,25 +45,28 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	@Autowired
 	private ModelMapper modelMapper;
 
-//	public OrderDTO createOrder(UserDTO userDTO) {
-//		Order order = new Order();
-//		Date dt = new Date();
-//
-//		java.sql.Date date = new java.sql.Date(dt.getTime());
-//		Time time = new Time(dt.getTime());
-//
-//		User user = modelMapper.map(userDTO, User.class);
-//
-//		order.setDate(date);
-//		order.setTime(String.valueOf(time));
-//		order.setUser(user);
-//		order.setTotal(0);
-//		order.setPaid(false);
-//
-//		OrderDTO orderDTO = entityToDTO(orderRepository.save(order));
-//		orderDTO.setUser(userDTO);
-//		return orderDTO;
-//	}
+	@Autowired
+	private TicketRepository ticketRepository;
+
+	// public OrderDTO createOrder(UserDTO userDTO) {
+	// Order order = new Order();
+	// Date dt = new Date();
+	//
+	// java.sql.Date date = new java.sql.Date(dt.getTime());
+	// Time time = new Time(dt.getTime());
+	//
+	// User user = modelMapper.map(userDTO, User.class);
+	//
+	// order.setDate(date);
+	// order.setTime(String.valueOf(time));
+	// order.setUser(user);
+	// order.setTotal(0);
+	// order.setPaid(false);
+	//
+	// OrderDTO orderDTO = entityToDTO(orderRepository.save(order));
+	// orderDTO.setUser(userDTO);
+	// return orderDTO;
+	// }
 
 	@Override
 	public OrderDTO createOrder(List<OrderDetailDTO> orderDetailDTOS) {
@@ -78,8 +85,9 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 		}
 		order.setTotal(total);
 
-//		List<OrderDetail> odds = orderDetailDTOS.stream().map(od -> modelMapper.map(od, OrderDetail.class)).collect(Collectors.toList());
-//		order.setOrderDetails(odds);
+		// List<OrderDetail> odds = orderDetailDTOS.stream().map(od ->
+		// modelMapper.map(od, OrderDetail.class)).collect(Collectors.toList());
+		// order.setOrderDetails(odds);
 
 		Order savedOrder = orderRepository.save(order);
 		List<OrderDetail> orderDetails = new ArrayList<>();
@@ -95,7 +103,8 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	private User decodeFromJwtTokenToUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-		User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+		User user = userRepository.findByEmail(username)
+				.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 		return user;
 	}
 
@@ -106,8 +115,10 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 
 	@Override
 	public List<OrderDTO> getAllOrdersByUser(int idUser) {
-		User user = userRepository.findById(idUser).orElseThrow(() -> new ResourceNotFoundException("User", "id", idUser));
-		List<OrderDTO> orderDTOS = orderRepository.findByUser(user).stream().map(this::entityToDTO).collect(Collectors.toList());
+		User user = userRepository.findById(idUser)
+				.orElseThrow(() -> new ResourceNotFoundException("User", "id", idUser));
+		List<OrderDTO> orderDTOS = orderRepository.findByUser(user).stream().map(this::entityToDTO)
+				.collect(Collectors.toList());
 		orderDTOS.forEach(od -> {
 			Date date = od.getDate();
 			Date newDate = new Date();
@@ -122,13 +133,33 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	@Override
 	public OrderDTO getOrderById(int id) {
 		Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
-		System.out.println(order.getOrderDetails());
 		return entityToDTO(order);
 	}
 
 	@Override
 	public OrderDTO payOrder(int id, boolean isPaid) {
 		Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
+		List<OrderDetailDTO> orderDetailDTOs = orderDetailService.getOrderDetailsByOrder(id);
+		orderDetailDTOs.forEach(odd -> {
+			ShowTime showTime = modelMapper.map(odd.getTicket().getShowTime(), ShowTime.class);
+			Seat seat = modelMapper.map(odd.getTicket().getSeat(), Seat.class);
+			List<Ticket> tickets = ticketRepository.findByShowTimeAndSeat(showTime, seat);
+			// tickets.stream().filter(ticket -> !ticket.isSold()).forEach(ticket -> ticketRepository.delete(ticket));
+			List<Integer> idTickets = new ArrayList<>();
+			List<Integer> idOrders = new ArrayList<>();
+			tickets.stream().filter(ticket -> !ticket.isSold()).forEach(ticket -> idTickets.add(ticket.getId()));
+
+			
+			tickets.forEach(t->{
+				List<OrderDetailDTO> orderDetailDTO = orderDetailService.getOrderDetailsByTicket(t.getId());
+				orderDetailDTO.forEach(o ->{
+					
+				});
+			});
+
+
+
+		});
 		order.setPaid(isPaid);
 		return entityToDTO(orderRepository.save(order));
 	}
@@ -137,7 +168,8 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	public OrderDTO updateOrder(int id, List<OrderDetailDTO> orderDetailDTOS) {
 		int total = 0;
 		Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
-		List<OrderDetail> orderDetails = orderDetailDTOS.stream().map(odd -> modelMapper.map(odd, OrderDetail.class)).collect(Collectors.toList());
+		List<OrderDetail> orderDetails = orderDetailDTOS.stream().map(odd -> modelMapper.map(odd, OrderDetail.class))
+				.collect(Collectors.toList());
 		for (OrderDetail od : orderDetails) {
 			total += od.getTicket().getPrice();
 		}
@@ -157,5 +189,11 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	@Override
 	public OrderDTO entityToDTO(Order order) {
 		return modelMapper.map(order, OrderDTO.class);
+	}
+
+	@Override
+	public void deleteOrder(int id) {
+		Order order = orderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Order", "id", id));
+		orderRepository.delete(order);		
 	}
 }

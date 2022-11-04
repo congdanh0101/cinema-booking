@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import springboot.restful.model.entity.Order;
 import springboot.restful.model.entity.OrderDetail;
+import springboot.restful.model.entity.Ticket;
 
 import java.util.List;
 
@@ -11,5 +12,6 @@ import java.util.List;
 public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Integer> {
 
 	List<OrderDetail> findByOrder(Order order);
-
+	
+	List<OrderDetail> findByTicket(Ticket ticket);
 }

@@ -11,6 +11,8 @@ public interface OrderDetailService {
 
 	List<OrderDetailDTO> getOrderDetailsByOrder(int idOrder);
 
+	List<OrderDetailDTO> getOrderDetailsByTicket(int idTicket);
+
 	OrderDetailDTO getOrderDetailById(int idOrderDetail);
 
 }

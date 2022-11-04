@@ -23,5 +23,7 @@ public interface OrderService {
 	//update
 	OrderDTO updateOrder(int id, List<OrderDetailDTO> orderDetailDTOS);
 
+	void deleteOrder(int id);
+
 
 }

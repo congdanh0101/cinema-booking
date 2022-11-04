@@ -15,7 +15,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableWebMvc
@@ -45,6 +49,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.csrf().disable()
+				.cors().configurationSource(new CorsConfigurationSource() {
+					@Override
+					public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+						CorsConfiguration corsConfiguration = new CorsConfiguration();
+						corsConfiguration.addAllowedHeader("*");
+						corsConfiguration.addAllowedMethod("*");
+						corsConfiguration.addAllowedOrigin("*");
+						return corsConfiguration;
+					}
+				})
+				.and()
 				.authorizeHttpRequests()
 				.antMatchers(PUBLIC_URLS).permitAll()
 				.antMatchers(HttpMethod.GET).permitAll()
