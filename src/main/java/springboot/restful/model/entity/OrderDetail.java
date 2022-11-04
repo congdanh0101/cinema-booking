@@ -15,7 +15,7 @@ public class OrderDetail {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToOne
+	@OneToOne
 	private Ticket ticket;
 
 	@ManyToOne

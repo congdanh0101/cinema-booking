@@ -3,8 +3,8 @@ package springboot.restful.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,10 +24,8 @@ public class Ticket {
 
 	private boolean isSold;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ticket")
-	private List<OrderDetail> orderDetails = new ArrayList<>();
 
-//	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "ticket")
-//	private Set<OrderDetail> orderDetails = new HashSet<>();
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ticket")
+	private Set<OrderDetail> orderDetails = new HashSet<>();
 
 }

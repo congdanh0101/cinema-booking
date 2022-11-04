@@ -26,7 +26,7 @@ public class OrderDetailServiceImp implements OrderDetailService, ModelMapping<O
 
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
 	@Autowired
 	private TicketService ticketService;
 
@@ -65,9 +65,20 @@ public class OrderDetailServiceImp implements OrderDetailService, ModelMapping<O
 	}
 
 	@Override
-	public List<OrderDetailDTO> getOrderDetailsByTicket(int idTicket) {
+	public void deleteById(int id) {
+		OrderDetail orderDetail = orderDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order detail", "id", id));
+		orderDetailsRepository.delete(orderDetail);
+	}
+
+	@Override
+	public void deleteOrderDetail(OrderDetailDTO orderDetailDTO) {
+		orderDetailsRepository.delete(dtoToEntity(orderDetailDTO));
+	}
+
+	@Override
+	public OrderDetailDTO getOrderDetailsByTicket(int idTicket) {
 		Ticket ticket = modelMapper.map(ticketService.getTicketById(idTicket), Ticket.class);
-		List<OrderDetail> orderDetails = orderDetailsRepository.findByTicket(ticket);
-		return orderDetails.stream().map(this::entityToDTO).collect(Collectors.toList());
+		OrderDetail orderDetail = orderDetailsRepository.findByTicket(ticket).orElseThrow(() -> new ResourceNotFoundException("Order detail", "ticket_id", idTicket));
+		return entityToDTO(orderDetail);
 	}
 }

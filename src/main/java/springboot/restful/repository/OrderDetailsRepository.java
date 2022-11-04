@@ -7,11 +7,12 @@ import springboot.restful.model.entity.OrderDetail;
 import springboot.restful.model.entity.Ticket;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Integer> {
 
 	List<OrderDetail> findByOrder(Order order);
-	
-	List<OrderDetail> findByTicket(Ticket ticket);
+
+	Optional<OrderDetail> findByTicket(Ticket ticket);
 }

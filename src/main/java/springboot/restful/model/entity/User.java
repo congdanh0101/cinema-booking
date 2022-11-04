@@ -1,6 +1,7 @@
 package springboot.restful.model.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,13 +9,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import springboot.restful.model.enums.EGender;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
 @Entity
 @Data
 @Table(name = "users")
+@EqualsAndHashCode(exclude = "orders")
 public class User implements UserDetails {
 
 	@Id
@@ -44,9 +49,9 @@ public class User implements UserDetails {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "users", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roles", referencedColumnName = "id"))
 	private Set<Role> roles = new HashSet<>();
-
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<Order> orders = new ArrayList<>();
+//
+//	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	private Set<Order> orders = new HashSet<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

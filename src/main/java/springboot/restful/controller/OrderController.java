@@ -22,7 +22,6 @@ import springboot.restful.service.PaymentService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.util.Date;
 import java.util.List;
 
@@ -102,4 +101,12 @@ public class OrderController {
 		orderService.deleteOrder(id);
 		return ResponseEntity.ok().body(new ApiRespone(new Date().toLocaleString(), "Delete was successfully", true));
 	}
+
+	@GetMapping("/detail/ticket/{idTicket}")
+	public ResponseEntity<?> getOrderDetailByTicket(@PathVariable int idTicket) {
+		OrderDetailDTO orderDetailDTO = orderDetailService.getOrderDetailsByTicket(idTicket);
+		return ResponseEntity.ok().body(orderDetailDTO);
+	}
+
 }
+                                                                                                           

@@ -27,7 +27,7 @@ public class Order {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
 	private List<OrderDetail> orderDetails = new ArrayList<>();
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private User user;
 
 	private boolean isPaid;
