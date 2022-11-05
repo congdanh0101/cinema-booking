@@ -94,14 +94,7 @@ export const emailVerify = (code) => {
 							gender: sessionStorage.getItem('gender'),
 						})
 						.then((res) => {
-							sessionStorage.removeItem('firstName');
-							sessionStorage.removeItem('lastName');
-							sessionStorage.removeItem('phoneNumber');
-							sessionStorage.removeItem('email');
-							sessionStorage.removeItem('password');
-							sessionStorage.removeItem('gender');
-							sessionStorage.removeItem('expired');
-							sessionStorage.removeItem('verificationCode');
+							sessionStorage.clear();
 						});
 					dispatch({
 						type: 'EMAIL_VERIFY',

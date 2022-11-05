@@ -138,8 +138,7 @@ class SignUp extends Component {
 						</Alert>
 					)}
 					{(show === true) &
-					(this.props.auth.message ===
-						sessionStorage.getItem('show'))
+					(this.props.auth.message === sessionStorage.getItem('show'))
 						? ('', history.push('/email-verify'))
 						: ''}
 					<Formik

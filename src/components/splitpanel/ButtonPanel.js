@@ -1,25 +1,29 @@
-import React from "react";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "./styles.css";
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import './styles.css';
 
 function ButtonPanel(props) {
 	return (
-		<div className="pt-4 checkout">
-			<Link to={props.goButtonLeft}>
+		<div className="pt-3 checkout">
+			<Link to={props.gobuttonleft}>
 				<Button
+					{...props}
 					variant="outline-primary"
+					block
 					className="float-left col-12 col-md-5"
 				>
-					{props.buttonLeft}
+					{props.buttonleft}
 				</Button>
 			</Link>
-			<Link to={props.goButtonRight}>
+			<Link to={props.gobuttonright}>
 				<Button
-					variant="primary shadow"
+					{...props}
+					variant="outline-primary"
+					block
 					className="float-right col-12 col-md-5"
 				>
-					{props.buttonRight}
+					{props.buttonright}
 				</Button>
 			</Link>
 		</div>
