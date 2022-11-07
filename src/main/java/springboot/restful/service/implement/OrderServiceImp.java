@@ -11,6 +11,7 @@ import springboot.restful.exception.ResourceNotFoundException;
 import springboot.restful.model.entity.*;
 import springboot.restful.model.payloads.OrderDTO;
 import springboot.restful.model.payloads.OrderDetailDTO;
+import springboot.restful.model.payloads.TicketDTO;
 import springboot.restful.repository.OrderRepository;
 import springboot.restful.repository.TicketRepository;
 import springboot.restful.repository.UserRepository;
@@ -135,15 +136,18 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	public OrderDTO payOrder(int id, boolean isPaid) {
 		Order order = dtoToEntity(getOrderById(id));
 		order.setPaid(isPaid);
+		Date dt = new Date();
+		java.sql.Date date = new java.sql.Date(dt.getTime());
+		Time time = new Time(dt.getTime());
+		order.setDate(date);
+		order.setTime(String.valueOf(time));
 		List<OrderDetailDTO> orderDetailDTOs = orderDetailService.getOrderDetailsByOrder(id);
-
+		List<Ticket> ticketsByShowTimeAndSeatNotSold = new ArrayList<>();
 		for (OrderDetailDTO odd : orderDetailDTOs) {
-			List<Integer> idTickets = new ArrayList<>();
-			List<Integer> idOrders = new ArrayList<>();
-			List<OrderDetail> orderDetailList = new ArrayList<>();
 
 			//ticket is sold
-			Ticket updateSoldTicket = modelMapper.map(odd.getTicket(), Ticket.class);
+			TicketDTO ticketDTO = odd.getTicket();
+			Ticket updateSoldTicket = modelMapper.map(ticketDTO, Ticket.class);
 			updateSoldTicket.setSold(true);
 			updateSoldTicket = ticketRepository.save(updateSoldTicket);
 
@@ -155,17 +159,15 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 			// tickets.stream().filter(ticket -> !ticket.isSold()).forEach(ticket -> ticketRepository.delete(ticket));
 
 			//get list tickets is not sold (sold = false) and add to list IdTickets
-			tickets.stream().filter(ticket -> !ticket.isSold()).forEach(ticket -> idTickets.add(ticket.getId()));
-			List<Ticket> ticketsByShowTimeAndSeatNotSold = tickets.stream().filter(ticket -> ticket.isSold() == false).collect(Collectors.toList());
-
-			ticketsByShowTimeAndSeatNotSold.forEach(t -> {
-				int idTicket = t.getId();
-				OrderDetailDTO orderDetailDTO = orderDetailService.getOrderDetailsByTicket(idTicket);
-				int idOrder = orderDetailDTO.getId();
-				ticketRepository.delete(t);
-				List<OrderDetailDTO> orderDetailDTOList = orderDetailService.getOrderDetailsByOrder(idOrder);
-				updateOrder(idOrder, orderDetailDTOList);
-			});
+			tickets.stream().filter(ticket -> ticket.isSold() == false).forEach(ticket -> ticketsByShowTimeAndSeatNotSold.add(ticket));
+//			ticketsByShowTimeAndSeatNotSold.forEach(t -> {
+//				int idTicket = t.getId();
+//				OrderDetailDTO orderDetailDTO = orderDetailService.getOrderDetailsByTicket(idTicket);
+//				int idOrder = orderDetailDTO.getId();
+//				ticketRepository.delete(t);
+//				List<OrderDetailDTO> orderDetailDTOList = orderDetailService.getOrderDetailsByOrder(idOrder);
+//				updateOrder(idOrder, orderDetailDTOList);
+//			});
 
 //			if (idTickets.isEmpty() || idTickets == null || idTickets.size() == 0) continue;
 //
@@ -187,6 +189,16 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 //			}
 		}
 
+		ticketsByShowTimeAndSeatNotSold.forEach(t -> {
+			int idTicket = t.getId();
+			OrderDetailDTO orderDetailDTO = orderDetailService.getOrderDetailsByTicket(idTicket);
+			int idOrder = orderDetailDTO.getOrder().getId();
+			orderDetailService.deleteById(orderDetailDTO.getId());
+			ticketRepository.delete(t);
+			List<OrderDetailDTO> orderDetailDTOList = orderDetailService.getOrderDetailsByOrder(idOrder);
+			updateOrder(idOrder, orderDetailDTOList);
+		});
+
 //		orderDetailDTOs.forEach(odd -> {
 //
 //
@@ -206,12 +218,11 @@ public class OrderServiceImp implements OrderService, ModelMapping<Order, OrderD
 	public OrderDTO updateOrder(int id, List<OrderDetailDTO> orderDetailDTOS) {
 		int total = 0;
 		Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
-		List<OrderDetail> orderDetails = orderDetailDTOS.stream().map(odd -> modelMapper.map(odd, OrderDetail.class))
-				.collect(Collectors.toList());
-		for (OrderDetail od : orderDetails) {
+		for (OrderDetailDTO od : orderDetailDTOS) {
 			total += od.getTicket().getPrice();
 		}
-		order.setOrderDetails(orderDetails);
+
+//		order.setOrderDetails(orderDetails);
 		order.setTotal(total);
 
 		orderRepository.save(order);
