@@ -30,10 +30,17 @@ class LatestComponent extends Component {
 								return (
 									<Card key={itemId} className="scroll card mr-4">
 										<Card.Body className="card-body">
-											<Image
-												src={item.image}
-												className="img-fluid img-resize"
-											/>
+											<Link
+												to={`/movie-detail/${item.id}`}
+												className="link"
+												key={item.id}
+												style={{ textDecoration: 'none' }}
+											>
+												<Image
+													src={item.image}
+													className="img-fluid img-resize"
+												/>
+											</Link>
 											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
 												{item.name}
 											</p>
@@ -59,7 +66,17 @@ class LatestComponent extends Component {
 								return (
 									<Card key={itemId} className="scroll mr-4">
 										<Card.Body>
-											<Image src={item.img} className="img-fluid img-resize" />
+											<Link
+												to={`/movie-detail/${item.id}`}
+												className="link"
+												key={item.id}
+												style={{ textDecoration: 'none' }}
+											>
+												<Image
+													src={item.image}
+													className="img-fluid img-resize"
+												/>
+											</Link>
 											<p className="pt-3 pb-2 text-display-xs-bold-18 card-title m-0">
 												{item.title}
 											</p>

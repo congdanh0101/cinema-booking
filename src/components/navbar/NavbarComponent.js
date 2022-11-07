@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import tickitz_purple from '../../assets/images/tickitz-purple.svg';
 import { connect } from 'react-redux';
 import { logout } from '../../redux/actions/auth';
+import { getUserDetail, getUserDetailById } from '../../redux/actions/user';
 import './styles.css';
 
 class NavbarComponent extends Component {
@@ -70,6 +71,6 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = { logout };
+const mapDispatchToProps = { logout, getUserDetail, getUserDetailById };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarComponent);

@@ -22,18 +22,6 @@ class MovieList extends Component {
 								<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
 									{item.name}
 								</p>
-								{item.genres.map((subItem, subItemId) => {
-									return (
-										<div>
-											<p
-												key={subItemId}
-												class="text-xs-13 text-color-placeholder card-text pb-2 m-0"
-											>
-												{subItem.name}
-											</p>
-										</div>
-									);
-								})}
 								<Link
 									to={`/movie-detail/${item.id}`}
 									className="link"

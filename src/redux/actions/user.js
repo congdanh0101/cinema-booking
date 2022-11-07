@@ -10,10 +10,9 @@ export const getAllUser = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -32,10 +31,9 @@ export const getUserDetail = (token) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};

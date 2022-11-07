@@ -61,14 +61,11 @@ class HomePage extends Component {
 						</Row>
 					</section>
 					<section>
-						<LatestComponent />
-					</section>
-					<section>
 						<ShowingComponent />
 					</section>
-					<section>
+					{/* <section>
 						<ComingMovie />
-					</section>
+					</section> */}
 					<section>
 						<SubscribeComponent />
 					</section>

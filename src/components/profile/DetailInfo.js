@@ -36,15 +36,16 @@ class DetailInfo extends Component {
 		isLoading: false,
 	};
 	async componentDidMount() {
-		await this.props.getUserDetail(this.props.auth.token);
-		localStorage.setItem('userId', this.props.user.detail.id);
-		this.props.getUserDetailById(localStorage.getItem('userId'));
-		sessionStorage.setItem('firstName', this.props.user.detail.firstName);
-		sessionStorage.setItem('lastName', this.props.user.detail.lastName);
-		sessionStorage.setItem('phoneNumber', this.props.user.detail.phoneNumber);
-		sessionStorage.setItem('email', this.props.user.detail.email);
-		sessionStorage.setItem('password', this.props.user.detail.password);
-		sessionStorage.setItem('gender', this.props.user.detail.gender);
+		await this.props.getUserDetail(this.props.auth.token).then(async () => {
+			localStorage.setItem('userId', this.props.user.detail.id);
+			await this.props.getUserDetailById(localStorage.getItem('userId'));
+			sessionStorage.setItem('firstName', this.props.user.detail.firstName);
+			sessionStorage.setItem('lastName', this.props.user.detail.lastName);
+			sessionStorage.setItem('phoneNumber', this.props.user.detail.phoneNumber);
+			sessionStorage.setItem('email', this.props.user.detail.email);
+			sessionStorage.setItem('password', this.props.user.detail.password);
+			sessionStorage.setItem('gender', this.props.user.detail.gender);
+		});
 	}
 	submitData = async (values) => {
 		const userId = localStorage.getItem('userId');

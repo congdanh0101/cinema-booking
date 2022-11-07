@@ -28,53 +28,73 @@ class ComingMovie extends Component {
 					{movie.comingSoon.length > 0
 						? movie.comingSoon.map((item, itemId) => {
 								return (
+									<Link
+										to={`/movie-detail/${item.id}`}
+										className="link"
+										key={item.id}
+										style={{ textDecoration: 'none' }}
+									>
+										<Card key={itemId} className="scroll card mr-4">
+											<Card.Body className="card-body">
+												<Link
+													to={`/movie-detail/${item.id}`}
+													className="link"
+													key={item.id}
+													style={{ textDecoration: 'none' }}
+												>
+													<Image
+														src={item.image}
+														className="img-fluid img-resize"
+													/>
+												</Link>
+												<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
+													{item.name}
+												</p>
+												<Link
+													to={`/movie-detail/${item.id}`}
+													className="link"
+													key={item.id}
+													style={{ textDecoration: 'none' }}
+												>
+													<Button
+														variant="outline-primary"
+														className="btn-nav"
+														block
+													>
+														Detail
+													</Button>
+												</Link>
+											</Card.Body>
+										</Card>
+									</Link>
+								);
+						  })
+						: listComingMovie.map((item, itemId) => {
+								return (
 									<Card key={itemId} className="scroll card mr-4">
 										<Card.Body className="card-body">
-											<Image
-												src={item.image}
-												className="img-fluid img-resize"
-											/>
-											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{item.name}
-											</p>
 											<Link
 												to={`/movie-detail/${item.id}`}
 												className="link"
 												key={item.id}
 												style={{ textDecoration: 'none' }}
 											>
-												<Button
-													variant="outline-primary"
-													className="btn-nav"
-													block
-												>
-													Detail
-												</Button>
+												<Image
+													src={item.image}
+													className="img-fluid img-resize"
+												/>
 											</Link>
-										</Card.Body>
-									</Card>
-								);
-						  })
-						: listComingMovie.map((item, itemId) => {
-								return (
-									<Card key={itemId} className="scroll mr-4">
-										<Card.Body>
-											<Image src={item.img} className="img-fluid img-resize" />
-											<p className="pt-3 pb-2 text-display-xs-bold-18 card-title m-0">
-												{item.title}
+											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
+												{item.name}
 											</p>
-											<p className="text-xs-12 text-color-placeholder card-text pb-3 m-0">
-												{item.genre}
-											</p>
-											<Link to="/">
-												<Button
-													variant="outline-primary"
-													className="btn-nav"
-													block
-												>
-													Detail
-												</Button>
-											</Link>
+											<Button
+												href={`/movie-detail/${item.id}`}
+												variant="outline-primary"
+												className="btn-nav"
+												block
+											>
+												Detail
+											</Button>
 										</Card.Body>
 									</Card>
 								);
