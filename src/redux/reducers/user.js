@@ -21,6 +21,12 @@ const userReducer = (state = initialState, action) => {
 				message: action.message,
 			};
 		}
+		case 'GET_USER_DETAIL_BY_ID': {
+			return {
+				...state,
+				detail: action.payload,
+			};
+		}
 		case 'ADD_USER': {
 			return {
 				...state,

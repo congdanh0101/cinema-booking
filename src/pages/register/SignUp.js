@@ -58,7 +58,7 @@ class SignUp extends Component {
 			values.lastName,
 			values.phoneNumber,
 			values.email,
-			values.confirmPassword,
+			values.password,
 			values.gender
 		);
 		this.setState({ show: true, isLoading: false });

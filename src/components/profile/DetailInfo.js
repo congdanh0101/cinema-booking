@@ -12,22 +12,21 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import ButtonLeft from '../splitpanel/ButtonLeft';
-import { getUserDetail, updateUser } from '../../redux/actions/user';
+import {
+	getUserDetail,
+	getUserDetailById,
+	updateUser,
+} from '../../redux/actions/user';
 
 const ValidatorSchema = Yup.object().shape({
-	firstName: Yup.string()
-		.min(2, 'Too Short!')
-		.max(30, 'Too Long!')
-		.required('Required'),
-	lastName: Yup.string()
-		.min(2, 'Too Short!')
-		.max(30, 'Too Long!')
-		.required('Required'),
-
-	phoneNumber: Yup.string()
-		.min(9, ({ min }) => `Phone number must be at least ${min} characters`)
-		.required('Required'),
-	email: Yup.string().email('Invalid email').required('Required'),
+	password: Yup.string()
+		.min(1, ({ min }) => `Password must be at least ${min} characters`)
+		.required('Password is required'),
+	confirmPassword: Yup.string()
+		.test('passwords-match', 'Passwords must match', function (value) {
+			return this.parent.password === value;
+		})
+		.required('Confirm password is required'),
 });
 
 class DetailInfo extends Component {
@@ -39,6 +38,13 @@ class DetailInfo extends Component {
 	async componentDidMount() {
 		await this.props.getUserDetail(this.props.auth.token);
 		localStorage.setItem('userId', this.props.user.detail.id);
+		this.props.getUserDetailById(localStorage.getItem('userId'));
+		sessionStorage.setItem('firstName', this.props.user.detail.firstName);
+		sessionStorage.setItem('lastName', this.props.user.detail.lastName);
+		sessionStorage.setItem('phoneNumber', this.props.user.detail.phoneNumber);
+		sessionStorage.setItem('email', this.props.user.detail.email);
+		sessionStorage.setItem('password', this.props.user.detail.password);
+		sessionStorage.setItem('gender', this.props.user.detail.gender);
 	}
 	submitData = async (values) => {
 		const userId = localStorage.getItem('userId');
@@ -74,11 +80,13 @@ class DetailInfo extends Component {
 				{show === true && console.log(show.message)}
 				<Formik
 					initialValues={{
-						firstName: '',
-						lastName: '',
-						phoneNumber: '',
-						email: '',
-						gender: this.props.user.detail.gender,
+						firstName: sessionStorage.getItem('firstName'),
+						lastName: sessionStorage.getItem('lastName'),
+						phoneNumber: sessionStorage.getItem('phoneNumber'),
+						email: sessionStorage.getItem('email'),
+						password: '',
+						confirmPassword: '',
+						gender: sessionStorage.getItem('gender'),
 					}}
 					validationSchema={ValidatorSchema}
 					onSubmit={(values) => {
@@ -104,49 +112,40 @@ class DetailInfo extends Component {
 											<Col>
 												<Form.Label>First Name</Form.Label>
 												<Form.Control
+													readOnly
 													type="text"
 													placeholder="Write your first name"
 													name="firstName"
 													onChange={handleChange}
 													onBlur={handleBlur}
 													value={values.firstName}
-													isValid={touched.firstName && !errors.firstName}
 												/>
-												{errors.firstName && touched.firstName ? (
-													<div style={{ color: 'red' }}>{errors.firstName}</div>
-												) : null}
 											</Col>
 											<Col>
 												<Form.Label>Last Name</Form.Label>
 												<Form.Control
+													readOnly
 													type="text"
 													placeholder="Write your last name"
 													name="lastName"
 													onChange={handleChange}
 													onBlur={handleBlur}
 													value={values.lastName}
-													isValid={touched.lastName && !errors.lastName}
 												/>
-												{errors.lastName && touched.lastName ? (
-													<div style={{ color: 'red' }}>{errors.lastName}</div>
-												) : null}
 											</Col>
 										</Row>
 										<Row className="mb-3">
 											<Col>
 												<Form.Label>E-mail</Form.Label>
 												<Form.Control
+													readOnly
 													type="email"
 													placeholder="Write your email"
 													name="email"
 													onChange={handleChange}
 													onBlur={handleBlur}
 													value={values.email}
-													isValid={touched.email && !errors.email}
 												/>
-												{errors.email && touched.email ? (
-													<div style={{ color: 'red' }}>{errors.email}</div>
-												) : null}
 											</Col>
 										</Row>
 										<Row>
@@ -154,7 +153,7 @@ class DetailInfo extends Component {
 												<Form.Label>Gender</Form.Label>
 												<Form.Control
 													readOnly
-													type="gender"
+													type="text"
 													name="gender"
 													defaultValue="Unspecified"
 													onChange={handleChange}
@@ -168,36 +167,77 @@ class DetailInfo extends Component {
 														<InputGroup.Text>+84</InputGroup.Text>
 													</InputGroup.Prepend>
 													<Form.Control
+														readOnly
 														type="number"
 														placeholder="Write your phone number"
 														name="phoneNumber"
 														onChange={handleChange}
 														onBlur={handleBlur}
 														value={values.phoneNumber}
-														isValid={touched.phoneNumber && !errors.phoneNumber}
 													/>
-													{errors.phoneNumber && touched.phoneNumber ? (
-														<div style={{ color: 'red' }}>
-															{errors.phoneNumber}
-														</div>
-													) : null}
 												</InputGroup>
 											</Col>
 										</Row>
-										{this.state.isLoading === false ? (
-											<ButtonLeft
-												gobuttonleft="/profile-page"
-												buttontext="Update Change"
-												type="submit"
-												onClick={handleSubmit}
-												disabled={isSubmitting}
-											/>
-										) : (
-											<Spinner animation="border" variant="primary" />
-										)}
 									</Form.Group>
 								</Card.Body>
 							</Card>
+							<div className="pt-4">
+								<Card>
+									<Card.Body>
+										<p>Account and Privacy</p>
+										<hr />
+										<Form.Group>
+											<Row>
+												<Col>
+													<Form.Label>New Password</Form.Label>
+													<Form.Control
+														type="password"
+														placeholder="Write your password"
+														name="password"
+														onChange={handleChange}
+														onBlur={handleBlur}
+														isValid={touched.password && !errors.password}
+														value={values.password}
+													/>
+													{errors.password && touched.password ? (
+														<p style={{ color: 'red' }}>{errors.password}</p>
+													) : null}
+												</Col>
+												<Col>
+													<Form.Label>Confirm Password</Form.Label>
+													<Form.Control
+														type="password"
+														placeholder="Confirm your password"
+														name="confirmPassword"
+														onChange={handleChange}
+														onBlur={handleBlur}
+														isValid={
+															touched.confirmPassword && !errors.confirmPassword
+														}
+														value={values.confirmPassword}
+													/>
+													{errors.confirmPassword && touched.confirmPassword ? (
+														<p style={{ color: 'red' }}>
+															{errors.confirmPassword}
+														</p>
+													) : null}
+												</Col>
+											</Row>
+										</Form.Group>
+									</Card.Body>
+								</Card>
+								{this.state.isLoading === false ? (
+									<ButtonLeft
+										gobuttonleft="/profile-page"
+										buttontext="Update Change"
+										type="submit"
+										onClick={handleSubmit}
+										disabled={isSubmitting}
+									/>
+								) : (
+									<Spinner animation="border" variant="primary" />
+								)}
+							</div>
 						</Form.Group>
 					)}
 				</Formik>
@@ -211,6 +251,6 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = { getUserDetail, updateUser };
+const mapDispatchToProps = { getUserDetail, getUserDetailById, updateUser };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailInfo);
