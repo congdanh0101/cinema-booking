@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Col, Image } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import './styles.css';
-import { getUserDetail } from '../../redux/actions/user';
+import { getUserDetail } from '../../service/actions/user';
 
 class InfoProfile extends Component {
 	async componentDidMount() {

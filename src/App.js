@@ -2,29 +2,30 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 //Register
-import SignUp from './pages/register/SignUp';
-import SignIn from './pages/register/SignIn';
-import ForgetPassword from './pages/register/ForgetPassword';
-import ResetPassword from './pages/register/ResetPassword';
-import EmailVerification from './pages/register/EmailVerification';
+import SignUp from './pages/Public/register/SignUp';
+import SignIn from './pages/Public/register/SignIn';
+import ForgetPassword from './pages/Public/register/ForgetPassword';
+import ResetPassword from './pages/Public/register/ResetPassword';
+import EmailVerification from './pages/Public/register/EmailVerification';
 
 //Public
-import HomePage from './pages/home-page/HomePage';
-import MoviePage from './pages/movie-page/MoviePage';
-import MovieDetail from './pages/movie-detail/MovieDetail';
-import OrderPage from './pages/order-page/OrderPage';
-import PaymentPage from './pages/payment-page/PaymentPage';
-import TicketResult from './pages/ticket-result-page/TicketResult';
-import ProfilePage from './pages/profile-page/ProfilePage';
+import HomePage from './pages/Public/home-page/HomePage';
+import MoviePage from './pages/Public/movie-page/MoviePage';
+import MovieDetail from './pages/Public/movie-detail/MovieDetail';
+import OrderPage from './pages/Public/order-page/OrderPage';
+import PaymentPage from './pages/Public/payment-page/PaymentPage';
+import TicketResult from './pages/Public/ticket-result-page/TicketResult';
+import ProfilePage from './pages/Public/profile-page/ProfilePage';
 
 //Admin
-import AdminPage from './pages/admin-page/AdminPage';
-import AdminPanel from './pages/admin-panel/AdminPanel';
+import AdminPage from './pages/Admin/admin-page/AdminPage';
+import AdminPanel from './pages/Admin/admin-panel/AdminPanel';
 
-import PrivateRoute from './shared/router/PrivateRoute';
-import persistedStore from './redux/store';
+import { PublicLayout } from './layouts';
+import { WithLayoutRoute, PrivateRoute } from './shared/router';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import persistedStore from './service/store';
 import ScrollToTop from './shared/helpers/ScrollToTop';
 import Error from './pages/Error';
 
@@ -37,29 +38,56 @@ export default class App extends Component {
 					<BrowserRouter>
 						<ScrollToTop />
 						<Switch>
-							<Route path="/" exact component={HomePage} />
-
 							<Route path="/sign-up" component={SignUp} />
 							<Route path="/login" component={SignIn} />
 							<Route path="/email-verify" component={EmailVerification} />
-
 							<Route path="/forgot-password" component={ForgetPassword} />
 							<Route path="/reset-password" component={ResetPassword} />
-
-							<Route path="/movies" component={MoviePage} />
-							<Route path="/movie-detail/:id" component={MovieDetail} />
-							<PrivateRoute path="/order-page" privateComponent={OrderPage} />
-							<PrivateRoute path="/payment" privateComponent={PaymentPage} />
+							<WithLayoutRoute
+								exact
+								path="/"
+								layout={PublicLayout}
+								component={HomePage}
+							/>
+							<WithLayoutRoute
+								path="/movies"
+								layout={PublicLayout}
+								component={MoviePage}
+							/>
+							<WithLayoutRoute
+								path="/movie-detail/:id"
+								layout={PublicLayout}
+								component={MovieDetail}
+							/>
+							<PrivateRoute
+								path="/order-page"
+								privateLayout={PublicLayout}
+								privateComponent={OrderPage}
+							/>
+							<PrivateRoute
+								path="/payment"
+								privateLayout={PublicLayout}
+								privateComponent={PaymentPage}
+							/>
 							<PrivateRoute
 								path="/ticket-result"
 								privateComponent={TicketResult}
 							/>
 							<PrivateRoute
 								path="/profile-page"
+								privateLayout={PublicLayout}
 								privateComponent={ProfilePage}
 							/>
-							<PrivateRoute path="/admin-page" privateComponent={AdminPage} />
-							<PrivateRoute path="/admin-panel" privateComponent={AdminPanel} />
+							<PrivateRoute
+								path="/admin-page"
+								privateLayout={PublicLayout}
+								privateComponent={AdminPage}
+							/>
+							<PrivateRoute
+								path="/admin-panel"
+								privateLayout={PublicLayout}
+								privateComponent={AdminPanel}
+							/>
 							<Route path="*" component={Error} />
 						</Switch>
 					</BrowserRouter>

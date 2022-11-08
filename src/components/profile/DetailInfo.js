@@ -16,7 +16,7 @@ import {
 	getUserDetail,
 	getUserDetailById,
 	updateUser,
-} from '../../redux/actions/user';
+} from '../../service/actions/user';
 
 const ValidatorSchema = Yup.object().shape({
 	password: Yup.string()
@@ -156,7 +156,6 @@ class DetailInfo extends Component {
 													readOnly
 													type="text"
 													name="gender"
-													defaultValue="Unspecified"
 													onChange={handleChange}
 													value={values.gender}
 												></Form.Control>

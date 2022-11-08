@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Card, Col, Image, Row, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getMovieByShowing } from '../../redux/actions/movie';
-import { getAllShowtime } from '../../redux/actions/showtime';
+import { getMovieByShowing } from '../../service/actions/movie';
+import { getAllShowtime } from '../../service/actions/showtime';
 import listComingMovie from '../../shared/constants/listComingMovie';
 import './styles.css';
 
@@ -29,26 +29,25 @@ class ShowingComponent extends Component {
 
 				<div className="scrollmenu text-center">
 					{movie.nowShowing.length > 0
-						? movie.nowShowing.map((item, itemId) => {
+						? movie.nowShowing.map((showing) => {
 								return (
-									<Card key={itemId} className="scroll card mr-4">
+									<Card key={showing.id} className="scroll card mr-4">
 										<Card.Body className="card-body">
 											<Link
-												to={`/movie-detail/${item.id}`}
+												to={`/movie-detail/${showing.id}`}
 												className="link"
-												key={item.id}
 												style={{ textDecoration: 'none' }}
 											>
 												<Image
-													src={item.image}
+													src={showing.image}
 													className="img-fluid img-resize"
 												/>
 											</Link>
 											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{item.name}
+												{showing.name}
 											</p>
 											<Button
-												href={`/movie-detail/${item.id}`}
+												href={`/movie-detail/${showing.id}`}
 												variant="outline-primary"
 												className="btn-nav"
 												block
@@ -59,26 +58,25 @@ class ShowingComponent extends Component {
 									</Card>
 								);
 						  })
-						: listComingMovie.map((item, itemId) => {
+						: listComingMovie.map((showing) => {
 								return (
-									<Card key={itemId} className="scroll card mr-4">
+									<Card key={showing.id} className="scroll card mr-4">
 										<Card.Body className="card-body">
 											<Link
-												to={`/movie-detail/${item.id}`}
+												to={`/movie-detail/${showing.id}`}
 												className="link"
-												key={item.id}
 												style={{ textDecoration: 'none' }}
 											>
 												<Image
-													src={item.image}
+													src={showing.image}
 													className="img-fluid img-resize"
 												/>
 											</Link>
 											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{item.name}
+												{showing.name}
 											</p>
 											<Button
-												href={`/movie-detail/${item.id}`}
+												href={`/movie-detail/${showing.id}`}
 												variant="outline-primary"
 												className="btn-nav"
 												block

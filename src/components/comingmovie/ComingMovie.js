@@ -3,7 +3,7 @@ import { Card, Image, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import listComingMovie from '../../shared/constants/listComingMovie';
-import { getMovieByComing } from '../../redux/actions/movie';
+import { getMovieByComing } from '../../service/actions/movie';
 import './styles.css';
 
 class ComingMovie extends Component {
@@ -26,69 +26,54 @@ class ComingMovie extends Component {
 				</Row>
 				<div className="scrollmenu text-center">
 					{movie.comingSoon.length > 0
-						? movie.comingSoon.map((item, itemId) => {
+						? movie.comingSoon.map((coming) => {
 								return (
-									<Link
-										to={`/movie-detail/${item.id}`}
-										className="link"
-										key={item.id}
-										style={{ textDecoration: 'none' }}
-									>
-										<Card key={itemId} className="scroll card mr-4">
-											<Card.Body className="card-body">
-												<Link
-													to={`/movie-detail/${item.id}`}
-													className="link"
-													key={item.id}
-													style={{ textDecoration: 'none' }}
-												>
-													<Image
-														src={item.image}
-														className="img-fluid img-resize"
-													/>
-												</Link>
-												<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-													{item.name}
-												</p>
-												<Link
-													to={`/movie-detail/${item.id}`}
-													className="link"
-													key={item.id}
-													style={{ textDecoration: 'none' }}
-												>
-													<Button
-														variant="outline-primary"
-														className="btn-nav"
-														block
-													>
-														Detail
-													</Button>
-												</Link>
-											</Card.Body>
-										</Card>
-									</Link>
-								);
-						  })
-						: listComingMovie.map((item, itemId) => {
-								return (
-									<Card key={itemId} className="scroll card mr-4">
+									<Card key={coming.id} className="scroll card mr-4">
 										<Card.Body className="card-body">
 											<Link
-												to={`/movie-detail/${item.id}`}
+												to={`/movie-detail/${coming.id}`}
 												className="link"
-												key={item.id}
 												style={{ textDecoration: 'none' }}
 											>
 												<Image
-													src={item.image}
+													src={coming.image}
 													className="img-fluid img-resize"
 												/>
 											</Link>
 											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{item.name}
+												{coming.name}
 											</p>
 											<Button
-												href={`/movie-detail/${item.id}`}
+												href={`/movie-detail/${coming.id}`}
+												variant="outline-primary"
+												className="btn-nav"
+												block
+											>
+												Detail
+											</Button>
+										</Card.Body>
+									</Card>
+								);
+						  })
+						: listComingMovie.map((coming) => {
+								return (
+									<Card key={coming.id} className="scroll card mr-4">
+										<Card.Body className="card-body">
+											<Link
+												to={`/movie-detail/${coming.id}`}
+												className="link"
+												style={{ textDecoration: 'none' }}
+											>
+												<Image
+													src={coming.image}
+													className="img-fluid img-resize"
+												/>
+											</Link>
+											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
+												{coming.name}
+											</p>
+											<Button
+												href={`/movie-detail/${coming.id}`}
 												variant="outline-primary"
 												className="btn-nav"
 												block

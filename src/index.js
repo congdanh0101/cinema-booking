@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './custom.scss';
 import reportWebVitals from './reportWebVitals';
-import $ from 'jquery';
-global.$ = global.jQuery = $;
+import jQuery from 'jquery';
+window.$ = window.jQuery = jQuery;
 
 ReactDOM.render(
 	<React.StrictMode>

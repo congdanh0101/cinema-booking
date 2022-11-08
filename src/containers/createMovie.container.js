@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import http from '../shared/helpers/config';
-import { addMovie } from '../redux/actions/movie';
+import { addMovie } from '../service/actions/movie';
 
 class CreateMovie extends Component {
 	state = {
@@ -23,7 +23,6 @@ class CreateMovie extends Component {
 	// 	const { name } = this.state;
 	// 	this.props.movie(name);
 	// };
-
 
 	changeText = (event) => {
 		this.setState({ [event.target.name]: event.target.value });

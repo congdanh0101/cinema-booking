@@ -3,7 +3,7 @@ import { Card, Image, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import listComingMovie from '../../shared/constants/listComingMovie';
-import { getAllMovie } from '../../redux/actions/movie';
+import { getAllMovie } from '../../service/actions/movie';
 import './styles.css';
 
 class LatestComponent extends Component {

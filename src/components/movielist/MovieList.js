@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Image, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getAllMovie } from '../../redux/actions/movie';
+import { getAllMovie } from '../../service/actions/movie';
 import './styles.css';
 
 class MovieList extends Component {
