@@ -21,6 +21,7 @@ import ProfilePage from './pages/Public/profile-page/ProfilePage';
 import AdminPage from './pages/Admin/admin-page/AdminPage';
 import AdminPanel from './pages/Admin/admin-panel/AdminPanel';
 
+//Module
 import { PublicLayout } from './layouts';
 import { WithLayoutRoute, PrivateRoute } from './shared/router';
 import { Provider } from 'react-redux';
