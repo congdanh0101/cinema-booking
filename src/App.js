@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { ThemeProvider } from 'react-bootstrap';
+import persistedStore from './service/store';
 
 //Register
 import SignUp from './pages/Public/register/SignUp';
@@ -21,12 +25,9 @@ import ProfilePage from './pages/Public/profile-page/ProfilePage';
 import AdminPage from './pages/Admin/admin-page/AdminPage';
 import AdminPanel from './pages/Admin/admin-panel/AdminPanel';
 
-//Module
-import { PublicLayout } from './layouts';
+//Components
+import { AdminLayout, PublicLayout } from './layouts';
 import { WithLayoutRoute, PrivateRoute } from './shared/router';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import persistedStore from './service/store';
 import ScrollToTop from './shared/helpers/ScrollToTop';
 import Error from './pages/Error';
 
@@ -86,7 +87,7 @@ export default class App extends Component {
 							/>
 							<PrivateRoute
 								path="/admin-panel"
-								privateLayout={PublicLayout}
+								privateLayout={AdminLayout}
 								privateComponent={AdminPanel}
 							/>
 							<Route path="*" component={Error} />

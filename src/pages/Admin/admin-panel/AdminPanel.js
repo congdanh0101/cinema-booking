@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { Button, Col, Container, Navbar, Row, Nav } from 'react-bootstrap';
 import { Switch, Route, Link } from 'react-router-dom';
+
 import CreateMovie from '../../../containers/createMovie.container';
 import GenreTable from '../../../containers/genreTable.container';
 import MovieTable from '../../../containers/movieTable.container';
@@ -11,7 +12,7 @@ import EditGenre from '../../../containers/editGenre.container';
 export default class AdminPanel extends Component {
 	render() {
 		return (
-			<React.Fragment>
+			<Fragment>
 				<Navbar bg="dark" variant="dark">
 					<Container>
 						<Navbar.Brand>
@@ -83,7 +84,7 @@ export default class AdminPanel extends Component {
 						</Col>
 					</Row>
 				</Container>
-			</React.Fragment>
+			</Fragment>
 		);
 	}
 }
