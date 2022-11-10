@@ -9,10 +9,9 @@ export const getAllShowtime = () => {
 				payload: response.data,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_SHOWTIME_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -27,10 +26,9 @@ export const getShowtimeDetail = (id) => {
 				payload: response.data,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_SHOWTIME_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -53,10 +51,9 @@ export const addShowtime = (movieId, theaterId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_SHOWTIME_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -79,10 +76,9 @@ export const updateShowtime = (movieId, theaterId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_SHOWTIME_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -98,10 +94,9 @@ export const deleteShowtime = (id) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_SHOWTIME_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -117,10 +112,9 @@ export const deleteShowtimeForce = (id) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_SHOWTIME_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};

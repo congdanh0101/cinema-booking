@@ -10,10 +10,9 @@ export const getTickets = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_TICKET_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -29,10 +28,9 @@ export const getTicketsByShowtime = (showtimeId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_TICKET_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -82,10 +80,9 @@ export const addManyTickets = (showtimeId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_TICKET_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};

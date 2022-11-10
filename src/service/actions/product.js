@@ -10,10 +10,9 @@ export const getProducts = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_PRODUCT_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};

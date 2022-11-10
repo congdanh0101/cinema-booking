@@ -11,10 +11,9 @@ export const login = (username, password) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -55,10 +54,9 @@ export const register = (
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -130,10 +128,9 @@ export const forgetPassword = (email) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -148,10 +145,9 @@ export const forgetPasswordVerify = (code) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -170,10 +166,9 @@ export const resetPassword = (password, confirmPassword) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};

@@ -50,10 +50,9 @@ export const getUserDetailById = (id) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -69,11 +68,6 @@ export const addUser = (
 ) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_USER_MESSAGE',
-				payload: '',
-				message: '',
-			});
 			const token = localStorage.getItem('jwtToken');
 			const response = await http(token).post(`users`, {
 				firstName,
@@ -89,10 +83,9 @@ export const addUser = (
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -109,10 +102,9 @@ export const updateUser = (id, data) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -121,10 +113,6 @@ export const updateUser = (id, data) => {
 export const deleteUser = (userId) => {
 	return async (dispatch) => {
 		try {
-			dispatch({
-				type: 'SET_USER_MESSAGE',
-				message: '',
-			});
 			const token = localStorage.getItem('jwtToken');
 			const response = await http(token).delete(`user/${userId}`);
 			dispatch({
@@ -133,10 +121,9 @@ export const deleteUser = (userId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};

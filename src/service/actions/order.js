@@ -17,10 +17,9 @@ export const createOrder = (
 				payload: data,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_CREATE_ORDER_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -34,10 +33,9 @@ export const createSeat = (data = []) => {
 				payload: data,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
-				type: 'SET_GET_SEAT_MESSAGE',
-				payload: message,
+				type: 'SET_CREATE_ORDER_MESSAGE',
+				payload: err,
 			});
 		}
 	};

@@ -29,10 +29,9 @@ export const getMovieByDisplay = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -48,10 +47,9 @@ export const getMovieByShowing = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -67,10 +65,9 @@ export const getMovieByComing = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -86,10 +83,9 @@ export const getMovieDetail = (id) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -128,10 +124,9 @@ export const addMovie = (
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -171,10 +166,9 @@ export const updateMovie = (
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
@@ -191,10 +185,9 @@ export const deleteMovie = (movieId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: message,
+				payload: err,
 			});
 		}
 	};
