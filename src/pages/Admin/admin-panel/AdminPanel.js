@@ -13,21 +13,6 @@ export default class AdminPanel extends Component {
 	render() {
 		return (
 			<Fragment>
-				<Navbar bg="dark" variant="dark">
-					<Container>
-						<Navbar.Brand>
-							<Link className="nav-link" to="/admin-panel">
-								Admin Panel
-							</Link>
-						</Navbar.Brand>
-						<Navbar.Toggle />
-						<Navbar.Collapse className="justify-content-end">
-							<Navbar.Text>
-								<Button variant="light">Logout</Button>
-							</Navbar.Text>
-						</Navbar.Collapse>
-					</Container>
-				</Navbar>
 				<Container>
 					<Row>
 						<Col md={3}>

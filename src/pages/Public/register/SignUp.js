@@ -12,8 +12,7 @@ import {
 	InputGroup,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import LeftRegister from '../../../components/register/LeftRegister';
-import RightRegister from '../../../components/register/RightRegister';
+import { LeftRegister, RightRegister } from '../../../components/common';
 import tickitz_white from '../../../assets/images/tickitz-white.svg';
 import './styles.css';
 import { connect } from 'react-redux';

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import PayInfo from '../../../components/payment/PayInfo';
-import PersonalInfo from '../../../components/payment/PersonalInfo';
-import ButtonPanel from '../../../components/splitpanel/ButtonPanel';
-import PanelLeft from '../../../components/splitpanel/PanelLeft';
-import PanelRight from '../../../components/splitpanel/PanelRight';
-import PayMethod from '../../../components/payment/PayMethod';
+import { PayInfo, PayMethod, PersonalInfo } from '../../../components/public';
+
+import { ButtonPanel, PanelLeft, PanelRight } from '../../../components/common';
 
 export default class PaymentPage extends Component {
 	render() {

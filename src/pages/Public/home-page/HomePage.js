@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Col, Container, Row, Image } from 'react-bootstrap';
-import ComingMovie from '../../../components/comingmovie/ComingMovie';
-import ShowingComponent from '../../../components/showing/ShowingComponent';
-import SubscribeComponent from '../../../components/subscribe/SubscribeComponent';
+import {
+	ShowingComponent,
+	SubscribeComponent,
+	ComingComponent,
+} from '../../../components/public';
 import './styles.css';
 import { login } from '../../../service/actions/auth';
 import { connect } from 'react-redux';
@@ -60,7 +62,7 @@ class HomePage extends Component {
 						<ShowingComponent />
 					</section>
 					<section>
-						<ComingMovie />
+						<ComingComponent />
 					</section>
 					<section>
 						<SubscribeComponent />

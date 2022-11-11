@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row } from 'react-bootstrap';
-import AccountProfile from '../../../components/profile/AccountProfile';
+import { AccountProfile } from '../../../components/public';
 
 export default class ProfilePage extends Component {
 	render() {

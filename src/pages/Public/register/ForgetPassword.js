@@ -9,8 +9,7 @@ import {
 	Spinner,
 	Alert,
 } from 'react-bootstrap';
-import LeftRegister from '../../../components/register/LeftRegister';
-import RightRegister from '../../../components/register/RightRegister';
+import { LeftRegister, RightRegister } from '../../../components/common';
 import tickitz_white from '../../../assets/images/tickitz-white.svg';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';

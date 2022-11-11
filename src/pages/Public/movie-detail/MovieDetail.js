@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { login } from '../../../service/actions/auth';
 import { connect } from 'react-redux';
-import MovieDetailComponent from '../../../components/moviedetail/MovieDetailComponent';
+import { MovieDetailComponent } from '../../../components/public';
 import './styles.css';
 
 class MovieDetail extends Component {
