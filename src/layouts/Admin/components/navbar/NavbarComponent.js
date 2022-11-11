@@ -1,67 +1,93 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, Image, Container, NavDropdown } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { Navbar, Container, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
 import { connect } from 'react-redux';
 import { logout } from '../../../../service/actions/auth';
-import { getUserDetail, getUserDetailById } from '../../../../service/actions/user';
-import './styles.css';
+import {
+	getUserDetail,
+	getUserDetailById,
+} from '../../../../service/actions/user';
+
+import { withStyles } from '@material-ui/core/styles';
+import { Badge, Toolbar, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
+import InputIcon from '@material-ui/icons/Input';
+import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
+
+// Component styles
+import styles from './styles';
+import { Fragment } from 'react';
 
 class NavbarComponent extends Component {
+	static defaultProps = {
+		title: 'Dashboard',
+		isSidebarOpen: false,
+	};
+	static propTypes = {
+		children: PropTypes.node,
+		classes: PropTypes.object.isRequired,
+		isSidebarOpen: PropTypes.bool,
+		title: PropTypes.string,
+		logout: PropTypes.func.isRequired,
+		auth: PropTypes.object.isRequired,
+	};
+	handleSignOut = async () => {
+		this.props.logout();
+	};
 	render() {
+		const {
+			classes,
+			ToolbarClasses,
+			children,
+			isSidebarOpen,
+			onToggleSidebar,
+		} = this.props;
 		return (
-			<Navbar expand="lg">
-				<Container>
-					<Navbar.Brand href="#home" as={Link} to="/" className="m-0">
-						<Image src={tickitz_purple} />
-					</Navbar.Brand>
-					<Navbar.Toggle aria-controls="basic-navbar-nav" />
-					<Navbar.Collapse id="basic-navbar-nav">
-						<Nav className="nav-link mr-auto">
-							<Nav.Link href="/movies">Movies</Nav.Link>
-							{/* <Nav.Link href="/">Cinemas</Nav.Link> */}
-							<Nav.Link href="/">Buy Ticket</Nav.Link>
-						</Nav>
-						<Nav className="nav-link justify-content-end" activeKey="/home">
-							{this.props.auth.token !== null ? (
-								<NavDropdown
-									title={
-										<Image
-											src={
-												'https://icon-library.com/images/default-user-icon/default-user-icon-4.jpg'
-											}
-											className="img-avatar"
-										/>
-									}
-									id="basic-nav-dropdown"
-									className="m-0"
-								>
-									<NavDropdown.Item href="/">Home</NavDropdown.Item>
-									<NavDropdown.Item href="/profile-page">
-										Your Profile
-									</NavDropdown.Item>
-									<NavDropdown.Divider />
-									<NavDropdown.Item
-										href="/"
-										onClick={(e) => this.props.logout()}
-									>
-										Sign out
-									</NavDropdown.Item>
-								</NavDropdown>
-							) : (
-								<Nav.Item>
-									<Link to="/login" className="btn btn-primary btn-nav mx-2">
-										Sign in
-									</Link>
-									<Link to="/sign-up" className="btn btn-primary btn-nav">
-										Sign up
-									</Link>
-								</Nav.Item>
-							)}
-						</Nav>
-					</Navbar.Collapse>
-				</Container>
-			</Navbar>
+			<Fragment>
+				<div className={`${classes.root} , ${ToolbarClasses}`}>
+					<Toolbar className={classes.toolbar}>
+						<div className={classes.brandWrapper}>
+							<div className={classes.logo}>
+								<Navbar.Brand href="#home" as={Link} to="/" className="m-0">
+									<Image src={tickitz_purple} />
+								</Navbar.Brand>
+							</div>
+							<IconButton
+								className={classes.menuButton}
+								aria-label="Menu"
+								onClick={onToggleSidebar}
+							>
+								{isSidebarOpen ? <CloseIcon /> : <MenuIcon />}
+							</IconButton>
+						</div>
+						<Container className="darkBg">
+							<Navbar.Brand>
+								<Link className="nav-link" to="/admin-panel">
+									Admin Panel
+								</Link>
+							</Navbar.Brand>
+						</Container>
+						<IconButton
+							className={classes.notificationsButton}
+							onClick={() => console.log('Notification')}
+						>
+							<Badge overlap="rectangular" badgeContent={4} color="primary" variant="dot">
+								<NotificationsIcon />
+							</Badge>
+						</IconButton>
+						<IconButton
+							className={classes.signOutButton}
+							onClick={this.handleSignOut}
+						>
+							<InputIcon />
+						</IconButton>
+					</Toolbar>
+					{children}
+				</div>
+			</Fragment>
 		);
 	}
 }
@@ -73,4 +99,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = { logout, getUserDetail, getUserDetailById };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavbarComponent);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withStyles(styles)(NavbarComponent));
