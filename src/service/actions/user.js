@@ -3,7 +3,7 @@ import http from '../../shared/helpers/config';
 export const getAllUser = () => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`users`);
+			const response = await http().get(`users/`);
 			dispatch({
 				type: 'GET_ALL_USER',
 				payload: response.data,
