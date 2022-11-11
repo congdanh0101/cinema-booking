@@ -22,8 +22,8 @@ const styles = (theme) => ({
 		height: theme.topBar.height,
 		flexShrink: 0,
 	},
-	darkBg:{
-		background: theme.palette.default.dark,
+	darkBg: {
+		background: theme.palette.background.paper,
 	},
 	logo: {
 		width: 'calc(100% - 160px)',
@@ -47,10 +47,10 @@ const styles = (theme) => ({
 		marginLeft: '-4px',
 	},
 	notificationsButton: {
-		marginLeft: 'auto',
+		marginLeft: theme.spacing(4),
 	},
 	signOutButton: {
-		marginLeft: theme.spacing(1)
+		marginLeft: theme.spacing(1),
 	},
 });
 

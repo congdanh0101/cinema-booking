@@ -63,7 +63,7 @@ class NavbarComponent extends Component {
 								{isSidebarOpen ? <CloseIcon /> : <MenuIcon />}
 							</IconButton>
 						</div>
-						<Container className="darkBg">
+						<Container className={classes.darkBg}>
 							<Navbar.Brand>
 								<Link className="nav-link" to="/admin-panel">
 									Admin Panel
@@ -74,7 +74,12 @@ class NavbarComponent extends Component {
 							className={classes.notificationsButton}
 							onClick={() => console.log('Notification')}
 						>
-							<Badge overlap="rectangular" badgeContent={4} color="primary" variant="dot">
+							<Badge
+								overlap="rectangular"
+								badgeContent={4}
+								color="primary"
+								variant="dot"
+							>
 								<NotificationsIcon />
 							</Badge>
 						</IconButton>

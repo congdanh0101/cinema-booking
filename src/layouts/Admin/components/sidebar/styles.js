@@ -30,6 +30,7 @@ const styles = (theme) => ({
 		color: theme.palette.common.contrastText,
 	},
 	listItem: {
+		textDecoration: 'none',
 		cursor: 'pointer',
 		'&:hover': {
 			backgroundColor: theme.palette.default.light,
@@ -44,6 +45,7 @@ const styles = (theme) => ({
 		},
 	},
 	activeListItem: {
+		textDecoration: 'none',
 		borderLeft: `4px solid ${theme.palette.default.dark}`,
 		borderRadius: '4px',
 		backgroundColor: theme.palette.default.light,
@@ -58,6 +60,7 @@ const styles = (theme) => ({
 		marginRight: 0,
 	},
 	listItemText: {
+		textDecoration: 'none',
 		fontWeight: 500,
 		color: theme.palette.common.contrastText,
 	},

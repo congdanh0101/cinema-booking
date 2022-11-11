@@ -57,6 +57,7 @@ class AdminLayout extends Component {
 				>
 					{children}
 				</main>
+				<Footer />
 			</Fragment>
 		);
 	}

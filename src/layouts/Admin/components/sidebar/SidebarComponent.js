@@ -29,6 +29,7 @@ class Sidebar extends Component {
 						activeClassName={classes.activeListItem}
 						className={classes.listItem}
 						component={NavLink}
+						style={{ textDecoration: 'none' }}
 						to="/admin-panel/dashboard"
 					>
 						<ListItemIcon className={classes.listItemIcon}>
@@ -43,6 +44,7 @@ class Sidebar extends Component {
 						activeClassName={classes.activeListItem}
 						className={classes.listItem}
 						component={NavLink}
+						style={{ textDecoration: 'none' }}
 						to="/admin/movies"
 					>
 						<ListItemIcon className={classes.listItemIcon}>
@@ -57,6 +59,7 @@ class Sidebar extends Component {
 						activeClassName={classes.activeListItem}
 						className={classes.listItem}
 						component={NavLink}
+						style={{ textDecoration: 'none' }}
 						to="/admin/tickets"
 					>
 						<ListItemIcon className={classes.listItemIcon}>
@@ -71,6 +74,7 @@ class Sidebar extends Component {
 						activeClassName={classes.activeListItem}
 						className={classes.listItem}
 						component={NavLink}
+						style={{ textDecoration: 'none' }}
 						to="/admin/showtimes"
 					>
 						<ListItemIcon className={classes.listItemIcon}>
@@ -85,20 +89,7 @@ class Sidebar extends Component {
 						activeClassName={classes.activeListItem}
 						className={classes.listItem}
 						component={NavLink}
-						to="/admin/reservations"
-					>
-						<ListItemIcon className={classes.listItemIcon}>
-							<PeopleIcon />
-						</ListItemIcon>
-						<ListItemText
-							classes={{ primary: classes.listItemText }}
-							primary="Reservations"
-						/>
-					</ListItem>
-					<ListItem
-						activeClassName={classes.activeListItem}
-						className={classes.listItem}
-						component={NavLink}
+						style={{ textDecoration: 'none' }}
 						to="/admin/products"
 					>
 						<ListItemIcon className={classes.listItemIcon}>
@@ -114,6 +105,7 @@ class Sidebar extends Component {
 							activeClassName={classes.activeListItem}
 							className={classes.listItem}
 							component={NavLink}
+							style={{ textDecoration: 'none' }}
 							to="/admin/users"
 						>
 							<ListItemIcon className={classes.listItemIcon}>
@@ -129,6 +121,7 @@ class Sidebar extends Component {
 						activeClassName={classes.activeListItem}
 						className={classes.listItem}
 						component={NavLink}
+						style={{ textDecoration: 'none' }}
 						to="/admin/account"
 					>
 						<ListItemIcon className={classes.listItemIcon}>
@@ -153,7 +146,8 @@ class Sidebar extends Component {
 					<ListItem
 						className={classes.listItem}
 						component="a"
-						href="http://georgesimos.com"
+						style={{ textDecoration: 'none' }}
+						href="https://github.com/congdanh0101/cinema-booking"
 						target="_blank"
 					>
 						<ListItemIcon className={classes.listItemIcon}>

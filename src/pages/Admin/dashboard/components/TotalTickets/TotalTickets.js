@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import TheatersIcon from '@material-ui/icons/Theaters';
 
 const useStyles = makeStyles((theme) => ({
@@ -66,15 +65,6 @@ const TotalTickets = (props) => {
 						</Avatar>
 					</Grid>
 				</Grid>
-				<div className={classes.difference}>
-					<ArrowDownwardIcon className={classes.differenceIcon} />
-					<Typography className={classes.differenceValue} variant="body2">
-						16%
-					</Typography>
-					<Typography className={classes.caption} variant="caption">
-						Since last month
-					</Typography>
-				</div>
 			</CardContent>
 		</Card>
 	);
