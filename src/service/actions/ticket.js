@@ -18,6 +18,24 @@ export const getTickets = () => {
 	};
 };
 
+export const getTicketById = (ticketId) => {
+	return async (dispatch) => {
+		try {
+			const response = await http().get(`tickets/${ticketId}`);
+			dispatch({
+				type: 'GET_TICKET_BY_ID',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			dispatch({
+				type: 'SET_TICKET_MESSAGE',
+				payload: err,
+			});
+		}
+	};
+};
+
 export const getTicketsByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {
@@ -76,6 +94,25 @@ export const addManyTickets = (showtimeId) => {
 			);
 			dispatch({
 				type: 'ADD_MANY_TICKETS',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			dispatch({
+				type: 'SET_TICKET_MESSAGE',
+				payload: err,
+			});
+		}
+	};
+};
+
+export const deleteTicket = (ticketId) => {
+	return async (dispatch) => {
+		try {
+			const token = localStorage.getItem('jwtToken');
+			const response = await http(token).delete(`tickets/${ticketId}`);
+			dispatch({
+				type: 'DELETE_TICKET',
 				payload: response.data,
 				message: response.data.message,
 			});

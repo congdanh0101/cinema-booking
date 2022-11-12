@@ -9,7 +9,7 @@ import showtimeReducer from './showtime';
 import orderReducer from './order';
 import userReducer from './user';
 import ticketReducer from './ticket';
-import productReducer from './product';
+import paymentReducer from './payment';
 import seatReducer from './seat';
 
 const authConfig = {
@@ -25,7 +25,7 @@ const reducer = combineReducers({
 	showtime: showtimeReducer,
 	order: orderReducer,
 	ticket: ticketReducer,
-	product: productReducer,
+	product: paymentReducer,
 	seat: seatReducer,
 });
 

@@ -20,6 +20,13 @@ const ticketReducer = (state = initialState, action) => {
 				message: action.message,
 			};
 		}
+		case 'GET_TICKET_BY_ID': {
+			return {
+				...state,
+				tickets: action.payload,
+				message: action.message,
+			};
+		}
 		case 'ADD_SHOWTIME': {
 			return {
 				...state,
@@ -28,6 +35,13 @@ const ticketReducer = (state = initialState, action) => {
 			};
 		}
 		case 'ADD_MANY_TICKETS': {
+			return {
+				...state,
+				tickets: action.payload,
+				message: action.message,
+			};
+		}
+		case 'DELETE_TICKET': {
 			return {
 				...state,
 				tickets: action.payload,
