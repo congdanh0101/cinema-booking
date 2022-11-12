@@ -1,5 +1,10 @@
 import http from '../../shared/helpers/config';
 
+export const onSelectMovie = (movie) => ({
+	type: 'SELECT_MOVIE',
+	payload: movie,
+});
+
 export const getAllMovie = () => {
 	return async (dispatch) => {
 		try {

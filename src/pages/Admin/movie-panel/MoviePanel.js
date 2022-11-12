@@ -4,33 +4,26 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core';
 import { CircularProgress, Grid } from '@material-ui/core';
 import { match } from '../../../shared/utils/utils';
-import {
-	getAllMovie,
-	getMovieByComing,
-	getMovieByShowing,
-	getMovieByDisplay,
-	getMovieDetail,
-} from '../../service/actions/movie';
+import { getAllMovie, onSelectMovie } from '../../../service/actions/movie';
 
 //Component
 import { MovieToolbar, MovieCard } from './components';
-import { ResponsiveDialog } from '../../../components';
+import { ResponsiveDialog } from '../../../components/common';
 import AddMovie from './components/AddMovie/AddMovie';
 
 //Styles
 import styles from './styles';
 
-class MovieList extends Component {
+class MoviePanel extends Component {
 	state = { search: '' };
-	componentDidMount() {
-		const { movies, getMovies } = this.props;
-		if (!movies.length) getMovies();
+	async componentDidMount() {
+		const { movie, getAllMovie } = this.props;
+		if (!movie.length) getAllMovie();
 	}
 
 	renderMovies() {
 		const { classes } = this.props;
-		const movies = match(this.state.search, this.props.movies, 'title');
-
+		const movies = match(this.state.search, this.props.movie.movies, 'name');
 		if (!movies.length) {
 			return (
 				<div className={classes.progressWrapper}>
@@ -43,7 +36,7 @@ class MovieList extends Component {
 				{movies.map((movie) => (
 					<Grid
 						item
-						key={movie._id}
+						key={movie.id}
 						lg={4}
 						md={6}
 						xs={12}
@@ -58,6 +51,7 @@ class MovieList extends Component {
 
 	render() {
 		const { classes, selectedMovie } = this.props;
+		console.log(selectedMovie);
 		return (
 			<div className={classes.root}>
 				<MovieToolbar
@@ -77,23 +71,21 @@ class MovieList extends Component {
 	}
 }
 
-MovieList.propTypes = {
+MoviePanel.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	movie: state.movie,
+	selectedMovie: state.movie.selectedMovie,
 });
 
 const mapDispatchToProps = {
 	getAllMovie,
-	getMovieByComing,
-	getMovieByShowing,
-	getMovieByDisplay,
-	getMovieDetail,
+	onSelectMovie,
 };
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withStyles(styles)(MovieList));
+)(withStyles(styles)(MoviePanel));

@@ -4,6 +4,7 @@ const initialState = {
 	nowShowing: [],
 	comingSoon: [],
 	randomMovie: null,
+	selectedMovie: null,
 	details: {},
 	message: '',
 };
@@ -23,6 +24,9 @@ const movieReducer = (state = initialState, action) => {
 				randomMovie,
 				message: action.message,
 			};
+		}
+		case 'SELECT_MOVIE': {
+			return { ...state, selectedMovie: action.payload };
 		}
 		case 'GET_MOVIE_DETAIL': {
 			return {

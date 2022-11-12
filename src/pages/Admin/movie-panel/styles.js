@@ -3,7 +3,7 @@ const styles = (theme) => ({
 		padding: theme.spacing(3),
 	},
 	content: {
-		marginTop: theme.spacing(2),
+		marginTop: theme.spacing(3),
 	},
 	progressWrapper: {
 		paddingTop: '48px',

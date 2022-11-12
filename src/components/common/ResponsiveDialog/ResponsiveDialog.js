@@ -9,37 +9,38 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
 const ResponsiveDialog = ({
-  id,
-  title = '',
-  contentText,
-  children,
-  open,
-  handleClose,
-  maxWidth = 'lg'
+	id,
+	title = '',
+	contentText,
+	children,
+	open,
+	handleClose,
+	maxWidth = 'lg',
 }) => {
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+	const theme = useTheme();
+	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  return (
-    <Dialog
-      fullScreen={fullScreen}
-      fullWidth={true}
-      maxWidth={maxWidth}
-      open={open}
-      onClose={handleClose}
-      aria-labelledby={id}>
-      <DialogTitle id={id}>{title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText>{contentText}</DialogContentText>
-        {children}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary" autoFocus>
-          Done
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+	return (
+		<Dialog
+			fullScreen={fullScreen}
+			fullWidth={true}
+			maxWidth={maxWidth}
+			open={open}
+			onClose={handleClose}
+			aria-labelledby={id}
+		>
+			<DialogTitle id={id}>{title}</DialogTitle>
+			<DialogContent>
+				<DialogContentText>{contentText}</DialogContentText>
+				{children}
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={handleClose} color="primary" autoFocus>
+					Done
+				</Button>
+			</DialogActions>
+		</Dialog>
+	);
 };
 
 export default ResponsiveDialog;

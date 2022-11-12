@@ -14,7 +14,6 @@ import DashboardIcon from '@material-ui/icons/DashboardOutlined';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import AccountBoxIcon from '@material-ui/icons/AccountBoxOutlined';
-import CategoryIcon from '@material-ui/icons/Category';
 
 // Component styles
 import styles from './styles';
@@ -45,7 +44,7 @@ class Sidebar extends Component {
 						className={classes.listItem}
 						component={NavLink}
 						style={{ textDecoration: 'none' }}
-						to="/admin/movies"
+						to="/admin-panel/movies"
 					>
 						<ListItemIcon className={classes.listItemIcon}>
 							<DashboardIcon />
@@ -83,21 +82,6 @@ class Sidebar extends Component {
 						<ListItemText
 							classes={{ primary: classes.listItemText }}
 							primary="Showtimes"
-						/>
-					</ListItem>
-					<ListItem
-						activeClassName={classes.activeListItem}
-						className={classes.listItem}
-						component={NavLink}
-						style={{ textDecoration: 'none' }}
-						to="/admin/products"
-					>
-						<ListItemIcon className={classes.listItemIcon}>
-							<CategoryIcon />
-						</ListItemIcon>
-						<ListItemText
-							classes={{ primary: classes.listItemText }}
-							primary="Products"
 						/>
 					</ListItem>
 					{user && user.role === 'superadmin' && (

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { AccessTime as AccessTimeIcon } from '@material-ui/icons';
-import { Paper } from '../../../../../components/paper/Paper';
+import { Paper } from '../../../../../components/common';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -59,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
 function MovieCard(props) {
 	const classes = useStyles(props);
 	const { className, movie } = props;
-
 	const rootClassName = classNames(classes.root, className);
 	return (
 		<Paper className={rootClassName}>
@@ -67,7 +66,7 @@ function MovieCard(props) {
 				<img alt="movie" className={classes.image} src={movie.image} />
 			</div>
 			<div className={classes.details}>
-				<Typography className={classes.title} variant="h4">
+				<Typography className={classes.name} variant="h4">
 					{movie.title}
 				</Typography>
 				<Typography className={classes.description} variant="body1">

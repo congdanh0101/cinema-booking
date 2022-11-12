@@ -63,19 +63,19 @@ class TicketComponent extends Component {
 										</Card.Header>
 										<Card.Body className="pb-0">
 											<p className="info mb-1">Movie</p>
-											<p className="info-value">{dataMovie.title}</p>
+											{/* <p className="info-value">{dataMovie.title}</p> */}
 											<Row className="d-flex justify-content-center align-items-center">
 												<Col xs={4}>
 													<p className="info mb-1">Date</p>
-													<p className="info-value">
+													{/* <p className="info-value">
 														<Moment format="DD MMMM">{dataDate}</Moment>
-													</p>
+													</p> */}
 												</Col>
 												<Col xs={4}>
 													<p className="info mb-1">Time</p>
-													<p className="info-value">
+													{/* <p className="info-value">
 														{dataShowtime.times.map((item) => item.time)}
-													</p>
+													</p> */}
 												</Col>
 												<Col xs={4}>
 													<p className="info mb-1">Category</p>
@@ -83,21 +83,21 @@ class TicketComponent extends Component {
 												</Col>
 												<Col xs={4}>
 													<p className="info mb-1">Count</p>
-													<p className="info-value">
+													{/* <p className="info-value">
 														{seatOrder.length} pieces
-													</p>
+													</p> */}
 												</Col>
 												<Col xs={4}>
 													<p className="info mb-1">Seats</p>
-													<p className="info-value">
+													{/* <p className="info-value">
 														{this.props.order.seatOrder + ''}
-													</p>
+													</p> */}
 												</Col>
 												<Col xs={4}>
 													<p className="info mb-1">Price</p>
-													<p className="info-value-price">
+													{/* <p className="info-value-price">
 														${dataShowtime.price * seatOrder.length}
-													</p>
+													</p> */}
 												</Col>
 											</Row>
 										</Card.Body>
@@ -145,19 +145,19 @@ class TicketComponent extends Component {
 													<Row className="d-flex align-items-center">
 														<Col xs={12}>
 															<p className="info mb-1">Movie</p>
-															<p className="info-value">{dataMovie.title}</p>
+															{/* <p className="info-value">{dataMovie.title}</p> */}
 														</Col>
 														<Col xs={6}>
 															<p className="info mb-1">Date</p>
-															<p className="info-value">
+															{/* <p className="info-value">
 																<Moment format="DD MMMM">{dataDate}</Moment>
-															</p>
+															</p> */}
 														</Col>
 														<Col xs={6}>
 															<p className="info mb-1">Time</p>
-															<p className="info-value">
+															{/* <p className="info-value">
 																{dataShowtime.times.map((item) => item.time)}
-															</p>
+															</p> */}
 														</Col>
 														<Col xs={6}>
 															<p className="info mb-1">Category</p>
@@ -165,16 +165,16 @@ class TicketComponent extends Component {
 														</Col>
 														<Col xs={6}>
 															<p className="info mb-1">Count</p>
-															<p className="info-value">
+															{/* <p className="info-value">
 																{seatOrder.length} pieces
-															</p>
+															</p> */}
 														</Col>
 														<Col xs={6}></Col>
 														<Col xs={6}>
 															<p className="info mb-1">Seats</p>
-															<p className="info-value">
+															{/* <p className="info-value">
 																{this.props.order.seatOrder + ''}
-															</p>
+															</p> */}
 														</Col>
 													</Row>
 												</Col>
@@ -270,6 +270,7 @@ class TicketComponent extends Component {
 const mapStateToProps = (state) => ({
 	order: state.order,
 });
+
 const mapDispatchToProps = { createOrder, createSeat };
 
 export default withRouter(

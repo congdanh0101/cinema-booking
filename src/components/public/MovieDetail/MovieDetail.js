@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Col, Form, Image, Row } from 'react-bootstrap';
+import { Card, Col, Form, Image, Row, Button } from 'react-bootstrap';
 import listShowTime from '../../../shared/constants/listShowTime';
 import map from '../../../assets/images/map.svg';
 import http from '../../../shared/helpers/config';
@@ -7,6 +7,7 @@ import { getShowtimeDetail } from '../../../service/actions/showtime';
 import { getMovieDetail } from '../../../service/actions/movie';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import listMonth from '../../../shared/constants/listMonth';
 import './styles.css';
 
 class MovieDetailComponent extends Component {
@@ -118,6 +119,18 @@ class MovieDetailComponent extends Component {
 							</Form.Group>
 						</Col>
 					</Row>
+					<div class="scrollmenu">
+						{listMonth.map((item) => {
+							return (
+								<Button
+									variant="outline-primary"
+									className="scroll btn-month mr-1"
+								>
+									{item.month}
+								</Button>
+							);
+						})}
+					</div>
 
 					{/* {showResults.length > 0 ? (
 						<Row xs={1} md={2} lg={3} className="g-3">
