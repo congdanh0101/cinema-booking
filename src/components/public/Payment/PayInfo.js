@@ -6,8 +6,9 @@ import { createOrder, createSeat } from '../../../service/actions/order';
 
 class MovieDesc extends Component {
 	render() {
-		const { dataDate, dataMovie, dataShowtime } = this.props.order.listOrder;
-		const { seatOrder } = this.props.order;
+		// const { dataDate, dataMovie, dataShowtime } = this.props.order;
+		// const { seatOrder } = this.props.order;
+		console.log(this.props);
 		return (
 			<div>
 				<ListGroup variant="flush">
@@ -15,11 +16,11 @@ class MovieDesc extends Component {
 						<p className="float-left text-lg-20 text-color-label">
 							Date & time
 						</p>
-						<p className="float-right text-lg-20">
+						{/* <p className="float-right text-lg-20">
 							{dataDate} at {dataShowtime.times.map((item) => item.time)}
-						</p>
+						</p> */}
 					</ListGroup.Item>
-					<ListGroup.Item className="pb-0">
+					{/* <ListGroup.Item className="pb-0">
 						<p className="float-left text-lg-20 text-color-label">
 							Movie title
 						</p>
@@ -44,7 +45,7 @@ class MovieDesc extends Component {
 						<p className="float-right text-link-lg">
 							${dataShowtime.price * seatOrder.length}
 						</p>
-					</ListGroup.Item>
+					</ListGroup.Item> */}
 				</ListGroup>
 			</div>
 		);

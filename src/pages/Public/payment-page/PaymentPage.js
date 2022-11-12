@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { PayInfo, PayMethod, PersonalInfo } from '../../../components/public';
-
 import { ButtonPanel, PanelLeft, PanelRight } from '../../../components/common';
 
 export default class PaymentPage extends Component {
@@ -11,14 +10,14 @@ export default class PaymentPage extends Component {
 					<PanelRight title="Personal Info" body={<PersonalInfo />} />
 				</PanelLeft>
 				<PanelLeft
-					title="Choose a Payment Method"
+					title="Payment Method"
 					body={<PayMethod />}
 					panel={
 						<ButtonPanel
-							goButtonLeft="/order-page"
-							buttonLeft="Previous step"
-							goButtonRight="/ticket-result"
-							buttonRight="Pay your order"
+							gobuttonleft="/order-page"
+							buttonleft="Previous step"
+							gobuttonright="/ticket-result"
+							buttonright="Pay your order"
 						/>
 					}
 				></PanelLeft>

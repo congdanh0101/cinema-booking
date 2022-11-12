@@ -3,7 +3,7 @@ import { Card, Col, Image } from 'react-bootstrap';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { createOrder, createSeat } from '../../../service/actions/order';
+import { createOrder, getOrderById } from '../../../service/actions/order';
 
 class OrderInfo extends Component {
 	render() {
@@ -12,7 +12,7 @@ class OrderInfo extends Component {
 			<Col xs={12} lg={4}>
 				<p className="text-display-xs-bold">Order Info</p>
 				<Card className="border-0 shadow order-seat">
-					<Card.Body className="pb-0">
+					{/* <Card.Body className="pb-0">
 						<div className="text-center">
 							<Image src={dataShowtime.picture} height={40} alt="" />
 							<p className="text-link-lg pt-2">{dataShowtime.cinema}</p>
@@ -43,7 +43,7 @@ class OrderInfo extends Component {
 								{this.props.order.seatOrder + ''}
 							</p>
 						</div>
-					</Card.Body>
+					</Card.Body> */}
 					<hr />
 					<Card.Body className="pt-0">
 						<p className="float-left text-link-md">Total Payment</p>
@@ -60,7 +60,7 @@ class OrderInfo extends Component {
 const mapStateToProps = (state) => ({
 	order: state.order,
 });
-const mapDispatchToProps = { createOrder, createSeat };
+const mapDispatchToProps = { createOrder, getOrderById };
 
 export default withRouter(
 	connect(mapStateToProps, mapDispatchToProps)(OrderInfo)

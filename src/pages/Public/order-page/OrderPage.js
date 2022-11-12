@@ -7,14 +7,13 @@ import { connect } from 'react-redux';
 import { createOrder } from '../../../service/actions/order';
 
 function OrderPage({ order }) {
-	const { dataMovie } = order.listOrder;
-	console.log(order);
+	// const { dataMovie } = order.listOrder;
 	return (
 		<div>
 			<Navbar className="navbar-expand-lg navbar-dark bg-primary">
 				<Container>
 					<Container fluid>
-						<Link className="text-link-lg text-white">{dataMovie.name}</Link>
+						{/* <Link className="text-link-lg text-white">"test"</Link> */}
 						<Link to="/" className="ml-auto">
 							<Button
 								variant="light"
