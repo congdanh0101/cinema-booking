@@ -17,7 +17,7 @@ import { emailVerify, login } from '../../../service/actions/auth';
 import { LeftRegister, RightRegister } from '../../../components/common';
 import tickitz_white from '../../../assets/images/tickitz-white.svg';
 // import ButtonLeft from '../../../components/splitpanel/ButtonLeft';
-import ButtonPanel from '../../../components/splitpanel/ButtonPanel';
+import { ButtonPanel } from '../../../components/common';
 import './styles.css';
 import * as Yup from 'yup';
 
