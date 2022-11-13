@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 
-import './custom.scss';
-import App from './App';
+import './assets/styles/custom.scss';
+import App from './app/App';
 import jQuery from 'jquery';
 window.$ = window.jQuery = jQuery;
 
@@ -16,5 +15,3 @@ ReactDOM.render(
 );
 
 reportWebVitals();
-
-serviceWorker.unregister();
