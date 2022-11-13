@@ -1,84 +1,53 @@
-# About
-Website-based online movie ticket booking application using the React js library and Express js backend. You can order seats, movies, cinema, and show times that are already available on Tickitz. Here's some additional information from Tickitz. I deployed the backend on AWS
+# Tickitz Booking Cinema
 
-# More Information
-Repo Backend : bit.ly/3uF2S8h <br>
-Demo app : bit.ly/3dSogAc <br>
-Screenshot : bit.ly/3ei5suq
+Movie Tickets Online Booking Website Using ReactJS
 
-# Screenshot
-<img src="./src/assets/images/1.png" width="50%" />
-<img src="./src/assets/images/2.png" width="50%" />
-<img src="./src/assets/images/3.png" width="50%" />
-<img src="./src/assets/images/4.png" width="50%" />
+## Resources
 
-# Getting Started with Create React App
+```text
+Main API: https://github.com/congdanh0101/cinema-booking/tree/spring
+TMDB API: https://www.themoviedb.org
+Ionicons: https://ionic.io/ionicons
+Google Font: https://fonts.google.com/specimen/Overpass
+Cache Image Proxy: https://images.weserv.nl
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Main technology used
 
-## Available Scripts
+- React, Ant Design, Styled Components
+- Redux, Redux Toolkit (State management)
+- Axios, SWR (Data fetching)
+- Swiper (Slider)
+- React Hook Form , Yup (Validation)
+- Sweetalert2, React-toastify (Message UI)
+- Other: react-router-dom, uuid, react-lazy-load-image-component, moment, query-string
 
-In the project directory, you can run:
+## Features
 
-### `yarn start`
+`User`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Search movies by name.
+- Explore and Booking available seats
+- View detail movie info including poster, overview, casts, trailers...
+- View Featured Article Posts
+- Check History booking, Cancel booking, Update profile
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+`Admin`
 
-### `yarn test`
+- Manage Cinemas: View information all cinema
+- Manage Movies: Add new, update, delete movie.
+- Manage User: Add new, update, delete user.
+- Manage Showtimes: Add new, update, delete showtime, view info showtime including price, total seats are booked, total money ticket sales.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Environment Variables
 
-### `yarn build`
+```text
+# CLIENT URL
+REACT_APP_PUBLIC = http://localhost:3000 (or Link vercel)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# API URL
+REACT_APP_API =
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# See: https://www.themoviedb.org/
+REACT_APP_TMDB_KEY = "api_key_tmdb"
+```
