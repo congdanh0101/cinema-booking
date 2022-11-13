@@ -1,9 +1,9 @@
-import http from '../../shared/helpers/config';
+import axiosClient from '../../shared/apis/axiosClient';
 
 export const getAllShowtime = () => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`showtimes`);
+			const response = await axiosClient().get(`showtimes`);
 			dispatch({
 				type: 'GET_ALL_SHOWTIME',
 				payload: response.data,
@@ -20,7 +20,7 @@ export const getAllShowtime = () => {
 export const getShowtimeDetail = (id) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`showtimes/${id}`);
+			const response = await axiosClient().get(`showtimes/${id}`);
 			dispatch({
 				type: 'GET_SHOWTIME_DETAIL',
 				payload: response.data,
@@ -38,7 +38,7 @@ export const addShowtime = (movieId, theaterId) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).post(
+			const response = await axiosClient(token).post(
 				`showtimes/movies/${movieId}/theaters/${theaterId}`,
 				{
 					movieId,
@@ -63,7 +63,7 @@ export const updateShowtime = (movieId, theaterId) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).put(
+			const response = await axiosClient(token).put(
 				`showtimes/movies/${movieId}/theaters/${theaterId}`,
 				{
 					movieId,
@@ -87,7 +87,7 @@ export const updateShowtime = (movieId, theaterId) => {
 export const deleteShowtime = (id) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().delete(`showtimes/${id}`);
+			const response = await axiosClient().delete(`showtimes/${id}`);
 			dispatch({
 				type: 'DELETE_SHOWTIME',
 				payload: response.data,
@@ -105,7 +105,7 @@ export const deleteShowtime = (id) => {
 export const deleteShowtimeForce = (id) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().delete(`showtimes/${id}`);
+			const response = await axiosClient().delete(`showtimes/${id}`);
 			dispatch({
 				type: 'DELETE_SHOWTIME_FORCE',
 				payload: response.data,

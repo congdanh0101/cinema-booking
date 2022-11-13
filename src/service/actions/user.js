@@ -1,9 +1,9 @@
-import http from '../../shared/helpers/config';
+import axiosClient from '../../shared/apis/axiosClient';
 
 export const getAllUser = () => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`users/`);
+			const response = await axiosClient().get(`users/`);
 			dispatch({
 				type: 'GET_ALL_USER',
 				payload: response.data,
@@ -22,7 +22,7 @@ export const getUserDetail = (token) => {
 	return async (dispatch) => {
 		try {
 			const bearerToken = localStorage.getItem('token');
-			const response = await http(bearerToken).post(`users`, {
+			const response = await axiosClient(bearerToken).post(`users`, {
 				token: token,
 			});
 			dispatch({
@@ -43,7 +43,7 @@ export const getUserDetailById = (id) => {
 	return async (dispatch) => {
 		try {
 			const bearerToken = localStorage.getItem('token');
-			const response = await http(bearerToken).get(`users/${id}`);
+			const response = await axiosClient(bearerToken).get(`users/${id}`);
 			dispatch({
 				type: 'GET_USER_DETAIL_BY_ID',
 				payload: response.data,
@@ -69,7 +69,7 @@ export const addUser = (
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).post(`users`, {
+			const response = await axiosClient(token).post(`users`, {
 				firstName,
 				lastName,
 				phoneNumber,
@@ -95,7 +95,7 @@ export const updateUser = (id, data) => {
 	return async (dispatch) => {
 		try {
 			const bearerToken = localStorage.getItem('token');
-			const response = await http(bearerToken).put(`users/${id}`, data);
+			const response = await axiosClient(bearerToken).put(`users/${id}`, data);
 			dispatch({
 				type: 'UPDATE_USER',
 				payload: response.data,
@@ -114,7 +114,7 @@ export const deleteUser = (userId) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).delete(`user/${userId}`);
+			const response = await axiosClient(token).delete(`user/${userId}`);
 			dispatch({
 				type: 'DELETE_MOVIE',
 				payload: response.data.results,

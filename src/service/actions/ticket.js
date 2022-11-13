@@ -1,9 +1,9 @@
-import http from '../../shared/helpers/config';
+import axiosClient from '../../shared/apis/axiosClient';
 
 export const getTickets = () => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`tickets`);
+			const response = await axiosClient().get(`tickets`);
 			dispatch({
 				type: 'GET_ALL_TICKET',
 				payload: response.data,
@@ -21,7 +21,7 @@ export const getTickets = () => {
 export const getTicketById = (ticketId) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`tickets/${ticketId}`);
+			const response = await axiosClient().get(`tickets/${ticketId}`);
 			dispatch({
 				type: 'GET_TICKET_BY_ID',
 				payload: response.data,
@@ -39,7 +39,9 @@ export const getTicketById = (ticketId) => {
 export const getTicketsByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`tickets/showtimes/${showtimeId}`);
+			const response = await axiosClient().get(
+				`tickets/showtimes/${showtimeId}`
+			);
 			dispatch({
 				type: 'GET_TICKET_BY_SHOWTIME',
 				payload: response.data,
@@ -63,7 +65,7 @@ export const addTicket = (showtimeId, seatId, seat, showtime) => {
 				message: '',
 			});
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).post(
+			const response = await axiosClient(token).post(
 				`tickets/showtimes/${showtimeId}/seats/${seatId}`,
 				{
 					seat,
@@ -89,7 +91,7 @@ export const addManyTickets = (showtimeId) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).post(
+			const response = await axiosClient(token).post(
 				`tickets/showtimes/${showtimeId}`
 			);
 			dispatch({
@@ -110,7 +112,7 @@ export const deleteTicket = (ticketId) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).delete(`tickets/${ticketId}`);
+			const response = await axiosClient(token).delete(`tickets/${ticketId}`);
 			dispatch({
 				type: 'DELETE_TICKET',
 				payload: response.data,

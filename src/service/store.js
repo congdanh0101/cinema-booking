@@ -1,13 +1,14 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from './reducers';
+import { applyMiddleware } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import { persistStore } from 'redux-persist';
+import thunk from 'redux-thunk';
 import logger from 'redux-logger';
+import rootReducer from './reducers';
 
 const initialState = {};
 
 const persistedStore = () => {
-	const store = createStore(
+	const store = configureStore(
 		rootReducer,
 		initialState,
 		applyMiddleware(thunk, logger)

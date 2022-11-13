@@ -1,9 +1,12 @@
-import http from '../../shared/helpers/config';
+import axiosClient from '../../shared/apis/axiosClient';
 
 export const login = (username, password) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().post(`auth/login`, { username, password });
+			const response = await axiosClient().post(`auth/login`, {
+				username,
+				password,
+			});
 			localStorage.setItem('token', response.data.token);
 			dispatch({
 				type: 'LOGIN',
@@ -29,7 +32,7 @@ export const register = (
 ) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().post(`auth/register`, {
+			const response = await axiosClient().post(`auth/register`, {
 				firstName,
 				lastName,
 				phoneNumber,
@@ -82,7 +85,7 @@ export const emailVerify = (code) => {
 			const now = new Date().getTime();
 			if (now <= expired) {
 				if (code === sessionStorage.getItem('verificationCode')) {
-					const response = await http()
+					const response = await axiosClient()
 						.post(`auth/register/verify`, {
 							firstName: sessionStorage.getItem('firstName'),
 							lastName: sessionStorage.getItem('lastName'),
@@ -122,7 +125,7 @@ export const emailVerify = (code) => {
 export const forgetPassword = (email) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().post(`auth/forgot`, email);
+			const response = await axiosClient().post(`auth/forgot`, email);
 			dispatch({
 				type: 'FORGET_PASSWORD',
 				message: response.data.message,
@@ -139,7 +142,7 @@ export const forgetPassword = (email) => {
 export const forgetPasswordVerify = (code) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().post(`auth/forgot/verify`, code);
+			const response = await axiosClient().post(`auth/forgot/verify`, code);
 			dispatch({
 				type: 'FORGET_PASSWORD_VERIFY',
 				message: response.data.message,
@@ -157,7 +160,7 @@ export const resetPassword = (password, confirmPassword) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('token');
-			const response = await http(token).patch(`auth/reset`, {
+			const response = await axiosClient(token).patch(`auth/reset`, {
 				newPassword: password,
 				confirmPassword: confirmPassword,
 			});

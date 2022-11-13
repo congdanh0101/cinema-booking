@@ -1,9 +1,9 @@
-import http from '../../shared/helpers/config';
+import axiosClient from '../../shared/apis/axiosClient';
 
 export const getAllSeatsAvailableByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(
+			const response = await axiosClient().get(
 				`seats/available/showtimes/${showtimeId}`
 			);
 			dispatch({
@@ -23,7 +23,7 @@ export const getAllSeatsAvailableByShowtime = (showtimeId) => {
 export const getAllSeatsOrderedByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(
+			const response = await axiosClient().get(
 				`seats/available/showtimes/${showtimeId}`
 			);
 			dispatch({

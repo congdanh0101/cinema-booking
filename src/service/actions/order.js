@@ -1,4 +1,4 @@
-import http from '../../shared/helpers/config';
+import axiosClient from '../../shared/apis/axiosClient';
 
 export const createOrder = (
 	dataLocation,
@@ -49,7 +49,7 @@ export const createSeat = (seatOrder) => {
 export const getAllOrders = () => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`orders`);
+			const response = await axiosClient().get(`orders`);
 			dispatch({
 				type: 'GET_ALL_ORDER',
 				payload: response.data,
@@ -66,7 +66,7 @@ export const getAllOrders = () => {
 export const getOrderById = (id) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`orders/${id}`);
+			const response = await axiosClient().get(`orders/${id}`);
 			dispatch({
 				type: 'GET_ODER_BY_ID',
 				payload: response.data,
@@ -84,7 +84,7 @@ export const getOrderById = (id) => {
 export const getAllOrdersByUser = (userId) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`orders/users/${userId}`);
+			const response = await axiosClient().get(`orders/users/${userId}`);
 			dispatch({
 				type: 'GET_ALL_ORDER_BY_USER',
 				payload: response.data,
@@ -102,7 +102,7 @@ export const getAllOrdersByUser = (userId) => {
 export const getAllOrderDetailsByOrder = (orderId) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`orders/${orderId}/detail`);
+			const response = await axiosClient().get(`orders/${orderId}/detail`);
 			dispatch({
 				type: 'GET_ALL_ORDER_DETAILS_BY_ORDER',
 				payload: response.data,
@@ -120,7 +120,7 @@ export const getAllOrderDetailsByOrder = (orderId) => {
 export const getOrderDetailsById = (orderId) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`orders/detail/${orderId}`);
+			const response = await axiosClient().get(`orders/detail/${orderId}`);
 			dispatch({
 				type: 'GET_ORDER_DETAILS_BY_ID',
 				payload: response.data,
@@ -139,7 +139,7 @@ export const deleteOrderById = (orderId) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).delete(`orders/${orderId}`);
+			const response = await axiosClient(token).delete(`orders/${orderId}`);
 			dispatch({
 				type: 'DELETE_ORDER_BY_ID',
 				payload: response.data,

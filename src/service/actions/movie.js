@@ -1,4 +1,4 @@
-import http from '../../shared/helpers/config';
+import axiosClient from '../../shared/apis/axiosClient';
 
 export const onSelectMovie = (movie) => ({
 	type: 'SELECT_MOVIE',
@@ -8,7 +8,7 @@ export const onSelectMovie = (movie) => ({
 export const getAllMovie = () => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`movies`);
+			const response = await axiosClient().get(`movies`);
 			dispatch({
 				type: 'GET_ALL_MOVIE',
 				payload: response.data.content,
@@ -27,7 +27,7 @@ export const getAllMovie = () => {
 export const getMovieByDisplay = () => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`movies/display=true`);
+			const response = await axiosClient().get(`movies/display=true`);
 			dispatch({
 				type: 'GET_MOVIE_BY_DISPLAY',
 				payload: response.data,
@@ -45,7 +45,7 @@ export const getMovieByDisplay = () => {
 export const getMovieByShowing = () => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`movies/showing=true`);
+			const response = await axiosClient().get(`movies/showing=true`);
 			dispatch({
 				type: 'GET_MOVIE_BY_SHOWING',
 				payload: response.data,
@@ -63,7 +63,7 @@ export const getMovieByShowing = () => {
 export const getMovieByComing = () => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`movies/coming=true`);
+			const response = await axiosClient().get(`movies/coming=true`);
 			dispatch({
 				type: 'GET_MOVIE_BY_COMING',
 				payload: response.data,
@@ -81,7 +81,7 @@ export const getMovieByComing = () => {
 export const getMovieDetail = (id) => {
 	return async (dispatch) => {
 		try {
-			const response = await http().get(`movies/${id}`);
+			const response = await axiosClient().get(`movies/${id}`);
 			dispatch({
 				type: 'GET_MOVIE_DETAIL',
 				payload: response.data,
@@ -111,7 +111,7 @@ export const addMovie = (
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).post(`movies`, {
+			const response = await axiosClient(token).post(`movies`, {
 				name,
 				duration,
 				description,
@@ -153,7 +153,7 @@ export const updateMovie = (
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).put(`movies/${movieId}`, {
+			const response = await axiosClient(token).put(`movies/${movieId}`, {
 				name,
 				duration,
 				description,
@@ -183,7 +183,7 @@ export const deleteMovie = (movieId) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('jwtToken');
-			const response = await http(token).delete(`movies/${movieId}`);
+			const response = await axiosClient(token).delete(`movies/${movieId}`);
 			dispatch({
 				type: 'DELETE_MOVIE',
 				payload: response.data,
