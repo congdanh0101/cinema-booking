@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Col, Form, Button } from 'react-bootstrap';
 import './styles.css';
-import bg from '../../../assets/footer-bg.jpg';
+import bg from '../../../assets/images/footer-bg.jpg';
 
 function SubscribeComponent() {
 	return (
