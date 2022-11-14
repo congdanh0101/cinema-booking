@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Image, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import listComingMovie from '../../../shared/constants/listComingMovie';
+import listComingMovie from '../../../shared/constants/data/listComingMovie';
 import { getMovieByComing } from '../../../service/actions/movie';
 import './styles.css';
 

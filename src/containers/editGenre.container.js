@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import http from '../shared/helpers/config';
+import http from '../shared/apis/axiosClient';
 
 class EditGenre extends Component {
 	state = {

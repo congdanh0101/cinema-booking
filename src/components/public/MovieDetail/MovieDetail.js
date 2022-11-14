@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Card, Col, Form, Image, Row, Button } from 'react-bootstrap';
-import listShowTime from '../../../shared/constants/listShowTime';
+import listShowTime from '../../../shared/constants/data/listShowTime';
 import map from '../../../assets/images/map.svg';
-import http from '../../../shared/helpers/config';
+import http from '../../../shared/apis/axiosClient';
 import { getShowtimeDetail } from '../../../service/actions/showtime';
 import { getMovieDetail } from '../../../service/actions/movie';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import listMonth from '../../../shared/constants/listMonth';
+import listMonth from '../../../shared/constants/data/listMonth';
 import './styles.css';
 
 class MovieDetailComponent extends Component {

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getMovieByShowing } from '../../../service/actions/movie';
 import { getAllShowtime } from '../../../service/actions/showtime';
-import listComingMovie from '../../../shared/constants/listComingMovie';
+import listComingMovie from '../../../shared/constants/data/listComingMovie';
 import './styles.css';
 
 class ShowingComponent extends Component {

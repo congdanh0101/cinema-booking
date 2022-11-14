@@ -7,7 +7,7 @@ import { withStyles, Typography, Select } from '@material-ui/core';
 import { Button, TextField, MenuItem } from '@material-ui/core';
 import styles from './styles';
 import { FileUpload } from '../../../../../components/common';
-import { genreData } from '../../../../../shared/constants/listGenre.js';
+import { genreData } from '../../../../../shared/constants/data/listGenre.js';
 import {
 	addMovie,
 	updateMovie,

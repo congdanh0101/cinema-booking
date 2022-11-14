@@ -10,7 +10,7 @@ import {
 	getCinemas,
 } from '../../../service/actions';
 import ReservationsCalendar from './components/ReservationsCalendar/ReservationsCalendar';
-import { match } from '../../../shared/utils';
+import { match } from '../../../shared/utils/utils';
 
 class ReservationList extends Component {
 	state = { mode: 'list', search: '' };
