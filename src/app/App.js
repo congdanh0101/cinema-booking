@@ -31,7 +31,7 @@ import MoviePanel from '../pages/Admin/movie-panel/MoviePanel';
 import { AdminLayout, PublicLayout } from '../layouts';
 import { WithLayoutRoute, PrivateRoute } from '../shared/routes';
 import ScrollToTop from '../shared/utils/utils';
-import Error from '../pages/Error';
+import Error from '../pages/NotFound';
 import Theme from '../shared/theme';
 
 export default class App extends Component {
