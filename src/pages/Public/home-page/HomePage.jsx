@@ -64,6 +64,7 @@ class HomePage extends Component {
 					<section>
 						<ComingComponent />
 					</section>
+					<section></section>
 					<section>
 						<SubscribeComponent />
 					</section>
