@@ -1,5 +1,5 @@
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { path } from '../../../shared/constants/path';
+import { path } from '../../../../shared/constants/path';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 

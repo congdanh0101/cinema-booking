@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import MovieCard from './MovieCard';
 import { v4 as uuidv4 } from 'uuid';
-import Pagination from 'components/common/Pagination/Pagination';
+import { Pagination } from '../../../../components/common';
 import MovieCardSkeleton from './MovieCardSkeleton';
 
 const StyledMovieList = styled.div`

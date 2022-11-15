@@ -1,22 +1,39 @@
+// Bootstrap
 export { default as LeftRegister } from './Bootstrap/Register/LeftRegister';
 export { default as RightRegister } from './Bootstrap/Register/RightRegister';
 
-export { default as ButtonRight } from './SplitPanel/ButtonRight';
-export { default as ButtonLeft } from './SplitPanel/ButtonLeft';
-export { default as ButtonPanel } from './SplitPanel/ButtonPanel';
-export { default as PanelLeft } from './SplitPanel/PanelLeft';
-export { default as PanelRight } from './SplitPanel/PanelRight';
+export { default as ButtonRight } from './Bootstrap/SplitPanel/ButtonRight';
+export { default as ButtonLeft } from './Bootstrap/SplitPanel/ButtonLeft';
+export { default as ButtonPanel } from './Bootstrap/SplitPanel/ButtonPanel';
+export { default as PanelLeft } from './Bootstrap/SplitPanel/PanelLeft';
+export { default as PanelRight } from './Bootstrap/SplitPanel/PanelRight';
 
 //Styled components
-export { default as Button } from './Button/Button';
-export { default as SliderArrow } from './Button/SliderArrow';
-
-export { default as Image } from './Image/Image';
-export { default as ImageResize } from './Image/ImageResize';
-export { default as ImageUpload } from './Image/ImageUpload';
-
-export { default as Section } from './Section/Section';
-export { default as Sidebar } from './Sidebar/Sidebar';
+export { default as Button } from './StyledComponent/Button/Button';
+export { default as SliderArrow } from './StyledComponent/Button/SliderArrow';
+export { default as Image } from './StyledComponent/Image/Image';
+export { default as ImageResize } from './StyledComponent/Image/ImageResize';
+export { default as ImageUpload } from './StyledComponent/Image/ImageUpload';
+export { default as Section } from './StyledComponent/Section/Section';
+export { default as Sidebar } from './StyledComponent/Sidebar/Sidebar';
+export { default as Field } from './StyledComponent/Field/Field';
+export { default as FieldText } from './StyledComponent/Field/FieldText';
+export { default as Heading } from './StyledComponent/Heading/Heading';
+export { default as Input } from './StyledComponent/Input/Input';
+export { default as Label } from './StyledComponent/Label/Label';
+export { default as LabelError } from './StyledComponent/Label/LabelError';
+export { default as LoadingSpinner } from './StyledComponent/Loading/LoadingSpinner';
+export { default as MovieCard } from './StyledComponent/Movie/MovieCard';
+export { default as MovieCardSkeleton } from './StyledComponent/Movie/MovieCardSkeleton';
+export { default as MovieList } from './StyledComponent/Movie/MovieList';
+export { default as MovieTitle } from './StyledComponent/Movie/MovieTitle';
+export { default as Pagination } from './StyledComponent/Pagination/Pagination';
+export { default as PostRelated } from './StyledComponent/PostRelated/PostRelated';
+export { default as Table } from './StyledComponent/Table/Table';
+export { default as Tag } from './StyledComponent/Tag/Tag';
+export { default as TagSmall } from './StyledComponent/Tag/TagSmall';
+export { default as Text } from './StyledComponent/Text/Description';
+export { default as Textarea } from './StyledComponent/TextArea/TextArea';
 
 //Material UI
 export { default as Alert } from './MaterialUI/Alert';

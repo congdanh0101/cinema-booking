@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
-import { Button } from '../../common';
-import { logout } from '../../../service/actions/auth';
+import { Button } from '../../../common';
+import { logout } from '../../../../service/actions/auth';
 
 const StyledSidebar = styled.div`
 	width: 300px;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { path } from 'shared/constants/path';
-import ImageResize from 'components/common/Image/ImageResize';
+import { path } from '../../../../shared/constants/path';
+import ImageResize from '../Image/ImageResize';
 import MovieTitle from './MovieTitle';
 
 const StyledMovieCard = styled.div`
