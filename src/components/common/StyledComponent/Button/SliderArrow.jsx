@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 const StyledSliderArrow = styled.div`
 	.icon {
 		display: flex;
@@ -9,7 +10,7 @@ const StyledSliderArrow = styled.div`
 	}
 `;
 
-export const SliderArrow = (props) => {
+const SliderArrow = (props) => {
 	const { className, style, onClick, children } = props;
 	return (
 		<StyledSliderArrow
@@ -22,3 +23,5 @@ export const SliderArrow = (props) => {
 		</StyledSliderArrow>
 	);
 };
+
+export default SliderArrow;

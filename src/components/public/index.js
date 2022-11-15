@@ -1,6 +1,5 @@
 export { default as ShowingComponent } from './ShowingMovie/ShowingMovie';
 export { default as ComingComponent } from './ComingMovie/ComingMovie';
-export { default as LatestComponent } from './LatestMovie/LatestMovie';
 export { default as SubscribeComponent } from './Subscribe/SubscribeComponent';
 export { default as MovieDetailComponent } from './MovieDetail/MovieDetail';
 export { default as MovieList } from './MovieList/MovieList';

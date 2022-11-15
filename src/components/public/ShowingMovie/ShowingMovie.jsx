@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import { Card, Image, Row, Col, Button } from 'react-bootstrap';
+import { Card, Col, Row, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getMovieByShowing } from '../../../service/actions/movie';
+import { getAllShowtime } from '../../../service/actions/showtime';
 import listComingMovie from '../../../shared/constants/data/listComingMovie';
-import { getMovieByComing } from '../../../service/actions/movie';
+import { ImageResize } from '../../../components/common';
+import { path } from '../../../shared/constants/path';
 import './styles.css';
 
-class ComingComponent extends Component {
+class ShowingComponent extends Component {
 	async componentDidMount() {
-		this.props.getMovieByComing();
+		await this.props.getMovieByShowing();
+		this.props.getAllShowtime();
 	}
 	render() {
 		const { movie } = this.props;
@@ -16,35 +20,38 @@ class ComingComponent extends Component {
 			<div>
 				<Row>
 					<Col>
-						<p className="text-display-xs-bold float-left">Upcoming Movies</p>
+						<p className="text-display-xs-bold float-left">Now Showing</p>
 					</Col>
 					<Col>
-						<Link to="#">
+						<Link to={path.movies}>
 							<p className="text-primary float-right">Explore All</p>
 						</Link>
 					</Col>
 				</Row>
+
 				<div className="scrollmenu text-center">
-					{movie.comingSoon.length > 0
-						? movie.comingSoon.map((coming) => {
+					{movie.nowShowing.length > 0
+						? movie.nowShowing.map((showing) => {
 								return (
-									<Card key={coming.id} className="scroll card mr-4">
+									<Card key={showing.id} className="scroll card mr-4">
 										<Card.Body className="card-body">
 											<Link
-												to={`/movie-detail/${coming.id}`}
+												to={`/movie-detail/${showing.id}`}
 												className="link"
 												style={{ textDecoration: 'none' }}
 											>
-												<Image
-													src={coming.image}
+												<ImageResize
+													url={showing.image}
+													width="200"
 													className="img-fluid img-resize"
+													alt="image"
 												/>
 											</Link>
 											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{coming.name}
+												{showing.name}
 											</p>
 											<Button
-												href={`/movie-detail/${coming.id}`}
+												href={`/movie-detail/${showing.id}`}
 												variant="outline-primary"
 												className="btn-nav"
 												block
@@ -55,25 +62,27 @@ class ComingComponent extends Component {
 									</Card>
 								);
 						  })
-						: listComingMovie.map((coming) => {
+						: listComingMovie.map((showing) => {
 								return (
-									<Card key={coming.id} className="scroll card mr-4">
+									<Card key={showing.id} className="scroll card mr-4">
 										<Card.Body className="card-body">
 											<Link
-												to={`/movie-detail/${coming.id}`}
+												to={`/movie-detail/${showing.id}`}
 												className="link"
 												style={{ textDecoration: 'none' }}
 											>
-												<Image
-													src={coming.image}
+												<ImageResize
+													url={showing.image}
+													width="200"
 													className="img-fluid img-resize"
+													alt="image"
 												/>
 											</Link>
 											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{coming.name}
+												{showing.name}
 											</p>
 											<Button
-												href={`/movie-detail/${coming.id}`}
+												href={`/movie-detail/${showing.id}`}
 												variant="outline-primary"
 												className="btn-nav"
 												block
@@ -92,10 +101,12 @@ class ComingComponent extends Component {
 
 const mapStateToProps = (state) => ({
 	movie: state.movie,
+	showTime: state.showTime,
 });
 
 const mapDispatchToProps = {
-	getMovieByComing,
+	getMovieByShowing,
+	getAllShowtime,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ComingComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(ShowingComponent);

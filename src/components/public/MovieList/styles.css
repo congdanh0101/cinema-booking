@@ -6,3 +6,24 @@
 	border-radius: 8px;
 	min-width: 120px;
 }
+.heading {
+	color: var(--white);
+	margin-bottom: 10px;
+}
+.swiper-slide {
+	width: 185px;
+	height: auto;
+}
+.movie-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	grid-gap: 10px;
+}
+.movie-container {
+	margin-bottom: 20px;
+}
+@media screen and (max-width: 400px) {
+	.movie-list {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
