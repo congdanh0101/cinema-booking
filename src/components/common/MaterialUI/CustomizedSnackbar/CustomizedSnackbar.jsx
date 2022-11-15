@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContentWrapper from '../SnackbarContentWrapper/SnackbarContentWrapper';
+import SnackbarContentWrapper from '../SnackbarContentWrapper';
 
 const CustomizedSnackbar = (props) => {
 	// const [open, setOpen] = React.useState(false);
