@@ -1,14 +1,26 @@
+import { path } from '../../../../shared/constants/path';
 import React, { Component } from 'react';
 import { Navbar, Nav, Image, Container, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
 import { connect } from 'react-redux';
 import { logout } from '../../../../service/actions/auth';
-import { getUserDetail, getUserDetailById } from '../../../../service/actions/user';
+import {
+	getUserDetail,
+	getUserDetailById,
+} from '../../../../service/actions/user';
+import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
 import './styles.css';
 
 class NavbarComponent extends Component {
+	componentDidMount() {
+		if (this.props.auth.token !== null)
+			this.props.getUserDetail(this.props.auth.token).then(async () => {
+				await this.props.getUserDetailById(this.props.user.detail.id);
+			});
+	}
+
 	render() {
+		const { user } = this.props;
 		return (
 			<Navbar expand="lg">
 				<Container>
@@ -17,10 +29,23 @@ class NavbarComponent extends Component {
 					</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">
-						<Nav className="nav-link mr-auto">
-							<Nav.Link href="/movies">Movies</Nav.Link>
-							{/* <Nav.Link href="/">Cinemas</Nav.Link> */}
-							<Nav.Link href="/">Buy Ticket</Nav.Link>
+						<Nav className="navbar-list mr-auto">
+							<Nav.Link className="nav-link" href={path.movies}>
+								Movies
+							</Nav.Link>
+							{user.detail.roles?.map((item) => {
+								if (item.name === 'ROLE_ADMIN') {
+									return (
+										<Nav.Link
+											className="nav-link"
+											key={item.id}
+											href={path.dashboard}
+										>
+											Dashboard
+										</Nav.Link>
+									);
+								} else return null;
+							})}
 						</Nav>
 						<Nav className="nav-link justify-content-end" activeKey="/home">
 							{this.props.auth.token !== null ? (
@@ -36,13 +61,16 @@ class NavbarComponent extends Component {
 									id="basic-nav-dropdown"
 									className="m-0"
 								>
-									<NavDropdown.Item href="/">Home</NavDropdown.Item>
-									<NavDropdown.Item href="/profile-page">
+									<NavDropdown.Item href={path.home}>Home</NavDropdown.Item>
+									<NavDropdown.Item href={path.profile}>
 										Your Profile
+									</NavDropdown.Item>
+									<NavDropdown.Item href={path.history}>
+										History
 									</NavDropdown.Item>
 									<NavDropdown.Divider />
 									<NavDropdown.Item
-										href="/"
+										href={path.home}
 										onClick={(e) => this.props.logout()}
 									>
 										Sign out
@@ -50,11 +78,11 @@ class NavbarComponent extends Component {
 								</NavDropdown>
 							) : (
 								<Nav.Item>
-									<Link to="/login" className="btn btn-primary btn-nav mx-2">
+									<Link
+										to={path.signIn}
+										className="btn btn-primary btn-nav mx-2"
+									>
 										Sign in
-									</Link>
-									<Link to="/sign-up" className="btn btn-primary btn-nav">
-										Sign up
 									</Link>
 								</Nav.Item>
 							)}

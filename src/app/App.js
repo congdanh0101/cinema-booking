@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import { path } from '../shared/constants/path';
+import React, { Component, Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -28,8 +29,8 @@ import DashboardPage from '../pages/Admin/dashboard/Dashboard';
 import MoviePanel from '../pages/Admin/movie-panel/MoviePanel';
 
 //Components
-import { AdminLayout, PublicLayout } from '../layouts';
-import { WithLayoutRoute, PrivateRoute } from '../shared/routes';
+import { MainLayout } from '../layouts';
+import { WithLayoutRoute, ProtectedRoute } from '../shared/routes';
 import ScrollToTop from '../shared/utils/utils';
 import Error from '../pages/NotFound';
 import Theme from '../shared/theme';
@@ -38,78 +39,87 @@ export default class App extends Component {
 	render() {
 		const { store, persistor } = persistedStore();
 		return (
-			<Provider store={store}>
-				<ThemeProvider theme={Theme}>
-					<PersistGate persistor={persistor}>
-						<BrowserRouter>
-							<ScrollToTop />
-							<Switch>
-								<Route path="/sign-up" component={SignUp} />
-								<Route path="/login" component={SignIn} />
-								<Route path="/email-verify" component={EmailVerification} />
-								<Route path="/forgot-password" component={ForgetPassword} />
-								<Route path="/reset-password" component={ResetPassword} />
-								<WithLayoutRoute
-									exact
-									path="/"
-									layout={PublicLayout}
-									component={HomePage}
-								/>
-								<WithLayoutRoute
-									path="/movies"
-									layout={PublicLayout}
-									component={MoviePage}
-								/>
-								<WithLayoutRoute
-									path="/movie-detail/:id"
-									layout={PublicLayout}
-									component={MovieDetail}
-								/>
-								<PrivateRoute
-									path="/order-page"
-									privateLayout={PublicLayout}
-									privateComponent={OrderPage}
-								/>
-								<PrivateRoute
-									path="/payment"
-									privateLayout={PublicLayout}
-									privateComponent={PaymentPage}
-								/>
-								<PrivateRoute
-									path="/ticket-result"
-									privateComponent={TicketResult}
-								/>
-								<PrivateRoute
-									path="/profile-page"
-									privateLayout={PublicLayout}
-									privateComponent={ProfilePage}
-								/>
-								<PrivateRoute
-									path="/admin-page"
-									privateLayout={PublicLayout}
-									privateComponent={AdminPage}
-								/>
-								<PrivateRoute
-									path="/admin-panel/dashboard"
-									privateLayout={AdminLayout}
-									privateComponent={DashboardPage}
-								/>
-								<PrivateRoute
-									path="/admin-panel/movies"
-									privateLayout={AdminLayout}
-									privateComponent={MoviePanel}
-								/>
-								<PrivateRoute
-									path="/admin-panel"
-									privateLayout={AdminLayout}
-									privateComponent={AdminPanel}
-								/>
-								<Route path="*" component={Error} />
-							</Switch>
-						</BrowserRouter>
-					</PersistGate>
-				</ThemeProvider>
-			</Provider>
+			<Suspense fallback={<></>}>
+				<Provider store={store}>
+					<ThemeProvider theme={Theme}>
+						<PersistGate persistor={persistor}>
+							<BrowserRouter>
+								<ScrollToTop />
+								<Switch>
+									<Route path={path.signUp} component={SignUp} />
+									<Route path={path.signIn} component={SignIn} />
+									<Route
+										path={path.emailVerification}
+										component={EmailVerification}
+									/>
+									<Route
+										path={path.forgetPassword}
+										component={ForgetPassword}
+									/>
+									<Route path={path.resetPassword} component={ResetPassword} />
+									<WithLayoutRoute
+										exact
+										path={path.home}
+										layout={MainLayout}
+										component={HomePage}
+									/>
+									<WithLayoutRoute
+										path={path.movies}
+										layout={MainLayout}
+										component={MoviePage}
+									/>
+									<WithLayoutRoute
+										path={path.detail}
+										layout={MainLayout}
+										component={MovieDetail}
+									/>
+									<ProtectedRoute
+										path={path.profile}
+										layout={MainLayout}
+										component={ProfilePage}
+									/>
+									<ProtectedRoute
+										path={path.order}
+										layout={MainLayout}
+										component={OrderPage}
+									/>
+									<ProtectedRoute
+										path={path.payment}
+										layout={MainLayout}
+										component={PaymentPage}
+									/>
+									<ProtectedRoute
+										path={path.ticketResult}
+										component={TicketResult}
+									/>
+									<ProtectedRoute
+										path="/admin-page"
+										privateLayout={MainLayout}
+										privateComponent={AdminPage}
+									/>
+									<ProtectedRoute
+										path="/admin-panel/dashboard"
+										privateLayout={MainLayout}
+										privateComponent={DashboardPage}
+									/>
+									<ProtectedRoute
+										path="/admin-panel/movies"
+										privateLayout={MainLayout}
+										privateComponent={MoviePanel}
+									/>
+									<ProtectedRoute
+										path="/admin-panel"
+										privateLayout={MainLayout}
+										privateComponent={AdminPanel}
+									/>
+
+									<Route path={path.notFound} component={Error} />
+								</Switch>
+							</BrowserRouter>
+						</PersistGate>
+					</ThemeProvider>
+				</Provider>
+			</Suspense>
 		);
 	}
 }

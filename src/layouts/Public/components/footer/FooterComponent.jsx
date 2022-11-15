@@ -116,7 +116,7 @@ function FooterComponent() {
 			</Container>
 			<div className="py-2">
 				<Container className="text-center">
-					<p className="text-muted mb-0 py-2">
+					<p className="text-muted mb-0 py-1">
 						&copy; 2022 Tickitz. All Rights Reserved.
 					</p>
 				</Container>

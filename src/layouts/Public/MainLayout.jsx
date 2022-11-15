@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, Footer } from './components';
 
-function PublicLayout(props) {
+function MainLayout(props) {
 	const { children, withFooter = true } = props;
 	return (
 		<div>
@@ -12,4 +12,4 @@ function PublicLayout(props) {
 	);
 }
 
-export default PublicLayout;
+export default MainLayout;
