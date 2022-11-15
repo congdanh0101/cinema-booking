@@ -27,9 +27,7 @@ class MovieList extends Component {
 											url={item.image}
 											width="200"
 											className="img-fluid img-resize"
-											alt="image"
 										/>
-
 										<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
 											{item.name}
 										</p>

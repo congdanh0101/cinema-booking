@@ -22,7 +22,7 @@ const ImageResize = ({
 				<LazyLoadImage
 					onError={handleErrorImage}
 					className={className}
-					src={url || fallback || path.resizeImage(url, width, height)}
+					src={url || fallback}
 					effect="opacity"
 					alt={alt}
 				/>
@@ -33,7 +33,7 @@ const ImageResize = ({
 		<LazyLoadImage
 			onError={handleErrorImage}
 			className={className}
-			src={url || fallback || path.resizeImage(url, width, height)}
+			src={url || fallback}
 			effect="opacity"
 			alt={alt}
 		/>

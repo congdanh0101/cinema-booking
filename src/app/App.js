@@ -29,7 +29,7 @@ import DashboardPage from '../pages/Admin/dashboard/Dashboard';
 import MoviePanel from '../pages/Admin/movie-panel/MoviePanel';
 
 //Components
-import { MainLayout } from '../layouts';
+import { MainLayout, AdminLayout } from '../layouts';
 import { WithLayoutRoute, ProtectedRoute } from '../shared/routes';
 import ScrollToTop from '../shared/utils/utils';
 import Error from '../pages/NotFound';
@@ -93,24 +93,24 @@ export default class App extends Component {
 										component={TicketResult}
 									/>
 									<ProtectedRoute
-										path="/admin-page"
-										privateLayout={MainLayout}
-										privateComponent={AdminPage}
+										path={'/admin-page'}
+										layout={AdminLayout}
+										component={AdminPage}
 									/>
 									<ProtectedRoute
-										path="/admin-panel/dashboard"
-										privateLayout={MainLayout}
-										privateComponent={DashboardPage}
+										path={path.dashboard}
+										layout={AdminLayout}
+										component={DashboardPage}
 									/>
 									<ProtectedRoute
 										path="/admin-panel/movies"
-										privateLayout={MainLayout}
-										privateComponent={MoviePanel}
+										layout={AdminLayout}
+										component={MoviePanel}
 									/>
 									<ProtectedRoute
 										path="/admin-panel"
-										privateLayout={MainLayout}
-										privateComponent={AdminPanel}
+										layout={AdminLayout}
+										component={AdminPanel}
 									/>
 
 									<Route path={path.notFound} component={Error} />

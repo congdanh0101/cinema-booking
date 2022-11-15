@@ -8,7 +8,6 @@ import {
 import './styles.css';
 import { login } from '../../../service/actions/auth';
 import { connect } from 'react-redux';
-
 class HomePage extends Component {
 	render() {
 		return (
@@ -64,7 +63,7 @@ class HomePage extends Component {
 					<section>
 						<ComingComponent />
 					</section>
-					<section></section>
+
 					<section>
 						<SubscribeComponent />
 					</section>
