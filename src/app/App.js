@@ -7,32 +7,32 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import persistedStore from '../service/store';
 
 //Register
-import SignUp from '../pages/Public/register/SignUp';
-import SignIn from '../pages/Public/register/SignIn';
-import ForgetPassword from '../pages/Public/register/ForgetPassword';
-import ResetPassword from '../pages/Public/register/ResetPassword';
-import EmailVerification from '../pages/Public/register/EmailVerification';
+import SignUp from '../pages/Public/RegisterPage/SignUp';
+import SignIn from '../pages/Public/RegisterPage/SignIn';
+import ForgetPassword from '../pages/Public/RegisterPage/ForgetPassword';
+import ResetPassword from '../pages/Public/RegisterPage/ResetPassword';
+import EmailVerification from '../pages/Public/RegisterPage/EmailVerification';
 
 //Public
-import HomePage from '../pages/Public/home-page/HomePage';
-import MoviePage from '../pages/Public/movie-page/MoviePage';
-import MovieDetail from '../pages/Public/movie-detail/MovieDetail';
-import OrderPage from '../pages/Public/order-page/OrderPage';
-import PaymentPage from '../pages/Public/payment-page/PaymentPage';
-import TicketResult from '../pages/Public/ticket-result-page/TicketResult';
-import ProfilePage from '../pages/Public/profile-page/ProfilePage';
+import HomePage from '../pages/Public/HomePage/HomePage';
+import MoviePage from '../pages/Public/MoviePage/MoviePage';
+import MovieDetail from '../pages/Public/MovieDetail/MovieDetail';
+import OrderPage from '../pages/Public/OrderPage/OrderPage';
+import PaymentPage from '../pages/Public/PaymentPage/PaymentPage';
+import TicketResult from '../pages/Public/TicketResult/TicketResult';
+import ProfilePage from '../pages/Public/ProfilePage/ProfilePage';
 
 //Admin
-import AdminPage from '../pages/Admin/admin-page/AdminPage';
-import AdminPanel from '../pages/Admin/admin-panel/AdminPanel';
-import DashboardPage from '../pages/Admin/dashboard/Dashboard';
+import AdminPage from '../pages/Admin/AdminPage/AdminPage';
+import AdminPanel from '../pages/Admin/AdminPanel/AdminPanel.jsx';
+import DashboardPage from '../pages/Admin/Dashboard/Dashboard';
 import MoviePanel from '../pages/Admin/movie-panel/MoviePanel';
 
 //Components
 import { MainLayout, AdminLayout } from '../layouts';
 import { WithLayoutRoute, ProtectedRoute } from '../shared/routes';
 import ScrollToTop from '../shared/utils/utils';
-import Error from '../pages/NotFound';
+import Error from '../pages/Public/NotFound/NotFound';
 import Theme from '../shared/theme';
 
 export default class App extends Component {
