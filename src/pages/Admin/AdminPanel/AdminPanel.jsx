@@ -3,11 +3,11 @@ import React, { Component, Fragment } from 'react';
 import { Col, Container, Row, Nav } from 'react-bootstrap';
 import { Switch, Route, Link } from 'react-router-dom';
 
-import CreateMovie from '../../../containers/createMovie.container';
-import GenreTable from '../../../containers/genreTable.container';
-import MovieTable from '../../../containers/movieTable.container';
-import EditMovie from '../../../containers/editMovie.container';
-import EditGenre from '../../../containers/editGenre.container';
+import CreateMovie from '../../../modules/Admin/createMovie.container';
+import GenreTable from '../../../modules/Admin/genreTable.container';
+import MovieTable from '../../../modules/Admin/movieTable.container';
+import EditMovie from '../../../modules/Admin/editMovie.container';
+import EditGenre from '../../../modules/Admin/editGenre.container';
 
 export default class AdminPanel extends Component {
 	render() {

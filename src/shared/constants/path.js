@@ -17,6 +17,7 @@ export const path = {
 	order: '/order',
 	payment: '/payment',
 	ticketResult: '/ticket-result',
+	search: '/search',
 	//Admin
 	dashboard: '/dashboard',
 	userManage: '/manage/user',
@@ -33,7 +34,6 @@ export const path = {
 	showtimeUpdate: '/manage/update-showtime',
 	showtimeAddNew: '/manage/add-showtime',
 	showtimeView: '/manage/view-showtime',
-	search: '/search',
 	notFound: '*',
 	resizeImage: (url, width = '', height = '') =>
 		`https://images.weserv.nl/?url=${encodeURIComponent(

@@ -7,11 +7,13 @@ const StyledMovieTitle = styled.h3`
 	margin: 10px 0 6px;
 	font-size: 1.6rem;
 	text-transform: capitalize;
+	text-align: center;
 	${TextClamp.multilines(2)};
 	a {
 		font-weight: 500;
-		color: var(--white);
+		color: var(--black);
 		transition: all 0.25s linear;
+		text-decoration: none;
 	}
 	&:hover a {
 		color: #8a3cff;

@@ -21,18 +21,18 @@ import OrderPage from '../pages/Public/OrderPage/OrderPage';
 import PaymentPage from '../pages/Public/PaymentPage/PaymentPage';
 import TicketResult from '../pages/Public/TicketResult/TicketResult';
 import ProfilePage from '../pages/Public/ProfilePage/ProfilePage';
+import Error from '../pages/Public/NotFound/NotFound';
 
 //Admin
 import AdminPage from '../pages/Admin/AdminPage/AdminPage';
 import AdminPanel from '../pages/Admin/AdminPanel/AdminPanel.jsx';
 import DashboardPage from '../pages/Admin/Dashboard/Dashboard';
-import MoviePanel from '../pages/Admin/movie-panel/MoviePanel';
+import MoviePanel from '../pages/Admin/MoviePanel/MoviePanel';
 
 //Components
 import { MainLayout, AdminLayout } from '../layouts';
 import { WithLayoutRoute, ProtectedRoute } from '../shared/routes';
 import ScrollToTop from '../shared/utils/utils';
-import Error from '../pages/Public/NotFound/NotFound';
 import Theme from '../shared/theme';
 
 export default class App extends Component {

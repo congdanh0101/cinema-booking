@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import http from '../shared/apis/axiosClient';
+import http from '../../shared/apis/axiosClient';
 
-class GenreTable extends Component {
+class MovieTable extends Component {
 	state = {
-		genres: [],
+		movies: [],
 	};
+
 	async componentDidMount() {
-		const response = await http().get('genres');
+		const response = await http().get('movies');
 		this.setState({
-			genres: response.data.results,
+			movies: response.data.content,
 		});
 	}
+
 	render() {
-		const { genres } = this.state;
-		console.log(genres);
+		const { movies } = this.state;
 		return (
 			<div>
-				<Link to="/admin-panel/manage_genre/add">Add Genre</Link>
+				<Link to="/admin-panel/manage_movie/add">Add Movie</Link>
 				<Table striped bordered hover>
 					<thead>
 						<tr>
@@ -28,20 +29,20 @@ class GenreTable extends Component {
 						</tr>
 					</thead>
 					<tbody>
-						{genres.map((genre) => {
+						{movies.map((movie) => {
 							return (
-								<tr key={String(genre.id)}>
-									<td>{genre.id}</td>
-									<td>{genre.name}</td>
+								<tr key={String(movie.id)}>
+									<td>{movie.id}</td>
+									<td>{movie.name}</td>
 									<td>
 										<Link
-											to={`/admin-panel/manage_genre/edit/${genre.id}`}
+											to={`/admin-panel/manage_movie/edit/${movie.id}`}
 											className="btn btn-sm btn-warning"
 										>
 											Edit
 										</Link>{' '}
 										<Link
-											to={`/admin-panel/manage_genre/delete/${genre.id}`}
+											to={`/admin-panel/manage_movie/delete/${movie.id}`}
 											className="btn btn-sm btn-danger"
 										>
 											Delete
@@ -57,4 +58,4 @@ class GenreTable extends Component {
 	}
 }
 
-export default GenreTable;
+export default MovieTable;

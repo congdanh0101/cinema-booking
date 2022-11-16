@@ -1,51 +1,51 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import http from '../shared/apis/axiosClient';
+import http from '../../shared/apis/axiosClient';
 
-class EditMovie extends Component {
+class EditGenre extends Component {
 	state = {
-		movie: {},
+		genre: {},
 	};
 	async componentDidMount() {
 		const { id } = this.props.match.params;
-		const response = await http().get(`movies/${id}`);
+		const response = await http().get(`genres/${id}`);
 		this.setState({
-			movie: response.data.results,
+			genre: response.data.results,
 		});
 	}
 	saveData = async (e) => {
 		e.preventDefault();
 		const { id } = this.props.match.params;
-		const { title } = this.state.movie;
+		const { name } = this.state.genre;
 		const data = new URLSearchParams();
-		data.append('title', title);
+		data.append('name', name);
 		const response = await http(this.props.auth.token).patch(
-			`movies/${id}`,
+			`genres/${id}`,
 			data
 		);
 		window.alert(response.data.message);
 	};
 	changeText = (event) => {
-		const { movie } = this.state;
+		const { genre } = this.state;
 		this.setState({
-			movie: {
-				...movie,
+			genre: {
+				...genre,
 				[event.target.name]: event.target.value,
 			},
 		});
 	};
 	render() {
-		const { movie } = this.state;
+		const { genre } = this.state;
 		return (
 			<React.Fragment>
-				{Object.keys(movie).length > 0 && (
+				{Object.keys(genre).length > 0 && (
 					<Form onSubmit={this.saveData}>
 						<Form.Control
 							type="text"
-							name="title"
+							name="name"
 							onChange={this.changeText}
-							defaultValue={movie.title}
+							defaultValue={genre.name}
 						/>
 						<Button type="submit" variant="warning">
 							Save
@@ -61,4 +61,4 @@ const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
 
-export default connect(mapStateToProps)(EditMovie);
+export default connect(mapStateToProps)(EditGenre);
