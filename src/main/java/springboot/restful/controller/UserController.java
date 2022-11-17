@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import springboot.restful.config.security.JwtTokenHelper;
@@ -64,9 +66,10 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('USER')")
-	@PutMapping("/changepassword/{id}")
-	public ResponseEntity<?> changeUserPassword(@PathVariable int id, @Valid @RequestBody ChangePassword changePassword) {
-		return ResponseEntity.ok().body(userService.changePassword(id, changePassword.getOldPassword(), changePassword.getNewPassword(), changePassword.getConfirmPassword()));
+	@PutMapping("/changepassword")
+	public ResponseEntity<?> changeUserPassword(@Valid @RequestBody ChangePassword changePassword) {
+		User user = decodeJWTFromToken();
+		return ResponseEntity.ok().body(userService.changePassword(user.getId(), changePassword.getOldPassword(), changePassword.getNewPassword(), changePassword.getConfirmPassword()));
 	}
 
 	@PostMapping("")
@@ -83,4 +86,11 @@ public class UserController {
 		return phoneNumber.matches(reg);
 	}
 
+
+	private User decodeJWTFromToken() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found with " + username));
+		return user;
+	}
 }

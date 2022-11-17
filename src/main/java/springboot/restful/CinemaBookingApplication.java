@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import springboot.restful.repository.RoleRepository;
 import springboot.restful.repository.UserRepository;
-import springboot.restful.service.EmailSenderService;
 import springboot.restful.service.ShowTimeService;
 import springboot.restful.service.TicketService;
 import springboot.restful.service.UserService;
@@ -27,8 +26,6 @@ public class CinemaBookingApplication implements CommandLineRunner {
 	@Autowired
 	private ShowTimeService showTimeService;
 
-	@Autowired
-	private EmailSenderService emailSenderService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

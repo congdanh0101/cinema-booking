@@ -9,4 +9,6 @@ public interface EmailSenderService {
     String htmlEmailVerificationCodeRegister(String code, String name);
 
     String htmlEmailVerificationCodeForgotPassword(String code, String name);
+
+    String htmlEmailResetPassword(String password);
 }

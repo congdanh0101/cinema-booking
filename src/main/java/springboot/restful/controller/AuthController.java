@@ -18,7 +18,6 @@ import springboot.restful.config.security.JwtTokenHelper;
 import springboot.restful.exception.ApiException;
 import springboot.restful.exception.ErrorDetails;
 import springboot.restful.model.entity.User;
-import springboot.restful.model.payloads.EmailVerification;
 import springboot.restful.model.payloads.LoginRequest;
 import springboot.restful.model.payloads.ResetPassword;
 import springboot.restful.model.payloads.UserDTO;
@@ -253,6 +252,25 @@ public class AuthController {
 		return ResponseEntity.ok().body(userService.createUser(userDTO));
 	}
 
+	@PostMapping("/forgot/{id}/verify")
+	public ResponseEntity<?> resetPassword(@PathVariable int id) throws MessagingException {
+		String strRandom = UUID.randomUUID().toString();
+		String firstRandom = strRandom.substring(0, 8);
+		String secondRandom = strRandom.substring(24, 36);
+		String randomPassword = firstRandom + secondRandom;
+
+		UserDTO userDTO = userService.getUserById(id);
+		userDTO.setPassword(randomPassword);
+		userDTO = userService.updateUser(id, userDTO);
+
+		emailSenderService.sendEmail(userDTO.getEmail(), "RESET PASSWORD", emailSenderService.htmlEmailResetPassword(randomPassword));
+
+		Map res = new HashMap();
+		res.put("messgae", "Please check your email to get new password!");
+		res.put("timestamp", new Date().toLocaleString());
+		return ResponseEntity.ok().body(res);
+	}
+
 	// @PostMapping("/forgot/verify")
 	// public ResponseEntity<?>
 
@@ -269,10 +287,10 @@ public class AuthController {
 				emailSenderService.htmlEmailVerificationCodeForgotPassword(verificationCode, userDTO.getFirstName())
 						+ " " + userDTO.getLastName());
 
-		HttpSession session = request.getSession(true);
-		session.setAttribute("verificationCode", verificationCode);
-		session.setAttribute("userDTO", userDTO);
-		session.setAttribute("expired", new Date(System.currentTimeMillis() + VERIFICATION_CODE_VALIDITY * 1000));
+//		HttpSession session = request.getSession(true);
+//		session.setAttribute("verificationCode", verificationCode);
+//		session.setAttribute("userDTO", userDTO);
+//		session.setAttribute("expired", new Date(System.currentTimeMillis() + VERIFICATION_CODE_VALIDITY * 1000));
 
 		// HttpSession session = request.getSession(false);
 		// if (session == null || !request.isRequestedSessionIdValid()) {
@@ -324,7 +342,7 @@ public class AuthController {
 	// }
 
 	@PostMapping("/reset/{idUser}")
-	public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPassword req, @PathVariable int idUser){
+	public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPassword req, @PathVariable int idUser) {
 		UserDTO newUserDTO = userService.resetPassword(idUser, req.getNewPassword(), req.getConfirmPassword());
 		return ResponseEntity.ok().body(newUserDTO);
 	}
