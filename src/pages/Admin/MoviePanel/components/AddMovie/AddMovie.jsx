@@ -17,31 +17,43 @@ import {
 class AddMovie extends Component {
 	state = {
 		name: '',
-		duration: '',
+		duration: 0,
 		description: '',
-		image: null,
-		trailer: null,
-		releases: new Date(),
-		genre: [],
+		image: '',
+		trailer: '',
+		releases: new Date().toLocaleDateString(),
+		genres: [],
 	};
 
 	componentDidMount() {
 		if (this.props.edit) {
-			const { name, duration, description, releases, genre } = this.props.edit;
+			const { name, duration, description, image, trailer, releases, genres } =
+				this.props.edit;
 			this.setState({
 				name,
 				duration,
 				description,
+				image,
+				trailer,
 				releases,
-				genre: genre.split(','),
+				genres: genres.map((genre) => genre.name),
 			});
 		}
 	}
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.movie !== this.props.movie) {
-			const { name, genre } = this.props.movie;
-			this.setState({ name, genre });
+			const { name, duration, description, image, trailer, releases, genres } =
+				this.props.movie;
+			this.setState({
+				name,
+				duration,
+				description,
+				image,
+				trailer,
+				releases,
+				genres,
+			});
 		}
 	}
 
@@ -58,22 +70,39 @@ class AddMovie extends Component {
 	};
 
 	onAddMovie = async () => {
-		const { image, genre, ...rest } = this.state;
-		const movie = { ...rest, genre: genre.join(',') };
-		this.props.addMovie(image, movie);
+		const { name, duration, description, image, trailer, releases, genres } =
+			this.state;
+		await this.props.addMovie(
+			name,
+			duration,
+			description,
+			image,
+			trailer,
+			releases,
+			genres
+		);
 	};
 
 	onUpdateMovie = async () => {
-		const { image, genre, ...rest } = this.state;
-		const movie = { ...rest, genre: genre.join(',') };
-		this.props.updateMovie(this.props.edit._id, movie, image);
+		const { name, duration, description, image, trailer, releases, genres } =
+			this.state;
+		const movie = {
+			name,
+			duration,
+			description,
+			image,
+			trailer,
+			releases,
+			genres: genres.join(','),
+		};
+		this.props.updateMovie(this.props.edit.id, movie);
 	};
 
-	onRemoveMovie = () => this.props.removeMovie(this.props.edit._id);
+	onRemoveMovie = () => this.props.deleteMovie(this.props.edit.id);
 
 	render() {
 		const { classes, className } = this.props;
-		const { name, duration, description, image, trailer, releases, genre } =
+		const { name, duration, description, image, trailer, releases, genres } =
 			this.state;
 
 		const rootClassName = classNames(classes.root, className);
@@ -112,15 +141,15 @@ class AddMovie extends Component {
 								label="Genre"
 								margin="dense"
 								required
-								value={genre}
+								value={genres || []}
 								variant="outlined"
 								onChange={(event) =>
-									this.handleFieldChange('genre', event.target.value)
+									this.handleFieldChange('genres', event.target.value)
 								}
 							>
 								{genreData.map((genreItem, index) => (
 									<MenuItem key={genreItem + '-' + index} value={genreItem}>
-										{genreItem}
+										{genreItem.name}
 									</MenuItem>
 								))}
 							</Select>

@@ -1,5 +1,14 @@
 import axiosClient from '../../shared/apis/axiosClient';
 
+export const toggleDialog = () => ({ type: 'TOGGLE_DIALOG' });
+
+export const selectShowtime = (showtime) => ({
+	type: 'SELECT_SHOWTIMES',
+	payload: showtime,
+});
+
+export const selectAllShowtimes = () => ({ type: 'SELECT_ALL_SHOWTIMES' });
+
 export const getAllShowtime = () => {
 	return async (dispatch) => {
 		try {
@@ -34,10 +43,27 @@ export const getShowtimeDetail = (id) => {
 	};
 };
 
+export const getShowtimeByTheater = (id) => {
+	return async (dispatch) => {
+		try {
+			const response = await axiosClient().get(`showtimes/theaters/${id}`);
+			dispatch({
+				type: 'GET_SHOWTIME_BY_THEATER',
+				payload: response.data,
+			});
+		} catch (err) {
+			dispatch({
+				type: 'SET_SHOWTIME_MESSAGE',
+				payload: err,
+			});
+		}
+	};
+};
+
 export const addShowtime = (movieId, theaterId) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).post(
 				`showtimes/movies/${movieId}/theaters/${theaterId}`,
 				{
@@ -62,7 +88,7 @@ export const addShowtime = (movieId, theaterId) => {
 export const updateShowtime = (movieId, theaterId) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).put(
 				`showtimes/movies/${movieId}/theaters/${theaterId}`,
 				{

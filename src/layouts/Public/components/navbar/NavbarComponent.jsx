@@ -15,7 +15,16 @@ class NavbarComponent extends Component {
 	componentDidMount() {
 		if (this.props.auth.token !== null)
 			this.props.getUserDetail(this.props.auth.token).then(async () => {
-				await this.props.getUserDetailById(this.props.user.detail.id);
+				sessionStorage.setItem('userId', this.props.user.detail.id);
+				await this.props.getUserDetailById(sessionStorage.getItem('userId'));
+				sessionStorage.setItem('firstName', this.props.user.detail.firstName);
+				sessionStorage.setItem('lastName', this.props.user.detail.lastName);
+				sessionStorage.setItem(
+					'phoneNumber',
+					this.props.user.detail.phoneNumber
+				);
+				sessionStorage.setItem('email', this.props.user.detail.email);
+				sessionStorage.setItem('gender', this.props.user.detail.gender);
 			});
 	}
 

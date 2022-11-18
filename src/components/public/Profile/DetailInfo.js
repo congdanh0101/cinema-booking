@@ -16,6 +16,7 @@ import {
 	getUserDetail,
 	getUserDetailById,
 	updateUser,
+	changePassword,
 } from '../../../service/actions/user';
 
 const ValidatorSchema = Yup.object().shape({
@@ -35,22 +36,10 @@ class DetailInfo extends Component {
 		message: '',
 		isLoading: false,
 	};
-	async componentDidMount() {
-		await this.props.getUserDetail(this.props.auth.token).then(async () => {
-			localStorage.setItem('userId', this.props.user.detail.id);
-			await this.props.getUserDetailById(localStorage.getItem('userId'));
-			sessionStorage.setItem('firstName', this.props.user.detail.firstName);
-			sessionStorage.setItem('lastName', this.props.user.detail.lastName);
-			sessionStorage.setItem('phoneNumber', this.props.user.detail.phoneNumber);
-			sessionStorage.setItem('email', this.props.user.detail.email);
-			sessionStorage.setItem('password', this.props.user.detail.password);
-			sessionStorage.setItem('gender', this.props.user.detail.gender);
-		});
-	}
+
 	submitData = async (values) => {
-		const userId = localStorage.getItem('userId');
 		this.setState({ isLoading: true });
-		await this.props.updateUser(userId, {
+		await this.props.updateUser(this.props.user.detail.id, {
 			firstName: values.firstName,
 			lastName: values.lastName,
 			phoneNumber: values.phoneNumber,
@@ -60,6 +49,17 @@ class DetailInfo extends Component {
 		});
 		this.setState({ show: true, isLoading: false });
 	};
+
+	changePassword = async (values) => {
+		this.setState({ isLoading: true });
+		await this.props.changePassword({
+			oldPassword: values.firstName,
+			newPassword: values.lastName,
+			confirmPassword: values.phoneNumber,
+		});
+		this.setState({ show: true, isLoading: false });
+	};
+
 	render() {
 		const { show } = this.state;
 		return (
@@ -85,13 +85,14 @@ class DetailInfo extends Component {
 						lastName: sessionStorage.getItem('lastName'),
 						phoneNumber: sessionStorage.getItem('phoneNumber'),
 						email: sessionStorage.getItem('email'),
-						password: '',
+						oldPassword: '',
+						newPassword: '',
 						confirmPassword: '',
 						gender: sessionStorage.getItem('gender'),
 					}}
 					validationSchema={ValidatorSchema}
 					onSubmit={(values) => {
-						this.submitData(values);
+						this.changePassword(values);
 					}}
 				>
 					{({
@@ -189,19 +190,26 @@ class DetailInfo extends Component {
 										<Form.Group>
 											<Row>
 												<Col>
+													<Form.Label>Old Password</Form.Label>
+													<Form.Control
+														type="password"
+														placeholder="Write your old password"
+														name="oldPassword"
+														onChange={handleChange}
+														onBlur={handleBlur}
+														value={values.oldPassword}
+													/>
+												</Col>
+												<Col>
 													<Form.Label>New Password</Form.Label>
 													<Form.Control
 														type="password"
-														placeholder="Write your password"
-														name="password"
+														placeholder="Write your new password"
+														name="newPassword"
 														onChange={handleChange}
 														onBlur={handleBlur}
-														isValid={touched.password && !errors.password}
-														value={values.password}
+														value={values.newPassword}
 													/>
-													{errors.password && touched.password ? (
-														<p style={{ color: 'red' }}>{errors.password}</p>
-													) : null}
 												</Col>
 												<Col>
 													<Form.Label>Confirm Password</Form.Label>
@@ -211,16 +219,8 @@ class DetailInfo extends Component {
 														name="confirmPassword"
 														onChange={handleChange}
 														onBlur={handleBlur}
-														isValid={
-															touched.confirmPassword && !errors.confirmPassword
-														}
 														value={values.confirmPassword}
 													/>
-													{errors.confirmPassword && touched.confirmPassword ? (
-														<p style={{ color: 'red' }}>
-															{errors.confirmPassword}
-														</p>
-													) : null}
 												</Col>
 											</Row>
 										</Form.Group>
@@ -228,7 +228,7 @@ class DetailInfo extends Component {
 								</Card>
 								{this.state.isLoading === false ? (
 									<ButtonLeft
-										gobuttonleft="/profile-page"
+										gobuttonleft="/profile"
 										buttontext="Update Change"
 										type="submit"
 										onClick={handleSubmit}
@@ -251,6 +251,11 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = { getUserDetail, getUserDetailById, updateUser };
+const mapDispatchToProps = {
+	getUserDetail,
+	getUserDetailById,
+	updateUser,
+	changePassword,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailInfo);

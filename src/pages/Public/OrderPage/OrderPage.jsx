@@ -10,7 +10,7 @@ function OrderPage({ order }) {
 	// const { dataMovie } = order.listOrder;
 	return (
 		<div>
-			<Navbar className="navbar-expand-lg navbar-dark bg-primary">
+			<Navbar className="navbar-expand-lg navbar-dark bg-primary ">
 				<Container>
 					<Container fluid>
 						{/* <Link className="text-link-lg text-white">"test"</Link> */}
@@ -29,7 +29,7 @@ function OrderPage({ order }) {
 				<Container>
 					<Row>
 						<OrderSeat />
-						<OrderInfo />
+						{/* <OrderInfo /> */}
 					</Row>
 				</Container>
 			</div>

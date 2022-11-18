@@ -1,12 +1,12 @@
 // @ts-nocheck
 import { createTheme } from '@material-ui/core/styles';
-import palette from './palette';
-//import paletteDark from './paletteDark';
+//import palette from './palette';
+import paletteDark from './paletteDark';
 import typography from './typography';
 
 // read more at https://material-ui.com/customization/themes
 const theme = createTheme({
-	palette: palette,
+	palette: paletteDark,
 	typography,
 	zIndex: {
 		appBar: 1200,

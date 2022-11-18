@@ -3,6 +3,7 @@ import { Card, Col } from 'react-bootstrap';
 import DetailInfo from './DetailInfo';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './styles.css';
+import PrivacyInfo from './PrivacyInfo';
 
 export default class AccountProfile extends Component {
 	render() {
@@ -13,8 +14,8 @@ export default class AccountProfile extends Component {
 						<Card.Body className="d-flex">Account Settings</Card.Body>
 					</Card>
 					<Switch>
-						<Route exact path="/profile-page">
-							<DetailInfo />
+						<Route exact path="/profile">
+							<PrivacyInfo />
 						</Route>
 					</Switch>
 				</Col>

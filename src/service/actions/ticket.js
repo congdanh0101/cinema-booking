@@ -64,7 +64,7 @@ export const addTicket = (showtimeId, seatId, seat, showtime) => {
 				payload: '',
 				message: '',
 			});
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).post(
 				`tickets/showtimes/${showtimeId}/seats/${seatId}`,
 				{
@@ -90,7 +90,7 @@ export const addTicket = (showtimeId, seatId, seat, showtime) => {
 export const addManyTickets = (showtimeId) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).post(
 				`tickets/showtimes/${showtimeId}`
 			);
@@ -111,7 +111,7 @@ export const addManyTickets = (showtimeId) => {
 export const deleteTicket = (ticketId) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).delete(`tickets/${ticketId}`);
 			dispatch({
 				type: 'DELETE_TICKET',

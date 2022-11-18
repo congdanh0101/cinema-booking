@@ -33,13 +33,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	description: {
 		lineHeight: '16px',
-		height: theme.spacing(4),
+		height: theme.spacing(2),
 		overflow: 'hidden',
 		whiteSpace: 'nowrap',
 		textOverflow: 'ellipsis',
 		color: theme.palette.text.secondary,
 		marginTop: theme.spacing(1),
-		marginBottom: theme.spacing(2),
+		marginBottom: theme.spacing(1),
 	},
 	stats: {
 		display: 'flex',
@@ -67,7 +67,7 @@ function MovieCard(props) {
 			</div>
 			<div className={classes.details}>
 				<Typography className={classes.name} variant="h4">
-					{movie.title}
+					{movie.name}
 				</Typography>
 				<Typography className={classes.description} variant="body1">
 					{movie.description}

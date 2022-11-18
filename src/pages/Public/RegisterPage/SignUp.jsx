@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import { register } from '../../../service/actions/auth';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { path } from '../../../shared/constants/path';
 
 const ValidatorSchema = Yup.object().shape({
 	firstName: Yup.string()
@@ -295,7 +296,7 @@ class SignUp extends Component {
 								)}
 								<p className="text-center pt-3">
 									Do you already have an account?
-									<Link to="/login"> Log in</Link>
+									<Link to={path.signIn}> Log in</Link>
 								</p>
 							</Form.Group>
 						)}

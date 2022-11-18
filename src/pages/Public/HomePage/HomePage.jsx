@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Container, Row, Image, Card } from 'react-bootstrap';
+import { Col, Container, Row, Image } from 'react-bootstrap';
 import {
 	ShowingComponent,
 	SubscribeComponent,
@@ -8,7 +8,6 @@ import {
 import './styles.css';
 import { login } from '../../../service/actions/auth';
 import { connect } from 'react-redux';
-import HomeBanner from '../../../modules/Public/Home/HomeBanner';
 
 class HomePage extends Component {
 	render() {
@@ -65,9 +64,9 @@ class HomePage extends Component {
 					<section>
 						<ComingComponent />
 					</section>
-					<section>
+					{/* <section>
 						<SubscribeComponent />
-					</section>
+					</section> */}
 				</Container>
 			</div>
 		);

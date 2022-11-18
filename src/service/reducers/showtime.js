@@ -1,12 +1,56 @@
 const initialState = {
 	showtimes: [],
+	selectedShowtimes: [],
 	details: {},
 	message: '',
 	errorMsg: '',
+	openDialog: false,
 };
+
+const toggleDialog = (state) => ({
+	...state,
+	openDialog: !state.openDialog,
+});
+
+const selectShowtime = (state, payload) => {
+	const { selectedShowtimes } = state;
+
+	const selectedIndex = selectedShowtimes.indexOf(payload);
+	let newSelected = [];
+
+	if (selectedIndex === -1) {
+		newSelected = newSelected.concat(selectedShowtimes, payload);
+	} else if (selectedIndex === 0) {
+		newSelected = newSelected.concat(selectedShowtimes.slice(1));
+	} else if (selectedIndex === selectedShowtimes.length - 1) {
+		newSelected = newSelected.concat(selectedShowtimes.slice(0, -1));
+	} else if (selectedIndex > 0) {
+		newSelected = newSelected.concat(
+			selectedShowtimes.slice(0, selectedIndex),
+			selectedShowtimes.slice(selectedIndex + 1)
+		);
+	}
+	return {
+		...state,
+		selectedShowtimes: newSelected,
+	};
+};
+
+const selectAllShowtimes = (state) => ({
+	...state,
+	selectedShowtimes: !state.selectedShowtimes.length
+		? state.showtimes.map((showtime) => showtime.id)
+		: [],
+});
 
 const showtimeReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case 'SELECT_SHOWTIMES':
+			return selectShowtime(state, action.payload);
+		case 'SELECT_ALL_SHOWTIMES':
+			return selectAllShowtimes(state);
+		case 'TOGGLE_DIALOG':
+			return toggleDialog(state);
 		case 'GET_ALL_SHOWTIME': {
 			return {
 				...state,
@@ -17,6 +61,13 @@ const showtimeReducer = (state = initialState, action) => {
 			return {
 				...state,
 				details: action.payload,
+				message: action.message,
+			};
+		}
+		case 'GET_SHOWTIME_BY_THEATER': {
+			return {
+				...state,
+				showtimes: action.payload,
 				message: action.message,
 			};
 		}

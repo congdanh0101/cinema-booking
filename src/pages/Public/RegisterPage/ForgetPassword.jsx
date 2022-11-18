@@ -34,8 +34,8 @@ class ForgetPassword extends Component {
 	};
 
 	render() {
+		const { history } = this.props;
 		const { show } = this.state;
-		console.log(this.props);
 		return (
 			<Row className="container-fluid">
 				{/* Left Side */}
@@ -111,6 +111,11 @@ class ForgetPassword extends Component {
 							</p>
 						</Alert>
 					)}
+					{(show === true) &
+					(this.props.auth.message ===
+						'Please go to your email and get verification code to reset your password')
+						? ('', history.push('/email-verify/forgot'))
+						: ''}
 					<Formik
 						initialValues={{
 							email: '',

@@ -2,7 +2,8 @@ export const path = {
 	//Register
 	signIn: '/sign-in',
 	signUp: '/sign-up',
-	emailVerification: '/email-verify',
+	emailVerifyRegister: '/email-verify/register',
+	emailVerifyForgot: '/email-verify/forgot',
 	forgetPassword: '/forgot-password',
 	resetPassword: '/reset-password',
 	//Pubic
@@ -12,13 +13,11 @@ export const path = {
 	profile: '/profile',
 	history: '/history',
 	article: '/article',
-	booking: '/booking',
-	bookingHistory: '/booking/history',
 	order: '/order',
 	payment: '/payment',
 	ticketResult: '/ticket-result',
-	search: '/search',
 	//Admin
+	admin: '/admin',
 	dashboard: '/dashboard',
 	userManage: '/manage/user',
 	userAddNew: '/manage/add-user',
@@ -35,8 +34,4 @@ export const path = {
 	showtimeAddNew: '/manage/add-showtime',
 	showtimeView: '/manage/view-showtime',
 	notFound: '*',
-	resizeImage: (url, width = '', height = '') =>
-		`https://images.weserv.nl/?url=${encodeURIComponent(
-			url
-		)}&w=${width}&h=${height}&fit=outside`,
 };

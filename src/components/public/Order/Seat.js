@@ -34,16 +34,16 @@ class Seat extends Component {
 		// 	(x) => this.state.listSeat[x],
 		// );
 		const seatNum = [];
-		for (let i = 1; i < 15; i++) {
-			if (i === 8) {
+		for (let i = 0; i < 10; i++) {
+			if (i === 5) {
 				seatNum.push(<div className="px-3"></div>);
 			}
 			seatNum.push(<td className="pl-3">{i}</td>);
 		}
 
 		const seat = [];
-		for (let i = 1; i < 15; i++) {
-			if (i === 8) {
+		for (let i = 0; i < 10; i++) {
+			if (i === 5) {
 				seat.push(<div className="px-3"></div>);
 			}
 			seat.push(
@@ -90,6 +90,18 @@ class Seat extends Component {
 							<td>G</td>
 							{seat}
 						</tr>
+						<tr>
+							<td>H</td>
+							{seat}
+						</tr>
+						<tr>
+							<td>I</td>
+							{seat}
+						</tr>
+						<tr>
+							<td>J</td>
+							{seat}
+						</tr>
 					</tbody>
 					<tbody>
 						<tr>
@@ -107,10 +119,6 @@ class Seat extends Component {
 					<Col>
 						<div className="selectBox float-left mr-3"></div>
 						<p>Selected</p>
-					</Col>
-					<Col>
-						<div className="loveBox float-left mr-3"></div>
-						<p>Love nest</p>
 					</Col>
 					<Col>
 						<div className="soldBox float-left mr-3"></div>

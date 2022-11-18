@@ -38,6 +38,9 @@ class ResetPassword extends Component {
 		this.setState({ isLoading: true });
 		await this.props.resetPassword(values.code);
 		this.setState({ show: true, isLoading: false });
+		window.alert('Success! Go to login');
+		const { history } = this.props;
+		history.push('/');
 	};
 	render() {
 		const { show } = this.state;

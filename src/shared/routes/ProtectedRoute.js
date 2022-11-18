@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { autoLogin } from '../../service/actions/auth';
 
-const PrivateRoute = (props) => {
+const ProtectedRoute = (props) => {
 	const { layout: Layout, component: Component, token, ...rest } = props;
 	return (
 		<Route
@@ -15,23 +15,21 @@ const PrivateRoute = (props) => {
 						<Component {...props} />
 					</Layout>
 				) : (
-					<Redirect
-						to={{ pathname: '/sign-up', state: { from: props.location } }}
-					/>
+					<Redirect to={{ pathname: '*', state: { from: props.location } }} />
 				)
 			}
 		/>
 	);
 };
 
-PrivateRoute.propTypes = {
+ProtectedRoute.propTypes = {
 	component: PropTypes.any.isRequired,
 	layout: PropTypes.any.isRequired,
 	path: PropTypes.string,
 	token: PropTypes.string,
 };
 
-PrivateRoute.defaultProps = {
+ProtectedRoute.defaultProps = {
 	token: '',
 };
 
@@ -41,4 +39,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = { autoLogin };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);
+export default connect(mapStateToProps, mapDispatchToProps)(ProtectedRoute);

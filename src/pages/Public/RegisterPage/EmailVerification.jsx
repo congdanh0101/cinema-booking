@@ -13,7 +13,7 @@ import {
 import ReactCodeInput from 'react-code-input';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
-import { emailVerify, login } from '../../../service/actions/auth';
+import { emailVerifyRegister, login } from '../../../service/actions/auth';
 import { LeftRegister, RightRegister } from '../../../components/common';
 import tickitz_white from '../../../assets/images/tickitz-white.svg';
 // import ButtonLeft from '../../../components/splitpanel/ButtonLeft';
@@ -34,9 +34,11 @@ class EmailVerification extends Component {
 
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
-		await this.props.emailVerify(values.code);
+		await this.props.emailVerifyRegister(values.code);
+		sessionStorage.setItem('show', this.props.message);
 		this.setState({ show: true, isLoading: false });
-		window.alert('Success! Go to login');
+		// const { history } = this.props;
+		// history.push('/sign-in');
 	};
 
 	render() {
@@ -156,9 +158,9 @@ class EmailVerification extends Component {
 											value={values.code}
 											fields={8}
 										/>
-										{errors.code && touched.code ? (
+										{/* {errors.code && touched.code ? (
 											<p style={{ color: 'red' }}>{errors.code}</p>
-										) : null}
+										) : null} */}
 									</Row>
 									<Row>
 										<Col>
@@ -190,6 +192,6 @@ class EmailVerification extends Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
-const mapDispatchToProps = { emailVerify, login };
+const mapDispatchToProps = { emailVerifyRegister, login };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmailVerification);

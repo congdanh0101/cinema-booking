@@ -50,7 +50,6 @@ class MoviePanel extends Component {
 
 	render() {
 		const { classes, selectedMovie } = this.props;
-		console.log(selectedMovie);
 		return (
 			<div className={classes.root}>
 				<MovieToolbar

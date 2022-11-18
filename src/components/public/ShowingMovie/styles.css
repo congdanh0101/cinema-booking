@@ -52,5 +52,6 @@
 @media (max-width: 575.98px) {
 	.scrollmenu {
 		margin-right: 0px;
+		margin-top: 10px;
 	}
 }

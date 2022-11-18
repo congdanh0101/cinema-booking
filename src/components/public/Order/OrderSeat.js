@@ -11,7 +11,7 @@ export default class OrderSeat extends Component {
 				<p className="text-display-xs-bold">Choose Your Seat</p>
 				<Card className="border-0 p-5 order-seat">
 					<Card.Body className="row text-center">
-						<Col xs={11} className="">
+						<Col xs={9} className="">
 							<p className="text-link-xs">Screen</p>
 							<div className="line-screen"></div>
 						</Col>

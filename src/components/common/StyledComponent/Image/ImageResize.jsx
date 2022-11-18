@@ -5,8 +5,6 @@ import { useState } from 'react';
 const ImageResize = ({
 	to,
 	url,
-	width,
-	height,
 	alt,
 	className,
 	imageError = 'images/no-image.png',

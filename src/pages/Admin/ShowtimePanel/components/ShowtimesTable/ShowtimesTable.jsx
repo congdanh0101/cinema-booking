@@ -54,8 +54,8 @@ class ShowtimesTable extends Component {
 			selectAllShowtimes,
 		} = this.props;
 		const { rowsPerPage, page } = this.state;
-
 		const rootClassName = classNames(classes.root, className);
+		console.log(showtimes);
 		return (
 			<Portlet className={rootClassName}>
 				<PortletContent noPadding>
@@ -75,10 +75,11 @@ class ShowtimesTable extends Component {
 									ID
 								</TableCell>
 								<TableCell align="left">Movie</TableCell>
-								<TableCell align="left">Cinema</TableCell>
-								<TableCell align="left">Start Date</TableCell>
-								<TableCell align="left">End Date</TableCell>
-								<TableCell align="left">Time</TableCell>
+								<TableCell align="left">Theater</TableCell>
+								<TableCell align="left">Price</TableCell>
+								<TableCell align="left">Time Start</TableCell>
+								<TableCell align="left">Time End</TableCell>
+								<TableCell align="left">Date</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -112,20 +113,28 @@ class ShowtimesTable extends Component {
 												</Typography>
 											</div>
 										</TableCell>
+										{/* {showtime.movie.map((movie) => (
+											<TableCell key={movie.id} className={classes.tableCell}>
+												{movie.name}
+											</TableCell>
+										))} */}
 										<TableCell className={classes.tableCell}>
-											{showtime.movieId}
+											{showtime.cinemaId}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
 											{showtime.cinemaId}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{moment(showtime.startDate).format('DD/MM/YYYY')}
+											{showtime.price}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{moment(showtime.endDate).format('DD/MM/YYYY')}
+											{showtime.timeStart}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{showtime.startAt}
+											{showtime.timeEnd}
+										</TableCell>
+										<TableCell className={classes.tableCell}>
+											{moment(showtime.showDate).format('DD/MM/YYYY')}
 										</TableCell>
 									</TableRow>
 								))}

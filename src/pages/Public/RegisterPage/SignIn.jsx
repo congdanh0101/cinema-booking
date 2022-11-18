@@ -8,6 +8,7 @@ import tickitz_white from '../../../assets/images/tickitz-white.svg';
 import './styles.css';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { path } from '../../../shared/constants/path';
 
 const ValidatorSchema = Yup.object().shape({
 	email: Yup.string().email('Invalid email').required('Required'),
@@ -129,7 +130,7 @@ class SignIn extends Component {
 								)}
 								<p className="text-center pt-3">
 									Forgot your password?
-									<Link to="/forgot-password"> Reset now</Link>
+									<Link to={path.forgetPassword}> Reset now</Link>
 								</p>
 							</Form.Group>
 						)}

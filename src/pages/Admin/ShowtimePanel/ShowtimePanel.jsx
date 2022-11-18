@@ -5,13 +5,13 @@ import { withStyles, Typography } from '@material-ui/core';
 import styles from './styles';
 import { AddShowtime, ShowtimesToolbar, ShowtimesTable } from './components';
 import {
-	getShowtimes,
+	getAllShowtime,
 	toggleDialog,
 	selectShowtime,
 	selectAllShowtimes,
 	deleteShowtime,
 } from '../../../service/actions/showtime';
-import { ResponsiveDialog } from '../../../components';
+import { ResponsiveDialog } from '../../../components/common';
 
 class ShowtimeList extends Component {
 	static propTypes = {
@@ -19,9 +19,9 @@ class ShowtimeList extends Component {
 		classes: PropTypes.object.isRequired,
 	};
 
-	componentDidMount() {
-		const { showtimes, getShowtimes } = this.props;
-		if (!showtimes.length) getShowtimes();
+	async componentDidMount() {
+		const { showtime, getAllShowtime } = this.props;
+		if (!showtime.length) await getAllShowtime();
 	}
 
 	handleDeleteShowtime = () => {
@@ -32,31 +32,30 @@ class ShowtimeList extends Component {
 	render() {
 		const {
 			classes,
-			showtimes,
+			showtime,
 			selectedShowtimes,
 			openDialog,
 			toggleDialog,
 			selectShowtime,
 			selectAllShowtimes,
 		} = this.props;
-
 		return (
 			<div className={classes.root}>
 				<ShowtimesToolbar
-					showtimes={showtimes}
+					showtimes={showtime}
 					toggleDialog={toggleDialog}
 					selectedShowtimes={selectedShowtimes}
 					deleteShowtime={this.handleDeleteShowtime}
 				/>
 				<div className={classes.content}>
-					{!showtimes.length ? (
+					{!showtime.length ? (
 						<Typography variant="h6">There are no showtimes</Typography>
 					) : (
 						<ShowtimesTable
 							onSelectShowtime={selectShowtime}
 							selectedShowtimes={selectedShowtimes}
 							selectAllShowtimes={selectAllShowtimes}
-							showtimes={showtimes}
+							showtimes={showtime}
 						/>
 					)}
 				</div>
@@ -66,8 +65,8 @@ class ShowtimeList extends Component {
 					handleClose={() => toggleDialog()}
 				>
 					<AddShowtime
-						selectedShowtime={showtimes.find(
-							(showtime) => showtime._id === selectedShowtimes[0]
+						selectedShowtime={showtime.find(
+							(showtime) => showtime.id === selectedShowtimes[0]
 						)}
 					/>
 				</ResponsiveDialog>
@@ -76,14 +75,14 @@ class ShowtimeList extends Component {
 	}
 }
 
-const mapStateToProps = ({ showtimeState }) => ({
-	openDialog: showtimeState.openDialog,
-	showtimes: showtimeState.showtimes,
-	selectedShowtimes: showtimeState.selectedShowtimes,
+const mapStateToProps = (state) => ({
+	openDialog: state.openDialog,
+	showtime: state.showtime.showtimes,
+	selectedShowtimes: state.showtime.selectedShowtimes,
 });
 
 const mapDispatchToProps = {
-	getShowtimes,
+	getAllShowtime,
 	toggleDialog,
 	selectShowtime,
 	selectAllShowtimes,

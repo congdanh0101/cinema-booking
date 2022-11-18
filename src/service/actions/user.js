@@ -42,8 +42,7 @@ export const getUserDetail = (token) => {
 export const getUserDetailById = (id) => {
 	return async (dispatch) => {
 		try {
-			const bearerToken = localStorage.getItem('token');
-			const response = await axiosClient(bearerToken).get(`users/${id}`);
+			const response = await axiosClient().get(`users/${id}`);
 			dispatch({
 				type: 'GET_USER_DETAIL_BY_ID',
 				payload: response.data,
@@ -68,7 +67,7 @@ export const addUser = (
 ) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).post(`users`, {
 				firstName,
 				lastName,
@@ -113,11 +112,35 @@ export const updateUser = (id, data) => {
 export const deleteUser = (userId) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
-			const response = await axiosClient(token).delete(`user/${userId}`);
+			const token = localStorage.getItem('token');
+			const response = await axiosClient(token).delete(`users/${userId}`);
 			dispatch({
 				type: 'DELETE_MOVIE',
-				payload: response.data.results,
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			dispatch({
+				type: 'SET_USER_MESSAGE',
+				payload: err,
+			});
+		}
+	};
+};
+
+export const changePassword = (data) => {
+	return async (dispatch) => {
+		try {
+			const token = localStorage.getItem('token');
+			const userId = sessionStorage.getItem('userId');
+			const response = await axiosClient(token).put(
+				`changepassword/${userId}`,
+				data
+			);
+
+			dispatch({
+				type: 'CHANGE_PASSWORD',
+				payload: response.data,
 				message: response.data.message,
 			});
 		} catch (err) {

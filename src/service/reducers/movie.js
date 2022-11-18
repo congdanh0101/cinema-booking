@@ -56,7 +56,7 @@ const movieReducer = (state = initialState, action) => {
 				message: action.message,
 			};
 		}
-		case 'ADD_SHOWTIME': {
+		case 'ADD_MOVIE': {
 			return {
 				...state,
 				details: action.payload,

@@ -23,7 +23,7 @@ const styles = (theme) => ({
 		height: '100%',
 		padding: theme.spacing(3),
 		paddingTop: theme.spacing(9),
-		backgroundColor: theme.palette.default.light,
+		backgroundColor: theme.palette.background.default,
 		transition: theme.transitions.create('margin', {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen,

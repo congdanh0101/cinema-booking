@@ -48,6 +48,13 @@ const userReducer = (state = initialState, action) => {
 				message: action.message,
 			};
 		}
+		case 'CHANGE_PASSWORD': {
+			return {
+				...state,
+				detail: action.payload,
+				message: action.message,
+			};
+		}
 		case 'SET_USER_MESSAGE': {
 			return {
 				...state,

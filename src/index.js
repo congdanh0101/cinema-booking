@@ -6,10 +6,10 @@ import './assets/styles/custom.scss';
 import App from './app/App';
 
 ReactDOM.render(
-	<React.StrictMode>
+	<React.Fragment>
 		<GlobalStyle />
 		<App />
-	</React.StrictMode>,
+	</React.Fragment>,
 	document.getElementById('root')
 );
 

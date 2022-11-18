@@ -103,14 +103,12 @@ export const addMovie = (
 	image,
 	trailer,
 	releases,
-	genres,
-	display,
-	showing,
-	coming
+	genres
 ) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
+			console.log(token);
 			const response = await axiosClient(token).post(`movies`, {
 				name,
 				duration,
@@ -119,12 +117,9 @@ export const addMovie = (
 				trailer,
 				releases,
 				genres,
-				display,
-				showing,
-				coming,
 			});
 			dispatch({
-				type: 'ADD_SHOWTIME',
+				type: 'ADD_MOVIE',
 				payload: response.data,
 				message: response.data.message,
 			});
@@ -152,7 +147,7 @@ export const updateMovie = (
 ) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).put(`movies/${movieId}`, {
 				name,
 				duration,
@@ -182,13 +177,12 @@ export const updateMovie = (
 export const deleteMovie = (movieId) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).delete(`movies/${movieId}`);
-			dispatch({
-				type: 'DELETE_MOVIE',
-				payload: response.data,
-				message: response.data.message,
-			});
+			if (response.ok) {
+				dispatch(getAllMovie());
+				dispatch(onSelectMovie(null));
+			}
 		} catch (err) {
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',

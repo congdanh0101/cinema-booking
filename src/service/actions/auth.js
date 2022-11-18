@@ -78,7 +78,7 @@ export const autoLogin = (payload) => ({
 	payload,
 });
 
-export const emailVerify = (code) => {
+export const emailVerifyRegister = (code) => {
 	return async (dispatch) => {
 		try {
 			const expired = sessionStorage.getItem('expired');
@@ -122,10 +122,54 @@ export const emailVerify = (code) => {
 	};
 };
 
+export const emailVerifyForgot = (code) => {
+	return async (dispatch) => {
+		try {
+			const expired = sessionStorage.getItem('expired');
+			const now = new Date().getTime();
+			const userId = sessionStorage.getItem('user');
+			if (now <= expired) {
+				if (code === sessionStorage.getItem('verificationCode')) {
+					const response = await axiosClient()
+						.post(`auth/forgot/${userId}/verify`, { code })
+						.then((res) => {
+							sessionStorage.clear();
+						});
+					dispatch({
+						type: 'EMAIL_VERIFY',
+						message: response.data.message,
+					});
+				} else {
+					dispatch({
+						type: 'SET_AUTH_MESSAGE',
+						payload: 'Wrong verification code',
+					});
+				}
+			} else {
+				dispatch({
+					type: 'SET_AUTH_MESSAGE',
+					payload: 'Verification code expired',
+				});
+			}
+		} catch (err) {
+			dispatch({
+				type: 'SET_AUTH_MESSAGE',
+				payload: err,
+			});
+		}
+	};
+};
+
 export const forgetPassword = (email) => {
 	return async (dispatch) => {
 		try {
-			const response = await axiosClient().post(`auth/forgot`, email);
+			const response = await axiosClient().post(`auth/forgot`, { email });
+			sessionStorage.setItem('user', response.data.user);
+			sessionStorage.setItem(
+				'verificationCode',
+				response.data.verificationCode
+			);
+			sessionStorage.setItem('expired', response.data.expired);
 			dispatch({
 				type: 'FORGET_PASSWORD',
 				message: response.data.message,

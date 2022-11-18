@@ -1,6 +1,7 @@
 const styles = (theme) => ({
 	root: {
 		padding: theme.spacing(3),
+		color: theme.palette.common.white,
 	},
 	content: {
 		marginTop: theme.spacing(2),

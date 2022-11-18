@@ -28,10 +28,11 @@ import AdminPage from '../pages/Admin/AdminPage/AdminPage';
 import AdminPanel from '../pages/Admin/AdminPanel/AdminPanel.jsx';
 import DashboardPage from '../pages/Admin/Dashboard/Dashboard';
 import MoviePanel from '../pages/Admin/MoviePanel/MoviePanel';
+import ShowtimePanel from '../pages/Admin/ShowtimePanel/ShowtimePanel';
 
 //Components
 import { MainLayout, AdminLayout } from '../layouts';
-import { WithLayoutRoute, ProtectedRoute } from '../shared/routes';
+import { WithLayoutRoute, ProtectedRoute, AdminRoute } from '../shared/routes';
 import ScrollToTop from '../shared/utils/utils';
 import Theme from '../shared/theme';
 
@@ -48,15 +49,24 @@ export default class App extends Component {
 								<Switch>
 									<Route path={path.signUp} component={SignUp} />
 									<Route path={path.signIn} component={SignIn} />
+
 									<Route
-										path={path.emailVerification}
+										path={path.emailVerifyRegister}
 										component={EmailVerification}
 									/>
+
+									<Route
+										path={path.emailVerifyForgot}
+										component={EmailVerification}
+									/>
+
 									<Route
 										path={path.forgetPassword}
 										component={ForgetPassword}
 									/>
+
 									<Route path={path.resetPassword} component={ResetPassword} />
+
 									<WithLayoutRoute
 										exact
 										path={path.home}
@@ -90,27 +100,34 @@ export default class App extends Component {
 									/>
 									<ProtectedRoute
 										path={path.ticketResult}
+										layout={MainLayout}
 										component={TicketResult}
 									/>
-									<ProtectedRoute
-										path={'/admin-page'}
-										layout={AdminLayout}
-										component={AdminPage}
+
+									<AdminRoute
+										path="/admin-page"
+										privateLayout={AdminLayout}
+										privateComponent={AdminPage}
 									/>
-									<ProtectedRoute
+									<AdminRoute
+										path={path.admin}
+										privateLayout={AdminLayout}
+										privateComponent={AdminPanel}
+									/>
+									<AdminRoute
 										path={path.dashboard}
-										layout={AdminLayout}
-										component={DashboardPage}
+										privateLayout={AdminLayout}
+										privateComponent={DashboardPage}
 									/>
-									<ProtectedRoute
-										path="/admin-panel/movies"
-										layout={AdminLayout}
-										component={MoviePanel}
+									<AdminRoute
+										path={path.movieManage}
+										privateLayout={AdminLayout}
+										privateComponent={MoviePanel}
 									/>
-									<ProtectedRoute
-										path="/admin-panel"
-										layout={AdminLayout}
-										component={AdminPanel}
+									<AdminRoute
+										path={path.showtimeManage}
+										privateLayout={AdminLayout}
+										privateComponent={ShowtimePanel}
 									/>
 
 									<Route path={path.notFound} component={Error} />

@@ -138,7 +138,7 @@ export const getOrderDetailsById = (orderId) => {
 export const deleteOrderById = (orderId) => {
 	return async (dispatch) => {
 		try {
-			const token = localStorage.getItem('jwtToken');
+			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).delete(`orders/${orderId}`);
 			dispatch({
 				type: 'DELETE_ORDER_BY_ID',

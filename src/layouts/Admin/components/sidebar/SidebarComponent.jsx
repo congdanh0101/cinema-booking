@@ -13,14 +13,14 @@ import {
 import DashboardIcon from '@material-ui/icons/DashboardOutlined';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
-import AccountBoxIcon from '@material-ui/icons/AccountBoxOutlined';
+import { path } from '../../../../shared/constants/path';
 
 // Component styles
 import styles from './styles';
 
 class Sidebar extends Component {
 	render() {
-		const { classes, user } = this.props;
+		const { classes } = this.props;
 		return (
 			<section className={classes.root}>
 				<List component="div" disablePadding>
@@ -29,7 +29,7 @@ class Sidebar extends Component {
 						className={classes.listItem}
 						component={NavLink}
 						style={{ textDecoration: 'none' }}
-						to="/admin-panel/dashboard"
+						to={path.dashboard}
 					>
 						<ListItemIcon className={classes.listItemIcon}>
 							<DashboardIcon />
@@ -44,7 +44,7 @@ class Sidebar extends Component {
 						className={classes.listItem}
 						component={NavLink}
 						style={{ textDecoration: 'none' }}
-						to="/admin-panel/movies"
+						to={path.movieManage}
 					>
 						<ListItemIcon className={classes.listItemIcon}>
 							<DashboardIcon />
@@ -59,22 +59,7 @@ class Sidebar extends Component {
 						className={classes.listItem}
 						component={NavLink}
 						style={{ textDecoration: 'none' }}
-						to="/admin/tickets"
-					>
-						<ListItemIcon className={classes.listItemIcon}>
-							<DashboardIcon />
-						</ListItemIcon>
-						<ListItemText
-							classes={{ primary: classes.listItemText }}
-							primary="Tickets"
-						/>
-					</ListItem>
-					<ListItem
-						activeClassName={classes.activeListItem}
-						className={classes.listItem}
-						component={NavLink}
-						style={{ textDecoration: 'none' }}
-						to="/admin/showtimes"
+						to={path.showtimeManage}
 					>
 						<ListItemIcon className={classes.listItemIcon}>
 							<PeopleIcon />
@@ -82,38 +67,6 @@ class Sidebar extends Component {
 						<ListItemText
 							classes={{ primary: classes.listItemText }}
 							primary="Showtimes"
-						/>
-					</ListItem>
-					{user && user.role === 'superadmin' && (
-						<ListItem
-							activeClassName={classes.activeListItem}
-							className={classes.listItem}
-							component={NavLink}
-							style={{ textDecoration: 'none' }}
-							to="/admin/users"
-						>
-							<ListItemIcon className={classes.listItemIcon}>
-								<PeopleIcon />
-							</ListItemIcon>
-							<ListItemText
-								classes={{ primary: classes.listItemText }}
-								primary="Users"
-							/>
-						</ListItem>
-					)}
-					<ListItem
-						activeClassName={classes.activeListItem}
-						className={classes.listItem}
-						component={NavLink}
-						style={{ textDecoration: 'none' }}
-						to="/admin/account"
-					>
-						<ListItemIcon className={classes.listItemIcon}>
-							<AccountBoxIcon />
-						</ListItemIcon>
-						<ListItemText
-							classes={{ primary: classes.listItemText }}
-							primary="Account"
 						/>
 					</ListItem>
 				</List>
