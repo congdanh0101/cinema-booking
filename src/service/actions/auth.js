@@ -14,9 +14,10 @@ export const login = (username, password) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -57,9 +58,10 @@ export const register = (
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -85,7 +87,7 @@ export const emailVerifyRegister = (code) => {
 			const now = new Date().getTime();
 			if (now <= expired) {
 				if (code === sessionStorage.getItem('verificationCode')) {
-					const response = await axiosClient()
+					await axiosClient()
 						.post(`auth/register/verify`, {
 							firstName: sessionStorage.getItem('firstName'),
 							lastName: sessionStorage.getItem('lastName'),
@@ -98,8 +100,7 @@ export const emailVerifyRegister = (code) => {
 							sessionStorage.clear();
 						});
 					dispatch({
-						type: 'EMAIL_VERIFY',
-						message: response.data.message,
+						type: 'EMAIL_VERIFY_REGISTER',
 					});
 				} else {
 					dispatch({
@@ -114,9 +115,10 @@ export const emailVerifyRegister = (code) => {
 				});
 			}
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -130,14 +132,13 @@ export const emailVerifyForgot = (code) => {
 			const userId = sessionStorage.getItem('user');
 			if (now <= expired) {
 				if (code === sessionStorage.getItem('verificationCode')) {
-					const response = await axiosClient()
+					await axiosClient()
 						.post(`auth/forgot/${userId}/verify`, { code })
 						.then((res) => {
 							sessionStorage.clear();
 						});
 					dispatch({
-						type: 'EMAIL_VERIFY',
-						message: response.data.message,
+						type: 'EMAIL_VERIFY_FORGOT',
 					});
 				} else {
 					dispatch({
@@ -152,9 +153,10 @@ export const emailVerifyForgot = (code) => {
 				});
 			}
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -175,9 +177,10 @@ export const forgetPassword = (email) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -192,9 +195,10 @@ export const forgetPasswordVerify = (code) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -213,9 +217,10 @@ export const resetPassword = (password, confirmPassword) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_AUTH_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};

@@ -1,29 +1,44 @@
 import * as yup from 'yup';
 
 export const schemaYupSignUp = yup.object({
-	firstName: yup.string().required('Please enter your first name'),
-	lastName: yup.string().required('Please enter your last name'),
+	firstName: yup
+		.string()
+		.min(2, 'Too Short!')
+		.max(30, 'Too Long!')
+		.required('Please enter your first name'),
+	lastName: yup
+		.string()
+		.min(2, 'Too Short!')
+		.max(30, 'Too Long!')
+		.required('Please enter your last name'),
+	phoneNumber: yup
+		.string()
+		.min(9, ({ min }) => `Phone number must be at least ${min} characters`)
+		.required('Please enter your phone number'),
+	gender: yup.string().required('Please select your gender'),
 	email: yup
 		.string()
 		.email('Please enter valid email address')
 		.required('Please enter your email address'),
 	password: yup
 		.string()
-		.min(8, 'Password must be at least 8 characters')
-		.matches(
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-			{
-				message:
-					'Password must have at least 1 uppercase, 1 lowercase, 1 special character',
-			}
-		)
-		.required('Please enter your password'),
-	repeatPassword: yup
+		.min(1, ({ min }) => `Password must be at least ${min} characters`)
+		.required('Password is required'),
+	// password: yup
+	// 	.string()
+	// 	.min(8, 'Password must be at least 8 characters')
+	// 	.matches(
+	// 		/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+	// 		{
+	// 			message:
+	// 				'Password must have at least 1 uppercase, 1 lowercase, 1 special character',
+	// 		}
+	// 	)
+	// 	.required('Please enter your password'),
+	confirmPassword: yup
 		.string()
 		.required('Please enter re-password')
 		.oneOf([yup.ref('password')], 'Passwords must be same!'),
-	phoneNumber: yup.string().required('Please enter your phone number'),
-	dateOfBirth: yup.string().required('Please enter your date of birth'),
 });
 
 export const schemaYupSignIn = yup.object({
@@ -33,8 +48,8 @@ export const schemaYupSignIn = yup.object({
 		.required('Please enter your email address'),
 	password: yup
 		.string()
-		.min(8, 'Password must be at least 8 characters')
-		.required('Please enter your password'),
+		.min(1, ({ min }) => `Password must be at least ${min} characters`)
+		.required('Password is required'),
 });
 
 export const schemaUser = yup.object({
@@ -101,4 +116,12 @@ export const schemaAddNewUser = yup.object({
 	role: yup.string().required('Please enter role'),
 	phoneNumber: yup.string().required('Please enter your phone number'),
 	dateOfBirth: yup.string().required('Please enter your date of birth'),
+});
+
+export const schemaYupEmailVerification = yup.object({
+	verifyCode: yup.string().required('Please enter your verify code'),
+});
+
+export const schemaYupEmail = yup.object({
+	email: yup.string().email('Invalid email').required('Required'),
 });

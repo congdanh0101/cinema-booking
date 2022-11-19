@@ -100,9 +100,10 @@ export const addManyTickets = (showtimeId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_TICKET_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -119,9 +120,10 @@ export const deleteTicket = (ticketId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_TICKET_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};

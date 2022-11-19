@@ -46,9 +46,10 @@ export const cancelPay = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_PAYMENT_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -64,9 +65,10 @@ export const successPay = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_PAYMENT_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};

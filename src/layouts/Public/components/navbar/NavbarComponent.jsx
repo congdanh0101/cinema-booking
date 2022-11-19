@@ -74,9 +74,6 @@ class NavbarComponent extends Component {
 									<NavDropdown.Item href={path.profile}>
 										Your Profile
 									</NavDropdown.Item>
-									<NavDropdown.Item href={path.history}>
-										History
-									</NavDropdown.Item>
 									<NavDropdown.Divider />
 									<NavDropdown.Item
 										href={path.home}

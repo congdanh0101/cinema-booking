@@ -19,9 +19,10 @@ export const createOrder = (
 				payload: data,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_ORDER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -38,9 +39,10 @@ export const createSeat = (seatOrder) => {
 				payload: data,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_ORDER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -55,9 +57,10 @@ export const getAllOrders = () => {
 				payload: response.data,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_ORDER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -73,9 +76,10 @@ export const getOrderById = (id) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_ORDER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -91,9 +95,10 @@ export const getAllOrdersByUser = (userId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_ORDER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -109,9 +114,10 @@ export const getAllOrderDetailsByOrder = (orderId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_ORDER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -127,9 +133,10 @@ export const getOrderDetailsById = (orderId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_ORDER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -146,9 +153,10 @@ export const deleteOrderById = (orderId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
-				type: 'SET_MOVIE_MESSAGE',
-				payload: err,
+				type: 'SET_ORDER_MESSAGE',
+				payload: message,
 			});
 		}
 	};

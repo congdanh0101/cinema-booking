@@ -15,7 +15,7 @@ export const getAllMovie = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
-			const { message } = err.response.data.content;
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
 				payload: message,
@@ -34,9 +34,10 @@ export const getMovieByDisplay = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -52,9 +53,10 @@ export const getMovieByShowing = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -70,9 +72,10 @@ export const getMovieByComing = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -88,9 +91,10 @@ export const getMovieDetail = (id) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -124,9 +128,10 @@ export const addMovie = (
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -166,9 +171,10 @@ export const updateMovie = (
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -184,9 +190,10 @@ export const deleteMovie = (movieId) => {
 				dispatch(onSelectMovie(null));
 			}
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_MOVIE_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};

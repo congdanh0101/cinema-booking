@@ -11,7 +11,8 @@ import SignUp from '../pages/Public/RegisterPage/SignUp';
 import SignIn from '../pages/Public/RegisterPage/SignIn';
 import ForgetPassword from '../pages/Public/RegisterPage/ForgetPassword';
 import ResetPassword from '../pages/Public/RegisterPage/ResetPassword';
-import EmailVerification from '../pages/Public/RegisterPage/EmailVerification';
+import EmailVerificationRegister from '../pages/Public/RegisterPage/EmailVerify/EmailVerificationRegister';
+import EmailVerificationForgot from '../pages/Public/RegisterPage/EmailVerify/EmailVerificationForgot';
 
 //Public
 import HomePage from '../pages/Public/HomePage/HomePage';
@@ -52,12 +53,12 @@ export default class App extends Component {
 
 									<Route
 										path={path.emailVerifyRegister}
-										component={EmailVerification}
+										component={EmailVerificationRegister}
 									/>
 
 									<Route
 										path={path.emailVerifyForgot}
-										component={EmailVerification}
+										component={EmailVerificationForgot}
 									/>
 
 									<Route

@@ -6,7 +6,7 @@ import './styles.css';
 function ButtonPanel(props) {
 	return (
 		<div className="pt-3 checkout">
-			<Link to={props.gobuttonleft}>
+			<Link style={{ textDecoration: 'none' }} to={props.gobuttonleft}>
 				<Button
 					{...props}
 					variant="outline-primary"
@@ -16,7 +16,7 @@ function ButtonPanel(props) {
 					{props.buttonleft}
 				</Button>
 			</Link>
-			<Link to={props.gobuttonright}>
+			<Link style={{ textDecoration: 'none' }} to={props.gobuttonright}>
 				<Button
 					{...props}
 					variant="outline-primary"

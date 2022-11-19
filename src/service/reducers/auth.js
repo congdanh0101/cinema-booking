@@ -28,7 +28,13 @@ const authReducer = (state = initialState, action) => {
 				message: action.message,
 			};
 		}
-		case 'EMAIL_VERIFY': {
+		case 'EMAIL_VERIFY_REGISTER': {
+			return {
+				...state,
+				message: action.message,
+			};
+		}
+		case 'EMAIL_VERIFY_FORGOT': {
 			return {
 				...state,
 				message: action.message,

@@ -47,3 +47,7 @@ button[type='submit'] {
 	min-height: 56px;
 	border-radius: 14px;
 }
+button[type='loading'] {
+	min-height: 56px;
+	border-radius: 14px;
+}

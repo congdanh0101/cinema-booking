@@ -10,9 +10,10 @@ export const getAllUser = () => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -31,9 +32,10 @@ export const getUserDetail = (token) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -49,9 +51,10 @@ export const getUserDetailById = (id) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -82,9 +85,10 @@ export const addUser = (
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -101,9 +105,10 @@ export const updateUser = (id, data) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -120,9 +125,10 @@ export const deleteUser = (userId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -144,9 +150,10 @@ export const changePassword = (data) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_USER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};

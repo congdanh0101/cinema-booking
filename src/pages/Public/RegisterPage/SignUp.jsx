@@ -18,32 +18,8 @@ import './styles.css';
 import { connect } from 'react-redux';
 import { register } from '../../../service/actions/auth';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { path } from '../../../shared/constants/path';
-
-const ValidatorSchema = Yup.object().shape({
-	firstName: Yup.string()
-		.min(2, 'Too Short!')
-		.max(30, 'Too Long!')
-		.required('Required'),
-	lastName: Yup.string()
-		.min(2, 'Too Short!')
-		.max(30, 'Too Long!')
-		.required('Required'),
-	phoneNumber: Yup.string()
-		.min(9, ({ min }) => `Phone number must be at least ${min} characters`)
-		.required('Required'),
-	gender: Yup.string().required('Required'),
-	email: Yup.string().email('Invalid email').required('Required'),
-	password: Yup.string()
-		.min(1, ({ min }) => `Password must be at least ${min} characters`)
-		.required('Password is required'),
-	confirmPassword: Yup.string()
-		.test('passwords-match', 'Passwords must match', function (value) {
-			return this.parent.password === value;
-		})
-		.required('Confirm password is required'),
-});
+import { schemaYupSignUp } from '../../../shared/constants/yupSchema';
 
 class SignUp extends Component {
 	state = {
@@ -62,11 +38,11 @@ class SignUp extends Component {
 			values.gender
 		);
 		this.setState({ show: true, isLoading: false });
-		sessionStorage.setItem('show', this.props.auth.message);
+		sessionStorage.setItem('message', this.props.auth.message);
 	};
 	render() {
-		const { history } = this.props;
 		const { show } = this.state;
+		const { history } = this.props;
 		return (
 			<Row className="container-fluid">
 				<LeftRegister>
@@ -120,9 +96,7 @@ class SignUp extends Component {
 					</Container>
 				</LeftRegister>
 				<RightRegister>
-					<p className="text-link-lg-26 pb-3 pt-5">
-						Fill your additional details
-					</p>
+					<p className="text-link-lg-48 m-0 pt-5 pb-3">Sign Up</p>
 					{show === true && (
 						<Alert
 							className="pb-0"
@@ -137,9 +111,9 @@ class SignUp extends Component {
 							</p>
 						</Alert>
 					)}
-					{(show === true) &
-					(this.props.auth.message === sessionStorage.getItem('show'))
-						? ('', history.push('/email-verify'))
+					{show === true &&
+					this.props.auth.message === sessionStorage.getItem('message')
+						? history.push(path.emailVerifyRegister)
 						: ''}
 					<Formik
 						initialValues={{
@@ -151,7 +125,7 @@ class SignUp extends Component {
 							confirmPassword: '',
 							gender: '',
 						}}
-						validationSchema={ValidatorSchema}
+						validationSchema={schemaYupSignUp}
 						onSubmit={(values) => {
 							this.submitData(values);
 						}}
@@ -221,9 +195,9 @@ class SignUp extends Component {
 										<Col>
 											<Form.Label>Phone Number</Form.Label>
 											<InputGroup className="mb-3">
-												<InputGroup.Prepend className="contact">
-													<InputGroup.Text>+84</InputGroup.Text>
-												</InputGroup.Prepend>
+												<InputGroup.Text className="contact">
+													+84
+												</InputGroup.Text>
 												<Form.Control
 													type="string"
 													placeholder="Write your phone number"
@@ -292,11 +266,23 @@ class SignUp extends Component {
 										Join for free now
 									</Button>
 								) : (
-									<Spinner animation="border" variant="primary" />
+									<Button variant="primary" type="loading" block disabled>
+										<Spinner
+											as="span"
+											animation="border"
+											size="sm"
+											role="status"
+											aria-hidden="true"
+										/>
+										<span className="visually-hidden"> Loading...</span>
+									</Button>
 								)}
 								<p className="text-center pt-3">
 									Do you already have an account?
-									<Link to={path.signIn}> Log in</Link>
+									<Link style={{ textDecoration: 'none' }} to={path.signIn}>
+										{' '}
+										Log in
+									</Link>
 								</p>
 							</Form.Group>
 						)}

@@ -12,9 +12,10 @@ export const getAllSeatsAvailableByShowtime = (showtimeId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_SEAT_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -32,9 +33,10 @@ export const getAllSeatsOrderedByShowtime = (showtimeId) => {
 				message: response.data.message,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_SEAT_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};

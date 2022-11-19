@@ -9,9 +9,10 @@ export const getAllTheater = () => {
 				payload: response.data,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_THEATER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};
@@ -26,9 +27,10 @@ export const getTheaterById = (id) => {
 				payload: response.data,
 			});
 		} catch (err) {
+			const { message } = err.response.data;
 			dispatch({
 				type: 'SET_THEATER_MESSAGE',
-				payload: err,
+				payload: message,
 			});
 		}
 	};

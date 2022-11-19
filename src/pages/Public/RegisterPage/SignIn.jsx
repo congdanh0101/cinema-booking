@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Image, Button, Form, Alert, Spinner } from 'react-bootstrap';
+import { Row, Col, Image, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { login } from '../../../service/actions/auth';
 import { connect } from 'react-redux';
@@ -7,15 +7,9 @@ import { LeftRegister, RightRegister } from '../../../components/common';
 import tickitz_white from '../../../assets/images/tickitz-white.svg';
 import './styles.css';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { path } from '../../../shared/constants/path';
+import { schemaYupSignIn } from '../../../shared/constants/yupSchema';
 
-const ValidatorSchema = Yup.object().shape({
-	email: Yup.string().email('Invalid email').required('Required'),
-	password: Yup.string()
-		.min(2, ({ min }) => `Password must be at least ${min} characters`)
-		.required('Password is required'),
-});
 class SignIn extends Component {
 	state = {
 		show: false,
@@ -29,7 +23,6 @@ class SignIn extends Component {
 	};
 	componentDidUpdate() {
 		if (this.props.auth.token) {
-			window.alert('Success go to dashboard');
 			const { history } = this.props;
 			history.push('/');
 		}
@@ -45,15 +38,12 @@ class SignIn extends Component {
 					<div className="infinity-form-container infinity-form">
 						<Image src={tickitz_white} height={150} />
 						<p className="text-display-sm m-0 text-white opacity-70">
-							wait, watch, wow!
+							Wait, Watch, Wow!
 						</p>
 					</div>
 				</LeftRegister>
 				<RightRegister>
-					<p className="text-link-lg-48 m-0 pt-3">Sign in</p>
-					<p className="text-md opacity-70 m-0 pb-4">
-						Sign in with your data that you entered during your registration
-					</p>
+					<p className="text-link-lg-48 m-0 pt-3">Sign In</p>
 					{show === true && (
 						<Alert
 							className="pb-0"
@@ -73,7 +63,7 @@ class SignIn extends Component {
 							email: '',
 							password: '',
 						}}
-						validationSchema={ValidatorSchema}
+						validationSchema={schemaYupSignIn}
 						onSubmit={(values) => {
 							this.submitData(values);
 						}}
@@ -116,6 +106,27 @@ class SignIn extends Component {
 										<p style={{ color: 'red' }}>{errors.password}</p>
 									) : null}
 								</Form.Group>
+								<Row className="justify-content-md-center">
+									<Col>
+										<Form.Check
+											type="checkbox"
+											id="custom-switch"
+											label="Stay signed in"
+										/>
+									</Col>
+
+									<Col xs lg="4">
+										<p className="pt-0 pl-lg-4">
+											<Link
+												style={{ textDecoration: 'none' }}
+												to={path.forgetPassword}
+											>
+												{' '}
+												Forgot password?
+											</Link>
+										</p>
+									</Col>
+								</Row>
 								{this.state.isLoading === false ? (
 									<Button
 										variant="primary"
@@ -126,11 +137,23 @@ class SignIn extends Component {
 										Sign In
 									</Button>
 								) : (
-									<Spinner animation="border" variant="primary" />
+									<Button variant="primary" type="loading" block disabled>
+										<Spinner
+											as="span"
+											animation="border"
+											size="sm"
+											role="status"
+											aria-hidden="true"
+										/>
+										<span className="visually-hidden"> Loading...</span>
+									</Button>
 								)}
 								<p className="text-center pt-3">
-									Forgot your password?
-									<Link to={path.forgetPassword}> Reset now</Link>
+									Don't have an account?
+									<Link style={{ textDecoration: 'none' }} to={path.signUp}>
+										{' '}
+										Sign up
+									</Link>
 								</p>
 							</Form.Group>
 						)}
