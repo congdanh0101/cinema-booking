@@ -7,6 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const ResponsiveDialog = ({
 	id,
@@ -29,16 +31,27 @@ const ResponsiveDialog = ({
 			onClose={handleClose}
 			aria-labelledby={id}
 		>
-			<DialogTitle id={id}>{title}</DialogTitle>
-			<DialogContent>
-				<DialogContentText>{contentText}</DialogContentText>
-				{children}
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleClose} color="primary" autoFocus>
-					Done
-				</Button>
-			</DialogActions>
+			<Container fluid>
+				<Row>
+					<Col xs={12} md={8}>
+						<DialogTitle id={id}>{title}</DialogTitle>
+					</Col>
+					<Col xs={6} md={4}>
+						<DialogActions>
+							<Button onClick={handleClose} color="primary" autoFocus>
+								<CloseIcon /> Close
+							</Button>
+						</DialogActions>
+					</Col>
+				</Row>
+
+				<Row>
+					<DialogContent>
+						<DialogContentText>{contentText}</DialogContentText>
+						{children}
+					</DialogContent>
+				</Row>
+			</Container>
 		</Dialog>
 	);
 };

@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { Drawer } from '@material-ui/core';
-import { Footer, Sidebar, Navbar } from './components';
+import { Sidebar, Navbar } from './components';
 
 // Component styles
 import styles from './styles';
@@ -57,7 +57,6 @@ class AdminLayout extends Component {
 				>
 					{children}
 				</main>
-				<Footer />
 			</Fragment>
 		);
 	}

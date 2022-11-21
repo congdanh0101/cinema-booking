@@ -9,9 +9,11 @@ const styles = (theme) => ({
 		zIndex: theme.zIndex.appBar,
 	},
 	toolbar: {
-		minHeight: 'auto',
+		margin: 'auto',
+		height: theme.topBar.height,
 		width: '100%',
 		paddingLeft: 0,
+		background: theme.palette.background.dark,
 	},
 	brandWrapper: {
 		background: theme.palette.default.dark,
@@ -48,9 +50,6 @@ const styles = (theme) => ({
 	},
 	notificationsButton: {
 		marginLeft: theme.spacing(4),
-	},
-	signOutButton: {
-		marginLeft: theme.spacing(1),
 	},
 });
 

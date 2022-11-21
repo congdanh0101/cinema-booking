@@ -12,6 +12,7 @@ const palette = {
 		neutral: '#E4E7EB',
 		muted: '#9EA0A4',
 	},
+	/* The default theme. */
 	default: {
 		light: 'rgba(41, 150, 243, .1)',
 		main: 'rgba(0, 40, 73, .9)',

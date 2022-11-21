@@ -1,6 +1,9 @@
 const styles = (theme) => ({
 	root: {},
-	title: { marginLeft: theme.spacing(3) },
+	title: {
+		textTransform: 'uppercase',
+		textAlign: 'center',
+	},
 	field: {
 		margin: theme.spacing(3),
 		display: 'flex',
@@ -8,12 +11,23 @@ const styles = (theme) => ({
 	textField: {
 		textTransform: 'capitalize',
 		width: '100%',
+
 		marginRight: theme.spacing(3),
+	},
+	textFieldSelect: {
+		textTransform: 'capitalize',
+		width: '100%',
+		height: '55px',
+		marginRight: theme.spacing(3),
+		borderRadius: '10px',
 	},
 	upload: {
 		width: '100%',
 		marginTop: theme.spacing(2),
 		marginRight: theme.spacing(3),
+	},
+	customClass: {
+		backgroundColor: theme.palette.primary.main,
 	},
 	portletFooter: {
 		paddingLeft: theme.spacing(3),
@@ -22,8 +36,10 @@ const styles = (theme) => ({
 		paddingBottom: theme.spacing(2),
 	},
 	buttonFooter: {
-		margin: theme.spacing(3),
+		minHeight: '56px',
+		borderRadius: '14px',
 	},
+	
 	infoMessage: {
 		marginLeft: theme.spacing(3),
 	},

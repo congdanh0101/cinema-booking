@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Navbar, Container, Image } from 'react-bootstrap';
+import { Navbar, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
 import { connect } from 'react-redux';
-import { logout } from '../../../../service/actions/auth';
+
 import {
 	getUserDetail,
 	getUserDetailById,
@@ -14,9 +14,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { Toolbar, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
-import InputIcon from '@material-ui/icons/Input';
-
-// Component styles
 import styles from './styles';
 import { Fragment } from 'react';
 
@@ -30,11 +27,7 @@ class NavbarComponent extends Component {
 		classes: PropTypes.object.isRequired,
 		isSidebarOpen: PropTypes.bool,
 		title: PropTypes.string,
-		logout: PropTypes.func.isRequired,
 		auth: PropTypes.object.isRequired,
-	};
-	handleSignOut = async () => {
-		this.props.logout();
 	};
 	render() {
 		const {
@@ -61,21 +54,8 @@ class NavbarComponent extends Component {
 							>
 								{isSidebarOpen ? <CloseIcon /> : <MenuIcon />}
 							</IconButton>
+							<div className={classes.darkBg}></div>
 						</div>
-						<Container className={classes.darkBg}>
-							<Navbar.Brand>
-								<Link className="nav-link" to="/admin-panel">
-									Admin Panel
-								</Link>
-							</Navbar.Brand>
-						</Container>
-
-						<IconButton
-							className={classes.signOutButton}
-							onClick={this.handleSignOut}
-						>
-							<InputIcon />
-						</IconButton>
 					</Toolbar>
 					{children}
 				</div>
@@ -89,7 +69,7 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = { logout, getUserDetail, getUserDetailById };
+const mapDispatchToProps = { getUserDetail, getUserDetailById };
 
 export default connect(
 	mapStateToProps,

@@ -48,9 +48,9 @@ class NavbarComponent extends Component {
 										<Nav.Link
 											className="nav-link"
 											key={item.id}
-											href={path.dashboard}
+											href={path.movieManage}
 										>
-											Dashboard
+											My Dashboard
 										</Nav.Link>
 									);
 								} else return null;

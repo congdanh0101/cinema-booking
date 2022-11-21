@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Container, Row, Form, Col } from 'react-bootstrap';
+import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
 import { withStyles, Typography, Select } from '@material-ui/core';
-import { Button, TextField, MenuItem } from '@material-ui/core';
-import styles from './styles';
+import { MenuItem } from '@material-ui/core';
 import { FileUpload } from '../../../../../components/common';
 import { genreData } from '../../../../../shared/constants/data/listGenre.js';
+import { ImageResize } from '../../../../../components/common';
 import {
 	addMovie,
 	updateMovie,
 	deleteMovie,
 } from '../../../../../service/actions/movie';
+import styles from './styles';
 
 class AddMovie extends Component {
 	state = {
@@ -114,150 +115,172 @@ class AddMovie extends Component {
 
 		return (
 			<div className={rootClassName}>
-				<Typography variant="h4" className={classes.title}>
-					{subtitle}
-				</Typography>
-				<div>
-					<Form.Group autoComplete="off" noValidate>
-						<div className={classes.field}>
-							<TextField
-								className={classes.textField}
-								helpertext="Please specify the title"
-								label="Title"
-								margin="dense"
-								required
-								value={name}
-								variant="outlined"
-								onChange={(event) =>
-									this.handleFieldChange('name', event.target.value)
-								}
-							/>
-						</div>
-						<div className={classes.field}>
-							<Select
-								multiple
-								displayEmpty
-								className={classes.textField}
-								label="Genre"
-								margin="dense"
-								required
-								value={genres || []}
-								variant="outlined"
-								onChange={(event) =>
-									this.handleFieldChange('genres', event.target.value)
-								}
+				<Container fluid>
+					<Typography variant="h4" className={classes.title}>
+						{subtitle}
+					</Typography>
+					<Row>
+						<Col xs={12} lg={8}>
+							<Card className="border-0">
+								<Card.Body>
+									<Row>
+										<Col md={4}>
+											<Card className="scroll card">
+												<Card.Body className="card-body">
+													<ImageResize
+														url="https://picfiles.alphacoders.com/148/148651.jpg"
+														width="200"
+														className="img-fluid img-resize"
+														alt="image"
+													/>
+												</Card.Body>
+											</Card>
+										</Col>
+										<Col md={8}>
+											<Form.Group autoComplete="off" noValidate>
+												<Form.Label>Movie Name</Form.Label>
+												<Form.Control
+													label="Title"
+													type="text"
+													placeholder="Please specify the title"
+													value={name}
+													onChange={(event) =>
+														this.handleFieldChange('name', event.target.value)
+													}
+												/>
+												<Form.Label className="pt-2">Genres</Form.Label>
+												<Select
+													multiple
+													displayEmpty
+													className={classes.textFieldSelect}
+													label="Genre"
+													margin="dense"
+													required
+													value={genres || []}
+													variant="outlined"
+													onChange={(event) =>
+														this.handleFieldChange('genres', event.target.value)
+													}
+												>
+													{genreData.map((genreItem, index) => (
+														<MenuItem
+															key={genreItem + '-' + index}
+															value={genreItem}
+														>
+															{genreItem.name}
+														</MenuItem>
+													))}
+												</Select>
+
+												<Row>
+													<Col>
+														<Form.Label className="pt-2">
+															Release date
+														</Form.Label>
+														<Form.Control
+															type="date"
+															label="Release date"
+															value={releases}
+															onChange={(event) =>
+																this.handleFieldChange(
+																	'releases',
+																	event.target.value
+																)
+															}
+														/>
+													</Col>
+													<Col>
+														<Form.Label className="pt-2">
+															Duration (hour / minute)
+														</Form.Label>
+														<Form.Control
+															type="number"
+															label="Duration"
+															placeholder="Please specify the duration"
+															value={duration}
+															onChange={(event) =>
+																this.handleFieldChange(
+																	'duration',
+																	event.target.value
+																)
+															}
+														/>
+													</Col>
+												</Row>
+											</Form.Group>
+										</Col>
+									</Row>
+									<Form.Group>
+										<Form.Label>Description</Form.Label>
+										<Form.Control
+											type="text"
+											as="textarea"
+											value={description}
+											onChange={(event) =>
+												this.handleFieldChange(
+													'description',
+													event.target.value
+												)
+											}
+										/>
+									</Form.Group>
+								</Card.Body>
+							</Card>
+						</Col>
+						<Col md={4} xs={12}>
+							<p className="text-display-xs-bold">File Upload</p>
+							<Card>
+								<Card.Body>
+									<Form.Group className="d-flex align-items-center">
+										<FileUpload
+											className={classes.upload}
+											file={image}
+											onUpload={(event) => {
+												const file = event.target.files[0];
+												this.handleFieldChange('image', file);
+											}}
+										/>
+									</Form.Group>
+								</Card.Body>
+							</Card>
+							<p className="text-display-xs-bold pt-3">Trailer Upload</p>
+							<Card>
+								<Card.Body>
+									<Form.Group className="d-flex align-items-center">
+										<FileUpload
+											className={classes.upload}
+											file={trailer}
+											onUpload={(event) => {
+												const file = event.target.files[0];
+												this.handleFieldChange('trailer', file);
+											}}
+										/>
+									</Form.Group>
+								</Card.Body>
+							</Card>
+						</Col>
+						<Col>
+							<Button
+								className={classes.buttonFooter}
+								variant="primary"
+								block
+								onClick={submitAction}
 							>
-								{genreData.map((genreItem, index) => (
-									<MenuItem key={genreItem + '-' + index} value={genreItem}>
-										{genreItem.name}
-									</MenuItem>
-								))}
-							</Select>
-						</div>
-						<div className={classes.field}>
-							<TextField
-								className={classes.textField}
-								label="Duration"
-								margin="dense"
-								type="number"
-								value={duration}
-								variant="outlined"
-								onChange={(event) =>
-									this.handleFieldChange('duration', event.target.value)
-								}
-							/>
-						</div>
-						<div className={classes.field}>
-							<TextField
-								className={classes.textField}
-								helpertext="Please specify the release date"
-								label="Releases"
-								margin="dense"
-								required
-								value={releases}
-								variant="outlined"
-								onChange={(event) =>
-									this.handleFieldChange('releases', event.target.value)
-								}
-							/>
-						</div>
-						<div className={classes.field}>
-							<TextField
-								fullWidth
-								multiline
-								className={classes.textField}
-								label="Description"
-								margin="dense"
-								required
-								variant="outlined"
-								value={description}
-								onChange={(event) =>
-									this.handleFieldChange('description', event.target.value)
-								}
-							/>
-						</div>
-						<Container>
-							<Col className="container-fluid">
-								<Row className="container-fluid">
-									<Col>
-										<Typography variant="h5" className={classes.title}>
-											Image
-										</Typography>
-									</Col>
-									<Col>
-										<Typography variant="h5" className={classes.title}>
-											Trailer
-										</Typography>
-									</Col>
-								</Row>
-								<Row>
-									<Col>
-										<div className={classes.field}>
-											<FileUpload
-												className={classes.upload}
-												file={image}
-												onUpload={(event) => {
-													const file = event.target.files[0];
-													this.handleFieldChange('image', file);
-												}}
-											/>
-										</div>
-									</Col>
-									<Col>
-										<div className={classes.field}>
-											<FileUpload
-												className={classes.upload}
-												file={trailer}
-												onUpload={(event) => {
-													const file = event.target.files[0];
-													this.handleFieldChange('trailer', file);
-												}}
-											/>
-										</div>
-									</Col>
-								</Row>
-							</Col>
-						</Container>
-					</Form.Group>
-				</div>
-				<Button
-					className={classes.buttonFooter}
-					color="primary"
-					variant="contained"
-					onClick={submitAction}
-				>
-					{submitButton}
-				</Button>
-				{this.props.edit && (
-					<Button
-						color="secondary"
-						className={classes.buttonFooter}
-						variant="contained"
-						onClick={this.onRemoveMovie}
-					>
-						Delete Movie
-					</Button>
-				)}
+								{submitButton}
+							</Button>
+							{this.props.edit && (
+								<Button
+									className={classes.buttonFooter}
+									variant="secondary"
+									block
+									onClick={this.onRemoveMovie}
+								>
+									Delete Movie
+								</Button>
+							)}
+						</Col>
+					</Row>
+				</Container>
 			</div>
 		);
 	}

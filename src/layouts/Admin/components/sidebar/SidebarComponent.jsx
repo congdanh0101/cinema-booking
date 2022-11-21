@@ -8,37 +8,23 @@ import {
 	ListItem,
 	ListItemIcon,
 	ListItemText,
-	ListSubheader,
 } from '@material-ui/core';
+import InputIcon from '@material-ui/icons/Input';
 import DashboardIcon from '@material-ui/icons/DashboardOutlined';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
-import InfoIcon from '@material-ui/icons/InfoOutlined';
+import { logout } from '../../../../service/actions/auth';
 import { path } from '../../../../shared/constants/path';
-
-// Component styles
 import styles from './styles';
 
 class Sidebar extends Component {
+	handleSignOut = async () => {
+		this.props.logout();
+	};
 	render() {
 		const { classes } = this.props;
 		return (
 			<section className={classes.root}>
 				<List component="div" disablePadding>
-					<ListItem
-						activeClassName={classes.activeListItem}
-						className={classes.listItem}
-						component={NavLink}
-						style={{ textDecoration: 'none' }}
-						to={path.dashboard}
-					>
-						<ListItemIcon className={classes.listItemIcon}>
-							<DashboardIcon />
-						</ListItemIcon>
-						<ListItemText
-							classes={{ primary: classes.listItemText }}
-							primary="Dashboard"
-						/>
-					</ListItem>
 					<ListItem
 						activeClassName={classes.activeListItem}
 						className={classes.listItem}
@@ -71,28 +57,20 @@ class Sidebar extends Component {
 					</ListItem>
 				</List>
 				<Divider className={classes.listDivider} />
-				<List
-					component="div"
-					disablePadding
-					subheader={
-						<ListSubheader className={classes.listSubheader}>
-							Support
-						</ListSubheader>
-					}
-				>
+				<List component="div" disablePadding>
 					<ListItem
 						className={classes.listItem}
 						component="a"
 						style={{ textDecoration: 'none' }}
-						href="https://github.com/congdanh0101/cinema-booking"
+						onClick={this.handleSignOut}
 						target="_blank"
 					>
 						<ListItemIcon className={classes.listItemIcon}>
-							<InfoIcon />
+							<InputIcon />
 						</ListItemIcon>
 						<ListItemText
 							classes={{ primary: classes.listItemText }}
-							primary="Customer support"
+							primary="Log out"
 						/>
 					</ListItem>
 				</List>
@@ -105,7 +83,7 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { logout };
 
 export default connect(
 	mapStateToProps,
