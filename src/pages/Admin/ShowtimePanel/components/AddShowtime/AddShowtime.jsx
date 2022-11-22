@@ -13,27 +13,29 @@ import styles from './styles';
 import {
 	addShowtime,
 	updateShowtime,
+	deleteShowtime,
+	deleteShowtimeForce,
 } from '../../../../../service/actions/showtime';
 
 class AddShowtime extends Component {
 	state = {
-		startAt: '',
-		startDate: null,
-		endDate: null,
 		movieId: '',
 		cinemaId: '',
+		price: '',
+		timeStart: '',
+		showDate: null,
 	};
 
 	componentDidMount() {
 		if (this.props.selectedShowtime) {
-			const { startAt, startDate, endDate, movieId, cinemaId } =
+			const { movieId, cinemaId, price, timeStart, showDate } =
 				this.props.selectedShowtime;
 			this.setState({
-				startAt,
-				startDate,
-				endDate,
 				movieId,
 				cinemaId,
+				price,
+				timeStart,
+				showDate,
 			});
 		}
 	}
@@ -51,25 +53,19 @@ class AddShowtime extends Component {
 	};
 
 	onAddShowtime = () => {
-		const { startAt, startDate, endDate, movieId, cinemaId } = this.state;
+		const { showDate, timeStart } = this.state;
 		const showtime = {
-			startAt,
-			startDate,
-			endDate,
-			movieId,
-			cinemaId,
+			showDate,
+			timeStart,
 		};
 		this.props.addShowtime(showtime);
 	};
 
 	onUpdateShowtime = () => {
-		const { startAt, startDate, endDate, movieId, cinemaId } = this.state;
+		const { showDate, timeStart } = this.state;
 		const showtime = {
-			startAt,
-			startDate,
-			endDate,
-			movieId,
-			cinemaId,
+			showDate,
+			timeStart,
 		};
 		this.props.updateShowtime(showtime, this.props.selectedShowtime._id);
 	};
@@ -232,13 +228,18 @@ AddShowtime.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({ movieState, cinemaState }) => ({
-	movies: movieState.movies,
-	nowShowing: movieState.nowShowing,
-	cinemas: cinemaState.cinemas,
+const mapStateToProps = (state) => ({
+	movies: state.movies,
+	nowShowing: state.nowShowing,
+	cinemas: state.cinemas,
 });
 
-const mapDispatchToProps = { addShowtime, updateShowtime };
+const mapDispatchToProps = {
+	addShowtime,
+	updateShowtime,
+	deleteShowtime,
+	deleteShowtimeForce,
+};
 
 export default connect(
 	mapStateToProps,

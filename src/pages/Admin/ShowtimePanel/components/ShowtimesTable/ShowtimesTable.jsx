@@ -14,6 +14,7 @@ import {
 	TablePagination,
 } from '@material-ui/core';
 import { Portlet, PortletContent } from '../../../../../components/common';
+import { Link } from 'react-router-dom';
 import styles from './styles';
 
 class ShowtimesTable extends Component {
@@ -55,7 +56,6 @@ class ShowtimesTable extends Component {
 		} = this.props;
 		const { rowsPerPage, page } = this.state;
 		const rootClassName = classNames(classes.root, className);
-		console.log(showtimes);
 		return (
 			<Portlet className={rootClassName}>
 				<PortletContent noPadding>
@@ -78,8 +78,8 @@ class ShowtimesTable extends Component {
 								<TableCell align="left">Theater</TableCell>
 								<TableCell align="left">Price</TableCell>
 								<TableCell align="left">Time Start</TableCell>
-								<TableCell align="left">Time End</TableCell>
 								<TableCell align="left">Date</TableCell>
+								<TableCell align="left">Options</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -92,37 +92,32 @@ class ShowtimesTable extends Component {
 									<TableRow
 										className={classes.tableRow}
 										hover
-										key={showtime._id}
-										selected={selectedShowtimes.indexOf(showtime._id) !== -1}
+										key={showtime.id}
+										selected={selectedShowtimes.indexOf(showtime.id) !== -1}
 									>
 										<TableCell className={classes.tableCell}>
 											<div className={classes.tableCellInner}>
 												<Checkbox
 													checked={
-														selectedShowtimes.indexOf(showtime._id) !== -1
+														selectedShowtimes.indexOf(showtime.id) !== -1
 													}
 													color="primary"
-													onChange={() => onSelectShowtime(showtime._id)}
+													onChange={() => onSelectShowtime(showtime.id)}
 													value="true"
 												/>
 												<Typography
 													className={classes.nameText}
 													variant="body1"
 												>
-													{showtime._id}
+													{showtime.id}
 												</Typography>
 											</div>
 										</TableCell>
-										{/* {showtime.movie.map((movie) => (
-											<TableCell key={movie.id} className={classes.tableCell}>
-												{movie.name}
-											</TableCell>
-										))} */}
 										<TableCell className={classes.tableCell}>
-											{showtime.cinemaId}
+											{showtime.movie.name}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{showtime.cinemaId}
+											{showtime.theater.name}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
 											{showtime.price}
@@ -131,10 +126,15 @@ class ShowtimesTable extends Component {
 											{showtime.timeStart}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{showtime.timeEnd}
+											{showtime.showDate}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{moment(showtime.showDate).format('DD/MM/YYYY')}
+											<Link to={``} className="btn btn-sm btn-warning">
+												Edit
+											</Link>{' '}
+											<Link to={``} className="btn btn-sm btn-danger">
+												Delete
+											</Link>
 										</TableCell>
 									</TableRow>
 								))}
@@ -149,11 +149,11 @@ class ShowtimesTable extends Component {
 						nextIconButtonProps={{
 							'aria-label': 'Next Page',
 						}}
-						onChangePage={this.handleChangePage}
-						onChangeRowsPerPage={this.handleChangeRowsPerPage}
+						onPageChange={this.handleChangePage}
+						onRowsPerPageChange={this.handleChangeRowsPerPage}
 						page={page}
 						rowsPerPage={rowsPerPage}
-						rowsPerPageOptions={[5, 10, 25]}
+						rowsPerPageOptions={[10]}
 					/>
 				</PortletContent>
 			</Portlet>

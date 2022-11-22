@@ -36,9 +36,7 @@ class MovieToolbar extends Component {
 	render() {
 		const { openAddDialog } = this.state;
 		const { classes, className, search, onChangeSearch } = this.props;
-
 		const rootClassName = classNames(classes.root, className);
-
 		return (
 			<Fragment>
 				<div className={rootClassName}>

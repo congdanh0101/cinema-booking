@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
 import { withStyles, Typography, Select } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
+import * as moment from 'moment';
 import { FileUpload } from '../../../../../components/common';
 import { genreData } from '../../../../../shared/constants/data/listGenre.js';
 import { ImageResize } from '../../../../../components/common';
@@ -22,7 +23,7 @@ class AddMovie extends Component {
 		description: '',
 		image: '',
 		trailer: '',
-		releases: new Date().toLocaleDateString(),
+		releases: moment(new Date(), 'DD-MM-YYYY'),
 		genres: [],
 	};
 
@@ -180,7 +181,7 @@ class AddMovie extends Component {
 														<Form.Control
 															type="date"
 															label="Release date"
-															value={releases}
+															value={moment(releases).format('DD-MM-YYYY')}
 															onChange={(event) =>
 																this.handleFieldChange(
 																	'releases',

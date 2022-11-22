@@ -55,6 +55,36 @@ class Sidebar extends Component {
 							primary="Showtimes"
 						/>
 					</ListItem>
+					<ListItem
+						activeClassName={classes.activeListItem}
+						className={classes.listItem}
+						component={NavLink}
+						style={{ textDecoration: 'none' }}
+						to={path.cinemaManage}
+					>
+						<ListItemIcon className={classes.listItemIcon}>
+							<PeopleIcon />
+						</ListItemIcon>
+						<ListItemText
+							classes={{ primary: classes.listItemText }}
+							primary="Cinemas"
+						/>
+					</ListItem>
+					<ListItem
+						activeClassName={classes.activeListItem}
+						className={classes.listItem}
+						component={NavLink}
+						style={{ textDecoration: 'none' }}
+						to={path.genreManage}
+					>
+						<ListItemIcon className={classes.listItemIcon}>
+							<PeopleIcon />
+						</ListItemIcon>
+						<ListItemText
+							classes={{ primary: classes.listItemText }}
+							primary="Genres"
+						/>
+					</ListItem>
 				</List>
 				<Divider className={classes.listDivider} />
 				<List component="div" disablePadding>

@@ -1,7 +1,5 @@
 import axiosClient from '../../shared/apis/axiosClient';
 
-export const toggleDialog = () => ({ type: 'TOGGLE_DIALOG' });
-
 export const selectShowtime = (showtime) => ({
 	type: 'SELECT_SHOWTIMES',
 	payload: showtime,
@@ -63,15 +61,15 @@ export const getShowtimeByTheater = (id) => {
 	};
 };
 
-export const addShowtime = (movieId, theaterId) => {
+export const addShowtime = (movieId, theaterId, showDate, timeStart) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).post(
 				`showtimes/movies/${movieId}/theaters/${theaterId}`,
 				{
-					movieId,
-					theaterId,
+					showDate,
+					timeStart,
 				}
 			);
 			dispatch({
@@ -89,15 +87,21 @@ export const addShowtime = (movieId, theaterId) => {
 	};
 };
 
-export const updateShowtime = (movieId, theaterId) => {
+export const updateShowtime = (
+	showtimeId,
+	movieId,
+	theaterId,
+	showDate,
+	timeStart
+) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).put(
-				`showtimes/movies/${movieId}/theaters/${theaterId}`,
+				`showtimes/${showtimeId}/movies/${movieId}/theaters/${theaterId}`,
 				{
-					movieId,
-					theaterId,
+					showDate,
+					timeStart,
 				}
 			);
 			dispatch({
@@ -115,10 +119,10 @@ export const updateShowtime = (movieId, theaterId) => {
 	};
 };
 
-export const deleteShowtime = (id) => {
+export const deleteShowtime = (showTimeId) => {
 	return async (dispatch) => {
 		try {
-			const response = await axiosClient().delete(`showtimes/${id}`);
+			const response = await axiosClient().delete(`showtimes/${showTimeId}`);
 			dispatch({
 				type: 'DELETE_SHOWTIME',
 				payload: response.data,
@@ -134,10 +138,10 @@ export const deleteShowtime = (id) => {
 	};
 };
 
-export const deleteShowtimeForce = (id) => {
+export const deleteShowtimeForce = (showTimeId) => {
 	return async (dispatch) => {
 		try {
-			const response = await axiosClient().delete(`showtimes/${id}`);
+			const response = await axiosClient().delete(`showtimes/${showTimeId}`);
 			dispatch({
 				type: 'DELETE_SHOWTIME_FORCE',
 				payload: response.data,

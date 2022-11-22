@@ -6,7 +6,6 @@ import styles from './styles';
 import { AddShowtime, ShowtimesToolbar, ShowtimesTable } from './components';
 import {
 	getAllShowtime,
-	toggleDialog,
 	selectShowtime,
 	selectAllShowtimes,
 	deleteShowtime,
@@ -39,6 +38,7 @@ class ShowtimeList extends Component {
 			selectShowtime,
 			selectAllShowtimes,
 		} = this.props;
+		console.log(this.props);
 		return (
 			<div className={classes.root}>
 				<ShowtimesToolbar
@@ -76,14 +76,12 @@ class ShowtimeList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	openDialog: state.openDialog,
 	showtime: state.showtime.showtimes,
 	selectedShowtimes: state.showtime.selectedShowtimes,
 });
 
 const mapDispatchToProps = {
 	getAllShowtime,
-	toggleDialog,
 	selectShowtime,
 	selectAllShowtimes,
 	deleteShowtime,
