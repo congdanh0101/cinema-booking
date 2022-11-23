@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
 import { withStyles, Typography, Select } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
-import * as moment from 'moment';
 import { FileUpload } from '../../../../../components/common';
 import { genreData } from '../../../../../shared/constants/data/listGenre.js';
 import { ImageResize } from '../../../../../components/common';
@@ -23,7 +22,7 @@ class AddMovie extends Component {
 		description: '',
 		image: '',
 		trailer: '',
-		releases: moment(new Date(), 'DD-MM-YYYY'),
+		releases: new Date().toISOString(),
 		genres: [],
 	};
 
@@ -32,13 +31,13 @@ class AddMovie extends Component {
 			const { name, duration, description, image, trailer, releases, genres } =
 				this.props.edit;
 			this.setState({
-				name,
-				duration,
-				description,
-				image,
-				trailer,
-				releases,
-				genres: genres.map((genre) => genre.name),
+				name: name,
+				duration: duration,
+				description: description,
+				image: image,
+				trailer: trailer,
+				releases: releases,
+				genres: genres,
 			});
 		}
 	}
@@ -114,6 +113,8 @@ class AddMovie extends Component {
 			? () => this.onUpdateMovie()
 			: () => this.onAddMovie();
 
+		console.log(this.state);
+
 		return (
 			<div className={rootClassName}>
 				<Container fluid>
@@ -129,8 +130,7 @@ class AddMovie extends Component {
 											<Card className="scroll card">
 												<Card.Body className="card-body">
 													<ImageResize
-														url="https://picfiles.alphacoders.com/148/148651.jpg"
-														width="200"
+														url={image}
 														className="img-fluid img-resize"
 														alt="image"
 													/>
@@ -152,7 +152,6 @@ class AddMovie extends Component {
 												<Form.Label className="pt-2">Genres</Form.Label>
 												<Select
 													multiple
-													displayEmpty
 													className={classes.textFieldSelect}
 													label="Genre"
 													margin="dense"
@@ -164,10 +163,7 @@ class AddMovie extends Component {
 													}
 												>
 													{genreData.map((genreItem, index) => (
-														<MenuItem
-															key={genreItem + '-' + index}
-															value={genreItem}
-														>
+														<MenuItem key={index} value={genreItem}>
 															{genreItem.name}
 														</MenuItem>
 													))}
@@ -181,7 +177,7 @@ class AddMovie extends Component {
 														<Form.Control
 															type="date"
 															label="Release date"
-															value={moment(releases).format('DD-MM-YYYY')}
+															value={releases}
 															onChange={(event) =>
 																this.handleFieldChange(
 																	'releases',

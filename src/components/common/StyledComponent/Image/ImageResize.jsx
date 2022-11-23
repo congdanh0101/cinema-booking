@@ -1,14 +1,9 @@
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import noImage from '../../../../assets/images/no-image.png';
 
-const ImageResize = ({
-	to,
-	url,
-	alt,
-	className,
-	imageError = 'images/no-image.png',
-}) => {
+const ImageResize = ({ to, url, alt, className, imageError = noImage }) => {
 	const [fallback, setFallback] = useState('');
 	const handleErrorImage = () => {
 		setFallback(imageError);

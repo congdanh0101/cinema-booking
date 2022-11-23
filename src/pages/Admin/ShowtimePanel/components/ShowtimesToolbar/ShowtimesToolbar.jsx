@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core';
-import { Button, IconButton } from '@material-ui/core';
+import { withStyles, IconButton } from '@material-ui/core';
 import { Delete as DeleteIcon } from '@material-ui/icons';
+import { Button, Row } from 'react-bootstrap';
 import styles from './styles';
 
 class ShowtimesToolbar extends Component {
@@ -31,7 +31,7 @@ class ShowtimesToolbar extends Component {
 			<Fragment>
 				<div className={rootClassName}>
 					<div className={classes.row}>
-						<div>
+						<Row>
 							{selectedShowtimes.length > 0 && (
 								<IconButton
 									className={classes.deleteButton}
@@ -42,13 +42,15 @@ class ShowtimesToolbar extends Component {
 							)}
 							<Button
 								onClick={() => toggleDialog()}
-								color="primary"
-								size="small"
-								variant="outlined"
+								className="float-right"
+								block
+								variant="outline-primary"
 							>
-								{selectedShowtimes.length === 1 ? 'Edit' : 'Add'}
+								{selectedShowtimes.length === 1
+									? 'Edit Showtime'
+									: 'Add Showtime'}
 							</Button>
-						</div>
+						</Row>
 					</div>
 				</div>
 			</Fragment>

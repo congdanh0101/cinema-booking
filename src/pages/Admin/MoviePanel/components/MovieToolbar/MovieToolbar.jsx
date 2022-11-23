@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
 
 // Material components
-import { Button } from '@material-ui/core';
+import { Button } from 'react-bootstrap';
 
 // Shared components
 import {
@@ -49,9 +49,10 @@ class MovieToolbar extends Component {
 						/>
 						<Button
 							onClick={() => this.OpenAddDialog()}
-							color="primary"
+							className="float-right col-12 col-md-2"
+							variant="outline-primary"
+							block
 							size="small"
-							variant="outlined"
 						>
 							Add Movie
 						</Button>
