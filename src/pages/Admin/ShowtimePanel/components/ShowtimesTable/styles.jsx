@@ -1,9 +1,16 @@
 const styles = (theme) => ({
-	root: { color: theme.palette.common.contrastText },
+	root: {
+		color: theme.palette.common.contrastText,
+	},
 	tableRow: {
 		height: '64px',
 	},
 	tableCell: {
+		whiteSpace: 'nowrap',
+		fontSize: '14px',
+	},
+	tableCellHeader: {
+		fontSize: '20px',
 		whiteSpace: 'nowrap',
 	},
 	tableCellInner: {
@@ -11,7 +18,6 @@ const styles = (theme) => ({
 		alignItems: 'center',
 	},
 	avatar: {
-		backgroundColor: theme.palette.primary.main,
 		display: 'inline-flex',
 		fontSize: '14px',
 		fontWeight: 500,
@@ -19,10 +25,14 @@ const styles = (theme) => ({
 		width: '36px',
 	},
 	nameText: {
-		display: 'inline-block',
-		marginLeft: theme.spacing(2),
+		whiteSpace: 'nowrap',
+		fontSize: '14px',
 		fontWeight: 500,
 		cursor: 'pointer',
+	},
+	tableRowHeader: {
+		height: '64px',
+		backgroundColor: theme.palette.common.neutral,
 	},
 });
 

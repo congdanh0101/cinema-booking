@@ -6,10 +6,13 @@ import styles from './styles';
 import { AddShowtime, ShowtimesToolbar, ShowtimesTable } from './components';
 import {
 	getAllShowtime,
+	toggleDialog,
 	selectShowtime,
 	selectAllShowtimes,
 	deleteShowtime,
 } from '../../../service/actions/showtime';
+import { getAllTheater } from '../../../service/actions/theater';
+import { getAllMovie } from '../../../service/actions/movie';
 import { ResponsiveDialog } from '../../../components/common';
 
 class ShowtimeList extends Component {
@@ -19,8 +22,17 @@ class ShowtimeList extends Component {
 	};
 
 	async componentDidMount() {
-		const { showtime, getAllShowtime } = this.props;
+		const {
+			showtime,
+			movie,
+			theater,
+			getAllShowtime,
+			getAllMovie,
+			getAllTheater,
+		} = this.props;
+		if (!movie.length) await getAllMovie();
 		if (!showtime.length) await getAllShowtime();
+		if (!theater.length) await getAllTheater();
 	}
 
 	handleDeleteShowtime = () => {
@@ -49,7 +61,7 @@ class ShowtimeList extends Component {
 				/>
 				<div className={classes.content}>
 					{!showtime.length ? (
-						<Typography variant="h6">There are no showtimes</Typography>
+						<Typography variant="h4">There are no showtimes</Typography>
 					) : (
 						<ShowtimesTable
 							onSelectShowtime={selectShowtime}
@@ -76,12 +88,18 @@ class ShowtimeList extends Component {
 }
 
 const mapStateToProps = (state) => ({
+	openDialog: state.showtime.openDialog,
+	movie: state.movie.movies,
 	showtime: state.showtime.showtimes,
+	theater: state.theater.theaters,
 	selectedShowtimes: state.showtime.selectedShowtimes,
 });
 
 const mapDispatchToProps = {
+	getAllMovie,
 	getAllShowtime,
+	getAllTheater,
+	toggleDialog,
 	selectShowtime,
 	selectAllShowtimes,
 	deleteShowtime,

@@ -2,13 +2,8 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withStyles, Typography } from '@material-ui/core';
-import { Button, TextField, MenuItem } from '@material-ui/core';
-import {
-	MuiPickersUtilsProvider,
-	KeyboardDatePicker,
-} from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
+import { withStyles, Typography, MenuItem, Select } from '@material-ui/core';
+import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
 import styles from './styles';
 import {
 	addShowtime,
@@ -21,21 +16,18 @@ class AddShowtime extends Component {
 	state = {
 		movieId: '',
 		cinemaId: '',
-		price: '',
 		timeStart: '',
-		showDate: null,
+		showDate: '',
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		if (this.props.selectedShowtime) {
-			const { movieId, cinemaId, price, timeStart, showDate } =
-				this.props.selectedShowtime;
+			const { movie, theater, timeStart } = this.props.selectedShowtime;
 			this.setState({
-				movieId,
-				cinemaId,
-				price,
-				timeStart,
-				showDate,
+				movieId: movie.id,
+				cinemaId: theater.id,
+				timeStart: timeStart,
+				showDate: null,
 			});
 		}
 	}
@@ -53,42 +45,31 @@ class AddShowtime extends Component {
 	};
 
 	onAddShowtime = () => {
-		const { showDate, timeStart } = this.state;
+		const { showDate, timeStart, movieId, cinemaId } = this.state;
 		const showtime = {
 			showDate,
 			timeStart,
 		};
-		this.props.addShowtime(showtime);
+		this.props.addShowtime(movieId, cinemaId, showtime);
 	};
 
 	onUpdateShowtime = () => {
-		const { showDate, timeStart } = this.state;
+		const { showDate, timeStart, movieId, cinemaId } = this.state;
 		const showtime = {
 			showDate,
 			timeStart,
 		};
-		this.props.updateShowtime(showtime, this.props.selectedShowtime._id);
-	};
-
-	onFilterMinDate = () => {
-		const { nowShowing } = this.props;
-		const { movieId } = this.state;
-		const selectedMovie = nowShowing.find((movie) => movie._id === movieId);
-		if (selectedMovie) return selectedMovie.startDate;
-		return new Date();
-	};
-
-	onFilterMaxDate = () => {
-		const { nowShowing } = this.props;
-		const { movieId } = this.state;
-		const selectedMovie = nowShowing.find((movie) => movie._id === movieId);
-		if (selectedMovie) return new Date(selectedMovie.endDate);
-		return false;
+		this.props.updateShowtime(
+			this.props.selectedShowtime.id,
+			movieId,
+			cinemaId,
+			showtime
+		);
 	};
 
 	render() {
-		const { nowShowing, cinemas, classes, className } = this.props;
-		const { startAt, startDate, endDate, movieId, cinemaId } = this.state;
+		const { movie, theater, classes, className } = this.props;
+		const { timeStart, showDate, movieId, cinemaId } = this.state;
 
 		const rootClassName = classNames(classes.root, className);
 		const title = this.props.selectedShowtime
@@ -101,123 +82,126 @@ class AddShowtime extends Component {
 			? () => this.onUpdateShowtime()
 			: () => this.onAddShowtime();
 
+		console.log(this.props);
+		console.log(this.state);
+
 		return (
 			<div className={rootClassName}>
-				<Typography variant="h4" className={classes.title}>
-					{title}
-				</Typography>
-				<form autoComplete="off" noValidate>
-					<div className={classes.field}>
-						<TextField
-							fullWidth
-							select
-							className={classes.textField}
-							helperText="Please specify the Time"
-							label="Time"
-							margin="dense"
-							required
-							value={startAt}
-							variant="outlined"
-							onChange={(event) =>
-								this.handleFieldChange('startAt', event.target.value)
-							}
+				<Container>
+					<Typography variant="h4" className={classes.title}>
+						{title}
+					</Typography>
+					<Row>
+						<Col>
+							<Card className="border-0">
+								<Card.Body>
+									<Row>
+										<Col>
+											<Form.Group autoComplete="off" noValidate>
+												<div>
+													<Form.Label>Movie</Form.Label>
+													<Select
+														className={classes.textFieldSelect}
+														fullWidth
+														required
+														value={movieId}
+														variant="outlined"
+														onChange={(event) =>
+															this.handleFieldChange(
+																'movieId',
+																event.target.value
+															)
+														}
+													>
+														{movie.map((movie) => (
+															<MenuItem key={movie.id} value={movie.id}>
+																{movie.name}
+															</MenuItem>
+														))}
+													</Select>
+												</div>
+												<div className="pt-2">
+													<Form.Label>Theater</Form.Label>
+													<Select
+														className={classes.textFieldSelect}
+														fullWidth
+														required
+														value={cinemaId}
+														variant="outlined"
+														onChange={(event) =>
+															this.handleFieldChange(
+																'cinemaId',
+																event.target.value
+															)
+														}
+													>
+														{theater.map((theater) => (
+															<MenuItem key={theater.id} value={theater.id}>
+																{theater.name}
+															</MenuItem>
+														))}
+													</Select>
+												</div>
+												<div className="pt-2">
+													<Form.Label>Date Show</Form.Label>
+													<Form.Control
+														className={classes.textFieldSelect}
+														type="date"
+														value={showDate}
+														onChange={(event) =>
+															this.handleFieldChange(
+																'showDate',
+																event.target.value
+															)
+														}
+													/>
+												</div>
+												<div className="pt-2">
+													<Form.Label>Time Start</Form.Label>
+													<Select
+														className={classes.textFieldSelect}
+														fullWidth
+														placeholder="Please specify the Time"
+														required
+														value={timeStart}
+														variant="outlined"
+														onChange={(event) =>
+															this.handleFieldChange(
+																'timeStart',
+																event.target.value
+															)
+														}
+													>
+														{[
+															'18:00',
+															'19:00',
+															'20:00',
+															'21:00',
+															'22:00',
+															'23:00',
+														].map((time) => (
+															<MenuItem key={`time-${time}`} value={time}>
+																{time}
+															</MenuItem>
+														))}
+													</Select>
+												</div>
+											</Form.Group>
+										</Col>
+									</Row>
+								</Card.Body>
+							</Card>
+						</Col>
+						<Button
+							className={classes.buttonFooter}
+							color="primary"
+							block
+							onClick={submitAction}
 						>
-							{['18:00', '19:00', '20:00', '21:00', ' 22:00', '23:00'].map(
-								(time) => (
-									<MenuItem key={`time-${time}`} value={time}>
-										{time}
-									</MenuItem>
-								)
-							)}
-						</TextField>
-					</div>
-					<div className={classes.field}>
-						<TextField
-							fullWidth
-							select
-							className={classes.textField}
-							label="Movie"
-							margin="dense"
-							required
-							value={movieId}
-							variant="outlined"
-							onChange={(event) =>
-								this.handleFieldChange('movieId', event.target.value)
-							}
-						>
-							{nowShowing.map((movie) => (
-								<MenuItem key={movie._id} value={movie._id}>
-									{movie.title}
-								</MenuItem>
-							))}
-						</TextField>
-
-						<TextField
-							fullWidth
-							select
-							className={classes.textField}
-							label="Cinema"
-							margin="dense"
-							required
-							value={cinemaId}
-							variant="outlined"
-							onChange={(event) =>
-								this.handleFieldChange('cinemaId', event.target.value)
-							}
-						>
-							{cinemas.map((cinema) => (
-								<MenuItem key={cinema._id} value={cinema._id}>
-									{cinema.name}
-								</MenuItem>
-							))}
-						</TextField>
-					</div>
-
-					<div className={classes.field}>
-						<MuiPickersUtilsProvider utils={MomentUtils}>
-							<KeyboardDatePicker
-								className={classes.textField}
-								inputVariant="outlined"
-								margin="normal"
-								id="start-date"
-								label="Start Date"
-								minDate={new Date()}
-								maxDate={this.onFilterMaxDate()}
-								value={startDate}
-								onChange={(date) =>
-									this.handleFieldChange('startDate', date._d)
-								}
-								KeyboardButtonProps={{
-									'aria-label': 'change date',
-								}}
-							/>
-
-							<KeyboardDatePicker
-								className={classes.textField}
-								inputVariant="outlined"
-								margin="normal"
-								id="end-date"
-								label="End Date"
-								minDate={new Date(startDate)}
-								maxDate={this.onFilterMaxDate()}
-								value={endDate}
-								onChange={(date) => this.handleFieldChange('endDate', date._d)}
-								KeyboardButtonProps={{
-									'aria-label': 'change date',
-								}}
-							/>
-						</MuiPickersUtilsProvider>
-					</div>
-				</form>
-
-				<Button
-					className={classes.buttonFooter}
-					color="primary"
-					variant="contained"
-					onClick={submitAction}
-				>
-					{submitButton}
-				</Button>
+							{submitButton}
+						</Button>
+					</Row>
+				</Container>
 			</div>
 		);
 	}
@@ -229,9 +213,9 @@ AddShowtime.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-	movies: state.movies,
-	nowShowing: state.nowShowing,
-	cinemas: state.cinemas,
+	theater: state.theater.theaters,
+	movie: state.movie.movies,
+	showtimes: state.showtime,
 });
 
 const mapDispatchToProps = {

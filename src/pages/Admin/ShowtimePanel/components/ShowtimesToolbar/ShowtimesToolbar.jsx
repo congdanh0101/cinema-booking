@@ -4,23 +4,9 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
 import { Button, IconButton } from '@material-ui/core';
 import { Delete as DeleteIcon } from '@material-ui/icons';
-import { ResponsiveDialog } from '../../../../../components/common';
-import AddShowtime from '../AddShowtime/AddShowtime';
 import styles from './styles';
 
 class ShowtimesToolbar extends Component {
-	state = {
-		openAddDialog: false,
-	};
-
-	OpenAddDialog() {
-		this.setState({ openAddDialog: true });
-	}
-
-	CloseAddDialog() {
-		this.setState({ openAddDialog: false });
-	}
-
 	static propTypes = {
 		className: PropTypes.string,
 		classes: PropTypes.object.isRequired,
@@ -32,7 +18,6 @@ class ShowtimesToolbar extends Component {
 	};
 
 	render() {
-		const { openAddDialog } = this.state;
 		const {
 			classes,
 			className,
@@ -55,7 +40,6 @@ class ShowtimesToolbar extends Component {
 									<DeleteIcon />
 								</IconButton>
 							)}
-
 							<Button
 								onClick={() => toggleDialog()}
 								color="primary"

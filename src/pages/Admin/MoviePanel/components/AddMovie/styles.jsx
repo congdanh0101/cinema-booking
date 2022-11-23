@@ -11,7 +11,6 @@ const styles = (theme) => ({
 	textField: {
 		textTransform: 'capitalize',
 		width: '100%',
-
 		marginRight: theme.spacing(3),
 	},
 	textFieldSelect: {

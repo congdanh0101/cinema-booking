@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
 import {
@@ -14,7 +13,6 @@ import {
 	TablePagination,
 } from '@material-ui/core';
 import { Portlet, PortletContent } from '../../../../../components/common';
-import { Link } from 'react-router-dom';
 import styles from './styles';
 
 class ShowtimesTable extends Component {
@@ -59,10 +57,10 @@ class ShowtimesTable extends Component {
 		return (
 			<Portlet className={rootClassName}>
 				<PortletContent noPadding>
-					<Table>
+					<Table >
 						<TableHead>
-							<TableRow>
-								<TableCell align="left">
+							<TableRow className={classes.tableRowHeader}>
+								<TableCell className={classes.tableCellHeader} align="left">
 									<Checkbox
 										checked={selectedShowtimes.length === showtimes.length}
 										color="primary"
@@ -74,12 +72,24 @@ class ShowtimesTable extends Component {
 									/>
 									ID
 								</TableCell>
-								<TableCell align="left">Movie</TableCell>
-								<TableCell align="left">Theater</TableCell>
-								<TableCell align="left">Price</TableCell>
-								<TableCell align="left">Time Start</TableCell>
-								<TableCell align="left">Date</TableCell>
-								<TableCell align="left">Options</TableCell>
+								<TableCell className={classes.tableCellHeader} align="left">
+									Movie
+								</TableCell>
+								<TableCell className={classes.tableCellHeader} align="left">
+									Theater
+								</TableCell>
+								<TableCell className={classes.tableCellHeader} align="left">
+									Price
+								</TableCell>
+								<TableCell className={classes.tableCellHeader} align="left">
+									Time Start
+								</TableCell>
+								<TableCell className={classes.tableCellHeader} align="left">
+									Duration
+								</TableCell>
+								<TableCell className={classes.tableCellHeader} align="left">
+									Show Date
+								</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -90,7 +100,6 @@ class ShowtimesTable extends Component {
 								.slice(0, rowsPerPage)
 								.map((showtime) => (
 									<TableRow
-										className={classes.tableRow}
 										hover
 										key={showtime.id}
 										selected={selectedShowtimes.indexOf(showtime.id) !== -1}
@@ -126,15 +135,10 @@ class ShowtimesTable extends Component {
 											{showtime.timeStart}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{showtime.showDate}
+											{showtime.movie.duration}
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											<Link to={``} className="btn btn-sm btn-warning">
-												Edit
-											</Link>{' '}
-											<Link to={``} className="btn btn-sm btn-danger">
-												Delete
-											</Link>
+											{showtime.showDate}
 										</TableCell>
 									</TableRow>
 								))}

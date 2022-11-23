@@ -1,7 +1,7 @@
 const styles = (theme) => ({
 	root: {
 		padding: theme.spacing(3),
-		color: theme.palette.common.white,
+		color: theme.palette.common.black,
 	},
 	content: {
 		marginTop: theme.spacing(2),

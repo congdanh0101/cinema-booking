@@ -2,9 +2,15 @@ const initialState = {
 	showtimes: [],
 	selectedShowtimes: [],
 	details: {},
+	openDialog: false,
 	message: '',
 	errorMsg: '',
 };
+
+const toggleDialog = (state) => ({
+	...state,
+	openDialog: !state.openDialog,
+});
 
 const selectShowtime = (state, payload) => {
 	const { selectedShowtimes } = state;
@@ -39,6 +45,8 @@ const selectAllShowtimes = (state) => ({
 
 const showtimeReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case 'TOGGLE_DIALOG':
+			return toggleDialog(state);
 		case 'SELECT_SHOWTIMES':
 			return selectShowtime(state, action.payload);
 		case 'SELECT_ALL_SHOWTIMES':

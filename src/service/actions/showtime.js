@@ -1,5 +1,7 @@
 import axiosClient from '../../shared/apis/axiosClient';
 
+export const toggleDialog = () => ({ type: 'TOGGLE_DIALOG' });
+
 export const selectShowtime = (showtime) => ({
 	type: 'SELECT_SHOWTIMES',
 	payload: showtime,
@@ -122,7 +124,10 @@ export const updateShowtime = (
 export const deleteShowtime = (showTimeId) => {
 	return async (dispatch) => {
 		try {
-			const response = await axiosClient().delete(`showtimes/${showTimeId}`);
+			const token = localStorage.getItem('token');
+			const response = await axiosClient(token).delete(
+				`showtimes/${showTimeId}`
+			);
 			dispatch({
 				type: 'DELETE_SHOWTIME',
 				payload: response.data,
