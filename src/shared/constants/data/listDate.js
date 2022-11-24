@@ -1,51 +1,31 @@
 const listMonth = [
 	{
 		id: 1,
-		month: 'January',
+		day: 'Monday',
 	},
 	{
 		id: 2,
-		month: 'February',
+		day: 'Tuesday',
 	},
 	{
 		id: 3,
-		month: 'March',
+		day: 'Wednesday',
 	},
 	{
 		id: 4,
-		month: 'April',
+		day: 'Thursday',
 	},
 	{
 		id: 5,
-		month: 'May',
+		day: 'Friday',
 	},
 	{
 		id: 6,
-		month: 'June',
+		day: 'Saturday',
 	},
 	{
 		id: 7,
-		month: 'July',
-	},
-	{
-		id: 8,
-		month: 'August',
-	},
-	{
-		id: 9,
-		month: 'September',
-	},
-	{
-		id: 10,
-		month: 'October',
-	},
-	{
-		id: 11,
-		month: 'November',
-	},
-	{
-		id: 12,
-		month: 'December',
+		day: 'Sunday',
 	},
 ];
 export default listMonth;

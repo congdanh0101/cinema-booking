@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ImageResize } from '../../../../components/common';
 import { TextClamp } from '../../../../assets/styles/mixin';
-import { articles } from '../../../../shared/constants/articles';
+import { articles } from '../../../../shared/constants/data/articles';
 import { path } from '../../../../shared/constants/path';
 
 const StyledPostRelated = styled.div`

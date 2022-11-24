@@ -25,8 +25,6 @@ import ProfilePage from '../pages/Public/ProfilePage/ProfilePage';
 import Error from '../pages/Public/NotFound/NotFound';
 
 //Admin
-import AdminPage from '../pages/Admin/AdminPage/AdminPage';
-import AdminPanel from '../pages/Admin/AdminPanel/AdminPanel.jsx';
 import DashboardPage from '../pages/Admin/Dashboard/Dashboard';
 import MoviePanel from '../pages/Admin/MoviePanel/MoviePanel';
 import ShowtimePanel from '../pages/Admin/ShowtimePanel/ShowtimePanel';
@@ -105,16 +103,6 @@ export default class App extends Component {
 										component={TicketResult}
 									/>
 
-									<AdminRoute
-										path="/admin-page"
-										privateLayout={AdminLayout}
-										privateComponent={AdminPage}
-									/>
-									<AdminRoute
-										path={path.admin}
-										privateLayout={AdminLayout}
-										privateComponent={AdminPanel}
-									/>
 									<AdminRoute
 										path={path.dashboard}
 										privateLayout={AdminLayout}

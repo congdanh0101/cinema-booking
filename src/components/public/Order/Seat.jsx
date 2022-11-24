@@ -38,7 +38,11 @@ class Seat extends Component {
 			if (i === 5) {
 				seatNum.push(<div className="px-3"></div>);
 			}
-			seatNum.push(<td className="pl-3">{i}</td>);
+			seatNum.push(
+				<td key={i} className="pl-3">
+					{i}
+				</td>
+			);
 		}
 
 		const seat = [];
@@ -47,8 +51,9 @@ class Seat extends Component {
 				seat.push(<div className="px-3"></div>);
 			}
 			seat.push(
-				<td>
+				<td key={i}>
 					<input
+						key={i}
 						type="checkbox"
 						value={`A${i}`}
 						name={`A${i}`}

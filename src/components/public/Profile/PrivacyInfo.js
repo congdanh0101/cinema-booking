@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import {
-	Card,
-	Col,
-	InputGroup,
-	Form,
-	Row,
-	Spinner,
-	Alert,
-} from 'react-bootstrap';
+import { Card, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { ButtonLeft } from '../../common';
 import {
@@ -17,17 +8,6 @@ import {
 	getUserDetailById,
 	changePassword,
 } from '../../../service/actions/user';
-
-const ValidatorSchema = Yup.object().shape({
-	password: Yup.string()
-		.min(1, ({ min }) => `Password must be at least ${min} characters`)
-		.required('Password is required'),
-	confirmPassword: Yup.string()
-		.test('passwords-match', 'Passwords must match', function (value) {
-			return this.parent.password === value;
-		})
-		.required('Confirm password is required'),
-});
 
 class PrivacyInfo extends Component {
 	state = {
@@ -47,7 +27,6 @@ class PrivacyInfo extends Component {
 	};
 
 	render() {
-		const { show } = this.state;
 		return (
 			<div className="pt-4">
 				<Formik

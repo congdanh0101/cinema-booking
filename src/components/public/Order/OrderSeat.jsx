@@ -2,23 +2,22 @@ import React, { Component } from 'react';
 import { Button, Card, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Seat from './Seat';
+import { path } from '../../../shared/constants/path';
 import './styles.css';
 
 export default class OrderSeat extends Component {
 	render() {
 		return (
-			<Col xs={12} lg={8}>
+			<Col xs={12} lg={6}>
 				<p className="text-display-xs-bold">Choose Your Seat</p>
 				<Card className="border-0 p-5 order-seat">
 					<Card.Body className="row text-center">
-						<Col xs={9} className="">
+						<Col xs={12} className="pl-4">
 							<p className="text-link-xs">Screen</p>
 							<div className="line-screen"></div>
 						</Col>
 					</Card.Body>
-					<Card.Body>
-						<Seat />
-					</Card.Body>
+					<Card.Body>{/* <Seat /> */}</Card.Body>
 				</Card>
 				<div className="pt-4 checkout">
 					<Link to="/">
@@ -29,7 +28,7 @@ export default class OrderSeat extends Component {
 							Change your movie
 						</Button>
 					</Link>
-					<Link to="/payment">
+					<Link to={path.payment}>
 						<Button
 							variant="primary shadow"
 							className="float-right col-12 col-md-5"

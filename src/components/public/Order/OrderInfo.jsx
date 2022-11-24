@@ -7,7 +7,7 @@ import { createOrder, getOrderById } from '../../../service/actions/order';
 
 class OrderInfo extends Component {
 	render() {
-		const { dataDate, dataMovie, dataShowtime } = this.props.order.listOrder;
+		// const { dataDate, dataMovie, dataShowtime } = this.props.order.listOrder;
 		return (
 			<Col xs={12} lg={4}>
 				<p className="text-display-xs-bold">Order Info</p>

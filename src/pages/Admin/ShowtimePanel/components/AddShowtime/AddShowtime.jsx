@@ -17,7 +17,7 @@ class AddShowtime extends Component {
 		movieId: '',
 		cinemaId: '',
 		timeStart: '',
-		showDate: '',
+		showDate: new Date().toISOString(),
 	};
 
 	async componentDidMount() {
@@ -145,7 +145,7 @@ class AddShowtime extends Component {
 												<div className="pt-2">
 													<Form.Label>Date Show</Form.Label>
 													<Form.Control
-														className={classes.textFieldSelect}
+														
 														type="date"
 														value={showDate}
 														onChange={(event) =>

@@ -1,18 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, Col, Form, Image, Row, Button } from 'react-bootstrap';
-import listShowTime from '../../../shared/constants/data/listShowTime';
-import map from '../../../assets/images/map.svg';
-import axiosClient from '../../../shared/apis/axiosClient';
-import { getShowtimeByTheater } from '../../../service/actions/showtime';
-import { getAllTheater } from '../../../service/actions/theater';
-import { getMovieDetail } from '../../../service/actions/movie';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import listMonth from '../../../shared/constants/data/listMonth';
-import DetailMyTrailer from '../../../modules/Public/Detail/DetailMyTrailer';
+import moment from 'moment';
+
+import { path } from '../../../shared/constants/path';
+
+import listShowTime from '../../../shared/constants/data/listShowTime';
+import listDate from '../../../shared/constants/data/listDate';
+import calendar from '../../../assets/images/calendar.svg';
+import map from '../../../assets/images/map.svg';
+
+import axiosClient from '../../../shared/apis/axiosClient';
+import { getAllShowtime } from '../../../service/actions/showtime';
+import { getAllTheater } from '../../../service/actions/theater';
+import { getMovieDetail } from '../../../service/actions/movie';
+import { createOrder } from '../../../service/actions/order';
+
+import ShowtimeCarousel from './components/ShowtimeCarousel/ShowtimeCarousel';
+import DetailMyTrailer from './components/Trailer/DetailMyTrailer';
 import './styles.css';
-import { Link } from 'react-router-dom';
-import { Fragment } from 'react';
 
 class MovieDetailComponent extends Component {
 	constructor(props) {
@@ -27,6 +35,7 @@ class MovieDetailComponent extends Component {
 	async componentDidMount() {
 		const { id } = this.props.match.params;
 		await this.props.getMovieDetail(id);
+		await this.props.getAllShowtime();
 		this.props.getAllTheater();
 	}
 
@@ -42,8 +51,10 @@ class MovieDetailComponent extends Component {
 	};
 
 	render() {
-		const { movie, details, theaters } = this.props;
+		const { details, theaters, showtimes } = this.props;
 		const { showResults } = this.state;
+		console.log(this.props);
+		console.log(this.state);
 		return (
 			<div className="container">
 				<Row>
@@ -91,6 +102,29 @@ class MovieDetailComponent extends Component {
 					<Row className="justify-content-center">
 						<Col lg={3} md={5} xs={12} className="d-grid pt-0">
 							<Form.Group className="d-flex align-items-center">
+								<Image src={calendar} className="position-absolute pl-3" />
+								<Form.Control
+									name="date"
+									defaultValue=""
+									as="select"
+									className="border-0 pl-5 pick"
+									onChange={this.searchCinema}
+								>
+									<option value="">Select date</option>
+									{showtimes.length > 0 &&
+										showtimes.map((item) => (
+											<option
+												key={item.id}
+												value={moment(item.showDate).format('YYYY-MM-DD')}
+											>
+												{moment(item.showDate).format('YYYY-MM-DD')}
+											</option>
+										))}
+								</Form.Control>
+							</Form.Group>
+						</Col>
+						<Col lg={3} md={5} xs={12} className="d-grid pt-0">
+							<Form.Group className="d-flex align-items-center">
 								<Image src={map} className="position-absolute pl-3" />
 								<Form.Control
 									name="location"
@@ -110,18 +144,8 @@ class MovieDetailComponent extends Component {
 							</Form.Group>
 						</Col>
 					</Row>
-					<div class="scrollmenu">
-						{listMonth.map((item) => {
-							return (
-								<Button
-									variant="outline-primary"
-									className="scroll btn-month mr-1"
-								>
-									{item.month}
-								</Button>
-							);
-						})}
-					</div>
+					{/* <ShowtimeCarousel title="Test" showtime={listDate} /> */}
+
 					{showResults.length > 0 ? (
 						<Row xs={1} md={2} lg={3} className="g-3">
 							{showResults.map((item) => (
@@ -129,18 +153,17 @@ class MovieDetailComponent extends Component {
 									<Card className="card-movie border-0">
 										<Card.Body className="pb-0">
 											<Row>
+												<Col xs={10}>
+													<p className="text-link-lg text-left m-0">
+														{item.showDate}
+													</p>
+												</Col>
 												<Col
-													xs={4}
+													xs={5}
 													className="d-flex align-items-center justify-content-center"
 												>
-													<p className="text-link-lg m-0">{item.id}</p>
-												</Col>
-												<Col xs={8}>
-													<p className="text-link-lg text-left m-0">
-														{item.timeStart} : {item.timeEnd}
-													</p>
 													<p className="text-300-12 text-left m-0">
-														Date {item.showDate}
+														{item.timeStart} : {item.timeEnd}
 													</p>
 												</Col>
 											</Row>
@@ -149,23 +172,12 @@ class MovieDetailComponent extends Component {
 										<Card.Body className="pt-0 pb-0">
 											<h6 className="float-left text-sm">Price</h6>
 											<p className="float-right text-link-sm">
-												${item.price}/seat
+												${item.price}/ticket
 											</p>
 										</Card.Body>
 										<Card.Body className="pt-0 d-flex justify-content-end">
-											<Link to="/order-page">
-												<Button
-													onClick={() =>
-														this.props.createOrder(
-															this.state.location,
-															this.state.date,
-															item,
-															movie
-														)
-													}
-													variant="primary"
-													className="btn-nav shadow"
-												>
+											<Link to={`/order/${item.id}`}>
+												<Button variant="primary" className="btn-nav shadow">
 													Book now
 												</Button>
 											</Link>
@@ -184,7 +196,6 @@ class MovieDetailComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	movie: state.movie,
 	details: state.movie.details,
 	showtimes: state.showtime.showtimes,
 	theaters: state.theater.theaters,
@@ -193,7 +204,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
 	getMovieDetail,
 	getAllTheater,
-	getShowtimeByTheater,
+	getAllShowtime,
+	createOrder,
 };
 
 export default withRouter(

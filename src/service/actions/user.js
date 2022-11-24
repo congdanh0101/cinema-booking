@@ -140,7 +140,7 @@ export const changePassword = (data) => {
 			const token = localStorage.getItem('token');
 			const userId = sessionStorage.getItem('userId');
 			const response = await axiosClient(token).put(
-				`changepassword/${userId}`,
+				`users/changepassword/${userId}`,
 				data
 			);
 

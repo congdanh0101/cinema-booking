@@ -8,6 +8,7 @@ export const login = (username, password) => {
 				password,
 			});
 			localStorage.setItem('token', response.data.token);
+			localStorage.setItem('expiredToken', response.data.expired);
 			dispatch({
 				type: 'LOGIN',
 				payload: response.data.token,
