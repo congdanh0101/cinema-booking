@@ -27,7 +27,6 @@ class ForgetPassword extends Component {
 		this.setState({ isLoading: true });
 		await this.props.forgetPassword(values.email);
 		this.setState({ show: true, isLoading: false });
-		sessionStorage.setItem('message', this.props.auth.message);
 	};
 
 	render() {
@@ -91,7 +90,8 @@ class ForgetPassword extends Component {
 						</Alert>
 					)}
 					{show === true &&
-					this.props.auth.message === sessionStorage.getItem('message')
+					this.props.auth.message ===
+						'Please go to your email and get verification code to reset your password'
 						? history.push(path.emailVerifyForgot)
 						: ''}
 					<Formik

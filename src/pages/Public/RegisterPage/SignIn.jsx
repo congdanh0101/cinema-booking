@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Image, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { login } from '../../../service/actions/auth';
+import { login, autoLogin } from '../../../service/actions/auth';
 import { connect } from 'react-redux';
 import { LeftRegister, RightRegister } from '../../../components/common';
 import tickitz_white from '../../../assets/images/tickitz-white.svg';
@@ -21,6 +21,12 @@ class SignIn extends Component {
 		await this.props.login(values.email, values.password);
 		this.setState({ show: true, isLoading: false });
 	};
+	componentDidMount() {
+		const token = localStorage.getItem('token');
+		if (token) {
+			this.props.autoLogin(token);
+		}
+	}
 	componentDidUpdate() {
 		if (this.props.auth.token) {
 			const { history } = this.props;
@@ -167,6 +173,6 @@ class SignIn extends Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
-const mapDispatchToProps = { login };
+const mapDispatchToProps = { login, autoLogin };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

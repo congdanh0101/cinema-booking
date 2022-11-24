@@ -12,6 +12,7 @@ import {
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
+
 import {
 	emailVerifyRegister,
 	register,
@@ -20,34 +21,40 @@ import { LeftRegister, RightRegister } from '../../../../components/common';
 import tickitz_white from '../../../../assets/images/tickitz-white.svg';
 import { schemaYupEmailVerification } from '../../../../shared/constants/yupSchema';
 import Countdown from 'react-countdown';
+
 import { path } from '../../../../shared/constants/path';
 import '../styles.css';
 
 class EmailVerificationRegister extends Component {
 	state = {
-		show: false,
+		show: true,
 		message: '',
 		isLoading: false,
 	};
 
 	submitData = async (values) => {
-		const { history } = this.props;
 		this.setState({ isLoading: true });
-		await this.props.emailVerifyRegister(values.verifyCode).then(() => {
-			history.push(path.signIn);
-		});
+		await this.props.emailVerifyRegister(
+			values.verifyCode,
+			this.props.auth.user.firstName,
+			this.props.auth.user.lastName,
+			this.props.auth.user.phoneNumber,
+			this.props.auth.user.email,
+			this.props.auth.user.password,
+			this.props.auth.user.gender
+		);
 		this.setState({ show: true, isLoading: false });
 	};
 
 	resendCode = async () => {
 		this.setState({ isLoading: true });
 		await this.props.register(
-			sessionStorage.getItem('firstName'),
-			sessionStorage.getItem('lastName'),
-			sessionStorage.getItem('phoneNumber'),
-			sessionStorage.getItem('email'),
-			sessionStorage.getItem('password'),
-			sessionStorage.getItem('gender')
+			this.props.auth.user.firstName,
+			this.props.auth.user.lastName,
+			this.props.auth.user.phoneNumber,
+			this.props.auth.user.email,
+			this.props.auth.user.password,
+			this.props.auth.user.gender
 		);
 		sessionStorage.setItem('show', this.props.message);
 		this.setState({ show: true, isLoading: false });
@@ -92,7 +99,9 @@ class EmailVerificationRegister extends Component {
 	};
 
 	render() {
+		const { history } = this.props;
 		const { show } = this.state;
+
 		return (
 			<Container fluid>
 				<Row>
@@ -167,13 +176,16 @@ class EmailVerificationRegister extends Component {
 								<p>
 									{this.props.auth.message !== ''
 										? this.props.auth.message ===
-										  sessionStorage.getItem('message')
+										  'Please go to your email and get verification code to finish sign up a new account'
 											? this.props.auth.message
 											: ''
 										: this.props.auth.errorMsg}
 								</p>
 							</Alert>
 						)}
+						{this.props.auth.message === 'Success'
+							? history.push(path.signIn)
+							: ''}
 						<Formik
 							initialValues={{
 								verifyCode: '',
@@ -190,7 +202,6 @@ class EmailVerificationRegister extends Component {
 								handleChange,
 								handleBlur,
 								handleSubmit,
-								isSubmitting,
 							}) => (
 								<Form.Group>
 									<Form.Group>
@@ -222,7 +233,7 @@ class EmailVerificationRegister extends Component {
 														</Button>
 														<Col></Col>
 														<Countdown
-															date={Date.now() + 60000}
+															date={Date.now() + 6}
 															intervalDelay={0}
 															precision={3}
 															renderer={this.renderer}

@@ -4,7 +4,7 @@ import './styles.css';
 
 const RightRegister = (props) => {
 	return (
-		<Col md={5}>
+		<Col md={6}>
 			<Container>{props.children}</Container>
 		</Col>
 	);

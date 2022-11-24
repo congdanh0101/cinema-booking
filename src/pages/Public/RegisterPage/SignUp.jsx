@@ -38,7 +38,6 @@ class SignUp extends Component {
 			values.gender
 		);
 		this.setState({ show: true, isLoading: false });
-		sessionStorage.setItem('message', this.props.auth.message);
 	};
 	render() {
 		const { show } = this.state;
@@ -112,7 +111,8 @@ class SignUp extends Component {
 						</Alert>
 					)}
 					{show === true &&
-					this.props.auth.message === sessionStorage.getItem('message')
+					this.props.auth.message ===
+						'Please go to your email and get verification code to finish sign up a new account'
 						? history.push(path.emailVerifyRegister)
 						: ''}
 					<Formik

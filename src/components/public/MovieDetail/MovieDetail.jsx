@@ -91,11 +91,11 @@ class MovieDetailComponent extends Component {
 						<p className="text-link-lg-20">Overview</p>
 						<p className="text-sm">{details.description}</p>
 					</Col>
-					<Col xs={4} md={12}>
+					{/* <Col xs={4} md={12}>
 						{details.trailer && isNaN(details.trailer) ? (
 							<DetailMyTrailer url={details?.trailer} />
 						) : null}
-					</Col>
+					</Col> */}
 				</Row>
 				<div className="text-center py-4">
 					<p className="text-display-xs-bold">Showtimes and Tickets</p>
@@ -144,7 +144,8 @@ class MovieDetailComponent extends Component {
 							</Form.Group>
 						</Col>
 					</Row>
-					{/* <ShowtimeCarousel title="Test" showtime={listDate} /> */}
+
+					<ShowtimeCarousel title="Test" showtime={listDate} />
 
 					{showResults.length > 0 ? (
 						<Row xs={1} md={2} lg={3} className="g-3">

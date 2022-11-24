@@ -7,28 +7,16 @@ import {
 	Row,
 	Spinner,
 	Alert,
+	Button,
 } from 'react-bootstrap';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { connect } from 'react-redux';
-import { ButtonLeft } from '../../common';
 import {
 	getUserDetail,
 	getUserDetailById,
 	updateUser,
 	changePassword,
 } from '../../../service/actions/user';
-
-const ValidatorSchema = Yup.object().shape({
-	password: Yup.string()
-		.min(1, ({ min }) => `Password must be at least ${min} characters`)
-		.required('Password is required'),
-	confirmPassword: Yup.string()
-		.test('passwords-match', 'Passwords must match', function (value) {
-			return this.parent.password === value;
-		})
-		.required('Confirm password is required'),
-});
 
 class DetailInfo extends Component {
 	state = {
@@ -46,16 +34,6 @@ class DetailInfo extends Component {
 			email: values.email,
 			password: values.password,
 			gender: values.gender,
-		});
-		this.setState({ show: true, isLoading: false });
-	};
-
-	changePassword = async (values) => {
-		this.setState({ isLoading: true });
-		await this.props.changePassword({
-			oldPassword: values.firstName,
-			newPassword: values.lastName,
-			confirmPassword: values.phoneNumber,
 		});
 		this.setState({ show: true, isLoading: false });
 	};
@@ -90,7 +68,6 @@ class DetailInfo extends Component {
 						confirmPassword: '',
 						gender: sessionStorage.getItem('gender'),
 					}}
-					validationSchema={ValidatorSchema}
 					onSubmit={(values) => {
 						this.changePassword(values);
 					}}
@@ -182,62 +159,29 @@ class DetailInfo extends Component {
 									</Form.Group>
 								</Card.Body>
 							</Card>
-							<div className="pt-4">
-								<Card>
-									<Card.Body>
-										<p>Account and Privacy</p>
-										<hr />
-										<Form.Group>
-											<Row>
-												<Col>
-													<Form.Label>Old Password</Form.Label>
-													<Form.Control
-														type="password"
-														placeholder="Write your old password"
-														name="oldPassword"
-														onChange={handleChange}
-														onBlur={handleBlur}
-														value={values.oldPassword}
-													/>
-												</Col>
-												<Col>
-													<Form.Label>New Password</Form.Label>
-													<Form.Control
-														type="password"
-														placeholder="Write your new password"
-														name="newPassword"
-														onChange={handleChange}
-														onBlur={handleBlur}
-														value={values.newPassword}
-													/>
-												</Col>
-												<Col>
-													<Form.Label>Confirm Password</Form.Label>
-													<Form.Control
-														type="password"
-														placeholder="Confirm your password"
-														name="confirmPassword"
-														onChange={handleChange}
-														onBlur={handleBlur}
-														value={values.confirmPassword}
-													/>
-												</Col>
-											</Row>
-										</Form.Group>
-									</Card.Body>
-								</Card>
-								{this.state.isLoading === false ? (
-									<ButtonLeft
-										gobuttonleft="/profile"
-										buttontext="Update Change"
-										type="submit"
-										onClick={handleSubmit}
-										disabled={isSubmitting}
+							{this.state.isLoading === false ? (
+								<Button
+									className="mt-3"
+									variant="outline-primary"
+									type="submit"
+									block
+									onClick={handleSubmit}
+									disabled={isSubmitting}
+								>
+									Update Change
+								</Button>
+							) : (
+								<Button variant="primary" type="loading" block disabled>
+									<Spinner
+										as="span"
+										animation="border"
+										size="sm"
+										role="status"
+										aria-hidden="true"
 									/>
-								) : (
-									<Spinner animation="border" variant="primary" />
-								)}
-							</div>
+									<span className="visually-hidden"> Loading...</span>
+								</Button>
+							)}
 						</Form.Group>
 					)}
 				</Formik>

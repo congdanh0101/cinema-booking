@@ -125,3 +125,18 @@ export const schemaYupEmailVerification = yup.object({
 export const schemaYupEmail = yup.object({
 	email: yup.string().email('Invalid email').required('Required'),
 });
+
+export const schemaYupChangePassword = yup.object({
+	oldPassword: yup
+		.string()
+		.min(1, ({ min }) => `Password must be at least ${min} characters`)
+		.required('Password is required'),
+	newPassword: yup
+		.string()
+		.min(1, ({ min }) => `Password must be at least ${min} characters`)
+		.required('Password is required'),
+	confirmPassword: yup
+		.string()
+		.required('Please enter re-password')
+		.oneOf([yup.ref('newPassword')], 'Passwords must be same!'),
+});

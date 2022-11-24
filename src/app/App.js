@@ -10,7 +10,6 @@ import persistedStore from '../service/store';
 import SignUp from '../pages/Public/RegisterPage/SignUp';
 import SignIn from '../pages/Public/RegisterPage/SignIn';
 import ForgetPassword from '../pages/Public/RegisterPage/ForgetPassword';
-import ResetPassword from '../pages/Public/RegisterPage/ResetPassword';
 import EmailVerificationRegister from '../pages/Public/RegisterPage/EmailVerify/EmailVerificationRegister';
 import EmailVerificationForgot from '../pages/Public/RegisterPage/EmailVerify/EmailVerificationForgot';
 
@@ -48,23 +47,18 @@ export default class App extends Component {
 								<Switch>
 									<Route path={path.signUp} component={SignUp} />
 									<Route path={path.signIn} component={SignIn} />
-
-									<Route
-										path={path.emailVerifyRegister}
-										component={EmailVerificationRegister}
-									/>
-
-									<Route
-										path={path.emailVerifyForgot}
-										component={EmailVerificationForgot}
-									/>
-
 									<Route
 										path={path.forgetPassword}
 										component={ForgetPassword}
 									/>
-
-									<Route path={path.resetPassword} component={ResetPassword} />
+									<Route
+										path={path.emailVerifyRegister}
+										component={EmailVerificationRegister}
+									/>
+									<Route
+										path={path.emailVerifyForgot}
+										component={EmailVerificationForgot}
+									/>
 
 									<WithLayoutRoute
 										exact

@@ -20,8 +20,8 @@ const authConfig = {
 };
 
 const reducer = combineReducers({
-	user: userReducer,
 	auth: persistReducer(authConfig, authReducer),
+	user: userReducer,
 	movie: movieReducer,
 	showtime: showtimeReducer,
 	order: orderReducer,

@@ -42,12 +42,6 @@ export const register = (
 				password,
 				gender,
 			});
-			sessionStorage.setItem('firstName', response.data.user.firstName);
-			sessionStorage.setItem('lastName', response.data.user.lastName);
-			sessionStorage.setItem('phoneNumber', response.data.user.phoneNumber);
-			sessionStorage.setItem('email', response.data.user.email);
-			sessionStorage.setItem('password', response.data.user.password);
-			sessionStorage.setItem('gender', response.data.user.gender);
 			sessionStorage.setItem(
 				'verificationCode',
 				response.data.verificationCode
@@ -81,7 +75,15 @@ export const autoLogin = (payload) => ({
 	payload,
 });
 
-export const emailVerifyRegister = (code) => {
+export const emailVerifyRegister = (
+	code,
+	firstName,
+	lastName,
+	phoneNumber,
+	email,
+	password,
+	gender
+) => {
 	return async (dispatch) => {
 		try {
 			const expired = sessionStorage.getItem('expired');
@@ -90,18 +92,19 @@ export const emailVerifyRegister = (code) => {
 				if (code === sessionStorage.getItem('verificationCode')) {
 					await axiosClient()
 						.post(`auth/register/verify`, {
-							firstName: sessionStorage.getItem('firstName'),
-							lastName: sessionStorage.getItem('lastName'),
-							phoneNumber: sessionStorage.getItem('phoneNumber'),
-							email: sessionStorage.getItem('email'),
-							password: sessionStorage.getItem('password'),
-							gender: sessionStorage.getItem('gender'),
+							firstName,
+							lastName,
+							phoneNumber,
+							email,
+							password,
+							gender,
 						})
-						.then((res) => {
+						.then(() => {
 							sessionStorage.clear();
 						});
 					dispatch({
 						type: 'EMAIL_VERIFY_REGISTER',
+						payload: 'Success',
 					});
 				} else {
 					dispatch({
@@ -135,11 +138,12 @@ export const emailVerifyForgot = (code) => {
 				if (code === sessionStorage.getItem('verificationCode')) {
 					await axiosClient()
 						.post(`auth/forgot/${userId}/verify`, { code })
-						.then((res) => {
+						.then(() => {
 							sessionStorage.clear();
 						});
 					dispatch({
 						type: 'EMAIL_VERIFY_FORGOT',
+						payload: 'Success',
 					});
 				} else {
 					dispatch({

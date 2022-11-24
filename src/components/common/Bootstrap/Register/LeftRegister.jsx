@@ -4,7 +4,7 @@ import './styles.css';
 
 const LeftRegister = (props) => {
 	return (
-		<Col md={7} className="d-none d-md-block infinity-image-container pt-4">
+		<Col md={6} className="d-none d-md-block infinity-image-container pt-4">
 			<Container>{props.children}</Container>
 		</Col>
 	);

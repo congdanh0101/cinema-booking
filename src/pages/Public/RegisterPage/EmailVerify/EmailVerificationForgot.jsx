@@ -26,7 +26,7 @@ import '../styles.css';
 
 class EmailVerificationForgot extends Component {
 	state = {
-		show: false,
+		show: true,
 		message: '',
 		isLoading: false,
 	};
@@ -39,7 +39,6 @@ class EmailVerificationForgot extends Component {
 		this.setState({ isLoading: true });
 		await this.props.emailVerifyForgot(values.verifyCode);
 		this.setState({ show: true, isLoading: false });
-		sessionStorage.setItem('message', this.props.auth.message);
 	};
 
 	resendCode = async () => {
@@ -163,15 +162,14 @@ class EmailVerificationForgot extends Component {
 								<p>
 									{this.props.auth.message !== ''
 										? this.props.auth.message ===
-										  sessionStorage.getItem('message')
+										  'Please go to your email and get verification code to reset your password'
 											? this.props.auth.message
 											: ''
 										: this.props.auth.errorMsg}
 								</p>
 							</Alert>
 						)}
-						{show === true &&
-						this.props.auth.message === sessionStorage.getItem('message')
+						{this.props.auth.message === 'Success'
 							? history.push(path.signIn)
 							: ''}
 						<Formik
@@ -190,7 +188,6 @@ class EmailVerificationForgot extends Component {
 								handleChange,
 								handleBlur,
 								handleSubmit,
-								isSubmitting,
 							}) => (
 								<Form.Group>
 									<Form.Group>

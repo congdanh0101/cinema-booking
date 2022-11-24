@@ -143,7 +143,6 @@ export const changePassword = (data) => {
 				`users/changepassword/${userId}`,
 				data
 			);
-
 			dispatch({
 				type: 'CHANGE_PASSWORD',
 				payload: response.data,
