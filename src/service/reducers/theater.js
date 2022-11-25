@@ -20,7 +20,20 @@ const showtimeReducer = (state = initialState, action) => {
 				message: action.message,
 			};
 		}
-
+		case 'CREATE_THEATER': {
+			return {
+				...state,
+				detail: action.payload,
+				message: action.message,
+			};
+		}
+		case 'UPDATE_THEATER': {
+			return {
+				...state,
+				detail: action.payload,
+				message: action.message,
+			};
+		}
 		case 'SET_THEATER_MESSAGE': {
 			return {
 				...state,

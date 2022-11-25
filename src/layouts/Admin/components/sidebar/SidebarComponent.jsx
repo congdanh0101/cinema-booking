@@ -9,16 +9,23 @@ import {
 	ListItemIcon,
 	ListItemText,
 } from '@material-ui/core';
+
 import InputIcon from '@material-ui/icons/Input';
-import DashboardIcon from '@material-ui/icons/DashboardOutlined';
-import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+import MovieIcon from '@material-ui/icons/Movie';
+import TheatersIcon from '@material-ui/icons/Theaters';
+import MovieFilterOutlinedIcon from '@material-ui/icons/MovieFilterOutlined';
+import TheatersOutlinedIcon from '@material-ui/icons/TheatersOutlined';
+import PersonIcon from '@material-ui/icons/Person';
+
 import { logout } from '../../../../service/actions/auth';
 import { path } from '../../../../shared/constants/path';
 import styles from './styles';
 
 class Sidebar extends Component {
 	handleSignOut = async () => {
-		this.props.logout();
+		this.props.logout().then(() => {
+			this.props.history.push(path.login);
+		});
 	};
 	render() {
 		const { classes } = this.props;
@@ -33,7 +40,7 @@ class Sidebar extends Component {
 						to={path.movieManage}
 					>
 						<ListItemIcon className={classes.listItemIcon}>
-							<DashboardIcon />
+							<MovieIcon />
 						</ListItemIcon>
 						<ListItemText
 							classes={{ primary: classes.listItemText }}
@@ -48,7 +55,7 @@ class Sidebar extends Component {
 						to={path.showtimeManage}
 					>
 						<ListItemIcon className={classes.listItemIcon}>
-							<PeopleIcon />
+							<TheatersOutlinedIcon />
 						</ListItemIcon>
 						<ListItemText
 							classes={{ primary: classes.listItemText }}
@@ -63,7 +70,7 @@ class Sidebar extends Component {
 						to={path.cinemaManage}
 					>
 						<ListItemIcon className={classes.listItemIcon}>
-							<PeopleIcon />
+							<TheatersIcon />
 						</ListItemIcon>
 						<ListItemText
 							classes={{ primary: classes.listItemText }}
@@ -78,11 +85,26 @@ class Sidebar extends Component {
 						to={path.genreManage}
 					>
 						<ListItemIcon className={classes.listItemIcon}>
-							<PeopleIcon />
+							<MovieFilterOutlinedIcon />
 						</ListItemIcon>
 						<ListItemText
 							classes={{ primary: classes.listItemText }}
 							primary="Genres"
+						/>
+					</ListItem>
+					<ListItem
+						activeClassName={classes.activeListItem}
+						className={classes.listItem}
+						component={NavLink}
+						style={{ textDecoration: 'none' }}
+						to={path.userManage}
+					>
+						<ListItemIcon className={classes.listItemIcon}>
+							<PersonIcon />
+						</ListItemIcon>
+						<ListItemText
+							classes={{ primary: classes.listItemText }}
+							primary="Users"
 						/>
 					</ListItem>
 				</List>

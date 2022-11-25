@@ -145,7 +145,6 @@ class AddShowtime extends Component {
 												<div className="pt-2">
 													<Form.Label>Date Show</Form.Label>
 													<Form.Control
-														
 														type="date"
 														value={showDate}
 														onChange={(event) =>

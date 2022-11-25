@@ -13,6 +13,7 @@ import {
 	updateMovie,
 	deleteMovie,
 } from '../../../../../service/actions/movie';
+import moment from 'moment';
 import styles from './styles';
 
 class AddMovie extends Component {
@@ -22,7 +23,9 @@ class AddMovie extends Component {
 		description: '',
 		image: '',
 		trailer: '',
-		releases: new Date().toISOString(),
+		releases: moment(new Date().toISOString().slice(0, 10)).format(
+			'DD-MM-YYYY'
+		),
 		genres: [],
 	};
 
@@ -79,7 +82,7 @@ class AddMovie extends Component {
 			description,
 			image,
 			trailer,
-			releases,
+			moment(releases).format('DD-MM-YYYY'),
 			genres
 		);
 	};
@@ -87,16 +90,16 @@ class AddMovie extends Component {
 	onUpdateMovie = async () => {
 		const { name, duration, description, image, trailer, releases, genres } =
 			this.state;
-		const movie = {
+		this.props.updateMovie(
+			this.props.edit.id,
 			name,
 			duration,
 			description,
 			image,
 			trailer,
-			releases,
-			genres: genres.join(','),
-		};
-		this.props.updateMovie(this.props.edit.id, movie);
+			moment(releases).format('DD-MM-YYYY'),
+			genres
+		);
 	};
 
 	onRemoveMovie = () => this.props.deleteMovie(this.props.edit.id);

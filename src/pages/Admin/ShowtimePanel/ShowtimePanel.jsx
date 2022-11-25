@@ -50,7 +50,6 @@ class ShowtimeList extends Component {
 			selectShowtime,
 			selectAllShowtimes,
 		} = this.props;
-		console.log(this.props);
 		return (
 			<div className={classes.root}>
 				<ShowtimesToolbar

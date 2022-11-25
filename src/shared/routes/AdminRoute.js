@@ -3,6 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { autoLogin } from '../../service/actions/auth';
 import { getUserDetail, getUserDetailById } from '../../service/actions/user';
+import { path } from '../../shared/constants/path';
 
 class AdminRoute extends Component {
 	componentDidMount() {
@@ -19,27 +20,19 @@ class AdminRoute extends Component {
 				{...this.props}
 				render={(props) => {
 					if (this.props.auth.token !== null) {
-						return this.props.user.detail.roles?.map((item) => {
-							if (item.name !== 'ROLE_ADMIN') {
+						return this.props.user.detail.roles
+							?.filter((role) => role.id === 501)
+							.map((item) => {
 								return (
-									<Redirect
-										to={{
-											pathname: '*',
-											state: { from: props.location },
-										}}
-									/>
+									<Layout key={item.id} {...props}>
+										<Component {...props} />
+									</Layout>
 								);
-							}
-							return (
-								<Layout key={item.id} {...props}>
-									<Component {...props} />
-								</Layout>
-							);
-						});
+							});
 					} else {
 						return (
 							<Redirect
-								to={{ pathname: '/sign-up', state: { from: props.location } }}
+								to={{ pathname: path.signUp, state: { from: props.location } }}
 							/>
 						);
 					}

@@ -24,15 +24,16 @@ import ProfilePage from '../pages/Public/ProfilePage/ProfilePage';
 import Error from '../pages/Public/NotFound/NotFound';
 
 //Admin
-import DashboardPage from '../pages/Admin/Dashboard/Dashboard';
 import MoviePanel from '../pages/Admin/MoviePanel/MoviePanel';
 import ShowtimePanel from '../pages/Admin/ShowtimePanel/ShowtimePanel';
+import CinemaPanel from '../pages/Admin/CinemaPanel/CinemaPanel';
 
 //Components
 import { MainLayout, AdminLayout } from '../layouts';
 import { WithLayoutRoute, ProtectedRoute, AdminRoute } from '../shared/routes';
 import ScrollToTop from '../shared/utils/utils';
 import Theme from '../shared/theme';
+import GenrePanel from '../pages/Admin/GenrePanel/GenrePanel';
 
 export default class App extends Component {
 	render() {
@@ -55,6 +56,7 @@ export default class App extends Component {
 										path={path.emailVerifyRegister}
 										component={EmailVerificationRegister}
 									/>
+
 									<Route
 										path={path.emailVerifyForgot}
 										component={EmailVerificationForgot}
@@ -98,19 +100,28 @@ export default class App extends Component {
 									/>
 
 									<AdminRoute
-										path={path.dashboard}
-										privateLayout={AdminLayout}
-										privateComponent={DashboardPage}
-									/>
-									<AdminRoute
+										exact
 										path={path.movieManage}
 										privateLayout={AdminLayout}
 										privateComponent={MoviePanel}
 									/>
 									<AdminRoute
+										exact
 										path={path.showtimeManage}
 										privateLayout={AdminLayout}
 										privateComponent={ShowtimePanel}
+									/>
+									<AdminRoute
+										exact
+										path={path.cinemaManage}
+										privateLayout={AdminLayout}
+										privateComponent={CinemaPanel}
+									/>
+									<AdminRoute
+										exact
+										path={path.genreManage}
+										privateLayout={AdminLayout}
+										privateComponent={GenrePanel}
 									/>
 
 									<Route path={path.notFound} component={Error} />

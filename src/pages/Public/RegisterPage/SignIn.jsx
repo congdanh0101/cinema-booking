@@ -70,8 +70,10 @@ class SignIn extends Component {
 							password: '',
 						}}
 						validationSchema={schemaYupSignIn}
-						onSubmit={(values) => {
-							this.submitData(values);
+						onSubmit={(values, actions) => {
+							this.submitData(values).then(() => {
+								actions.resetForm(values);
+							});
 						}}
 					>
 						{({

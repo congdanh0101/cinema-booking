@@ -1,16 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
-import { AccessTime as AccessTimeIcon } from '@material-ui/icons';
-import { Paper } from '../../../../../components/common';
-import { Image } from '../../../../../components/common';
+import { Paper } from '../../index';
+import { EventSeat, AttachMoney } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		maxWidth: '100%',
 		paddingBottom: theme.spacing(2),
+		cursor: 'pointer',
 	},
 	imageWrapper: {
 		height: '200px',
@@ -26,21 +25,21 @@ const useStyles = makeStyles((theme) => ({
 		'object-fit': 'cover',
 	},
 	details: { padding: theme.spacing(3) },
-	title: {
+	name: {
 		fontSize: '18px',
 		lineHeight: '21px',
 		marginTop: theme.spacing(2),
 		textTransform: 'capitalize',
 	},
-	description: {
+	city: {
 		lineHeight: '16px',
-		height: theme.spacing(2),
+		height: theme.spacing(4),
 		overflow: 'hidden',
 		whiteSpace: 'nowrap',
 		textOverflow: 'ellipsis',
 		color: theme.palette.text.secondary,
 		marginTop: theme.spacing(1),
-		marginBottom: theme.spacing(1),
+		marginBottom: theme.spacing(2),
 	},
 	stats: {
 		display: 'flex',
@@ -48,44 +47,51 @@ const useStyles = makeStyles((theme) => ({
 		paddingTop: theme.spacing(1),
 		paddingLeft: theme.spacing(3),
 	},
-	updateIcon: {
+	eventIcon: {
 		color: theme.palette.text.secondary,
 	},
-	updateText: {
+	eventText: {
 		marginLeft: theme.spacing(1),
 		color: theme.palette.text.secondary,
 	},
 }));
 
-function MovieCard(props) {
+function CinemaCard(props) {
 	const classes = useStyles(props);
-	const { className, movie } = props;
+	const { className, cinema } = props;
+	const cinemaImage =
+		cinema && cinema.image
+			? cinema.image
+			: 'https://source.unsplash.com/featured/?cinema';
+
 	const rootClassName = classNames(classes.root, className);
 	return (
 		<Paper className={rootClassName}>
 			<div className={classes.imageWrapper}>
-				<Image alt="movie" className={classes.image} url={movie.image} />
+				<img alt="cinema" className={classes.image} src={cinemaImage} />
 			</div>
 			<div className={classes.details}>
 				<Typography className={classes.name} variant="h4">
-					{movie.name}
+					{cinema.name}
 				</Typography>
-				<Typography className={classes.description} variant="body1">
-					{movie.description}
+				<Typography className={classes.city} variant="body1">
+					{cinema.city}
 				</Typography>
 			</div>
 			<div className={classes.stats}>
-				<AccessTimeIcon className={classes.updateIcon} />
-				<Typography className={classes.updateText} variant="body2">
-					{movie.duration} minutes
+				<AttachMoney className={classes.eventIcon} />
+				<Typography className={classes.eventText} variant="body2">
+					{cinema.ticketPrice} <span>&euro;</span> per movie
+				</Typography>
+			</div>
+			<div className={classes.stats}>
+				<EventSeat className={classes.eventIcon} />
+				<Typography className={classes.eventText} variant="body2">
+					{cinema.seatsAvailable} seats Available
 				</Typography>
 			</div>
 		</Paper>
 	);
 }
 
-MovieCard.propTypes = {
-	movie: PropTypes.object.isRequired,
-};
-
-export default MovieCard;
+export default CinemaCard;

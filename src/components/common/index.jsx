@@ -52,3 +52,4 @@ export { default as ResponsiveDialog } from './MaterialUI/ResponsiveDialog';
 export { default as SearchInput } from './MaterialUI/SearchInput';
 export { default as SnackbarContentWrapper } from './MaterialUI/SnackbarContentWrapper/SnackbarContentWrapper';
 export { default as Status } from './MaterialUI/Status';
+export { default as CinemaCard } from './MaterialUI/CinemaCard';

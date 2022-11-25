@@ -19,28 +19,11 @@ export const path = {
 	//Admin
 	admin: '/admin',
 	dashboard: '/dashboard',
-
 	userManage: '/manage/user',
-	userAddNew: '/manage/add-user',
-	userUpdate: '/manage/update-user',
-
 	movieManage: '/manage/movie',
-	movieAddNew: '/manage/add-movie',
-	movieUpdate: '/manage/update-movie',
-	movieView: '/manage/view-movie',
-
-	complexesManage: '/manage/complexes',
 	cinemaManage: '/manage/cinema',
-	cinemaView: '/manage/view-cinema',
-
 	showtimeManage: '/manage/showtime',
-	showtimeUpdate: '/manage/update-showtime',
-	showtimeAddNew: '/manage/add-showtime',
-	showtimeView: '/manage/view-showtime',
-
 	genreManage: '/manage/genre',
-	genreUpdate: '/manage/update-genre',
-	genreAddNew: '/manage/add-genre',
-	genreView: '/manage/view-genre',
+
 	notFound: '*',
 };

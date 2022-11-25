@@ -47,6 +47,12 @@ class EmailVerificationForgot extends Component {
 		this.setState({ show: true, isLoading: false });
 	};
 
+	componentDidUpdate() {
+		if (this.props.auth.message === 'Success') {
+			this.props.history.push(path.signIn);
+		}
+	}
+	
 	renderer = ({ minutes, seconds, completed }) => {
 		if (completed) {
 			return (
@@ -87,7 +93,6 @@ class EmailVerificationForgot extends Component {
 
 	render() {
 		const { show } = this.state;
-		const { history } = this.props;
 		return (
 			<Container fluid>
 				<Row>
@@ -169,16 +174,15 @@ class EmailVerificationForgot extends Component {
 								</p>
 							</Alert>
 						)}
-						{this.props.auth.message === 'Success'
-							? history.push(path.signIn)
-							: ''}
 						<Formik
 							initialValues={{
 								verifyCode: '',
 							}}
 							validationSchema={schemaYupEmailVerification}
-							onSubmit={(values) => {
-								this.submitData(values);
+							onSubmit={(values, actions) => {
+								this.submitData(values).then(() => {
+									actions.resetForm(values);
+								});
 							}}
 						>
 							{({

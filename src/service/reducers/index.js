@@ -12,6 +12,7 @@ import ticketReducer from './ticket';
 import paymentReducer from './payment';
 import seatReducer from './seat';
 import theaterReducer from './theater';
+import genreReducer from './genre';
 
 const authConfig = {
 	key: 'authReducer',
@@ -29,6 +30,7 @@ const reducer = combineReducers({
 	product: paymentReducer,
 	seat: seatReducer,
 	theater: theaterReducer,
+	genre: genreReducer,
 });
 
 export default reducer;

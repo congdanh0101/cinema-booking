@@ -3,6 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { autoLogin } from '../../service/actions/auth';
+import { path } from '../../shared/constants/path';
 
 const ProtectedRoute = (props) => {
 	const { layout: Layout, component: Component, token, ...rest } = props;
@@ -15,7 +16,9 @@ const ProtectedRoute = (props) => {
 						<Component {...props} />
 					</Layout>
 				) : (
-					<Redirect to={{ pathname: '*', state: { from: props.location } }} />
+					<Redirect
+						to={{ pathname: path.notFound, state: { from: props.location } }}
+					/>
 				)
 			}
 		/>

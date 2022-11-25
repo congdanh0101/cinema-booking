@@ -27,6 +27,7 @@ class SignUp extends Component {
 		message: '',
 		isLoading: false,
 	};
+	
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
 		await this.props.register(
@@ -39,9 +40,19 @@ class SignUp extends Component {
 		);
 		this.setState({ show: true, isLoading: false });
 	};
+
+	componentDidUpdate() {
+		if (
+			this.state.show === true &&
+			this.props.auth.message ===
+				'Please go to your email and get verification code to finish sign up a new account'
+		) {
+			this.props.history.push(path.emailVerifyRegister);
+		}
+	}
+
 	render() {
 		const { show } = this.state;
-		const { history } = this.props;
 		return (
 			<Row className="container-fluid">
 				<LeftRegister>
@@ -110,11 +121,6 @@ class SignUp extends Component {
 							</p>
 						</Alert>
 					)}
-					{show === true &&
-					this.props.auth.message ===
-						'Please go to your email and get verification code to finish sign up a new account'
-						? history.push(path.emailVerifyRegister)
-						: ''}
 					<Formik
 						initialValues={{
 							firstName: '',
@@ -126,8 +132,10 @@ class SignUp extends Component {
 							gender: '',
 						}}
 						validationSchema={schemaYupSignUp}
-						onSubmit={(values) => {
-							this.submitData(values);
+						onSubmit={(values, actions) => {
+							this.submitData(values).then(() => {
+								actions.resetForm(values);
+							});
 						}}
 					>
 						{({

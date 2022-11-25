@@ -60,6 +60,12 @@ class EmailVerificationRegister extends Component {
 		this.setState({ show: true, isLoading: false });
 	};
 
+	componentDidUpdate() {
+		if (this.props.auth.message === 'Success') {
+			this.props.history.push(path.signIn);
+		}
+	}
+
 	renderer = ({ minutes, seconds, completed }) => {
 		if (completed) {
 			return (
@@ -99,9 +105,7 @@ class EmailVerificationRegister extends Component {
 	};
 
 	render() {
-		const { history } = this.props;
 		const { show } = this.state;
-
 		return (
 			<Container fluid>
 				<Row>
@@ -183,16 +187,16 @@ class EmailVerificationRegister extends Component {
 								</p>
 							</Alert>
 						)}
-						{this.props.auth.message === 'Success'
-							? history.push(path.signIn)
-							: ''}
+
 						<Formik
 							initialValues={{
 								verifyCode: '',
 							}}
 							validationSchema={schemaYupEmailVerification}
-							onSubmit={(values) => {
-								this.submitData(values);
+							onSubmit={(values, actions) => {
+								this.submitData(values).then(() => {
+									actions.resetForm(values);
+								});
 							}}
 						>
 							{({

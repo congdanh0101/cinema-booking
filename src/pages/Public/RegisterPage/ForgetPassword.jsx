@@ -23,6 +23,17 @@ class ForgetPassword extends Component {
 		message: '',
 		isLoading: false,
 	};
+
+	componentDidUpdate() {
+		if (
+			this.state.show === true &&
+			this.props.auth.message ===
+				'Please go to your email and get verification code to reset your password'
+		) {
+			this.props.history.push(path.emailVerifyForgot);
+		}
+	}
+
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
 		await this.props.forgetPassword(values.email);
@@ -30,7 +41,6 @@ class ForgetPassword extends Component {
 	};
 
 	render() {
-		const { history } = this.props;
 		const { show } = this.state;
 		return (
 			<Row className="container-fluid">
@@ -89,18 +99,16 @@ class ForgetPassword extends Component {
 							</p>
 						</Alert>
 					)}
-					{show === true &&
-					this.props.auth.message ===
-						'Please go to your email and get verification code to reset your password'
-						? history.push(path.emailVerifyForgot)
-						: ''}
+
 					<Formik
 						initialValues={{
 							email: '',
 						}}
 						validationSchema={schemaYupEmail}
-						onSubmit={(values) => {
-							this.submitData(values);
+						onSubmit={(values, actions) => {
+							this.submitData(values).then(() => {
+								actions.resetForm(values);
+							});
 						}}
 					>
 						{({
