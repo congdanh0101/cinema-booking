@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Image, Row, Col } from 'react-bootstrap';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom'; 
 import youtube from '../../../../assets/images/youtube.svg';
 import ebv from '../../../../assets/images/ebv.png';
 import cineone from '../../../../assets/images/cineone.png';

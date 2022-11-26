@@ -1,9 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Col, Form, Image, Row, Button } from 'react-bootstrap';
+import { Card, Col, Form, Image, Row, Button, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
+import {
+	Datepicker,
+	DatepickerEvent,
+} from '@meinefinsternis/react-horizontal-date-picker';
+import { enUS } from 'date-fns/locale';
+
+import axiosClient from '../../../shared/apis/axiosClient';
 
 import { path } from '../../../shared/constants/path';
 
@@ -12,21 +19,20 @@ import listDate from '../../../shared/constants/data/listDate';
 import calendar from '../../../assets/images/calendar.svg';
 import map from '../../../assets/images/map.svg';
 
-import axiosClient from '../../../shared/apis/axiosClient';
-import { getAllShowtime } from '../../../service/actions/showtime';
-import { getAllTheater } from '../../../service/actions/theater';
 import { getMovieDetail } from '../../../service/actions/movie';
 import { createOrder } from '../../../service/actions/order';
 
-import ShowtimeCarousel from './components/ShowtimeCarousel/ShowtimeCarousel';
 import DetailMyTrailer from './components/Trailer/DetailMyTrailer';
 import './styles.css';
+import { set } from 'date-fns/esm';
 
 class MovieDetailComponent extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			selectValue: '',
+			selectedDate: null,
+			today: new Date(),
+			lastTwoDays: new Date(new Date().valueOf() - 1000 * 60 * 60 * 24 * 2),
 			showResults: [],
 			listShowTime,
 		};
@@ -34,27 +40,70 @@ class MovieDetailComponent extends Component {
 
 	async componentDidMount() {
 		const { id } = this.props.match.params;
+		const token = localStorage.getItem('token');
+
 		await this.props.getMovieDetail(id);
-		await this.props.getAllShowtime();
-		this.props.getAllTheater();
+
+		var event = this.state.today;
+		let showDate = event.toLocaleDateString().slice(0, 10);
+		showDate = moment(showDate).format('DD-MM-YYYY');
+
+		await axiosClient(token)
+			.post(`showtimes/movies/${id}`, {
+				showDate,
+			})
+			.then((res) => {
+				this.setState({
+					showResults: res.data,
+				});
+			});
 	}
 
-	searchCinema = (e) => {
-		this.setState({ [e.target.name]: e.target.value }, async () => {
-			const response = await axiosClient().get(
-				`showtimes/theaters/${e.target.value}`
-			);
+	handleChange = async (val) => {
+		const [startValue, endValue, rangeDates] = val;
+
+		if (this.state.today === startValue && this.state.today <= endValue) {
 			this.setState({
-				showResults: response.data,
+				today: rangeDates[rangeDates.length - 1],
 			});
-		});
+		} else if (this.state.today === endValue) {
+			this.setState({
+				today: rangeDates[0],
+			});
+		}
+	};
+
+	searchShowtime = async (val) => {
+		this.handleChange(val);
+
+		const { id } = this.props.match.params;
+		const token = localStorage.getItem('token');
+
+		this.state.selectedDate = this.state.today;
+
+		var event = this.state.selectedDate;
+		let showDate = event.toLocaleDateString().slice(0, 10);
+		showDate = moment(showDate).format('DD-MM-YYYY');
+
+		await axiosClient(token)
+			.post(`showtimes/movies/${id}`, {
+				showDate,
+			})
+			.then((res) => {
+				this.setState({
+					showResults: res.data,
+				});
+			});
+
+		console.log(this.state);
 	};
 
 	render() {
-		const { details, theaters, showtimes } = this.props;
-		const { showResults } = this.state;
-		console.log(this.props);
+		const { details } = this.props;
+		const { showResults, lastTwoDays, today } = this.state;
+
 		console.log(this.state);
+
 		return (
 			<div className="container">
 				<Row>
@@ -100,52 +149,14 @@ class MovieDetailComponent extends Component {
 				<div className="text-center py-4">
 					<p className="text-display-xs-bold">Showtimes and Tickets</p>
 					<Row className="justify-content-center">
-						<Col lg={3} md={5} xs={12} className="d-grid pt-0">
-							<Form.Group className="d-flex align-items-center">
-								<Image src={calendar} className="position-absolute pl-3" />
-								<Form.Control
-									name="date"
-									defaultValue=""
-									as="select"
-									className="border-0 pl-5 pick"
-									onChange={this.searchCinema}
-								>
-									<option value="">Select date</option>
-									{showtimes.length > 0 &&
-										showtimes.map((item) => (
-											<option
-												key={item.id}
-												value={moment(item.showDate).format('YYYY-MM-DD')}
-											>
-												{moment(item.showDate).format('YYYY-MM-DD')}
-											</option>
-										))}
-								</Form.Control>
-							</Form.Group>
-						</Col>
-						<Col lg={3} md={5} xs={12} className="d-grid pt-0">
-							<Form.Group className="d-flex align-items-center">
-								<Image src={map} className="position-absolute pl-3" />
-								<Form.Control
-									name="location"
-									defaultValue=""
-									as="select"
-									className="border-0 pl-5 pick"
-									onChange={this.searchCinema}
-								>
-									<option value="">Select theater</option>
-									{theaters.length > 0 &&
-										theaters.map((theater) => (
-											<option key={theater.id} value={theater.id}>
-												{theater.name}
-											</option>
-										))}
-								</Form.Control>
-							</Form.Group>
-						</Col>
+						<Datepicker
+							startValue={today}
+							startDate={lastTwoDays}
+							onChange={(e) => this.searchShowtime(e)}
+							// onChange={(e) => this.handleChange(e)}
+							locale={enUS}
+						/>
 					</Row>
-
-					<ShowtimeCarousel title="Test" showtime={listDate} />
 
 					{showResults.length > 0 ? (
 						<Row xs={1} md={2} lg={3} className="g-3">
@@ -199,13 +210,10 @@ class MovieDetailComponent extends Component {
 const mapStateToProps = (state) => ({
 	details: state.movie.details,
 	showtimes: state.showtime.showtimes,
-	theaters: state.theater.theaters,
 });
 
 const mapDispatchToProps = {
 	getMovieDetail,
-	getAllTheater,
-	getAllShowtime,
 	createOrder,
 };
 
