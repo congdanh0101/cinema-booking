@@ -27,7 +27,7 @@ class SignUp extends Component {
 		message: '',
 		isLoading: false,
 	};
-	
+
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
 		await this.props.register(

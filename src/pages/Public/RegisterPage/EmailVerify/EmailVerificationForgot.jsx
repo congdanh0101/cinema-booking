@@ -20,6 +20,7 @@ import { getUserDetailById } from '../../../../service/actions/user';
 import { LeftRegister, RightRegister } from '../../../../components/common';
 import tickitz_white from '../../../../assets/images/tickitz-white.svg';
 import { schemaYupEmailVerification } from '../../../../shared/constants/yupSchema';
+import ReactCodeInput from 'react-code-input';
 import Countdown from 'react-countdown';
 import { path } from '../../../../shared/constants/path';
 import '../styles.css';
@@ -33,6 +34,12 @@ class EmailVerificationForgot extends Component {
 
 	async componentDidMount() {
 		await this.props.getUserDetailById(sessionStorage.getItem('user'));
+	}
+
+	componentWillUnmount() {
+		this.setState = (state, callback) => {
+			return;
+		};
 	}
 
 	submitData = async (values) => {
@@ -52,7 +59,7 @@ class EmailVerificationForgot extends Component {
 			this.props.history.push(path.signIn);
 		}
 	}
-	
+
 	renderer = ({ minutes, seconds, completed }) => {
 		if (completed) {
 			return (
@@ -104,8 +111,8 @@ class EmailVerificationForgot extends Component {
 								Lets verify your new account
 							</p>
 							<p className="text-lg text-white pb-3 opacity-70 ">
-								To be able to use your account, please complete the following
-								steps
+								To be able to use your account again, please complete the
+								following steps
 							</p>
 							<ListGroup>
 								<li>
@@ -117,7 +124,7 @@ class EmailVerificationForgot extends Component {
 									</Button>
 									<label className="form-check-label text-label-non-active text-white pb-3">
 										<p className="pl-3 text-color-placeholder">
-											Fill your additional details
+											Input your email
 										</p>
 									</label>
 								</li>
@@ -179,10 +186,8 @@ class EmailVerificationForgot extends Component {
 								verifyCode: '',
 							}}
 							validationSchema={schemaYupEmailVerification}
-							onSubmit={(values, actions) => {
-								this.submitData(values).then(() => {
-									actions.resetForm(values);
-								});
+							onSubmit={(values) => {
+								this.submitData(values);
 							}}
 						>
 							{({
@@ -194,7 +199,7 @@ class EmailVerificationForgot extends Component {
 								handleSubmit,
 							}) => (
 								<Form.Group>
-									<Form.Group>
+									{/* <Form.Group>
 										<Form.Control
 											name="verifyCode"
 											type="text"
@@ -203,10 +208,24 @@ class EmailVerificationForgot extends Component {
 											onBlur={handleBlur}
 											value={values.verifyCode}
 										/>
+
 										{errors.verifyCode && touched.verifyCode ? (
 											<div style={{ color: 'red' }}>{errors.verifyCode}</div>
 										) : null}
-									</Form.Group>
+									</Form.Group> */}
+									<Row className="justify-content-md-center">
+										<Form.Label className="text-md pb-2 m-0">
+											Verify Code
+										</Form.Label>
+									</Row>
+									<Row className="justify-content-md-center">
+										<ReactCodeInput
+											type="text"
+											onChange={handleChange}
+											value={values.verifyCode}
+											fields={8}
+										/>
+									</Row>
 									<Row>
 										<Col>
 											{this.state.isLoading === false ? (

@@ -3,7 +3,6 @@ import { Card, Col, Row, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getMovieByShowing } from '../../../service/actions/movie';
-import { getAllShowtime } from '../../../service/actions/showtime';
 import listComingMovie from '../../../shared/constants/data/listComingMovie';
 import { ImageResize } from '../../../components/common';
 import { path } from '../../../shared/constants/path';
@@ -12,7 +11,6 @@ import './styles.css';
 class ShowingComponent extends Component {
 	async componentDidMount() {
 		await this.props.getMovieByShowing();
-		this.props.getAllShowtime();
 	}
 	render() {
 		const { movie } = this.props;
@@ -56,7 +54,7 @@ class ShowingComponent extends Component {
 												className="btn-nav"
 												block
 											>
-												Detail
+												Book now
 											</Button>
 										</Card.Body>
 									</Card>
@@ -106,7 +104,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
 	getMovieByShowing,
-	getAllShowtime,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShowingComponent);

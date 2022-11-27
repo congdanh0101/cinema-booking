@@ -60,6 +60,12 @@ class EmailVerificationRegister extends Component {
 		this.setState({ show: true, isLoading: false });
 	};
 
+	componentWillUnmount() {
+		this.setState = (state, callback) => {
+			return;
+		};
+	}
+
 	componentDidUpdate() {
 		if (this.props.auth.message === 'Success') {
 			this.props.history.push(path.signIn);

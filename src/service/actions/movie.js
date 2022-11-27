@@ -5,6 +5,25 @@ export const onSelectMovie = (movie) => ({
 	payload: movie,
 });
 
+export const getMovies = () => {
+	return async (dispatch) => {
+		try {
+			const response = await axiosClient().get(`movies`);
+			dispatch({
+				type: 'GET_MOVIES',
+				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_MOVIE_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
 export const getAllMovie = () => {
 	return async (dispatch) => {
 		try {

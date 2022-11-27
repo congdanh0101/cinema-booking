@@ -7,10 +7,20 @@ const initialState = {
 	selectedMovie: null,
 	details: {},
 	message: '',
+	pageNumber: '',
+	pageSize: '',
 };
 
 const movieReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case 'GET_MOVIES': {
+			return {
+				...state,
+				movies: action.payload.content,
+				pageNumber: action.payload.pageNumber,
+				pageSize: action.payload.pageSize,
+			};
+		}
 		case 'GET_ALL_MOVIE': {
 			const latestMovies = action.payload
 				.sort((a, b) => Date.parse(b.releases) - Date.parse(a.releases))

@@ -13,19 +13,11 @@ import './styles.css';
 
 class NavbarComponent extends Component {
 	componentDidMount() {
-		if (this.props.auth.token !== null)
+		if (this.props.auth.token !== null) {
 			this.props.getUserDetail(this.props.auth.token).then(async () => {
-				sessionStorage.setItem('userId', this.props.user.detail.id);
-				await this.props.getUserDetailById(sessionStorage.getItem('userId'));
-				sessionStorage.setItem('firstName', this.props.user.detail.firstName);
-				sessionStorage.setItem('lastName', this.props.user.detail.lastName);
-				sessionStorage.setItem(
-					'phoneNumber',
-					this.props.user.detail.phoneNumber
-				);
-				sessionStorage.setItem('email', this.props.user.detail.email);
-				sessionStorage.setItem('gender', this.props.user.detail.gender);
+				await this.props.getUserDetailById(this.props.user.detail.id);
 			});
+		}
 	}
 
 	render() {
@@ -50,7 +42,7 @@ class NavbarComponent extends Component {
 											key={item.id}
 											href={path.movieManage}
 										>
-											My Dashboard
+											Admin Dashboard
 										</Nav.Link>
 									);
 								} else return null;

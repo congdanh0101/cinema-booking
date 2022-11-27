@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Image, Row, Col } from 'react-bootstrap';
-import { Link, withRouter } from 'react-router-dom'; 
+import { Link, withRouter } from 'react-router-dom';
 import youtube from '../../../../assets/images/youtube.svg';
 import ebv from '../../../../assets/images/ebv.png';
 import cineone from '../../../../assets/images/cineone.png';
@@ -9,6 +9,7 @@ import tickitz from '../../../../assets/images/tickitz-purple.svg';
 import facebook from '../../../../assets/images/facebook.svg';
 import instagram from '../../../../assets/images/instagram.svg';
 import twitter from '../../../../assets/images/twitter.svg';
+import { path } from '../../../../shared/constants/path';
 
 function FooterComponent() {
 	return (
@@ -26,12 +27,7 @@ function FooterComponent() {
 						<p className="text-display-xs-bold-16 mb-4">Explore</p>
 						<ul className="mb-0">
 							<li className="mb-2">
-								<Link to="" className="text-muted">
-									Cinemas
-								</Link>
-							</li>
-							<li className="mb-2">
-								<Link to="" className="text-muted">
+								<Link to={path.movies} className="text-muted">
 									Movies List
 								</Link>
 							</li>
@@ -40,22 +36,17 @@ function FooterComponent() {
 									My Ticket
 								</Link>
 							</li>
-							<li className="mb-2">
-								<Link to="" className="text-muted">
-									Notification
-								</Link>
-							</li>
 						</ul>
 					</Col>
 					<Col lg={3} md={6} className="mb-4 mb-lg-0">
-						<p className="text-display-xs-bold-16 mb-4">Our Sponsor</p>
+						<p className="text-display-xs-bold-16 mb-3">Our Sponsor</p>
 						<ul className="mb-0">
-							<li className="mb-3">
+							<li className="mb-4">
 								<Link to="#" className="text-muted">
 									<Image src={ebv} height={44} />
 								</Link>
 							</li>
-							<li className="mb-3">
+							<li className="mb-4">
 								<Link to="#" className="text-muted">
 									<Image src={cineone} height={30} />
 								</Link>

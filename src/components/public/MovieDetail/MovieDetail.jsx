@@ -1,30 +1,23 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Col, Form, Image, Row, Button, Spinner } from 'react-bootstrap';
+import { Card, Col, Image, Row, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
-import {
-	Datepicker,
-	DatepickerEvent,
-} from '@meinefinsternis/react-horizontal-date-picker';
+import { Datepicker } from '@meinefinsternis/react-horizontal-date-picker';
 import { enUS } from 'date-fns/locale';
-
 import axiosClient from '../../../shared/apis/axiosClient';
 
-import { path } from '../../../shared/constants/path';
+import { onSelectShowtime } from '../../../service/actions/showtime';
 
-import listShowTime from '../../../shared/constants/data/listShowTime';
-import listDate from '../../../shared/constants/data/listDate';
 import calendar from '../../../assets/images/calendar.svg';
-import map from '../../../assets/images/map.svg';
 
 import { getMovieDetail } from '../../../service/actions/movie';
 import { createOrder } from '../../../service/actions/order';
 
 import DetailMyTrailer from './components/Trailer/DetailMyTrailer';
+import { path } from '../../../shared/constants/path';
 import './styles.css';
-import { set } from 'date-fns/esm';
 
 class MovieDetailComponent extends Component {
 	constructor(props) {
@@ -34,7 +27,6 @@ class MovieDetailComponent extends Component {
 			today: new Date(),
 			lastTwoDays: new Date(new Date().valueOf() - 1000 * 60 * 60 * 24 * 2),
 			showResults: [],
-			listShowTime,
 		};
 	}
 
@@ -49,10 +41,8 @@ class MovieDetailComponent extends Component {
 		showDate = moment(showDate).format('DD-MM-YYYY');
 
 		await axiosClient(token)
-			.post(`showtimes/movies/${id}`, {
-				showDate,
-			})
-			.then((res) => {
+			.post(`showtimes/movies/${id}`, { showDate: showDate })
+			.then(async (res) => {
 				this.setState({
 					showResults: res.data,
 				});
@@ -89,20 +79,16 @@ class MovieDetailComponent extends Component {
 			.post(`showtimes/movies/${id}`, {
 				showDate,
 			})
-			.then((res) => {
+			.then(async (res) => {
 				this.setState({
 					showResults: res.data,
 				});
 			});
-
-		console.log(this.state);
 	};
 
 	render() {
 		const { details } = this.props;
 		const { showResults, lastTwoDays, today } = this.state;
-
-		console.log(this.state);
 
 		return (
 			<div className="container">
@@ -140,20 +126,20 @@ class MovieDetailComponent extends Component {
 						<p className="text-link-lg-20">Overview</p>
 						<p className="text-sm">{details.description}</p>
 					</Col>
-					{/* <Col xs={4} md={12}>
+					<Col xs={4} md={12}>
 						{details.trailer && isNaN(details.trailer) ? (
 							<DetailMyTrailer url={details?.trailer} />
 						) : null}
-					</Col> */}
+					</Col>
 				</Row>
 				<div className="text-center py-4">
 					<p className="text-display-xs-bold">Showtimes and Tickets</p>
+					<hr />
 					<Row className="justify-content-center">
 						<Datepicker
 							startValue={today}
 							startDate={lastTwoDays}
 							onChange={(e) => this.searchShowtime(e)}
-							// onChange={(e) => this.handleChange(e)}
 							locale={enUS}
 						/>
 					</Row>
@@ -165,16 +151,17 @@ class MovieDetailComponent extends Component {
 									<Card className="card-movie border-0">
 										<Card.Body className="pb-0">
 											<Row>
-												<Col xs={10}>
+												<Col
+													xs={4}
+													className="d-flex align-items-center justify-content-center"
+												>
+													<Image src={calendar} width={100} alt="" />
+												</Col>
+												<Col xs={8}>
 													<p className="text-link-lg text-left m-0">
 														{item.showDate}
 													</p>
-												</Col>
-												<Col
-													xs={5}
-													className="d-flex align-items-center justify-content-center"
-												>
-													<p className="text-300-12 text-left m-0">
+													<p className="text-400-12 text-left m-0">
 														{item.timeStart} : {item.timeEnd}
 													</p>
 												</Col>
@@ -182,14 +169,31 @@ class MovieDetailComponent extends Component {
 										</Card.Body>
 										<hr />
 										<Card.Body className="pt-0 pb-0">
+											<h6 className="float-left text-sm">Theater</h6>
+											<p className="float-right text-link-sm">
+												{item.theater.name}
+											</p>
+										</Card.Body>
+										<Card.Body className="pt-0 pb-0">
 											<h6 className="float-left text-sm">Price</h6>
 											<p className="float-right text-link-sm">
 												${item.price}/ticket
 											</p>
 										</Card.Body>
-										<Card.Body className="pt-0 d-flex justify-content-end">
+										{/* <Card.Body className="pt-0 d-flex justify-content-end">
 											<Link to={`/order/${item.id}`}>
 												<Button variant="primary" className="btn-nav shadow">
+													Book now
+												</Button>
+											</Link>
+										</Card.Body> */}
+										<Card.Body className="pt-0 d-flex justify-content-end">
+											<Link to={path.order}>
+												<Button
+													variant="primary"
+													className="btn-nav shadow"
+													onClick={() => this.props.onSelectShowtime(item)}
+												>
 													Book now
 												</Button>
 											</Link>
@@ -214,6 +218,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
 	getMovieDetail,
+	onSelectShowtime,
 	createOrder,
 };
 

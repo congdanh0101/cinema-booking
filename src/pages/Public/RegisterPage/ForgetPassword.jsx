@@ -24,6 +24,12 @@ class ForgetPassword extends Component {
 		isLoading: false,
 	};
 
+	componentWillUnmount() {
+		this.setState = (state, callback) => {
+			return;
+		};
+	}
+
 	componentDidUpdate() {
 		if (
 			this.state.show === true &&
@@ -73,7 +79,20 @@ class ForgetPassword extends Component {
 									variant="outline-light"
 									className="btn-sm rounded-circle"
 								>
-									2
+									2<div className="vertical-line"></div>
+								</Button>
+								<label className="form-check-label text-label-non-active text-white pb-3">
+									<p className="pl-3 text-color-placeholder">
+										Activate your account
+									</p>
+								</label>
+							</li>
+							<li>
+								<Button
+									variant="outline-light"
+									className="btn-sm rounded-circle"
+								>
+									3
 								</Button>
 								<label className="form-check-label text-label-non-active text-white pb-3">
 									<p className="pl-3 text-color-placeholder">Done</p>
@@ -105,10 +124,8 @@ class ForgetPassword extends Component {
 							email: '',
 						}}
 						validationSchema={schemaYupEmail}
-						onSubmit={(values, actions) => {
-							this.submitData(values).then(() => {
-								actions.resetForm(values);
-							});
+						onSubmit={(values) => {
+							this.submitData(values);
 						}}
 					>
 						{({

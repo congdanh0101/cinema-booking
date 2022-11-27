@@ -7,20 +7,33 @@ import { connect } from 'react-redux';
 import { createOrder, getOrderById } from '../../../service/actions/order';
 
 class OrderPage extends Component {
-	// const { dataMovie } = order.listOrder;
+	state = {
+		selectShowtime: {},
+	};
 
-	async componentDidMount() {
-		const { id } = this.props.match.params;
-		await this.props.getOrderById(id);
+	componentDidMount() {
+		const { selectShowtime } = this.props;
+		this.setState({ selectShowtime: selectShowtime });
 	}
 
 	render() {
+		const { selectShowtime } = this.props;
+
+		console.log(this.props);
+
+		console.log(this.state);
+
 		return (
 			<div>
 				<Navbar className="navbar-expand-lg navbar-dark bg-primary ">
 					<Container>
 						<Container fluid>
-							{/* <Link className="text-link-lg text-white">"test"</Link> */}
+							<Link
+								to={`/movie-detail/${selectShowtime.movie.id}`}
+								className="text-link-lg text-white"
+							>
+								{selectShowtime.movie.name}
+							</Link>
 							<Link to="/" className="ml-auto">
 								<Button
 									variant="light"
@@ -47,6 +60,7 @@ class OrderPage extends Component {
 
 const mapStateToProps = (state) => ({
 	order: state.order,
+	selectShowtime: state.showtime.selectShowtime,
 });
 const mapDispatchToProps = { createOrder, getOrderById };
 

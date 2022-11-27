@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Pagination } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getAllMovie } from '../../../service/actions/movie';
+import { getMovies } from '../../../service/actions/movie';
 import { ImageResize } from '../../../components/common';
+
 
 import './styles.css';
 
 class MovieList extends Component {
 	async componentDidMount() {
-		this.props.getAllMovie();
+		await this.props.getMovies();
 	}
 	render() {
 		const { movie } = this.props;
@@ -50,6 +51,9 @@ class MovieList extends Component {
 							);
 						})}
 				</div>
+				<Pagination>
+					
+				</Pagination>
 			</div>
 		);
 	}
@@ -60,7 +64,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-	getAllMovie,
+	getMovies,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieList);

@@ -21,6 +21,11 @@ class SignIn extends Component {
 		await this.props.login(values.email, values.password);
 		this.setState({ show: true, isLoading: false });
 	};
+	componentWillUnmount() {
+		this.setState = (state, callback) => {
+			return;
+		};
+	}
 	componentDidMount() {
 		const token = localStorage.getItem('token');
 		if (token) {
@@ -70,10 +75,8 @@ class SignIn extends Component {
 							password: '',
 						}}
 						validationSchema={schemaYupSignIn}
-						onSubmit={(values, actions) => {
-							this.submitData(values).then(() => {
-								actions.resetForm(values);
-							});
+						onSubmit={(values) => {
+							this.submitData(values);
 						}}
 					>
 						{({
@@ -99,7 +102,6 @@ class SignIn extends Component {
 										<p style={{ color: 'red' }}>{errors.email}</p>
 									) : null}
 								</Form.Group>
-
 								<Form.Group controlId="formBasicPassword">
 									<Form.Label>Password</Form.Label>
 									<Form.Control
@@ -114,23 +116,21 @@ class SignIn extends Component {
 										<p style={{ color: 'red' }}>{errors.password}</p>
 									) : null}
 								</Form.Group>
-								<Row className="justify-content-md-center">
-									<Col>
+								<Row className="justify-content-md-between">
+									<Col lg="auto">
 										<Form.Check
 											type="checkbox"
 											id="custom-switch"
 											label="Stay signed in"
 										/>
 									</Col>
-
-									<Col xs lg="4">
-										<p className="pt-0 pl-lg-4">
+									<Col lg="auto">
+										<p className="pt-0 pl-lg-0">
 											<Link
 												style={{ textDecoration: 'none' }}
 												to={path.forgetPassword}
 											>
-												{' '}
-												Forgot password?
+												Forgot password ?
 											</Link>
 										</p>
 									</Col>

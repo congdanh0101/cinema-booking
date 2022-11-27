@@ -86,7 +86,7 @@ export const emailVerifyRegister = (
 ) => {
 	return async (dispatch) => {
 		try {
-			const expired = sessionStorage.getItem('expired');
+			const expired = parseInt(sessionStorage.getItem('expired'));
 			const now = new Date().getTime();
 			if (now <= expired) {
 				if (code === sessionStorage.getItem('verificationCode')) {
@@ -131,7 +131,7 @@ export const emailVerifyRegister = (
 export const emailVerifyForgot = (code) => {
 	return async (dispatch) => {
 		try {
-			const expired = sessionStorage.getItem('expired');
+			const expired = parseInt(sessionStorage.getItem('expired'));
 			const now = new Date().getTime();
 			const userId = sessionStorage.getItem('user');
 			if (now <= expired) {

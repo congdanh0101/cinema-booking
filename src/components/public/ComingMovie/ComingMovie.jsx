@@ -10,7 +10,7 @@ import './styles.css';
 
 class ComingComponent extends Component {
 	async componentDidMount() {
-		this.props.getMovieByComing();
+		await this.props.getMovieByComing();
 	}
 	render() {
 		const { movie } = this.props;
@@ -53,7 +53,7 @@ class ComingComponent extends Component {
 												className="btn-nav"
 												block
 											>
-												Detail
+												Book now
 											</Button>
 										</Card.Body>
 									</Card>

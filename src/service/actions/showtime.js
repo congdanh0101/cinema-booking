@@ -2,6 +2,11 @@ import axiosClient from '../../shared/apis/axiosClient';
 
 export const toggleDialog = () => ({ type: 'TOGGLE_DIALOG' });
 
+export const onSelectShowtime = (movie) => ({
+	type: 'SELECT_SHOWTIME',
+	payload: movie,
+});
+
 export const selectShowtime = (showtime) => ({
 	type: 'SELECT_SHOWTIMES',
 	payload: showtime,
