@@ -8,21 +8,12 @@ import { createOrder, getOrderById } from '../../../service/actions/order';
 
 class OrderPage extends Component {
 	state = {
-		selectShowtime: {},
+		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
 	};
 
-	componentDidMount() {
-		const { selectShowtime } = this.props;
-		this.setState({ selectShowtime: selectShowtime });
-	}
-
 	render() {
-		const { selectShowtime } = this.props;
-
-		console.log(this.props);
-
-		console.log(this.state);
-
+		const { selectShowtime } = this.state;
+		console.log(selectShowtime);
 		return (
 			<div>
 				<Navbar className="navbar-expand-lg navbar-dark bg-primary ">
@@ -60,7 +51,6 @@ class OrderPage extends Component {
 
 const mapStateToProps = (state) => ({
 	order: state.order,
-	selectShowtime: state.showtime.selectShowtime,
 });
 const mapDispatchToProps = { createOrder, getOrderById };
 

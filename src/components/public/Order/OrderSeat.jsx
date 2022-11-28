@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { Button, Card, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Seat from './Seat';
+import Seat from './Seat2';
 import { path } from '../../../shared/constants/path';
 import './styles.css';
 
 export default class OrderSeat extends Component {
+	state = {
+		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
+	};
 	render() {
+		const { selectShowtime } = this.state;
 		return (
-			<Col xs={12} lg={6}>
+			<Col xs={12} lg="auto">
 				<p className="text-display-xs-bold">Choose Your Seat</p>
 				<Card className="border-0 p-5 order-seat">
 					<Card.Body className="row text-center">
@@ -17,15 +21,17 @@ export default class OrderSeat extends Component {
 							<div className="line-screen"></div>
 						</Col>
 					</Card.Body>
-					<Card.Body>{/* <Seat /> */}</Card.Body>
+					<Card.Body>
+						<Seat />
+					</Card.Body>
 				</Card>
 				<div className="pt-4 checkout">
-					<Link to="/">
+					<Link to={`/movie-detail/${selectShowtime.movie.id}`}>
 						<Button
 							variant="outline-primary"
 							className="float-left col-12 col-md-5"
 						>
-							Change your movie
+							Change showtimes
 						</Button>
 					</Link>
 					<Link to={path.payment}>

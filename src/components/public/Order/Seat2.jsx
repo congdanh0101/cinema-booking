@@ -3,12 +3,21 @@ import { Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createSeat } from '../../../service/actions/order';
+import { getAllSeatsAvailableByShowtime } from '../../../service/actions/seat';
+import listSeatNum from '../../../shared/constants/data/listSeatNum.js';
 import './styles.css';
 
 class Seat extends Component {
 	state = {
+		listSeatNum,
 		listSeat: [],
+		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
 	};
+	async componentDidMount() {
+		const { seat, getAllSeatsAvailableByShowtime } = this.props;
+		const { selectShowtime } = this.state;
+		if (!seat.length) await getAllSeatsAvailableByShowtime(selectShowtime.id);
+	}
 	seatClick = (e) => {
 		let { name, checked } = e.target;
 		this.setState(
@@ -26,30 +35,19 @@ class Seat extends Component {
 		);
 	};
 	render() {
-		// const favSeats = Object.keys(this.state.listSeat)
-		// 	.filter((key) => this.state.listSeat[key])
-		// 	.join(", ");
+		const { listSeatNum } = this.state;
 
-		// const displaySeat = Object.keys(this.state.listSeat).filter(
-		// 	(x) => this.state.listSeat[x],
-		// );
 		const seatNum = [];
-		for (let i = 0; i < 10; i++) {
-			if (i === 5) {
-				seatNum.push(<div key={i} className="px-3"></div>);
-			}
-			seatNum.push(
-				<td key={i} className="pl-3">
-					{i}
+		listSeatNum.map((seatNumIdx) => {
+			return seatNum.push(
+				<td key={seatNumIdx.id} className="px-3">
+					{seatNumIdx.seatNum}
 				</td>
 			);
-		}
+		});
 
 		const seat = [];
 		for (let i = 0; i < 10; i++) {
-			if (i === 5) {
-				seat.push(<div className="px-3"></div>);
-			}
 			seat.push(
 				<td key={i}>
 					<input
@@ -63,10 +61,12 @@ class Seat extends Component {
 			);
 		}
 
+		console.log(this.state);
+
 		return (
 			<div>
 				<table>
-					{/* <tbody>
+					<tbody>
 						<tr>
 							<td>A</td>
 							{seat}
@@ -107,7 +107,7 @@ class Seat extends Component {
 							<td>J</td>
 							{seat}
 						</tr>
-					</tbody> */}
+					</tbody>
 					<tbody>
 						<tr>
 							<td></td>
@@ -115,7 +115,7 @@ class Seat extends Component {
 						</tr>
 					</tbody>
 				</table>
-				{/* <p className="text-link-lg pt-4">Seating key</p>
+				<p className="text-link-lg pt-4">Seating key</p>
 				<Row>
 					<Col>
 						<div className="availableBox float-left mr-3"></div>
@@ -129,15 +129,16 @@ class Seat extends Component {
 						<div className="soldBox float-left mr-3"></div>
 						<p>Sold</p>
 					</Col>
-				</Row> */}
+				</Row>
 			</div>
 		);
 	}
 }
 const mapStateToProps = (state) => ({
 	order: state.order,
+	seat: state.seat,
 });
 
-const mapDispatchToProps = { createSeat };
+const mapDispatchToProps = { createSeat, getAllSeatsAvailableByShowtime };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Seat));

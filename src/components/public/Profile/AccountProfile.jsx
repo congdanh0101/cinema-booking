@@ -16,7 +16,7 @@ export default class AccountProfile extends Component {
 							<Link
 								style={{ textDecoration: 'none' }}
 								to={path.profile}
-								className="pr-3"
+								className="pr-4"
 							>
 								Account Settings
 							</Link>

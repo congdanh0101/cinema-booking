@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, Col, Image, Row, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Moment from 'react-moment';
 import moment from 'moment';
 import { Datepicker } from '@meinefinsternis/react-horizontal-date-picker';
 import { enUS } from 'date-fns/locale';
@@ -25,22 +26,22 @@ class MovieDetailComponent extends Component {
 		this.state = {
 			selectedDate: null,
 			today: new Date(),
-			lastTwoDays: new Date(new Date().valueOf() - 1000 * 60 * 60 * 24 * 2),
+			nextWeek: new Date(new Date().valueOf() + 1000 * 60 * 60 * 24 * 8),
 			showResults: [],
 		};
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		const { id } = this.props.match.params;
 		const token = localStorage.getItem('token');
 
-		await this.props.getMovieDetail(id);
+		this.props.getMovieDetail(id);
 
 		var event = this.state.today;
 		let showDate = event.toLocaleDateString().slice(0, 10);
 		showDate = moment(showDate).format('DD-MM-YYYY');
 
-		await axiosClient(token)
+		axiosClient(token)
 			.post(`showtimes/movies/${id}`, { showDate: showDate })
 			.then(async (res) => {
 				this.setState({
@@ -49,7 +50,7 @@ class MovieDetailComponent extends Component {
 			});
 	}
 
-	handleChange = async (val) => {
+	handleChange = (val) => {
 		const [startValue, endValue, rangeDates] = val;
 
 		if (this.state.today === startValue && this.state.today <= endValue) {
@@ -86,9 +87,14 @@ class MovieDetailComponent extends Component {
 			});
 	};
 
+	handleSelectShowtime = (showtime) => {
+		this.props.onSelectShowtime(showtime);
+		sessionStorage.setItem('selectShowtime', JSON.stringify(showtime));
+	};
+
 	render() {
 		const { details } = this.props;
-		const { showResults, lastTwoDays, today } = this.state;
+		const { showResults, today, nextWeek } = this.state;
 
 		return (
 			<div className="container">
@@ -103,7 +109,7 @@ class MovieDetailComponent extends Component {
 					<Col xs={12} md={8}>
 						<p className="text-display-sm-bold m-0">{details.name}</p>
 						{details.genres &&
-							details.genres.map((item) => (
+							details.genres?.map((item) => (
 								<Fragment key={item.id}>
 									<span>{item.name} </span>
 								</Fragment>
@@ -112,7 +118,9 @@ class MovieDetailComponent extends Component {
 							<Col xs={6} lg={4}>
 								<div className="flex-column justify-content-center d-flex">
 									<p className="text-xs text-muted m-0">Release date</p>
-									<p className="text-sm pt-1">{details.releases}</p>
+									<p className="text-sm pt-1">
+										<Moment format="DD MMMM YYYY">{details.release}</Moment>
+									</p>
 								</div>
 							</Col>
 							<Col xs={6} lg={4}>
@@ -126,11 +134,11 @@ class MovieDetailComponent extends Component {
 						<p className="text-link-lg-20">Overview</p>
 						<p className="text-sm">{details.description}</p>
 					</Col>
-					<Col xs={4} md={12}>
+					{/* <Col xs={4} md={12}>
 						{details.trailer && isNaN(details.trailer) ? (
 							<DetailMyTrailer url={details?.trailer} />
 						) : null}
-					</Col>
+					</Col> */}
 				</Row>
 				<div className="text-center py-4">
 					<p className="text-display-xs-bold">Showtimes and Tickets</p>
@@ -138,7 +146,7 @@ class MovieDetailComponent extends Component {
 					<Row className="justify-content-center">
 						<Datepicker
 							startValue={today}
-							startDate={lastTwoDays}
+							endDate={nextWeek}
 							onChange={(e) => this.searchShowtime(e)}
 							locale={enUS}
 						/>
@@ -192,7 +200,7 @@ class MovieDetailComponent extends Component {
 												<Button
 													variant="primary"
 													className="btn-nav shadow"
-													onClick={() => this.props.onSelectShowtime(item)}
+													onClick={() => this.handleSelectShowtime(item)}
 												>
 													Book now
 												</Button>
