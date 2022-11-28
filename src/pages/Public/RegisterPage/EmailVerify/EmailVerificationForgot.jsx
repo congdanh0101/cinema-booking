@@ -5,13 +5,11 @@ import {
 	Image,
 	Button,
 	ListGroup,
-	Form,
 	Spinner,
 	Alert,
 	Col,
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { Formik } from 'formik';
 import {
 	emailVerifyForgot,
 	forgetPassword,
@@ -19,7 +17,6 @@ import {
 import { getUserDetailById } from '../../../../service/actions/user';
 import { LeftRegister, RightRegister } from '../../../../components/common';
 import tickitz_white from '../../../../assets/images/tickitz-white.svg';
-import { schemaYupEmailVerification } from '../../../../shared/constants/yupSchema';
 import ReactCodeInput from 'react-code-input';
 import Countdown from 'react-countdown';
 import { path } from '../../../../shared/constants/path';
@@ -29,6 +26,7 @@ class EmailVerificationForgot extends Component {
 	state = {
 		show: true,
 		message: '',
+		verifyCode: '',
 		isLoading: false,
 	};
 
@@ -42,9 +40,21 @@ class EmailVerificationForgot extends Component {
 		};
 	}
 
-	submitData = async (values) => {
+	componentDidUpdate() {
+		if (this.props.auth.message === 'Success') {
+			this.props.history.push(path.signIn);
+		}
+	}
+
+	handleCodeChange = (pinCode) => {
+		this.setState({
+			verifyCode: pinCode,
+		});
+	};
+
+	submitData = async () => {
 		this.setState({ isLoading: true });
-		await this.props.emailVerifyForgot(values.verifyCode);
+		await this.props.emailVerifyForgot(this.state.verifyCode);
 		this.setState({ show: true, isLoading: false });
 	};
 
@@ -53,12 +63,6 @@ class EmailVerificationForgot extends Component {
 		await this.props.forgetPassword(this.props.user.detail.email);
 		this.setState({ show: true, isLoading: false });
 	};
-
-	componentDidUpdate() {
-		if (this.props.auth.message === 'Success') {
-			this.props.history.push(path.signIn);
-		}
-	}
 
 	renderer = ({ minutes, seconds, completed }) => {
 		if (completed) {
@@ -99,7 +103,7 @@ class EmailVerificationForgot extends Component {
 	};
 
 	render() {
-		const { show } = this.state;
+		const { show, verifyCode } = this.state;
 		return (
 			<Container fluid>
 				<Row>
@@ -181,91 +185,53 @@ class EmailVerificationForgot extends Component {
 								</p>
 							</Alert>
 						)}
-						<Formik
-							initialValues={{
-								verifyCode: '',
-							}}
-							validationSchema={schemaYupEmailVerification}
-							onSubmit={(values) => {
-								this.submitData(values);
-							}}
-						>
-							{({
-								values,
-								errors,
-								touched,
-								handleChange,
-								handleBlur,
-								handleSubmit,
-							}) => (
-								<Form.Group>
-									{/* <Form.Group>
-										<Form.Control
-											name="verifyCode"
-											type="text"
-											placeholder="Enter your code verification"
-											onChange={handleChange}
-											onBlur={handleBlur}
-											value={values.verifyCode}
-										/>
-
-										{errors.verifyCode && touched.verifyCode ? (
-											<div style={{ color: 'red' }}>{errors.verifyCode}</div>
-										) : null}
-									</Form.Group> */}
-									<Row className="justify-content-md-center">
-										<Form.Label className="text-md pb-2 m-0">
-											Verify Code
-										</Form.Label>
-									</Row>
-									<Row className="justify-content-md-center">
-										<ReactCodeInput
-											type="text"
-											onChange={handleChange}
-											value={values.verifyCode}
-											fields={8}
-										/>
-									</Row>
-									<Row>
-										<Col>
-											{this.state.isLoading === false ? (
-												<Container className="pt-3" fluid>
-													<Row className="justify-content-md-center">
-														<Button
-															onClick={handleSubmit}
-															variant="outline-primary"
-															type="submit"
-															block
-															className="float-left col-12 col-md-5"
-														>
-															Activate now
-														</Button>
-														<Col></Col>
-														<Countdown
-															date={Date.now() + 60000}
-															intervalDelay={0}
-															precision={3}
-															renderer={this.renderer}
-														/>
-													</Row>
-												</Container>
-											) : (
-												<Button variant="primary" type="loading" block disabled>
-													<Spinner
-														as="span"
-														animation="border"
-														size="sm"
-														role="status"
-														aria-hidden="true"
-													/>
-													<span className="visually-hidden"> Loading...</span>
-												</Button>
-											)}
-										</Col>
-									</Row>
-								</Form.Group>
-							)}
-						</Formik>
+						<Row className="justify-content-md-center">
+							<ReactCodeInput
+								type="text"
+								onChange={(e) => this.handleCodeChange(e)}
+								value={verifyCode}
+								fields={8}
+							/>
+						</Row>
+						<Row>
+							<Col>
+								{this.state.isLoading === false ? (
+									<Container className="pt-3" fluid>
+										<Row className="justify-content-md-center">
+											<Button
+												onClick={(e) => this.submitData(e)}
+												variant="outline-primary"
+												type="submit"
+												block
+												className="float-left col-12 col-md-5"
+											>
+												Activate now
+											</Button>
+											<Col lg="auto"></Col>
+											<Countdown
+												date={Date.now() + 60000}
+												intervalDelay={0}
+												precision={3}
+												renderer={this.renderer}
+											/>
+										</Row>
+									</Container>
+								) : (
+									<Container className="pt-3" fluid>
+										<Button variant="primary" type="loading" block disabled>
+											<Spinner
+												as="span"
+												animation="border"
+												size="sm"
+												role="status"
+												aria-hidden="true"
+											/>
+											<span className="visually-hidden"> Loading...</span>
+										</Button>
+									</Container>
+								)}
+							</Col>
+						</Row>
 					</RightRegister>
 				</Row>
 			</Container>
