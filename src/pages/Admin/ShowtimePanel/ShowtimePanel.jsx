@@ -52,8 +52,7 @@ class ShowtimeList extends Component {
 		} = this.props;
 		return (
 			<div className={classes.root}>
-				<ShowtimesToolbar
-					showtimes={showtime}
+				<ShowtimesToolbar 
 					toggleDialog={toggleDialog}
 					selectedShowtimes={selectedShowtimes}
 					deleteShowtime={this.handleDeleteShowtime}

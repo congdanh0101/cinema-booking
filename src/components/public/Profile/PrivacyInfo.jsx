@@ -18,7 +18,7 @@ class PrivacyInfo extends Component {
 
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
-		await this.props.changePassword({
+		await this.props.changePassword(this.props.user.detail.id, {
 			oldPassword: values.oldPassword,
 			newPassword: values.newPassword,
 			confirmPassword: values.confirmPassword,

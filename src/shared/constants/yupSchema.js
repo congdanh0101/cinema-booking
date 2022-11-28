@@ -53,16 +53,25 @@ export const schemaYupSignIn = yup.object({
 });
 
 export const schemaUser = yup.object({
+	firstName: yup
+		.string()
+		.min(2, 'Too Short!')
+		.max(30, 'Too Long!')
+		.required('Please enter your firstname'),
+	lastName: yup
+		.string()
+		.min(2, 'Too Short!')
+		.max(30, 'Too Long!')
+		.required('Please enter your lastname'),
+	phoneNumber: yup
+		.string()
+		.min(9, ({ min }) => `Phone number must be at least ${min} characters`)
+		.required('Please enter your phone number'),
+	gender: yup.string().required('Please select your gender'),
 	email: yup
 		.string()
 		.email('Please enter valid email address')
 		.required('Please enter your email address'),
-	password: yup.string(),
-	firstName: yup.string().required('Please enter your firstname'),
-	lastName: yup.string().required('Please enter your lastname'),
-	role: yup.string().required('Please enter role'),
-	dateOfBirth: yup.string().required('Please enter date of birth'),
-	phoneNumber: yup.string().required('Please enter phone number'),
 });
 
 export const schemaYupFilm = yup.object().shape({

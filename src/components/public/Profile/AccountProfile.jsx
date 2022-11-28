@@ -16,14 +16,11 @@ export default class AccountProfile extends Component {
 							<Link
 								style={{ textDecoration: 'none' }}
 								to={path.profile}
-								className="pr-4 "
+								className="pr-3"
 							>
 								Account Settings
 							</Link>
-							<Link
-								style={{ textDecoration: 'none' }}
-								to="/profile-page/order-history"
-							>
+							<Link style={{ textDecoration: 'none' }} to={path.profilePrivacy}>
 								Account and Privacy
 							</Link>
 						</Card.Body>
@@ -32,7 +29,7 @@ export default class AccountProfile extends Component {
 						<Route exact path={path.profile}>
 							<DetailInfo />
 						</Route>
-						<Route exact path="/profile-page/order-history">
+						<Route exact path={path.profilePrivacy}>
 							<PrivacyInfo />
 						</Route>
 					</Switch>

@@ -21,8 +21,8 @@ class ShowtimesToolbar extends Component {
 		const {
 			classes,
 			className,
-			selectedShowtimes,
 			toggleDialog,
+			selectedShowtimes,
 			deleteShowtime,
 		} = this.props;
 		const rootClassName = classNames(classes.root, className);

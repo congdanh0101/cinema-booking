@@ -94,11 +94,11 @@ export const addUser = (
 	};
 };
 
-export const updateUser = (id, data) => {
+export const updateUser = (userId, data) => {
 	return async (dispatch) => {
 		try {
-			const bearerToken = localStorage.getItem('token');
-			const response = await axiosClient(bearerToken).put(`users/${id}`, data);
+			const token = localStorage.getItem('token');
+			const response = await axiosClient(token).put(`users/${userId}`, data);
 			dispatch({
 				type: 'UPDATE_USER',
 				payload: response.data,
@@ -134,11 +134,10 @@ export const deleteUser = (userId) => {
 	};
 };
 
-export const changePassword = (data) => {
+export const changePassword = (userId, data) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('token');
-			const userId = sessionStorage.getItem('userId');
 			const response = await axiosClient(token).put(
 				`users/changepassword/${userId}`,
 				data

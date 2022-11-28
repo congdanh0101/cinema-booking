@@ -24,10 +24,18 @@ class NavbarComponent extends Component {
 			} else {
 				this.props.getUserDetail(this.props.auth.token).then(async () => {
 					await this.props.getUserDetailById(this.props.user.detail.id);
+					sessionStorage.setItem(
+						'user',
+						JSON.stringify(this.props.user.detail)
+					);
 				});
 			}
 		}
 	}
+
+	handleLogout = () => {
+		this.props.logout();
+	};
 
 	render() {
 		const { user } = this.props;
@@ -78,7 +86,7 @@ class NavbarComponent extends Component {
 									<NavDropdown.Divider />
 									<NavDropdown.Item
 										href={path.home}
-										onClick={(e) => this.props.logout()}
+										onClick={this.handleLogout}
 									>
 										Sign out
 									</NavDropdown.Item>

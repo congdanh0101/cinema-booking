@@ -11,6 +11,7 @@ export const path = {
 	movies: '/movies',
 	detail: '/movie-detail/:id',
 	profile: '/profile',
+	profilePrivacy: '/profile/privacy',
 	history: '/history',
 	article: '/article',
 	order: '/order',
