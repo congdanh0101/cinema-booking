@@ -12,11 +12,20 @@ import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
 import './styles.css';
 
 class NavbarComponent extends Component {
-	componentDidMount() {
+	state = {
+		expired: JSON.parse(localStorage.getItem('expiredToken')),
+		now: new Date().getTime(),
+	};
+
+	async componentDidMount() {
 		if (this.props.auth.token !== null) {
-			this.props.getUserDetail(this.props.auth.token).then(async () => {
-				await this.props.getUserDetailById(this.props.user.detail.id);
-			});
+			if (this.state.now >= this.state.expired) {
+				await this.props.logout();
+			} else {
+				this.props.getUserDetail(this.props.auth.token).then(async () => {
+					await this.props.getUserDetailById(this.props.user.detail.id);
+				});
+			}
 		}
 	}
 
