@@ -1,6 +1,5 @@
 package springboot.restful.config.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/swagger-resources/**",
 			"/swagger-ui/**",
 			"/webjars/**",
-			"/pay"
+			"/pay",
+			"/api/showtimes/movies/{idMovie}"
 	};
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -70,8 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
 				.accessDeniedHandler(customAccessDeniedHandler)
 				.and()
-//                .logout().permitAll()
-//                .and()
+				// .logout().permitAll()
+				// .and()
 				.logout()
 				.invalidateHttpSession(true)
 				.clearAuthentication(true)
@@ -83,7 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	}
 
-
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -93,7 +92,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customUserDetailService).passwordEncoder(passwordEncoder());
 	}
-
 
 	@Bean
 	@Override

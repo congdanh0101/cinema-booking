@@ -126,7 +126,8 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 	public List<ShowTimeDTO> getAllShowTimeByShowDateAndMovie(Date showDate, int idMovie) {
 		Movie movie = modelMapper.map(movieService.getMovieById(idMovie), Movie.class);
 		List<ShowTime> showTimes = showTimeRepository.findByShowDateAndMovieOrderByTimeStartAsc(showDate, movie);
-		List<ShowTimeDTO> showTimeDTOS = showTimes.stream().filter(st -> st.getMovie().isDisplay()).map(this::entityToDTO).collect(Collectors.toList());
+		List<ShowTimeDTO> showTimeDTOS = showTimes.stream().filter(st -> st.getMovie().isDisplay())
+				.map(this::entityToDTO).collect(Collectors.toList());
 		showTimeDTOS.forEach(st -> {
 			Date date = st.getShowDate();
 			Date newDate = new Date();
@@ -136,6 +137,13 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 			st.setShowDate(newDate);
 		});
 		return showTimeDTOS;
+	}
+
+	@Override
+	public List<ShowTimeDTO> getAllShowTimeByTheater(int idTheater) {
+		Theater theater = modelMapper.map(theaterService.geTheaterById(idTheater), Theater.class);
+		List<ShowTime> showTimes = showTimeRepository.findByTheater(theater);
+		return showTimes.stream().map(this::entityToDTO).collect(Collectors.toList());
 	}
 
 	private int getPrice(Date showDate, String timeStart) {
@@ -441,13 +449,14 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
 
 		List<Ticket> tickets = ticketRepository.findByShowTime(showTime);
-		List<TicketDTO> ticketDTOs = tickets.stream().map(t -> modelMapper.map(t, TicketDTO.class)).filter(t -> t.isSold() == true)
+		List<TicketDTO> ticketDTOs = tickets.stream().map(t -> modelMapper.map(t, TicketDTO.class))
+				.filter(t -> t.isSold() == true)
 				.collect(Collectors.toList());
 		return ticketDTOs;
 	}
 
 	private boolean isShowTimeAvailableForUpdate(int idShowTime, List<ShowTimeDTO> showTimeDTOS, String timeStart,
-	                                             Movie movie) {
+			Movie movie) {
 
 		ShowTime showTime = showTimeRepository.findById(idShowTime)
 				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));

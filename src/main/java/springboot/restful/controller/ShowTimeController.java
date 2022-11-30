@@ -26,7 +26,7 @@ public class ShowTimeController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/movies/{idMovie}/theaters/{idTheater}")
 	public ResponseEntity<?> createShowTime(@Valid @RequestBody ShowTimeDTO showTimeDTO,
-	                                        @PathVariable(value = "idMovie") int idMovie, @PathVariable(value = "idTheater") int idTheater) {
+			@PathVariable(value = "idMovie") int idMovie, @PathVariable(value = "idTheater") int idTheater) {
 		// log.error(showTimeDTO.getTimeStart().toLocaleString());
 		return new ResponseEntity<ShowTimeDTO>(showTimeService.createShowTime(showTimeDTO, idMovie, idTheater),
 				HttpStatus.CREATED);
@@ -35,8 +35,8 @@ public class ShowTimeController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{idShowTime}/movies/{idMovie}/theaters/{idTheater}")
 	public ResponseEntity<?> updateShowTime(@Valid @RequestBody ShowTimeDTO showTimeDTO,
-	                                        @PathVariable(value = "idShowTime") int idShowTime,
-	                                        @PathVariable(value = "idMovie") int idMovie, @PathVariable(value = "idTheater") int idTheater) {
+			@PathVariable(value = "idShowTime") int idShowTime,
+			@PathVariable(value = "idMovie") int idMovie, @PathVariable(value = "idTheater") int idTheater) {
 		// log.error(showTimeDTO.getTimeStart().toLocaleString());
 		return new ResponseEntity<ShowTimeDTO>(
 				showTimeService.updateShowTime(showTimeDTO, idMovie, idTheater, idShowTime),
@@ -54,6 +54,23 @@ public class ShowTimeController {
 		ShowTimeDTO showTimeDTO = showTimeService.getShowTimeById(id);
 		log.error(showTimeDTO.toString());
 		return new ResponseEntity<ShowTimeDTO>(showTimeDTO, HttpStatus.OK);
+	}
+
+	// @GetMapping("/movies/{idMovie}")
+	// public ResponseEntity<?> getAllShowTimeByShowDateAndMovie(@PathVariable int
+	// idMovie,
+	// @RequestBody ShowTimeDTO showTimeDTO) {
+	// List<ShowTimeDTO> showTimeDTOs =
+	// showTimeService.getAllShowTimeByShowDateAndMovie(showTimeDTO.getShowDate(),
+	// idMovie);
+	// return new ResponseEntity<List<ShowTimeDTO>>(showTimeDTOs, HttpStatus.OK);
+	// }
+
+	@GetMapping("theaters/{idTheater}")
+	public ResponseEntity<?> getShowTimeByTheater(@PathVariable int idTheater) {
+		List<ShowTimeDTO> showTimeDTO = showTimeService.getAllShowTimeByTheater(idTheater);
+		log.error(showTimeDTO.toString());
+		return new ResponseEntity<List<ShowTimeDTO>>(showTimeDTO, HttpStatus.OK);
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
@@ -77,8 +94,8 @@ public class ShowTimeController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{idShowTime}")
 	public ResponseEntity<?> updateShowTimes(@Valid @RequestBody ShowTimeDTO showTimeDTO, @PathVariable int idShowTime,
-	                                         @RequestParam(value = "movies", required = true) Integer idMovie,
-	                                         @RequestParam(value = "theaters", required = true) Integer idTheater) {
+			@RequestParam(value = "movies", required = true) Integer idMovie,
+			@RequestParam(value = "theaters", required = true) Integer idTheater) {
 		if (idMovie != null && idTheater != null)
 			return new ResponseEntity<ShowTimeDTO>(
 					showTimeService.updateShowTime(showTimeDTO, idMovie, idTheater, idShowTime), HttpStatus.OK);
@@ -88,8 +105,11 @@ public class ShowTimeController {
 					HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping("/movies/{idMovie}")
-	public ResponseEntity<?> getAllShowTimeByShowDateAndMovie(@PathVariable int idMovie, @RequestBody ShowTimeDTO showTimeDTO) {
-		return ResponseEntity.ok().body(showTimeService.getAllShowTimeByShowDateAndMovie(showTimeDTO.getShowDate(), idMovie));
+	@PostMapping("/movies/{idMovie}")
+	public ResponseEntity<?> getAllShowTimeByShowDateAndMovie(@PathVariable int idMovie,
+			@RequestBody ShowTimeDTO showTimeDTO) {
+		return ResponseEntity.ok()
+				.body(showTimeService.getAllShowTimeByShowDateAndMovie(showTimeDTO.getShowDate(),
+						idMovie));
 	}
 }

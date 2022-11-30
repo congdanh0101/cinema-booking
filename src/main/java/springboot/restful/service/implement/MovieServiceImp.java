@@ -59,7 +59,6 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 			movie.getGenres().add(genre);
 		});
 
-
 		return entityToDTO(movieRepository.save(movie));
 	}
 
@@ -96,7 +95,8 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 	public MovieRespone getAllMovies(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
 		Sort sort = (sortDir.equalsIgnoreCase("asc"))
-				? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+				? Sort.by(sortBy).ascending()
+				: Sort.by(sortBy).descending();
 
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
@@ -114,11 +114,11 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 				.totalElements(pageMovies.getTotalElements())
 				.build();
 
-//		movieRespone.setContent(allMoviesDTO);
-//		movieRespone.setPageNumber(pageMovies.getNumber());
-//		movieRespone.setPageSize(pageMovies.getSize());
-//		movieRespone.setTotalElements(pageMovies.getTotalElements());
-//		movieRespone.setLastPage(pageMovies.isLast());
+		// movieRespone.setContent(allMoviesDTO);
+		// movieRespone.setPageNumber(pageMovies.getNumber());
+		// movieRespone.setPageSize(pageMovies.getSize());
+		// movieRespone.setTotalElements(pageMovies.getTotalElements());
+		// movieRespone.setLastPage(pageMovies.isLast());
 
 		return movieRespone;
 	}
@@ -187,6 +187,5 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 	public MovieDTO entityToDTO(Movie entity) {
 		return this.modelMapper.map(entity, MovieDTO.class);
 	}
-
 
 }

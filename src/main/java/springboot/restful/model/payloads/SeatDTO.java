@@ -11,5 +11,5 @@ public class SeatDTO {
     private int id;
     private String name; // A1, A2, B1, B2, ...
 
-//	private Collection<TicketDTO> tickets = new HashSet<>();
+    // private Collection<TicketDTO> tickets = new HashSet<>();
 }

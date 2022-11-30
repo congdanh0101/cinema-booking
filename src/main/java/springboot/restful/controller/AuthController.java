@@ -6,6 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -43,7 +45,7 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-	private static final long VERIFICATION_CODE_VALIDITY = 10 * 60; // 10 minutes
+	private static final long VERIFICATION_CODE_VALIDITY = 5 * 60; // 10 minutes
 	@Autowired
 	private JwtTokenHelper jwtTokenHelper;
 	@Autowired
@@ -102,11 +104,11 @@ public class AuthController {
 
 		String token = jwtTokenHelper.generateToken(userDetails);
 
-		Map<String, String> res = new HashMap<>();
+		Map res = new HashMap<>();
 		res.put("timestamp", new Date().toLocaleString());
 		res.put("message", "Login successfully");
 		res.put("token", token);
-
+		res.put("expired", jwtTokenHelper.getExpirationDateFromToken(token));
 		return new ResponseEntity<>(res, HttpStatus.OK);
 	}
 
@@ -263,7 +265,8 @@ public class AuthController {
 		userDTO.setPassword(randomPassword);
 		userDTO = userService.updateUser(id, userDTO);
 
-		emailSenderService.sendEmail(userDTO.getEmail(), "RESET PASSWORD", emailSenderService.htmlEmailResetPassword(randomPassword));
+		emailSenderService.sendEmail(userDTO.getEmail(), "RESET PASSWORD",
+				emailSenderService.htmlEmailResetPassword(randomPassword));
 
 		Map res = new HashMap();
 		res.put("messgae", "Please check your email to get new password!");
@@ -287,10 +290,11 @@ public class AuthController {
 				emailSenderService.htmlEmailVerificationCodeForgotPassword(verificationCode, userDTO.getFirstName())
 						+ " " + userDTO.getLastName());
 
-//		HttpSession session = request.getSession(true);
-//		session.setAttribute("verificationCode", verificationCode);
-//		session.setAttribute("userDTO", userDTO);
-//		session.setAttribute("expired", new Date(System.currentTimeMillis() + VERIFICATION_CODE_VALIDITY * 1000));
+		// HttpSession session = request.getSession(true);
+		// session.setAttribute("verificationCode", verificationCode);
+		// session.setAttribute("userDTO", userDTO);
+		// session.setAttribute("expired", new Date(System.currentTimeMillis() +
+		// VERIFICATION_CODE_VALIDITY * 1000));
 
 		// HttpSession session = request.getSession(false);
 		// if (session == null || !request.isRequestedSessionIdValid()) {
@@ -312,33 +316,35 @@ public class AuthController {
 
 		res.put("expired", new Date(System.currentTimeMillis() + VERIFICATION_CODE_VALIDITY * 1000));
 		res.put("message", "Please go to your email and get verification code to reset your password");
-		res.put("user", userDTO);
-		res.put("verficationCode", verificationCode);
+		res.put("user", userDTO.getId());
+		res.put("verificationCode", verificationCode);
 
 		return new ResponseEntity<>(res, HttpStatus.OK);
 	}
 
 	// @PostMapping("/reset")
-	// public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPassword req) {
+	// public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPassword req)
+	// {
 
-	// 	try {
-	// 		HttpSession session = request.getSession(false);
-	// 		UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
-	// 		Date expired = (Date) session.getAttribute("expired");
+	// try {
+	// HttpSession session = request.getSession(false);
+	// UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
+	// Date expired = (Date) session.getAttribute("expired");
 
-	// 		Date now = new Date(System.currentTimeMillis());
+	// Date now = new Date(System.currentTimeMillis());
 
-	// 		if (now.before(expired)) {
-	// 			UserDTO newUserDTO = userService.resetPassword(userDTO.getId(), req.getNewPassword(),
-	// 					req.getConfirmPassword());
-	// 			session.invalidate();
-	// 			return new ResponseEntity<>(newUserDTO, HttpStatus.OK);
-	// 		} else
-	// 			throw new ApiException("Time out to reset password!");
+	// if (now.before(expired)) {
+	// UserDTO newUserDTO = userService.resetPassword(userDTO.getId(),
+	// req.getNewPassword(),
+	// req.getConfirmPassword());
+	// session.invalidate();
+	// return new ResponseEntity<>(newUserDTO, HttpStatus.OK);
+	// } else
+	// throw new ApiException("Time out to reset password!");
 
-	// 	} catch (NullPointerException e) {
-	// 		throw new ApiException("Session is null");
-	// 	}
+	// } catch (NullPointerException e) {
+	// throw new ApiException("Session is null");
+	// }
 	// }
 
 	@PostMapping("/reset/{idUser}")

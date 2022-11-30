@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/users", consumes = {MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_HTML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+@RequestMapping("/api/users")
 @Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
@@ -66,31 +66,33 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('USER')")
-	@PutMapping("/changepassword")
-	public ResponseEntity<?> changeUserPassword(@Valid @RequestBody ChangePassword changePassword) {
-		User user = decodeJWTFromToken();
-		return ResponseEntity.ok().body(userService.changePassword(user.getId(), changePassword.getOldPassword(), changePassword.getNewPassword(), changePassword.getConfirmPassword()));
+	@PutMapping("/changepassword/{id}")
+	public ResponseEntity<?> changeUserPassword(@Valid @RequestBody ChangePassword changePassword,
+			@PathVariable Integer id) {
+		// User user = decodeJWTFromToken();
+		return ResponseEntity.ok().body(userService.changePassword(id, changePassword.getOldPassword(),
+				changePassword.getNewPassword(), changePassword.getConfirmPassword()));
 	}
 
 	@PostMapping("")
 	public ResponseEntity<?> getUserFromToken(@RequestBody TokenRequest request) {
 		String username = jwtTokenHelper.getUsernameFromToken(request.getToken());
-		User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+		User user = userRepository.findByEmail(username)
+				.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 		UserDTO userDTO = UserDTO.builder().email(username).id(user.getId()).build();
 		return ResponseEntity.ok(userDTO);
 	}
-
 
 	private boolean checkPhone(String phoneNumber) {
 		String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
 		return phoneNumber.matches(reg);
 	}
 
-
 	private User decodeJWTFromToken() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-		User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found with " + username));
+		User user = userRepository.findByEmail(username)
+				.orElseThrow(() -> new UsernameNotFoundException("Username not found with " + username));
 		return user;
 	}
 }

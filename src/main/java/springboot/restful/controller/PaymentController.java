@@ -51,6 +51,7 @@ public class PaymentController {
 	public String pay(HttpServletRequest request, @RequestParam("price") double price) {
 		String cancelUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
 		String successUrl = Utils.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
+		// String successUrl = "http://localhost:3000";
 		try {
 			Payment payment = paymentService.createPayment(
 					price,

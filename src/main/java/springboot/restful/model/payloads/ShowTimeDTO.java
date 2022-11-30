@@ -15,7 +15,7 @@ import java.util.Date;
 public class ShowTimeDTO {
     private int id;
 
-    //	@JsonFormat(pattern = "EEE")
+    // @JsonFormat(pattern = "EEE")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date showDate;
 
@@ -33,5 +33,5 @@ public class ShowTimeDTO {
 
     private TheaterDTO theater;
 
-//	private Collection<TicketDTO> tickets = new HashSet<>();
+    // private Collection<TicketDTO> tickets = new HashSet<>();
 }

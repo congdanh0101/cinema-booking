@@ -27,7 +27,7 @@ public class Movie {
     private String trailer;
 
     @Temporal(TemporalType.DATE)
-//	@JsonFormat(pattern = "dd-MM-yyyy")
+    // @JsonFormat(pattern = "dd-MM-yyyy")
     private Date releases;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -40,6 +40,5 @@ public class Movie {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "movie")
     private Set<ShowTime> showTimes = new HashSet<>();
-
 
 }

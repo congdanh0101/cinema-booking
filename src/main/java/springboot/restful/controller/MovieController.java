@@ -77,13 +77,13 @@ public class MovieController {
 	@GetMapping("/showing={isShowing}")
 	public ResponseEntity<?> getAllMoviesByShowing(@PathVariable boolean isShowing) {
 //		System.out.println("display: " + isDisplay);
-		return ResponseEntity.ok().body(movieService.getAllMovieByDisplay(isShowing));
+		return ResponseEntity.ok().body(movieService.getAllMovieByShowing(isShowing));
 	}
 
 	@GetMapping("/coming={isComing}")
 	public ResponseEntity<?> getAllMoviesByComing(@PathVariable boolean isComing) {
 //		System.out.println("display: " + isDisplay);
-		return ResponseEntity.ok().body(movieService.getAllMovieByDisplay(isComing));
+		return ResponseEntity.ok().body(movieService.getAllMovieByComing(isComing));
 	}
 
 	@GetMapping("/search/{keyword}")
