@@ -26,6 +26,7 @@ class MovieDetailComponent extends Component {
 		this.state = {
 			selectedDate: null,
 			today: new Date(),
+			yesterday: new Date(new Date().valueOf() - 1000 * 60 * 60 * 24 * 1),
 			nextWeek: new Date(new Date().valueOf() + 1000 * 60 * 60 * 24 * 8),
 			showResults: [],
 		};
@@ -94,7 +95,7 @@ class MovieDetailComponent extends Component {
 
 	render() {
 		const { details } = this.props;
-		const { showResults, today, nextWeek } = this.state;
+		const { showResults, today, nextWeek, yesterday } = this.state;
 
 		return (
 			<div className="container">
@@ -134,11 +135,11 @@ class MovieDetailComponent extends Component {
 						<p className="text-link-lg-20">Overview</p>
 						<p className="text-sm">{details.description}</p>
 					</Col>
-					{/* <Col xs={4} md={12}>
+					<Col xs={4} md={12}>
 						{details.trailer && isNaN(details.trailer) ? (
 							<DetailMyTrailer url={details?.trailer} />
 						) : null}
-					</Col> */}
+					</Col>
 				</Row>
 				<div className="text-center py-4">
 					<p className="text-display-xs-bold">Showtimes and Tickets</p>
@@ -146,6 +147,7 @@ class MovieDetailComponent extends Component {
 					<Row className="justify-content-center">
 						<Datepicker
 							startValue={today}
+							startDate={yesterday}
 							endDate={nextWeek}
 							onChange={(e) => this.searchShowtime(e)}
 							locale={enUS}

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { withStyles, Typography, MenuItem, Select } from '@material-ui/core';
 import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
 import styles from './styles';
+import moment from 'moment';
 import {
 	addShowtime,
 	updateShowtime,
@@ -46,24 +47,22 @@ class AddShowtime extends Component {
 
 	onAddShowtime = () => {
 		const { showDate, timeStart, movieId, cinemaId } = this.state;
-		const showtime = {
-			showDate,
-			timeStart,
-		};
-		this.props.addShowtime(movieId, cinemaId, showtime);
+		this.props.addShowtime(
+			movieId,
+			cinemaId,
+			moment(showDate).format('DD-MM-YYYY'),
+			timeStart
+		);
 	};
 
 	onUpdateShowtime = () => {
 		const { showDate, timeStart, movieId, cinemaId } = this.state;
-		const showtime = {
-			showDate,
-			timeStart,
-		};
 		this.props.updateShowtime(
 			this.props.selectedShowtime.id,
 			movieId,
 			cinemaId,
-			showtime
+			moment(showDate).format('DD-MM-YYYY'),
+			timeStart
 		);
 	};
 

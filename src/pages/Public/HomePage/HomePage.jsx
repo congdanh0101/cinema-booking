@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { Col, Container, Row, Image } from 'react-bootstrap';
-import {
-	ShowingComponent,
-	SubscribeComponent,
-	ComingComponent,
-} from '../../../components/public';
+import { ShowingComponent, ComingComponent } from '../../../components/public';
 import './styles.css';
 import { login } from '../../../service/actions/auth';
 import { connect } from 'react-redux';
@@ -63,9 +59,6 @@ class HomePage extends Component {
 					</section>
 					<section>
 						<ComingComponent />
-					</section>
-					<section>
-						<SubscribeComponent />
 					</section>
 				</Container>
 			</div>

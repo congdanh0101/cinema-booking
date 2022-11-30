@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core';
 import { CircularProgress, Grid } from '@material-ui/core';
 import { match } from '../../../shared/utils/utils';
-import { getAllMovie, onSelectMovie } from '../../../service/actions/movie';
+import { getMovies, onSelectMovie } from '../../../service/actions/movie';
 
 //Component
 import { MovieToolbar, MovieCard, AddMovie } from './components';
@@ -16,8 +16,8 @@ import styles from './styles';
 class MoviePanel extends Component {
 	state = { search: '' };
 	async componentDidMount() {
-		const { movie, getAllMovie } = this.props;
-		if (!movie.length) getAllMovie();
+		const { movie, getMovies } = this.props;
+		if (!movie.length) getMovies();
 	}
 
 	renderMovies() {
@@ -79,7 +79,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-	getAllMovie,
+	getMovies,
 	onSelectMovie,
 };
 

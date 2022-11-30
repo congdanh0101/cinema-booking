@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
 import { withStyles, Typography, Select } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
-import { FileUpload } from '../../../../../components/common';
 import { genreData } from '../../../../../shared/constants/data/listGenre.js';
 import { ImageResize } from '../../../../../components/common';
 import {
@@ -13,6 +12,7 @@ import {
 	updateMovie,
 	deleteMovie,
 } from '../../../../../service/actions/movie';
+import { path } from '../../../../../shared/constants/path.js';
 import moment from 'moment';
 import styles from './styles';
 
@@ -24,10 +24,22 @@ class AddMovie extends Component {
 		image: '',
 		trailer: '',
 		releases: moment(new Date().toISOString().slice(0, 10)).format(
-			'DD-MM-YYYY'
+			'YYYY-MM-DD'
 		),
 		genres: [],
 	};
+
+	formatDate = (dateStr) => {
+		const [year, month, day] = dateStr.split('-');
+		let newDate = `${day}-${month}-${year}`;
+		return newDate;
+	};
+
+	componentWillUnmount() {
+		this.setState = (state, callback) => {
+			return;
+		};
+	}
 
 	componentDidMount() {
 		if (this.props.edit) {
@@ -39,7 +51,7 @@ class AddMovie extends Component {
 				description: description,
 				image: image,
 				trailer: trailer,
-				releases: releases,
+				releases: this.formatDate(releases),
 				genres: genres,
 			});
 		}
@@ -113,10 +125,8 @@ class AddMovie extends Component {
 		const subtitle = this.props.edit ? 'Edit Movie' : 'Add Movie';
 		const submitButton = this.props.edit ? 'Update Movie' : 'Save Details';
 		const submitAction = this.props.edit
-			? () => this.onUpdateMovie()
-			: () => this.onAddMovie();
-
-		console.log(this.state);
+			? () => this.onUpdateMovie().then(() => window.location.reload())
+			: () => this.onAddMovie().then(() => window.location.reload());
 
 		return (
 			<div className={rootClassName}>
@@ -232,13 +242,14 @@ class AddMovie extends Component {
 							<Card>
 								<Card.Body>
 									<Form.Group className="d-flex align-items-center">
-										<FileUpload
+										<Form.Control
 											className={classes.upload}
-											file={image}
-											onUpload={(event) => {
-												const file = event.target.files[0];
-												this.handleFieldChange('image', file);
-											}}
+											type="text"
+											as="textarea"
+											value={image}
+											onChange={(event) =>
+												this.handleFieldChange('image', event.target.value)
+											}
 										/>
 									</Form.Group>
 								</Card.Body>
@@ -247,13 +258,14 @@ class AddMovie extends Component {
 							<Card>
 								<Card.Body>
 									<Form.Group className="d-flex align-items-center">
-										<FileUpload
+										<Form.Control
 											className={classes.upload}
-											file={trailer}
-											onUpload={(event) => {
-												const file = event.target.files[0];
-												this.handleFieldChange('trailer', file);
-											}}
+											type="text"
+											as="textarea"
+											value={trailer}
+											onChange={(event) =>
+												this.handleFieldChange('trailer', event.target.value)
+											}
 										/>
 									</Form.Group>
 								</Card.Body>
