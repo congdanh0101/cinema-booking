@@ -15,16 +15,18 @@ public interface ShowTimeService {
 
     List<ShowTimeDTO> getAllShowTime();
 
+    List<ShowTimeDTO> getAllShowTimeByTheater(int idTheater);
+
     List<ShowTimeDTO> getAllShowTimeByShowDate(Date showDate);
 
     List<ShowTimeDTO> getAllShowTimeByShowDateAndTheater(Date showDate, int idTheater);
 
     List<ShowTimeDTO> getAllShowTimeByShowDateAndMovie(Date showDate, int idMovie);
 
-    //update
+    // update
     ShowTimeDTO updateShowTime(ShowTimeDTO showTimeDTO, int idMovie, int idTheater, int idShowTime);
 
-    //delete
+    // delete
     void deleteShowTime(int id);
 
     void deleteShowTimeForce(int id);
