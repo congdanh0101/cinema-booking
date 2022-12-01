@@ -1,9 +1,5 @@
 const styles = (theme) => ({
 	root: {},
-	title: {
-		textTransform: 'uppercase',
-		textAlign: 'center',
-	},
 	field: {
 		margin: theme.spacing(3),
 		display: 'flex',
@@ -22,8 +18,7 @@ const styles = (theme) => ({
 	},
 	upload: {
 		width: '100%',
-		marginTop: theme.spacing(1),
-		marginRight: theme.spacing(1),
+		height: '100px',
 	},
 	customClass: {
 		backgroundColor: theme.palette.primary.main,

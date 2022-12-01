@@ -1,6 +1,5 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
+import { Button, Dialog, Typography } from '@material-ui/core';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -34,23 +33,26 @@ const ResponsiveDialog = ({
 			<Container fluid>
 				<Row>
 					<Col xs={12} md={8}>
-						<DialogTitle id={id}>{title}</DialogTitle>
+						<DialogTitle id={id}>
+							<div>
+								<Typography variant="h4" style={{ textTransform: 'uppercase' }}>
+									{title}
+								</Typography>
+							</div>
+						</DialogTitle>
 					</Col>
 					<Col xs={6} md={4}>
 						<DialogActions>
 							<Button onClick={handleClose} color="primary" autoFocus>
-								<CloseIcon /> Close
+								<CloseIcon />
 							</Button>
 						</DialogActions>
 					</Col>
 				</Row>
-
-				<Row>
-					<DialogContent>
-						<DialogContentText>{contentText}</DialogContentText>
-						{children}
-					</DialogContent>
-				</Row>
+				<DialogContent>
+					<DialogContentText>{contentText}</DialogContentText>
+					{children}
+				</DialogContent>
 			</Container>
 		</Dialog>
 	);

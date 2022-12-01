@@ -58,6 +58,7 @@ class MoviePanel extends Component {
 				/>
 				<div className={classes.content}>{this.renderMovies()}</div>
 				<ResponsiveDialog
+					title="Edit Movie"
 					id="Edit-movie"
 					open={Boolean(selectedMovie)}
 					handleClose={() => this.props.onSelectMovie(null)}

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
-import { withStyles, Typography, Select } from '@material-ui/core';
+import { withStyles, Select } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
 import { genreData } from '../../../../../shared/constants/data/listGenre.js';
 import { ImageResize } from '../../../../../components/common';
@@ -12,7 +12,6 @@ import {
 	updateMovie,
 	deleteMovie,
 } from '../../../../../service/actions/movie';
-import { path } from '../../../../../shared/constants/path.js';
 import moment from 'moment';
 import styles from './styles';
 
@@ -122,7 +121,6 @@ class AddMovie extends Component {
 			this.state;
 
 		const rootClassName = classNames(classes.root, className);
-		const subtitle = this.props.edit ? 'Edit Movie' : 'Add Movie';
 		const submitButton = this.props.edit ? 'Update Movie' : 'Save Details';
 		const submitAction = this.props.edit
 			? () => this.onUpdateMovie().then(() => window.location.reload())
@@ -130,10 +128,8 @@ class AddMovie extends Component {
 
 		return (
 			<div className={rootClassName}>
+				<hr />
 				<Container fluid>
-					<Typography variant="h4" className={classes.title}>
-						{subtitle}
-					</Typography>
 					<Row>
 						<Col xs={12} lg={8}>
 							<Card className="border-0">
@@ -166,8 +162,6 @@ class AddMovie extends Component {
 												<Select
 													multiple
 													className={classes.textFieldSelect}
-													label="Genre"
-													margin="dense"
 													required
 													value={genres || []}
 													variant="outlined"
@@ -181,7 +175,6 @@ class AddMovie extends Component {
 														</MenuItem>
 													))}
 												</Select>
-
 												<Row>
 													<Col>
 														<Form.Label className="pt-2">
@@ -239,37 +232,31 @@ class AddMovie extends Component {
 						</Col>
 						<Col md={4} xs={12}>
 							<p className="text-display-xs-bold">File Upload</p>
-							<Card>
-								<Card.Body>
-									<Form.Group className="d-flex align-items-center">
-										<Form.Control
-											className={classes.upload}
-											type="text"
-											as="textarea"
-											value={image}
-											onChange={(event) =>
-												this.handleFieldChange('image', event.target.value)
-											}
-										/>
-									</Form.Group>
-								</Card.Body>
-							</Card>
-							<p className="text-display-xs-bold pt-3">Trailer Upload</p>
-							<Card>
-								<Card.Body>
-									<Form.Group className="d-flex align-items-center">
-										<Form.Control
-											className={classes.upload}
-											type="text"
-											as="textarea"
-											value={trailer}
-											onChange={(event) =>
-												this.handleFieldChange('trailer', event.target.value)
-											}
-										/>
-									</Form.Group>
-								</Card.Body>
-							</Card>
+							<Form.Group className="d-flex align-items-center">
+								<Form.Control
+									className={classes.upload}
+									type="text"
+									as="textarea"
+									style={{ height: '100px' }}
+									value={image}
+									onChange={(event) =>
+										this.handleFieldChange('image', event.target.value)
+									}
+								/>
+							</Form.Group>
+							<p className="text-display-xs-bold">Trailer Upload</p>
+							<Form.Group className="d-flex align-items-center">
+								<Form.Control
+									className={classes.upload}
+									type="text"
+									as="textarea"
+									style={{ height: '100px' }}
+									value={trailer}
+									onChange={(event) =>
+										this.handleFieldChange('trailer', event.target.value)
+									}
+								/>
+							</Form.Group>
 						</Col>
 						<Col>
 							<Button

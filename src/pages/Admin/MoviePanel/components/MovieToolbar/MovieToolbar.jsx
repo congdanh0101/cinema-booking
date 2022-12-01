@@ -59,6 +59,7 @@ class MovieToolbar extends Component {
 					</div>
 				</div>
 				<ResponsiveDialog
+					title="Add Movie"
 					id="Add-movie"
 					open={openAddDialog}
 					handleClose={() => this.CloseAddDialog()}

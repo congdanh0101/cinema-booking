@@ -5,11 +5,6 @@ import { Link } from 'react-router-dom';
 import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
 import { connect } from 'react-redux';
 
-import {
-	getUserDetail,
-	getUserDetailById,
-} from '../../../../service/actions/user';
-
 import { withStyles } from '@material-ui/core/styles';
 import { Toolbar, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -30,13 +25,6 @@ class NavbarComponent extends Component {
 		auth: PropTypes.object.isRequired,
 	};
 
-	// async componentDidMount() {
-	// 	if (this.props.auth.token !== null) {
-	// 		this.props.getUserDetail(this.props.auth.token).then(async () => {
-	// 			await this.props.getUserDetailById(this.props.user.detail.id);
-	// 		});
-	// 	}
-	// }
 	render() {
 		const {
 			classes,
@@ -77,9 +65,4 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = { getUserDetail, getUserDetailById };
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(withStyles(styles)(NavbarComponent));
+export default connect(mapStateToProps)(withStyles(styles)(NavbarComponent));
