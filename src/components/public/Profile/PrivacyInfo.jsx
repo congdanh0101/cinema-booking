@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { Card, Col, Form, Row, Spinner, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
-import {
-	getUserDetail,
-	getUserDetailById,
-	changePassword,
-} from '../../../service/actions/user';
+import { changePassword } from '../../../service/actions/user';
 import { schemaYupChangePassword } from '../../../shared/constants/yupSchema';
+import { toast } from 'react-toastify';
 
 class PrivacyInfo extends Component {
 	state = {
@@ -15,17 +12,19 @@ class PrivacyInfo extends Component {
 		message: '',
 		isLoading: false,
 	};
-
 	submitData = async (values) => {
-		this.setState({ isLoading: true });
-		await this.props.changePassword(this.props.user.detail.id, {
+		const user = JSON.parse(localStorage.getItem('currentUser'));
+		this.setState({ show: true, isLoading: true });
+		await this.props.changePassword(user.id, {
 			oldPassword: values.oldPassword,
 			newPassword: values.newPassword,
 			confirmPassword: values.confirmPassword,
 		});
 		this.setState({ show: true, isLoading: false });
+		this.props.user.message !== ''
+			? toast.success(this.props.user.message)
+			: toast.error(this.props.user.errorMsg);
 	};
-
 	render() {
 		return (
 			<div>
@@ -120,7 +119,7 @@ class PrivacyInfo extends Component {
 										onClick={handleSubmit}
 										disabled={isSubmitting}
 									>
-										Update Change
+										Change password
 									</Button>
 								) : (
 									<Button variant="primary" type="loading" block disabled>
@@ -144,10 +143,9 @@ class PrivacyInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	auth: state.auth,
 	user: state.user,
 });
 
-const mapDispatchToProps = { getUserDetail, getUserDetailById, changePassword };
+const mapDispatchToProps = { changePassword };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PrivacyInfo);

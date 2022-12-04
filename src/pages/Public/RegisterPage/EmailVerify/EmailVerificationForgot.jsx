@@ -6,7 +6,6 @@ import {
 	Button,
 	ListGroup,
 	Spinner,
-	Alert,
 	Col,
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -20,50 +19,48 @@ import tickitz_white from '../../../../assets/images/tickitz-white.svg';
 import ReactCodeInput from 'react-code-input';
 import Countdown from 'react-countdown';
 import { path } from '../../../../shared/constants/path';
+import { toast } from 'react-toastify';
 import '../styles.css';
 
 class EmailVerificationForgot extends Component {
 	state = {
-		show: true,
 		message: '',
 		verifyCode: '',
 		isLoading: false,
 	};
-
-	async componentDidMount() {
-		await this.props.getUserDetailById(sessionStorage.getItem('user'));
-	}
-
 	componentWillUnmount() {
 		this.setState = (state, callback) => {
 			return;
 		};
 	}
-
 	componentDidUpdate() {
 		if (this.props.auth.message === 'Success') {
 			this.props.history.push(path.signIn);
 		}
 	}
-
 	handleCodeChange = (pinCode) => {
 		this.setState({
 			verifyCode: pinCode,
 		});
 	};
-
 	submitData = async () => {
 		this.setState({ isLoading: true });
 		await this.props.emailVerifyForgot(this.state.verifyCode);
 		this.setState({ show: true, isLoading: false });
+		this.props.auth.message !== ''
+			? toast.success(this.props.auth.message)
+			: toast.error(this.props.auth.errorMsg);
 	};
-
 	resendCode = async () => {
 		this.setState({ isLoading: true });
+		const user = JSON.parse(sessionStorage.getItem('user'));
+		this.props.getUserDetailById(user.user);
 		await this.props.forgetPassword(this.props.user.detail.email);
 		this.setState({ show: true, isLoading: false });
+		this.props.auth.message !== ''
+			? toast.success(this.props.auth.message)
+			: toast.error(this.props.auth.errorMsg);
 	};
-
 	renderer = ({ minutes, seconds, completed }) => {
 		if (completed) {
 			return (
@@ -101,9 +98,8 @@ class EmailVerificationForgot extends Component {
 			);
 		}
 	};
-
 	render() {
-		const { show, verifyCode } = this.state;
+		const { verifyCode } = this.state;
 		return (
 			<Container fluid>
 				<Row>
@@ -168,23 +164,6 @@ class EmailVerificationForgot extends Component {
 								</p>
 							</Row>
 						</Container>
-						{show === true && (
-							<Alert
-								className="pb-0"
-								variant={this.props.auth.message !== '' ? 'success' : 'danger'}
-								onClose={() => this.setState({ show: false, message: '' })}
-								dismissible
-							>
-								<p>
-									{this.props.auth.message !== ''
-										? this.props.auth.message ===
-										  'Please go to your email and get verification code to reset your password'
-											? this.props.auth.message
-											: ''
-										: this.props.auth.errorMsg}
-								</p>
-							</Alert>
-						)}
 						<Row className="justify-content-md-center">
 							<ReactCodeInput
 								type="text"

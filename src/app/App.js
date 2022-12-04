@@ -78,7 +78,7 @@ export default class App extends Component {
 										layout={MainLayout}
 										component={MovieDetail}
 									/>
-									
+
 									<ProtectedRoute
 										path={path.profile}
 										layout={MainLayout}

@@ -4,39 +4,25 @@ import { Navbar, Nav, Image, Container, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../../../service/actions/auth';
-import {
-	getUserDetail,
-	getUserDetailById,
-} from '../../../../service/actions/user';
+import { getUserDetail } from '../../../../service/actions/user';
 import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
 import './styles.css';
 
 class NavbarComponent extends Component {
 	state = {
-		expired: JSON.parse(localStorage.getItem('expiredToken')),
+		expired: this.props.auth.expired,
 		now: new Date().getTime(),
 	};
-
 	async componentDidMount() {
 		if (this.props.auth.token !== null) {
 			if (this.state.now >= this.state.expired) {
 				await this.props.logout();
-			} else {
-				this.props.getUserDetail(this.props.auth.token).then(async () => {
-					await this.props.getUserDetailById(this.props.user.detail.id);
-					sessionStorage.setItem(
-						'user',
-						JSON.stringify(this.props.user.detail)
-					);
-				});
 			}
 		}
 	}
-
 	handleLogout = () => {
 		this.props.logout();
 	};
-
 	render() {
 		const { user } = this.props;
 		return (
@@ -114,6 +100,6 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = { logout, getUserDetail, getUserDetailById };
+const mapDispatchToProps = { logout, getUserDetail };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarComponent);

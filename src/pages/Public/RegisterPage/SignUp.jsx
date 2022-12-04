@@ -6,7 +6,6 @@ import {
 	Button,
 	ListGroup,
 	Form,
-	Alert,
 	Spinner,
 	Col,
 	InputGroup,
@@ -20,14 +19,13 @@ import { register } from '../../../service/actions/auth';
 import { Formik } from 'formik';
 import { path } from '../../../shared/constants/path';
 import { schemaYupSignUp } from '../../../shared/constants/yupSchema';
+import { toast } from 'react-toastify';
 
 class SignUp extends Component {
 	state = {
-		show: false,
 		message: '',
 		isLoading: false,
 	};
-
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
 		await this.props.register(
@@ -39,8 +37,15 @@ class SignUp extends Component {
 			values.gender
 		);
 		this.setState({ show: true, isLoading: false });
+		this.props.auth.message !== ''
+			? toast.success(this.props.auth.message)
+			: toast.error(this.props.auth.errorMsg);
 	};
-
+	componentWillUnmount() {
+		this.setState = (state, callback) => {
+			return;
+		};
+	}
 	componentDidUpdate() {
 		if (
 			this.state.show === true &&
@@ -50,9 +55,7 @@ class SignUp extends Component {
 			this.props.history.push(path.emailVerifyRegister);
 		}
 	}
-
 	render() {
-		const { show } = this.state;
 		return (
 			<Row className="container-fluid">
 				<LeftRegister>
@@ -107,20 +110,6 @@ class SignUp extends Component {
 				</LeftRegister>
 				<RightRegister>
 					<p className="text-link-lg-48 m-0 pt-5 pb-3">Sign Up</p>
-					{show === true && (
-						<Alert
-							className="pb-0"
-							variant={this.props.auth.message !== '' ? 'success' : 'danger'}
-							onClose={() => this.setState({ show: false })}
-							dismissible
-						>
-							<p>
-								{this.props.auth.message !== ''
-									? this.props.auth.message
-									: this.props.auth.errorMsg}
-							</p>
-						</Alert>
-					)}
 					<Formik
 						initialValues={{
 							firstName: '',
@@ -132,9 +121,9 @@ class SignUp extends Component {
 							gender: '',
 						}}
 						validationSchema={schemaYupSignUp}
-						onSubmit={(values, actions) => {
+						onSubmit={(values, { resetForm }) => {
 							this.submitData(values).then(() => {
-								actions.resetForm(values);
+								resetForm();
 							});
 						}}
 					>

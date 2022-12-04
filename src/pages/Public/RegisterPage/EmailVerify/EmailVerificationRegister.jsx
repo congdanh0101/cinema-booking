@@ -6,7 +6,6 @@ import {
 	Button,
 	ListGroup,
 	Spinner,
-	Alert,
 	Col,
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -19,28 +18,30 @@ import tickitz_white from '../../../../assets/images/tickitz-white.svg';
 import Countdown from 'react-countdown';
 import ReactCodeInput from 'react-code-input';
 import { path } from '../../../../shared/constants/path';
+import { toast } from 'react-toastify';
 import '../styles.css';
 
 class EmailVerificationRegister extends Component {
 	state = {
-		show: true,
 		message: '',
 		verifyCode: '',
 		isLoading: false,
 	};
-
 	componentWillUnmount() {
 		this.setState = (state, callback) => {
 			return;
 		};
 	}
-
 	componentDidUpdate() {
 		if (this.props.auth.message === 'Success') {
 			this.props.history.push(path.signIn);
 		}
 	}
-
+	handleCodeChange = (pinCode) => {
+		this.setState({
+			verifyCode: pinCode,
+		});
+	};
 	submitData = async () => {
 		this.setState({ isLoading: true });
 		await this.props.emailVerifyRegister(
@@ -49,12 +50,14 @@ class EmailVerificationRegister extends Component {
 			this.props.auth.user.lastName,
 			this.props.auth.user.phoneNumber,
 			this.props.auth.user.email,
-			this.props.auth.user.password,
+			sessionStorage.getItem('password'),
 			this.props.auth.user.gender
 		);
 		this.setState({ show: true, isLoading: false });
+		this.props.auth.message !== ''
+			? toast.success(this.props.auth.message)
+			: toast.error(this.props.auth.errorMsg);
 	};
-
 	resendCode = async () => {
 		this.setState({ isLoading: true });
 		await this.props.register(
@@ -62,13 +65,15 @@ class EmailVerificationRegister extends Component {
 			this.props.auth.user.lastName,
 			this.props.auth.user.phoneNumber,
 			this.props.auth.user.email,
-			this.props.auth.user.password,
+			sessionStorage.getItem('password'),
 			this.props.auth.user.gender
 		);
 		sessionStorage.setItem('show', this.props.message);
 		this.setState({ show: true, isLoading: false });
+		this.props.auth.message !== ''
+			? toast.success(this.props.auth.message)
+			: toast.error(this.props.auth.errorMsg);
 	};
-
 	renderer = ({ minutes, seconds, completed }) => {
 		if (completed) {
 			return (
@@ -108,7 +113,7 @@ class EmailVerificationRegister extends Component {
 	};
 
 	render() {
-		const { show, verifyCode } = this.state;
+		const { verifyCode } = this.state;
 		return (
 			<Container fluid>
 				<Row>
@@ -173,23 +178,6 @@ class EmailVerificationRegister extends Component {
 								</p>
 							</Row>
 						</Container>
-						{show === true && (
-							<Alert
-								className="pb-0"
-								variant={this.props.auth.message !== '' ? 'success' : 'danger'}
-								onClose={() => this.setState({ show: false, message: '' })}
-								dismissible
-							>
-								<p>
-									{this.props.auth.message !== ''
-										? this.props.auth.message ===
-										  'Please go to your email and get verification code to finish sign up a new account'
-											? this.props.auth.message
-											: ''
-										: this.props.auth.errorMsg}
-								</p>
-							</Alert>
-						)}
 						<Row className="justify-content-md-center">
 							<ReactCodeInput
 								type="text"

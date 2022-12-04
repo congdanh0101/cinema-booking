@@ -1,8 +1,9 @@
 const initialState = {
 	token: null,
-	user: {},
-	errorMsg: '',
+	expired: null,
+	user: null,
 	message: '',
+	errorMsg: '',
 };
 
 const authReducer = (state = initialState, action) => {
@@ -10,7 +11,8 @@ const authReducer = (state = initialState, action) => {
 		case 'LOGIN': {
 			return {
 				...state,
-				token: action.payload,
+				token: action.payload.token,
+				expired: action.payload.expired,
 				message: action.message,
 				errorMsg: '',
 			};
@@ -26,29 +28,28 @@ const authReducer = (state = initialState, action) => {
 		case 'LOGOUT': {
 			return {
 				...state,
+				user: null,
 				token: null,
-				user: {},
+				expired: null,
+				errorMsg: '',
+				message: '',
 			};
 		}
 		case 'EMAIL_VERIFY_REGISTER': {
 			return {
 				...state,
+				user: null,
 				message: action.payload,
 			};
 		}
 		case 'EMAIL_VERIFY_FORGOT': {
 			return {
 				...state,
+				user: null,
 				message: action.payload,
 			};
 		}
 		case 'FORGET_PASSWORD': {
-			return {
-				...state,
-				message: action.message,
-			};
-		}
-		case 'FORGET_PASSWORD_VERIFY': {
 			return {
 				...state,
 				message: action.message,

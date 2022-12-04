@@ -1,19 +1,37 @@
 import React, { Component } from 'react';
-import { Card, Button, Pagination } from 'react-bootstrap';
+import { Card, Button, Pagination, PageItem  } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getMovies } from '../../../service/actions/movie';
+import { getMovieWithPagination } from '../../../service/actions/movie';
 import { ImageResize } from '../../../components/common';
 
+import axiosClient from '../../../shared/apis/axiosClient';
 
 import './styles.css';
 
 class MovieList extends Component {
+	state = {
+		movieList: [],
+		pageNumber: 0,
+	};
+
 	async componentDidMount() {
-		await this.props.getMovies();
+		await axiosClient()
+			.get(`movies?pageNumber=${this.state.pageNumber}`)
+			.then(async (res) => {
+				this.setState({
+					movieList: res.data.content,
+				});
+			});
 	}
+
+	handleChangePage = (event, page) => {
+		this.setState({ page });
+	};
+
 	render() {
 		const { movie } = this.props;
+		console.log(this.state);
 
 		return (
 			<div>
@@ -51,9 +69,15 @@ class MovieList extends Component {
 							);
 						})}
 				</div>
-				<Pagination>
-					
-				</Pagination>
+				<div>
+					<Pagination>
+						<Pagination.First />
+						<Pagination.Prev />
+
+						<Pagination.Next />
+						<Pagination.Last />
+					</Pagination>
+				</div>
 			</div>
 		);
 	}
@@ -64,7 +88,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-	getMovies,
+	getMovieWithPagination,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieList);

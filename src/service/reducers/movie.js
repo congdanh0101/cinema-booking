@@ -8,7 +8,7 @@ const initialState = {
 	details: {},
 	message: '',
 	pageNumber: '',
-	pageSize: '',
+	totalPages: '',
 };
 
 const movieReducer = (state = initialState, action) => {
@@ -33,6 +33,14 @@ const movieReducer = (state = initialState, action) => {
 				latestMovies,
 				randomMovie,
 				message: action.message,
+			};
+		}
+		case 'GET_MOVIE_WITH_PAGINATION': {
+			return {
+				...state,
+				movies: action.payload.content,
+				pageNumber: action.payload.pageNumber,
+				totalPages: action.payload.totalPages,
 			};
 		}
 		case 'SELECT_MOVIE': {

@@ -23,13 +23,13 @@ const StyledMovieCard = styled.div`
 
 const MovieCard = ({ movie }) => {
 	if (!movie) return null;
-	const { poster, id, name } = movie;
+	const { image, id, name } = movie;
 	const tmdbId = movie.tmdbId ? movie.tmdbId : '0';
 	return (
 		<StyledMovieCard>
 			<div className="card-media">
 				<ImageResize
-					url={poster}
+					url={image}
 					width="200"
 					className="card-poster"
 					alt="poster"

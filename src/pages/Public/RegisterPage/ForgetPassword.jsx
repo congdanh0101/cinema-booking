@@ -7,7 +7,6 @@ import {
 	ListGroup,
 	Form,
 	Spinner,
-	Alert,
 } from 'react-bootstrap';
 import { LeftRegister, RightRegister } from '../../../components/common';
 import tickitz_white from '../../../assets/images/tickitz-white.svg';
@@ -16,6 +15,7 @@ import { Formik } from 'formik';
 import { forgetPassword } from '../../../service/actions/auth';
 import { schemaYupEmail } from '../../../shared/constants/yupSchema';
 import { path } from '../../../shared/constants/path';
+import { toast } from 'react-toastify';
 import './styles.css';
 class ForgetPassword extends Component {
 	state = {
@@ -23,13 +23,19 @@ class ForgetPassword extends Component {
 		message: '',
 		isLoading: false,
 	};
-
+	submitData = async (values) => {
+		this.setState({ isLoading: true });
+		await this.props.forgetPassword(values.email);
+		this.setState({ show: true, isLoading: false });
+		this.props.auth.message !== ''
+			? toast.success(this.props.auth.message)
+			: toast.error(this.props.auth.errorMsg);
+	};
 	componentWillUnmount() {
 		this.setState = (state, callback) => {
 			return;
 		};
 	}
-
 	componentDidUpdate() {
 		if (
 			this.state.show === true &&
@@ -39,15 +45,7 @@ class ForgetPassword extends Component {
 			this.props.history.push(path.emailVerifyForgot);
 		}
 	}
-
-	submitData = async (values) => {
-		this.setState({ isLoading: true });
-		await this.props.forgetPassword(values.email);
-		this.setState({ show: true, isLoading: false });
-	};
-
 	render() {
-		const { show } = this.state;
 		return (
 			<Row className="container-fluid">
 				{/* Left Side */}
@@ -104,21 +102,6 @@ class ForgetPassword extends Component {
 				{/* Right side */}
 				<RightRegister>
 					<p className="text-link-lg-48 m-0 pt-3">Forget Password</p>
-					{show === true && (
-						<Alert
-							className="pb-0"
-							variant={this.props.auth.message !== '' ? 'success' : 'danger'}
-							onClose={() => this.setState({ show: false })}
-							dismissible
-						>
-							<p>
-								{this.props.auth.message !== ''
-									? this.props.auth.message
-									: this.props.auth.errorMsg}
-							</p>
-						</Alert>
-					)}
-
 					<Formik
 						initialValues={{
 							email: '',
@@ -158,7 +141,7 @@ class ForgetPassword extends Component {
 										block
 										onClick={handleSubmit}
 									>
-										Join for free now
+										Get verification code
 									</Button>
 								) : (
 									<Button variant="primary" type="loading" block disabled>

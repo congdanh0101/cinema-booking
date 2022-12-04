@@ -53,11 +53,13 @@ const userReducer = (state = initialState, action) => {
 				...state,
 				detail: action.payload,
 				message: action.message,
+				errorMsg: '',
 			};
 		}
 		case 'SET_USER_MESSAGE': {
 			return {
 				...state,
+				message: '',
 				errorMsg: action.payload,
 			};
 		}

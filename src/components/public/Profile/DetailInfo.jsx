@@ -1,47 +1,12 @@
 import React, { Component } from 'react';
-import {
-	Card,
-	Col,
-	InputGroup,
-	Form,
-	Row,
-	Spinner,
-	Alert,
-	Button,
-} from 'react-bootstrap';
+import { Card, Col, InputGroup, Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { connect } from 'react-redux';
-import CloseButton from 'react-bootstrap/CloseButton';
-import { updateUser } from '../../../service/actions/user';
-import { schemaUser } from '../../../shared/constants/yupSchema';
 
 class DetailInfo extends Component {
-	state = {
-		show: false,
-		message: '',
-		isLoading: false,
-		user: JSON.parse(sessionStorage.getItem('user')),
-		isUpdating: false,
-	};
-
 	render() {
-		const { show, user } = this.state;
+		const user = JSON.parse(localStorage.getItem('currentUser'));
 		return (
 			<div className="pt-4">
-				{show === true && (
-					<Alert
-						className="pb-0"
-						variant="danger"
-						onClose={() => this.setState({ show: false })}
-						dismissible
-					>
-						<p>
-							{this.props.user.message !== undefined
-								? this.props.user.message
-								: this.props.user.errorMsg}
-						</p>
-					</Alert>
-				)}
 				<Formik
 					initialValues={{
 						firstName: user.firstName,
@@ -126,13 +91,4 @@ class DetailInfo extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	auth: state.auth,
-	user: state.user,
-});
-
-const mapDispatchToProps = {
-	updateUser,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DetailInfo);
+export default DetailInfo;

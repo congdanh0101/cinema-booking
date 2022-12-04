@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col, Image, Button, Form, Alert, Spinner } from 'react-bootstrap';
+import { Row, Col, Image, Button, Form, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { login, autoLogin } from '../../../service/actions/auth';
+import { getUserDetail } from '../../../service/actions/user';
 import { connect } from 'react-redux';
 import { LeftRegister, RightRegister } from '../../../components/common';
 import tickitz_white from '../../../assets/images/tickitz-white.svg';
@@ -9,17 +10,20 @@ import './styles.css';
 import { Formik } from 'formik';
 import { path } from '../../../shared/constants/path';
 import { schemaYupSignIn } from '../../../shared/constants/yupSchema';
+import { toast } from 'react-toastify';
 
 class SignIn extends Component {
 	state = {
-		show: false,
 		message: '',
 		isLoading: false,
 	};
 	submitData = async (values) => {
 		this.setState({ isLoading: true });
 		await this.props.login(values.email, values.password);
-		this.setState({ show: true, isLoading: false });
+		this.setState({ isLoading: false });
+		this.props.auth.message !== ''
+			? toast.success(this.props.auth.message)
+			: toast.error(this.props.auth.errorMsg);
 	};
 	componentWillUnmount() {
 		this.setState = (state, callback) => {
@@ -34,15 +38,14 @@ class SignIn extends Component {
 	}
 	componentDidUpdate() {
 		if (this.props.auth.token) {
-			const { history } = this.props;
-			history.push('/');
+			this.props.getUserDetail(this.props.auth.token);
+			this.props.history.push('/');
 		}
 	}
 	changeText = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 	render() {
-		const { show } = this.state;
 		return (
 			<Row className="container-fluid">
 				<LeftRegister>
@@ -55,20 +58,6 @@ class SignIn extends Component {
 				</LeftRegister>
 				<RightRegister>
 					<p className="text-link-lg-48 m-0 pt-3">Sign In</p>
-					{show === true && (
-						<Alert
-							className="pb-0"
-							variant={this.props.auth.message !== '' ? 'success' : 'danger'}
-							onClose={() => this.setState({ show: false })}
-							dismissible
-						>
-							<p>
-								{this.props.auth.message !== ''
-									? this.props.auth.message + ', now you can login'
-									: this.props.auth.errorMsg}
-							</p>
-						</Alert>
-					)}
 					<Formik
 						initialValues={{
 							email: '',
@@ -174,7 +163,12 @@ class SignIn extends Component {
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
+	user: state.user,
 });
-const mapDispatchToProps = { login, autoLogin };
+const mapDispatchToProps = {
+	login,
+	autoLogin,
+	getUserDetail,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

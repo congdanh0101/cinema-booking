@@ -19,18 +19,22 @@ export const getAllUser = () => {
 	};
 };
 
-export const getUserDetail = (token) => {
+export const getUserDetail = () => {
 	return async (dispatch) => {
 		try {
-			const bearerToken = localStorage.getItem('token');
-			const response = await axiosClient(bearerToken).post(`users`, {
-				token: token,
-			});
-			dispatch({
-				type: 'GET_USER_DETAIL',
-				payload: response.data,
-				message: response.data.message,
-			});
+			const token = localStorage.getItem('token');
+			await axiosClient(token)
+				.post(`users`, { token })
+				.then(async (res) => {
+					const { data } = res;
+					const response = await axiosClient().get(`users/${data.id}`);
+					localStorage.setItem('currentUser', JSON.stringify(response.data));
+					dispatch({
+						type: 'GET_USER_DETAIL',
+						payload: response.data,
+						message: response.data.message,
+					});
+				});
 		} catch (err) {
 			const { message } = err.response.data;
 			dispatch({
@@ -145,7 +149,7 @@ export const changePassword = (userId, data) => {
 			dispatch({
 				type: 'CHANGE_PASSWORD',
 				payload: response.data,
-				message: response.data.message,
+				message: 'Change password successfully',
 			});
 		} catch (err) {
 			const { message } = err.response.data;

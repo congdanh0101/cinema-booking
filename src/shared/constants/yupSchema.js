@@ -22,19 +22,15 @@ export const schemaYupSignUp = yup.object({
 		.required('Please enter your email address'),
 	password: yup
 		.string()
-		.min(1, ({ min }) => `Password must be at least ${min} characters`)
-		.required('Password is required'),
-	// password: yup
-	// 	.string()
-	// 	.min(8, 'Password must be at least 8 characters')
-	// 	.matches(
-	// 		/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-	// 		{
-	// 			message:
-	// 				'Password must have at least 1 uppercase, 1 lowercase, 1 special character',
-	// 		}
-	// 	)
-	// 	.required('Please enter your password'),
+		.min(8, 'Password must be at least 8 characters')
+		.matches(
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+			{
+				message:
+					'Password must have at least 1 uppercase, 1 lowercase, 1 special character',
+			}
+		)
+		.required('Please enter your password'),
 	confirmPassword: yup
 		.string()
 		.required('Please enter re-password')
@@ -48,8 +44,15 @@ export const schemaYupSignIn = yup.object({
 		.required('Please enter your email address'),
 	password: yup
 		.string()
-		.min(1, ({ min }) => `Password must be at least ${min} characters`)
-		.required('Password is required'),
+		.min(1, 'Password must be at least 8 characters')
+		// .matches(
+		// 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+		// 	{
+		// 		message:
+		// 			'Password must have at least 1 uppercase, 1 lowercase, 1 special character',
+		// 	}
+		// )
+		.required('Please enter your password'),
 });
 
 export const schemaUser = yup.object({
@@ -132,18 +135,35 @@ export const schemaYupEmailVerification = yup.object({
 });
 
 export const schemaYupEmail = yup.object({
-	email: yup.string().email('Invalid email').required('Required'),
+	email: yup
+		.string()
+		.email('Please enter valid email address')
+		.required('Please enter your email address'),
 });
 
 export const schemaYupChangePassword = yup.object({
 	oldPassword: yup
 		.string()
-		.min(1, ({ min }) => `Password must be at least ${min} characters`)
-		.required('Password is required'),
+		.min(8, 'Password must be at least 8 characters')
+		.matches(
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+			{
+				message:
+					'Password must have at least 1 uppercase, 1 lowercase, 1 special character',
+			}
+		)
+		.required('Please enter your password'),
 	newPassword: yup
 		.string()
-		.min(1, ({ min }) => `Password must be at least ${min} characters`)
-		.required('Password is required'),
+		.min(8, 'Password must be at least 8 characters')
+		.matches(
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+			{
+				message:
+					'Password must have at least 1 uppercase, 1 lowercase, 1 special character',
+			}
+		)
+		.required('Please enter your new password'),
 	confirmPassword: yup
 		.string()
 		.required('Please enter re-password')

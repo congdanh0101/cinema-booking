@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Col, Image } from 'react-bootstrap';
+import { Card, Col } from 'react-bootstrap';
+import { Ticket } from 'react-bootstrap-icons';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -17,10 +18,10 @@ class OrderInfo extends Component {
 				<p className="text-display-xs-bold">Order Info</p>
 				<Card className="border-0 shadow order-seat">
 					<Card.Body className="pb-0">
-						{/* <div className="text-center">
-							<Image src={selectShowtime.picture} height={40} alt="" />
-							<p className="text-link-lg pt-2">{selectShowtime.cinema}</p>
-						</div> */}
+						<div className="text-center">
+							<Ticket size={50} />
+							<p className="text-link-lg pt-2">{selectShowtime.theater.name}</p>
+						</div>
 						<div className="d-flex justify-content-between">
 							<p className="text-xs text-color-label">Movie selected</p>
 							<p className="text-right text-link-xs text-color-title">

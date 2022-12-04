@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Col, Image, Row, Button } from 'react-bootstrap';
+import { Clock } from 'react-bootstrap-icons';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Moment from 'react-moment';
@@ -8,23 +9,19 @@ import moment from 'moment';
 import { Datepicker } from '@meinefinsternis/react-horizontal-date-picker';
 import { enUS } from 'date-fns/locale';
 import axiosClient from '../../../shared/apis/axiosClient';
-
 import { onSelectShowtime } from '../../../service/actions/showtime';
-
 import calendar from '../../../assets/images/calendar.svg';
-
 import { getMovieDetail } from '../../../service/actions/movie';
 import { createOrder } from '../../../service/actions/order';
-
 import DetailMyTrailer from './components/Trailer/DetailMyTrailer';
 import { path } from '../../../shared/constants/path';
+import { formatLocaleDateString } from '../../../shared/utils/formatDate';
 import './styles.css';
 
 class MovieDetailComponent extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			selectedDate: null,
 			today: new Date(),
 			yesterday: new Date(new Date().valueOf() - 1000 * 60 * 60 * 24 * 1),
 			nextWeek: new Date(new Date().valueOf() + 1000 * 60 * 60 * 24 * 8),
@@ -35,13 +32,9 @@ class MovieDetailComponent extends Component {
 	componentDidMount() {
 		const { id } = this.props.match.params;
 		const token = localStorage.getItem('token');
-
 		this.props.getMovieDetail(id);
-
-		var event = this.state.today;
-		let showDate = event.toLocaleDateString().slice(0, 10);
-		showDate = moment(showDate).format('DD-MM-YYYY');
-
+		let showDate = formatLocaleDateString(this.state.today);
+		showDate = moment(showDate).format('MM-DD-YYYY');
 		axiosClient(token)
 			.post(`showtimes/movies/${id}`, { showDate: showDate })
 			.then(async (res) => {
@@ -51,7 +44,7 @@ class MovieDetailComponent extends Component {
 			});
 	}
 
-	handleChange = (val) => {
+	handleChange = async (val) => {
 		const [startValue, endValue, rangeDates] = val;
 
 		if (this.state.today === startValue && this.state.today <= endValue) {
@@ -65,27 +58,22 @@ class MovieDetailComponent extends Component {
 		}
 	};
 
-	searchShowtime = async (val) => {
-		this.handleChange(val);
-
-		const { id } = this.props.match.params;
-		const token = localStorage.getItem('token');
-
-		this.state.selectedDate = this.state.today;
-
-		var event = this.state.selectedDate;
-		let showDate = event.toLocaleDateString().slice(0, 10);
-		showDate = moment(showDate).format('DD-MM-YYYY');
-
-		await axiosClient(token)
-			.post(`showtimes/movies/${id}`, {
-				showDate,
-			})
-			.then(async (res) => {
-				this.setState({
-					showResults: res.data,
+	searchShowtime = (val) => {
+		this.handleChange(val).then(() => {
+			const { id } = this.props.match.params;
+			const token = localStorage.getItem('token');
+			let showDate = formatLocaleDateString(this.state.today);
+			showDate = moment(showDate).format('MM-DD-YYYY');
+			axiosClient(token)
+				.post(`showtimes/movies/${id}`, {
+					showDate,
+				})
+				.then(async (res) => {
+					this.setState({
+						showResults: res.data,
+					});
 				});
-			});
+		});
 	};
 
 	handleSelectShowtime = (showtime) => {
@@ -96,7 +84,6 @@ class MovieDetailComponent extends Component {
 	render() {
 		const { details } = this.props;
 		const { showResults, today, nextWeek, yesterday } = this.state;
-
 		return (
 			<div className="container">
 				<Row>
@@ -153,8 +140,7 @@ class MovieDetailComponent extends Component {
 							locale={enUS}
 						/>
 					</Row>
-
-					{showResults.length > 0 ? (
+					{showResults && showResults.length > 0 ? (
 						<Row xs={1} md={2} lg={3} className="g-3">
 							{showResults.map((item) => (
 								<Col key={item.id} className="pt-4 col">
@@ -168,10 +154,11 @@ class MovieDetailComponent extends Component {
 													<Image src={calendar} width={100} alt="" />
 												</Col>
 												<Col xs={8}>
-													<p className="text-link-lg text-left m-0">
+													<p className="text-link-md text-left m-0">
 														{item.showDate}
 													</p>
 													<p className="text-400-12 text-left m-0">
+														<Clock size={20} className="pr-1" />
 														{item.timeStart} : {item.timeEnd}
 													</p>
 												</Col>
@@ -190,13 +177,6 @@ class MovieDetailComponent extends Component {
 												${item.price}/ticket
 											</p>
 										</Card.Body>
-										{/* <Card.Body className="pt-0 d-flex justify-content-end">
-											<Link to={`/order/${item.id}`}>
-												<Button variant="primary" className="btn-nav shadow">
-													Book now
-												</Button>
-											</Link>
-										</Card.Body> */}
 										<Card.Body className="pt-0 d-flex justify-content-end">
 											<Link to={path.order}>
 												<Button
