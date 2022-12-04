@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
-import { MovieList } from '../../../components/public';
-
-import SearchMovie from '../../../components/public/MovieList/SearchMovie';
-import MovieList2 from '../../../components/public/MovieList/MovieList2';
+import { ListMovies } from '../../../components/public';
 
 export default class MoviePage extends Component {
 	render() {
@@ -11,7 +8,7 @@ export default class MoviePage extends Component {
 			<div>
 				<div className="bg-gray pb-5">
 					<Container>
-						<MovieList2 />
+						<ListMovies />
 					</Container>
 				</div>
 			</div>

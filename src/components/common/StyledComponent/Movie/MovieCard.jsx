@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { path } from '../../../../shared/constants/path';
 import ImageResize from '../Image/ImageResize';
 import MovieTitle from './MovieTitle';
 
@@ -24,7 +23,6 @@ const StyledMovieCard = styled.div`
 const MovieCard = ({ movie }) => {
 	if (!movie) return null;
 	const { image, id, name } = movie;
-	const tmdbId = movie.tmdbId ? movie.tmdbId : '0';
 	return (
 		<StyledMovieCard>
 			<div className="card-media">
@@ -35,9 +33,7 @@ const MovieCard = ({ movie }) => {
 					alt="poster"
 				/>
 			</div>
-			<MovieTitle to={`${path.detail}/${id}?tmdbId=${tmdbId}`}>
-				{name}
-			</MovieTitle>
+			<MovieTitle to={`/movie-detail/${id}`}>{name}</MovieTitle>
 		</StyledMovieCard>
 	);
 };

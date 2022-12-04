@@ -31,7 +31,7 @@ const Pagination = ({ pagination = {}, onPageChange }) => {
 			<button
 				type="button"
 				className="prev"
-				disabled={page <= 1}
+				disabled={page <= 0}
 				onClick={() => handleOnPageChange(page - 1)}
 			>
 				<ion-icon name="chevron-back-outline"></ion-icon>

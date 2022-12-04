@@ -4,7 +4,7 @@ import { MovieList } from '../../common';
 import { scrollTop } from '../../../shared/utils/utils';
 import axiosClient from '../../../shared/apis/axiosClient';
 
-const MovieList2 = () => {
+const ListMovies = () => {
 	const [movieList, setMovieList] = useState({ loading: true, data: [] });
 	const { pagination, handlePageChange, setPagination } = usePagination(0, 10);
 
@@ -17,7 +17,7 @@ const MovieList2 = () => {
 			setPagination({
 				...pagination,
 				limit: data.pageSize,
-				totalPages: data.totalPages,
+				totalPages: data.totalPages - 1,
 			});
 			setMovieList({ data: data.content, loading: false });
 		} catch (err) {
@@ -28,7 +28,7 @@ const MovieList2 = () => {
 
 	useEffect(() => {
 		fetchMovieList();
-	}, [pagination.page]);
+	}, [pagination.page]); // eslint-disable-line react-hooks/exhaustive-deps
 	useEffect(() => {
 		scrollTop();
 	}, []);
@@ -37,6 +37,7 @@ const MovieList2 = () => {
 		<div className="home">
 			<div className="home-main">
 				<div className="container">
+					<h1 className="text-center">Movie List</h1>
 					<MovieList
 						loading={movieList.loading}
 						data={movieList.data}
@@ -50,4 +51,4 @@ const MovieList2 = () => {
 	);
 };
 
-export default MovieList2;
+export default ListMovies;

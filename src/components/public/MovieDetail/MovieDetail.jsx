@@ -5,7 +5,6 @@ import { Clock } from 'react-bootstrap-icons';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Moment from 'react-moment';
-import moment from 'moment';
 import { Datepicker } from '@meinefinsternis/react-horizontal-date-picker';
 import { enUS } from 'date-fns/locale';
 import axiosClient from '../../../shared/apis/axiosClient';
@@ -15,7 +14,10 @@ import { getMovieDetail } from '../../../service/actions/movie';
 import { createOrder } from '../../../service/actions/order';
 import DetailMyTrailer from './components/Trailer/DetailMyTrailer';
 import { path } from '../../../shared/constants/path';
-import { formatLocaleDateString } from '../../../shared/utils/formatDate';
+import {
+	formatLocaleDateString,
+	formatVNDate,
+} from '../../../shared/utils/formatDate';
 import './styles.css';
 
 class MovieDetailComponent extends Component {
@@ -31,10 +33,11 @@ class MovieDetailComponent extends Component {
 
 	componentDidMount() {
 		const { id } = this.props.match.params;
+		console.log(this.props);
 		const token = localStorage.getItem('token');
 		this.props.getMovieDetail(id);
 		let showDate = formatLocaleDateString(this.state.today);
-		showDate = moment(showDate).format('MM-DD-YYYY');
+		showDate = formatVNDate(showDate);
 		axiosClient(token)
 			.post(`showtimes/movies/${id}`, { showDate: showDate })
 			.then(async (res) => {
@@ -63,7 +66,7 @@ class MovieDetailComponent extends Component {
 			const { id } = this.props.match.params;
 			const token = localStorage.getItem('token');
 			let showDate = formatLocaleDateString(this.state.today);
-			showDate = moment(showDate).format('MM-DD-YYYY');
+			showDate = formatVNDate(showDate);
 			axiosClient(token)
 				.post(`showtimes/movies/${id}`, {
 					showDate,
