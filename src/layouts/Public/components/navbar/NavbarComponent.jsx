@@ -78,7 +78,7 @@ class NavbarComponent extends Component {
 									</NavDropdown.Item>
 								</NavDropdown>
 							) : (
-								<Nav.Item>
+								<Nav.Item className="pt-1">
 									<Link
 										to={path.signIn}
 										className="btn btn-primary btn-nav mx-2"

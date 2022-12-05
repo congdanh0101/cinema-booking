@@ -43,6 +43,13 @@ const movieReducer = (state = initialState, action) => {
 				totalPages: action.payload.totalPages,
 			};
 		}
+		case 'SEARCH_MOVIE_BY_NAME': {
+			return {
+				...state,
+				details: action.payload,
+				message: action.message,
+			};
+		}
 		case 'SELECT_MOVIE': {
 			return { ...state, selectedMovie: action.payload };
 		}

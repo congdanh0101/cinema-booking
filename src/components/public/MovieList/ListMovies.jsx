@@ -1,25 +1,40 @@
 import { useEffect, useState } from 'react';
+import { useDebounce } from '../../../shared/hooks/useDebounce';
 import { usePagination } from '../../../shared/hooks/usePagination';
-import { MovieList } from '../../common';
 import { scrollTop } from '../../../shared/utils/utils';
 import axiosClient from '../../../shared/apis/axiosClient';
+
+import SearchInput from '../Search/SearchInput';
+import SearchList from '../Search/SearchList';
 
 const ListMovies = () => {
 	const [movieList, setMovieList] = useState({ loading: true, data: [] });
 	const { pagination, handlePageChange, setPagination } = usePagination(0, 10);
+	const [filter, setFilter] = useState('');
+	const filterDebounce = useDebounce(filter, 500);
 
 	const fetchMovieList = async () => {
 		setMovieList({ ...movieList, loading: true });
 		try {
-			const { data } = await axiosClient().get(
-				`movies?pageNumber=${pagination.page}`
-			);
-			setPagination({
-				...pagination,
-				limit: data.pageSize,
-				totalPages: data.totalPages - 1,
-			});
-			setMovieList({ data: data.content, loading: false });
+			if (filterDebounce) {
+				const { data } = await axiosClient().get(
+					`movies/search/${filterDebounce}`
+				);
+				setMovieList({ data: data, loading: false });
+				scrollTop();
+			} else {
+				const { data } = await axiosClient().get(
+					`movies?pageNumber=${pagination.page}`
+				);
+				setPagination({
+					...pagination,
+					page: data.pageNumber,
+					limit: data.pageSize,
+					totalPages: data.totalPages - 1,
+				});
+				setMovieList({ data: data.content, loading: false });
+				scrollTop();
+			}
 		} catch (err) {
 			setMovieList({ ...movieList, loading: false });
 			console.log(err);
@@ -28,20 +43,21 @@ const ListMovies = () => {
 
 	useEffect(() => {
 		fetchMovieList();
-	}, [pagination.page]); // eslint-disable-line react-hooks/exhaustive-deps
-	useEffect(() => {
-		scrollTop();
-	}, []);
+	}, [filterDebounce, pagination.page]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<div className="home">
 			<div className="home-main">
+				<h1 className="text-center">Movie List</h1>
 				<div className="container">
-					<h1 className="text-center">Movie List</h1>
-					<MovieList
+					<SearchInput
+						height="54px"
+						placeholder="Search Movie..."
+						setSearchValue={setFilter}
+					/>
+					<SearchList
 						loading={movieList.loading}
 						data={movieList.data}
-						heading="Now showing"
 						pagination={pagination}
 						handlePageChange={handlePageChange}
 					/>
