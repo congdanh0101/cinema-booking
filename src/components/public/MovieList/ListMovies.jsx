@@ -48,7 +48,9 @@ const ListMovies = () => {
 	return (
 		<div className="home">
 			<div className="home-main">
-				<h1 className="text-center">Movie List</h1>
+				<p className="text-display-lg-bold-56 text-primary m-0 text-center">
+					Movie List
+				</p>
 				<div className="container">
 					<SearchInput
 						height="54px"

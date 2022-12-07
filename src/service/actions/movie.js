@@ -171,7 +171,6 @@ export const addMovie = (
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('token');
-			console.log(token);
 			const response = await axiosClient(token).post(`movies`, {
 				name,
 				duration,

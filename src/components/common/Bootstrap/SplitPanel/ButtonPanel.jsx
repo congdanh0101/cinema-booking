@@ -12,6 +12,7 @@ function ButtonPanel(props) {
 					variant="outline-primary"
 					block
 					className="float-left col-12 col-md-5"
+					onClick={props.onClickLeft}
 				>
 					{props.buttonleft}
 				</Button>
@@ -22,6 +23,7 @@ function ButtonPanel(props) {
 					variant="outline-primary"
 					block
 					className="float-right col-12 col-md-5"
+					onClick={props.onClickRight}
 				>
 					{props.buttonright}
 				</Button>

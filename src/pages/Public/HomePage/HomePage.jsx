@@ -29,7 +29,7 @@ class HomePage extends Component {
 									<Col style={{ paddingTop: 80 }}>
 										<div className="img-gradient">
 											<Image
-												src="https://wallpapercave.com/wp/wp1816326.jpg"
+												src="https://source.unsplash.com/featured/?movies"
 												className="img-fluid"
 											/>
 										</div>
@@ -37,7 +37,7 @@ class HomePage extends Component {
 									<Col style={{ paddingTop: 40 }}>
 										<div className="img-gradient">
 											<Image
-												src="https://static01.nyt.com/images/2020/02/05/multimedia/05xp-lionking/merlin_165677088_8820db00-d13c-4f15-a5a4-be78b888c5b6-jumbo.jpg?quality=90&auto=webp"
+												src="https://source.unsplash.com/featured/?cinema"
 												className="img-fluid"
 											/>
 										</div>
@@ -45,7 +45,7 @@ class HomePage extends Component {
 									<Col>
 										<div className="img-gradient">
 											<Image
-												src="https://wallpapercave.com/wp/wp3703396.jpg"
+												src="https://source.unsplash.com/featured/?theater"
 												className="img-fluid"
 											/>
 										</div>

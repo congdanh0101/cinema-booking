@@ -87,12 +87,13 @@ export const addTicket = (showtimeId, seatId, seat, showtime) => {
 	};
 };
 
-export const addManyTickets = (showtimeId) => {
+export const addManyTickets = (showtimeId, seat) => {
 	return async (dispatch) => {
 		try {
 			const token = localStorage.getItem('token');
 			const response = await axiosClient(token).post(
-				`tickets/showtimes/${showtimeId}`
+				`tickets/showtimes/${showtimeId}`,
+				seat
 			);
 			dispatch({
 				type: 'ADD_MANY_TICKETS',

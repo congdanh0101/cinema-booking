@@ -17,7 +17,7 @@ const ProtectedRoute = (props) => {
 					</Layout>
 				) : (
 					<Redirect
-						to={{ pathname: path.notFound, state: { from: props.location } }}
+						to={{ pathname: path.signIn, state: { from: props.location } }}
 					/>
 				)
 			}

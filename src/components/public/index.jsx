@@ -11,4 +11,3 @@ export { default as PayMethod } from './Payment/PayMethod';
 export { default as PersonalInfo } from './Payment/PersonalInfo';
 export { default as OrderInfo } from './Order/OrderInfo';
 export { default as OrderSeat } from './Order/OrderSeat';
-export { default as Seat } from './Order/Seat';

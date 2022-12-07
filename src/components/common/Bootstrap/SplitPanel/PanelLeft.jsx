@@ -5,7 +5,7 @@ import './styles.css';
 function PanelLeft(props) {
 	return (
 		<div className="bg-gray">
-			<Container className="pb-4 pt-3">
+			<Container className="pb-3 pt-3">
 				<Row>
 					<Col xs={12} lg={8}>
 						<p className="text-display-xs-bold">{props.title}</p>

@@ -18,7 +18,7 @@ class ComingComponent extends Component {
 			<div>
 				<Row>
 					<Col>
-						<p className="text-display-xs-bold float-left">Upcoming Movies</p>
+						<p className="text-display-xs-bold  float-left">Upcoming Movies</p>
 					</Col>
 					<Col>
 						<Link to={path.movies}>

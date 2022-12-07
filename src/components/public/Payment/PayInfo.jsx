@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { createOrder, createSeat } from '../../../service/actions/order';
 
 class MovieDesc extends Component {
+	state = {
+		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
+	};
 	render() {
-		// const { dataDate, dataMovie, dataShowtime } = this.props.order;
-		// const { seatOrder } = this.props.order;
-		console.log(this.props);
+		const { selectShowtime } = this.state;
+		const { ticket } = this.props;
 		return (
 			<div>
 				<ListGroup variant="flush">
@@ -16,36 +17,40 @@ class MovieDesc extends Component {
 						<p className="float-left text-lg-20 text-color-label">
 							Date & time
 						</p>
-						{/* <p className="float-right text-lg-20">
-							{dataDate} at {dataShowtime.times.map((item) => item.time)}
-						</p> */}
+						<p className="float-right text-lg-20">
+							{selectShowtime.showDate} at {selectShowtime.timeStart}
+						</p>
 					</ListGroup.Item>
-					{/* <ListGroup.Item className="pb-0">
+					<ListGroup.Item className="pb-0">
 						<p className="float-left text-lg-20 text-color-label">
 							Movie title
 						</p>
-						<p className="float-right text-lg-20">{dataMovie.title}</p>
+						<p className="float-right text-lg-20">
+							{selectShowtime.movie.name}
+						</p>
 					</ListGroup.Item>
 					<ListGroup.Item className="pb-0">
 						<p className="float-left text-lg-20 text-color-label">
 							Cinema name
 						</p>
-						<p className="float-right text-lg-20">{dataShowtime.cinema}</p>
+						<p className="float-right text-lg-20">
+							{selectShowtime.theater.name}
+						</p>
 					</ListGroup.Item>
 					<ListGroup.Item className="pb-0">
 						<p className="float-left text-lg-20 text-color-label">
 							Number of tickets
 						</p>
-						<p className="float-right text-lg-20">{seatOrder.length} pieces</p>
+						<p className="float-right text-lg-20">{ticket.length} pieces</p>
 					</ListGroup.Item>
 					<ListGroup.Item className="pb-0">
 						<p className="float-left text-lg-20 text-color-label">
 							Total payment
 						</p>
 						<p className="float-right text-link-lg">
-							${dataShowtime.price * seatOrder.length}
+							${selectShowtime.price * ticket.length}
 						</p>
-					</ListGroup.Item> */}
+					</ListGroup.Item>
 				</ListGroup>
 			</div>
 		);
@@ -54,9 +59,8 @@ class MovieDesc extends Component {
 
 const mapStateToProps = (state) => ({
 	order: state.order,
+	ticket: state.ticket.tickets,
+	showtime: state.showtime.selectShowtime,
 });
-const mapDispatchToProps = { createOrder, createSeat };
 
-export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(MovieDesc)
-);
+export default withRouter(connect(mapStateToProps)(MovieDesc));

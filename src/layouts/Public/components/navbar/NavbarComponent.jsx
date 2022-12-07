@@ -4,7 +4,6 @@ import { Navbar, Nav, Image, Container, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../../../service/actions/auth';
-import { getUserDetail } from '../../../../service/actions/user';
 import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
 import './styles.css';
 
@@ -13,10 +12,10 @@ class NavbarComponent extends Component {
 		expired: this.props.auth.expired,
 		now: new Date().getTime(),
 	};
-	async componentDidMount() {
+	componentDidMount() {
 		if (this.props.auth.token !== null) {
 			if (this.state.now >= this.state.expired) {
-				await this.props.logout();
+				this.props.logout();
 			}
 		}
 	}
@@ -28,7 +27,7 @@ class NavbarComponent extends Component {
 		return (
 			<Navbar expand="lg">
 				<Container>
-					<Navbar.Brand href="#home" as={Link} to="/" className="m-0">
+					<Navbar.Brand href="#home" as={Link} to="/" className="m-0 mr-5">
 						<Image src={tickitz_purple} />
 					</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -37,15 +36,15 @@ class NavbarComponent extends Component {
 							<Nav.Link className="nav-link" href={path.movies}>
 								Movies
 							</Nav.Link>
-							{user.detail.roles?.map((item) => {
+							{user?.roles?.map((item) => {
 								if (item.name === 'ROLE_ADMIN') {
 									return (
 										<Nav.Link
-											className="nav-link"
+											className="nav-link ml-2"
 											key={item.id}
 											href={path.movieManage}
 										>
-											Admin Dashboard
+											Dashboard
 										</Nav.Link>
 									);
 								} else return null;
@@ -97,9 +96,9 @@ class NavbarComponent extends Component {
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
-	user: state.user,
+	user: JSON.parse(localStorage.getItem('currentUser')),
 });
 
-const mapDispatchToProps = { logout, getUserDetail };
+const mapDispatchToProps = { logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarComponent);

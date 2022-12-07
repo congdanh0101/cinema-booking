@@ -1,5 +1,10 @@
 import axiosClient from '../../shared/apis/axiosClient';
 
+export const selectSeat = (seat) => ({
+	type: 'SELECT_SEAT',
+	payload: seat,
+});
+
 export const getAllSeatsAvailableByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {

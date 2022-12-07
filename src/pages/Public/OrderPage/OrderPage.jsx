@@ -13,7 +13,6 @@ class OrderPage extends Component {
 
 	render() {
 		const { selectShowtime } = this.state;
-		console.log(selectShowtime);
 		return (
 			<div>
 				<Navbar className="navbar-expand-lg navbar-dark bg-primary ">

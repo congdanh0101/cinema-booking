@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Col, InputGroup, Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 
-class DetailInfo extends Component {
+export default class DetailInfo extends Component {
 	render() {
 		const user = JSON.parse(localStorage.getItem('currentUser'));
 		return (
@@ -90,5 +90,3 @@ class DetailInfo extends Component {
 		);
 	}
 }
-
-export default DetailInfo;

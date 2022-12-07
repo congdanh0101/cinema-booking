@@ -1,9 +1,9 @@
 import axiosClient from '../../shared/apis/axiosClient';
 
-export const index = () => {
+export const index = (paymentId) => {
 	return async (dispatch) => {
 		try {
-			const response = await axiosClient().get(`products`);
+			const response = await axiosClient().get(`${paymentId}`);
 			dispatch({
 				type: 'INDEX',
 				payload: response.data,
@@ -21,7 +21,7 @@ export const index = () => {
 export const pay = () => {
 	return async (dispatch) => {
 		try {
-			const response = await axiosClient().get(`products`);
+			const response = await axiosClient().post(`pay`);
 			dispatch({
 				type: 'PAY',
 				payload: response.data,

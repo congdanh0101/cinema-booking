@@ -6,7 +6,7 @@ export default class MoviePage extends Component {
 	render() {
 		return (
 			<div>
-				<div className="bg-gray pb-5">
+				<div>
 					<Container>
 						<ListMovies />
 					</Container>

@@ -21,7 +21,7 @@
 	grid-gap: 10px;
 }
 .movie-container {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 @media screen and (max-width: 400px) {
 	.movie-list {

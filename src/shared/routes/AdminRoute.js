@@ -32,7 +32,7 @@ class AdminRoute extends Component {
 					} else {
 						return (
 							<Redirect
-								to={{ pathname: path.signUp, state: { from: props.location } }}
+								to={{ pathname: path.signIn, state: { from: props.location } }}
 							/>
 						);
 					}

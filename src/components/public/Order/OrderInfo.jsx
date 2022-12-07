@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Card, Col } from 'react-bootstrap';
 import { Ticket } from 'react-bootstrap-icons';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { createOrder, getOrderById } from '../../../service/actions/order';
 
 class OrderInfo extends Component {
 	state = {
@@ -13,6 +12,7 @@ class OrderInfo extends Component {
 
 	render() {
 		const { selectShowtime } = this.state;
+		const { selectedSeats } = this.props;
 		return (
 			<Col xs={12} lg={4}>
 				<p className="text-display-xs-bold">Order Info</p>
@@ -42,18 +42,30 @@ class OrderInfo extends Component {
 								${selectShowtime.price}
 							</p>
 						</div>
-						{/* <div className="d-flex justify-content-between">
-							<p className="text-xs text-color-label">Seat choosed</p>
-							<p className="text-right text-link-xs text-color-title">
-								{this.props.order.seatOrder + ''}
-							</p>
-						</div> */}
+						<div className="d-flex justify-content-between">
+							<p className="text-xs text-color-label">Seat chosen</p>
+							<div className="d-flex justify-content-end">
+								{selectedSeats
+									.map((seat) => (
+										<Fragment key={seat.id}>
+											<p className="text-right text-link-xs text-color-title">
+												<span>{seat.name}</span>
+											</p>
+										</Fragment>
+									))
+									.reduce(
+										(prev, curr) =>
+											prev === null ? [curr] : [prev, ', ', curr],
+										null
+									)}
+							</div>
+						</div>
 					</Card.Body>
 					<hr />
 					<Card.Body className="pt-0">
 						<p className="float-left text-link-md">Total Payment</p>
 						<p className="float-end text-display-xs-bold text-primary text-right">
-							{/* ${selectShowtime.price * this.props.order.seatOrder.length} */}
+							${selectShowtime.price * selectedSeats.length}
 						</p>
 					</Card.Body>
 				</Card>
@@ -63,10 +75,8 @@ class OrderInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	order: state.order,
+	seat: state.seat,
+	selectedSeats: state.seat.selectedSeats,
 });
-const mapDispatchToProps = { createOrder, getOrderById };
 
-export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(OrderInfo)
-);
+export default withRouter(connect(mapStateToProps)(OrderInfo));

@@ -4,7 +4,7 @@ import './styles.css';
 import barcode from '../../../assets/images/barcode.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { createOrder, createSeat } from '../../../service/actions/order';
+import { createOrder } from '../../../service/actions/order';
 import Moment from 'react-moment';
 
 class TicketComponent extends Component {
@@ -255,7 +255,7 @@ const mapStateToProps = (state) => ({
 	order: state.order,
 });
 
-const mapDispatchToProps = { createOrder, createSeat };
+const mapDispatchToProps = { createOrder };
 
 export default withRouter(
 	connect(mapStateToProps, mapDispatchToProps)(TicketComponent)

@@ -1,19 +1,38 @@
 import React, { Component } from 'react';
-import { Form, InputGroup } from 'react-bootstrap';
+import { Form, InputGroup, Row, Col } from 'react-bootstrap';
 import './styles.css';
 
 export default class PersonalInfo extends Component {
 	render() {
+		const user = JSON.parse(localStorage.getItem('currentUser'));
 		return (
 			<Form.Group>
 				<Form.Group>
-					<Form.Label>Full Name</Form.Label>
-					<Form.Control type="email" placeholder="Jonas El Rodriguez" />
+					<Row>
+						<Col>
+							<Form.Label>First Name</Form.Label>
+							<Form.Control
+								readOnly
+								type="text"
+								name="firstName"
+								value={user.firstName}
+							/>
+						</Col>
+						<Col>
+							<Form.Label>Last Name</Form.Label>
+							<Form.Control
+								readOnly
+								type="text"
+								name="lastName"
+								value={user.lastName}
+							/>
+						</Col>
+					</Row>
 				</Form.Group>
 
 				<Form.Group>
 					<Form.Label>Email</Form.Label>
-					<Form.Control type="email" placeholder="jonasrodri123@gmail.com" />
+					<Form.Control readOnly type="email" name="email" value={user.email} />
 				</Form.Group>
 
 				<Form.Group>
@@ -22,7 +41,12 @@ export default class PersonalInfo extends Component {
 						<InputGroup.Prepend className="contact">
 							<InputGroup.Text>+84</InputGroup.Text>
 						</InputGroup.Prepend>
-						<Form.Control type="number" placeholder="81445687121" />
+						<Form.Control
+							readOnly
+							type="number"
+							name="phoneNumber"
+							value={user.phoneNumber}
+						/>
 					</InputGroup>
 				</Form.Group>
 			</Form.Group>

@@ -1,5 +1,6 @@
 const initialState = {
 	tickets: [],
+	detail: {},
 	message: '',
 	errorMsg: '',
 };
