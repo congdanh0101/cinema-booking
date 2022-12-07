@@ -10,17 +10,11 @@ import {
 	TableHead,
 	TableRow,
 	Typography,
-	TablePagination,
 } from '@material-ui/core';
 import { Portlet, PortletContent } from '../../../../../components/common';
 import styles from './styles';
 
 class ShowtimesTable extends Component {
-	state = {
-		rowsPerPage: 10,
-		page: 0,
-	};
-
 	static propTypes = {
 		className: PropTypes.string,
 		classes: PropTypes.object.isRequired,
@@ -35,14 +29,6 @@ class ShowtimesTable extends Component {
 		onShowDetails: () => {},
 	};
 
-	handleChangePage = (event, page) => {
-		this.setState({ page });
-	};
-
-	handleChangeRowsPerPage = (event) => {
-		this.setState({ rowsPerPage: event.target.value });
-	};
-
 	render() {
 		const {
 			classes,
@@ -52,12 +38,12 @@ class ShowtimesTable extends Component {
 			selectedShowtimes,
 			selectAllShowtimes,
 		} = this.props;
-		const { rowsPerPage, page } = this.state;
+
 		const rootClassName = classNames(classes.root, className);
 		return (
 			<Portlet className={rootClassName}>
 				<PortletContent noPadding>
-					<Table >
+					<Table>
 						<TableHead>
 							<TableRow className={classes.tableRowHeader}>
 								<TableCell className={classes.tableCellHeader} align="left">
@@ -97,7 +83,6 @@ class ShowtimesTable extends Component {
 								.filter((showtime) => {
 									return showtime;
 								})
-								.slice(0, rowsPerPage)
 								.map((showtime) => (
 									<TableRow
 										hover
@@ -144,21 +129,6 @@ class ShowtimesTable extends Component {
 								))}
 						</TableBody>
 					</Table>
-					<TablePagination
-						backIconButtonProps={{
-							'aria-label': 'Previous Page',
-						}}
-						component="div"
-						count={showtimes.length}
-						nextIconButtonProps={{
-							'aria-label': 'Next Page',
-						}}
-						onPageChange={this.handleChangePage}
-						onRowsPerPageChange={this.handleChangeRowsPerPage}
-						page={page}
-						rowsPerPage={rowsPerPage}
-						rowsPerPageOptions={[10]}
-					/>
 				</PortletContent>
 			</Portlet>
 		);

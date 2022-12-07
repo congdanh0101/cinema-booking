@@ -9,7 +9,7 @@ const palette = {
 		white,
 		commonBackground: white,
 		contrastText: black,
-		neutral: '#E4E7EB',
+		neutral: '#7d58ff',
 		muted: '#9EA0A4',
 	},
 	/* The default theme. */

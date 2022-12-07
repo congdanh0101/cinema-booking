@@ -24,7 +24,7 @@ const ListMovies = () => {
 				scrollTop();
 			} else {
 				const { data } = await axiosClient().get(
-					`movies?pageNumber=${pagination.page}`
+					`movies?pageNumber=${pagination.page + 1}`
 				);
 				setPagination({
 					...pagination,
