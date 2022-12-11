@@ -21,10 +21,15 @@ export const path = {
 	admin: '/admin',
 	dashboard: '/dashboard',
 	userManage: '/manage/user',
-	movieManage: '/manage/movie',
 	cinemaManage: '/manage/cinema',
-	showtimeManage: '/manage/showtime',
 	genreManage: '/manage/genre',
-
+	movieManage: '/manage/movie',
+	movieAddNew: '/manage/add-movie',
+	movieUpdate: '/manage/update-movie',
+	movieView: '/manage/view-movie',
+	showtimeManage: '/manage/showtime',
+	showtimeUpdate: '/manage/update-showtime',
+	showtimeAddNew: '/manage/add-showtime',
+	showtimeView: '/manage/view-showtime',
 	notFound: '*',
 };

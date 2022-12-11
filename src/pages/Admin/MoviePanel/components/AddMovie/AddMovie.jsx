@@ -250,7 +250,7 @@ class AddMovie extends Component {
 									className={classes.upload}
 									type="text"
 									as="textarea"
-									style={{ height: '100px' }}
+									style={{ height: '100px', resize: null }}
 									value={trailer}
 									onChange={(event) =>
 										this.handleFieldChange('trailer', event.target.value)

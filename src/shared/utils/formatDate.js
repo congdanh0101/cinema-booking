@@ -1,3 +1,4 @@
+// format 2020-01-01T00:00:00.000Z -> 00:00
 export const formatDateToHours = (time) => {
 	const formatDate = new Date(time).toLocaleTimeString('vi-VN', {
 		hour: '2-digit',

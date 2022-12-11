@@ -9,7 +9,7 @@ const orderReducer = (state = initialState, action) => {
 		case 'CREATE_ORDER': {
 			return {
 				...state,
-				orders: action.payload,
+				details: action.payload,
 				message: action.message,
 			};
 		}

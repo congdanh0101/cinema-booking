@@ -27,7 +27,7 @@ class OrderSeat extends Component {
 		selectSeat(seat);
 	};
 	handleCheckOut = () => {
-		const { history, ticket } = this.props;
+		const { history, ticket, order } = this.props;
 		const { selectShowtime } = this.state;
 		this.setState({ isLoading: true });
 		this.props
@@ -36,10 +36,11 @@ class OrderSeat extends Component {
 				let order = ticket.map((ticket) => {
 					return { ticket: ticket };
 				});
-				this.props.createOrder(order);
+				await this.props.createOrder(order);
 			});
 
 		this.setState({ isLoading: false });
+		sessionStorage.setItem('order', JSON.stringify(order.details));
 		history.push(path.payment);
 	};
 	render() {

@@ -1,35 +1,3 @@
-html {
-	font-size: 62.5%;
-}
-
-body {
-	font-size: 1.6rem;
-	font-family: 'Overpass', sans-serif;
-	background-color: #0d0321;
-	&::-webkit-scrollbar {
-		width: 10px;
-	}
-	&::-webkit-scrollbar-track {
-		background-color: #fafafa;
-	}
-	&::-webkit-scrollbar-thumb {
-		background-image: linear-gradient(-45deg, #6a5af9, #d66efd);
-		border-radius: 50px;
-	}
-}
-
-.container {
-	width: 100%;
-	max-width: 1470px;
-	margin: 0 auto;
-	padding: 0 15px;
-	@media screen and (max-width: 1023.98px) {
-		padding: 0 20px;
-	}
-	@media screen and (max-width: 767.98px) {
-		padding: 0 15px;
-	}
-}
 .grid-layout {
 	display: flex;
 	gap: 20px;
@@ -54,24 +22,6 @@ body {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-gap: 20px;
-}
-
-@media screen and (max-width: 1023.98px) {
-	.grid-layout {
-		flex-direction: column;
-	}
-	.column1,
-	.column2 {
-		width: 100%;
-	}
-	.column2 {
-		padding-top: 20px;
-	}
-
-	.form-layout,
-	.form-layout-3 {
-		grid-template-columns: 100%;
-	}
 }
 
 .swal2-popup.swal2-modal {

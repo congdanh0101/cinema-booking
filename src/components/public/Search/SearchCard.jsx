@@ -11,11 +11,13 @@ const StyledSearchCard = styled.div`
 		overflow: hidden;
 		background-color: var(--bg-skeleton);
 		aspect-ratio: 2/3;
+		border-radius: 20px;
 	}
 	.card-poster {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		border-radius: 15px;
 	}
 `;
 

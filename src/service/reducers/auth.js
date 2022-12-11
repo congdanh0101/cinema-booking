@@ -4,6 +4,7 @@ const initialState = {
 	user: null,
 	message: '',
 	errorMsg: '',
+	isAllowed: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -21,19 +22,13 @@ const authReducer = (state = initialState, action) => {
 			return {
 				...state,
 				user: action.payload.user,
+				isAllowed: true,
 				message: action.message,
 				errorMsg: '',
 			};
 		}
 		case 'LOGOUT': {
-			return {
-				...state,
-				user: null,
-				token: null,
-				expired: null,
-				errorMsg: '',
-				message: '',
-			};
+			return initialState;
 		}
 		case 'EMAIL_VERIFY_REGISTER': {
 			return {
@@ -52,6 +47,7 @@ const authReducer = (state = initialState, action) => {
 		case 'FORGET_PASSWORD': {
 			return {
 				...state,
+				isAllowed: true,
 				message: action.message,
 			};
 		}

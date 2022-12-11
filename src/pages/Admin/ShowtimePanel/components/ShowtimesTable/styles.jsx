@@ -14,7 +14,7 @@ const styles = (theme) => ({
 		whiteSpace: 'nowrap',
 	},
 	tableCellInner: {
-		display: 'flex',
+		display: 'inline-flex',
 		alignItems: 'center',
 	},
 	avatar: {

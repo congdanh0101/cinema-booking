@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
+import moment from 'moment';
 import {
 	Checkbox,
 	Table,
@@ -11,7 +12,12 @@ import {
 	TableRow,
 	Typography,
 } from '@material-ui/core';
-import { Portlet, PortletContent } from '../../../../../components/common';
+import {
+	Portlet,
+	PortletContent,
+	ActionDelete,
+	ActionUpdate,
+} from '../../../../../components/common';
 import styles from './styles';
 
 class ShowtimesTable extends Component {
@@ -33,12 +39,12 @@ class ShowtimesTable extends Component {
 		const {
 			classes,
 			className,
+			toggleDialog,
 			showtimes,
 			onSelectShowtime,
 			selectedShowtimes,
 			selectAllShowtimes,
 		} = this.props;
-
 		const rootClassName = classNames(classes.root, className);
 		return (
 			<Portlet className={rootClassName}>
@@ -58,23 +64,26 @@ class ShowtimesTable extends Component {
 									/>
 									ID
 								</TableCell>
-								<TableCell className={classes.tableCellHeader} align="left">
+								<TableCell className={classes.tableCellHeader} align="center">
 									Movie
 								</TableCell>
-								<TableCell className={classes.tableCellHeader} align="left">
+								<TableCell className={classes.tableCellHeader} align="center">
 									Theater
 								</TableCell>
-								<TableCell className={classes.tableCellHeader} align="left">
+								<TableCell className={classes.tableCellHeader} align="center">
 									Price
 								</TableCell>
-								<TableCell className={classes.tableCellHeader} align="left">
+								<TableCell className={classes.tableCellHeader} align="center">
 									Time Start
 								</TableCell>
-								<TableCell className={classes.tableCellHeader} align="left">
+								<TableCell className={classes.tableCellHeader} align="center">
 									Duration
 								</TableCell>
-								<TableCell className={classes.tableCellHeader} align="left">
+								<TableCell className={classes.tableCellHeader} align="center">
 									Show Date
+								</TableCell>
+								<TableCell className={classes.tableCellHeader} align="center">
+									Actions
 								</TableCell>
 							</TableRow>
 						</TableHead>
@@ -107,23 +116,31 @@ class ShowtimesTable extends Component {
 												</Typography>
 											</div>
 										</TableCell>
-										<TableCell className={classes.tableCell}>
+										<TableCell className={classes.tableCell} align="center">
 											{showtime.movie.name}
 										</TableCell>
-										<TableCell className={classes.tableCell}>
+										<TableCell className={classes.tableCell} align="center">
 											{showtime.theater.name}
 										</TableCell>
-										<TableCell className={classes.tableCell}>
+										<TableCell className={classes.tableCell} align="center">
 											{showtime.price}
 										</TableCell>
-										<TableCell className={classes.tableCell}>
+										<TableCell className={classes.tableCell} align="center">
 											{showtime.timeStart}
 										</TableCell>
-										<TableCell className={classes.tableCell}>
+										<TableCell className={classes.tableCell} align="center">
 											{showtime.movie.duration}
 										</TableCell>
-										<TableCell className={classes.tableCell}>
+										<TableCell className={classes.tableCell} align="center">
 											{showtime.showDate}
+										</TableCell>
+										<TableCell className={classes.tableCell} align="center">
+											<div className={classes.tableCellInner}>
+												<ActionUpdate
+													onClick={() => toggleDialog()}
+												></ActionUpdate>
+												<ActionDelete></ActionDelete>
+											</div>
 										</TableCell>
 									</TableRow>
 								))}

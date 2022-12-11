@@ -1,4 +1,4 @@
-import axiosClient from '../../shared/apis/axiosClient';
+import axiosClient from '../../shared/apis/axiosClient2';
 
 export const index = (paymentId) => {
 	return async (dispatch) => {

@@ -31,6 +31,10 @@ class ForgetPassword extends Component {
 			? toast.success(this.props.auth.message)
 			: toast.error(this.props.auth.errorMsg);
 	};
+	componentDidMount() {
+		localStorage.clear();
+		sessionStorage.clear();
+	}
 	componentWillUnmount() {
 		this.setState = (state, callback) => {
 			return;

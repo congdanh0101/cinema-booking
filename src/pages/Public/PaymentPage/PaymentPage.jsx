@@ -5,24 +5,31 @@ import { Button, Spinner } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { PanelLeft, PanelRight } from '../../../components/common';
 import { path } from '../../../shared/constants/path';
-import { index } from '../../../service/actions/payment';
+import axios from 'axios';
+import { index, pay } from '../../../service/actions/payment';
+import axiosClient from '../../../shared/apis/axiosClient2';
 
 class PaymentPage extends Component {
 	state = {
 		isLoading: false,
 		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
 	};
+	openLink = (url) => window.open(url, '_blank')?.focus();
 	async componentDidMount() {
-		const { payment, index, order } = this.props;
-		if (!payment.length) await index(order.id);
+		//const response = await axiosClient().get(`${78}`);
+		// await this.openLink('http://localhost:8888/78');
 	}
-	handlePayment = async () => {
-		const { selectShowtime } = this.state;
+	handlePayment = () => {
 		this.setState({ isLoading: true });
-		await this.props.addManyTickets(
-			selectShowtime.id,
-			this.props.selectedSeats
-		);
+		this.openLink('http://localhost:8888/78');
+		// const path = ` http://localhost:8888/pay?price=${30}`;
+		// axios(path, {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Access-Control-Allow-Credentials': true,
+		// 		'Content-Type': 'application/json',
+		// 	},
+		// });
 		this.setState({ isLoading: false });
 	};
 	render() {
@@ -81,11 +88,12 @@ class PaymentPage extends Component {
 
 const mapStateToProps = (state) => ({
 	payment: state.payment,
-	order: state.order,
+	order: state.order.details,
 });
 
 const mapDispatchToProps = {
 	index,
+	pay,
 };
 
 export default withRouter(

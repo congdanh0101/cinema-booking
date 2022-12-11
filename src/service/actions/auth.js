@@ -43,9 +43,30 @@ export const register = (
 			});
 			sessionStorage.setItem('currentUser', JSON.stringify(response.data));
 			sessionStorage.setItem('password', password);
+			sessionStorage.setItem('isAllowed', true);
 			dispatch({
 				type: 'REGISTER',
 				payload: response.data,
+				message: response.data.message,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_AUTH_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
+export const forgetPassword = (email) => {
+	return async (dispatch) => {
+		try {
+			const response = await axiosClient().post(`auth/forgot`, { email });
+			sessionStorage.setItem('currentUser', JSON.stringify(response.data));
+			sessionStorage.setItem('isAllowed', true);
+			dispatch({
+				type: 'FORGET_PASSWORD',
 				message: response.data.message,
 			});
 		} catch (err) {
@@ -115,25 +136,6 @@ export const emailVerifyRegister = (
 					payload: 'Verification code expired',
 				});
 			}
-		} catch (err) {
-			const { message } = err.response.data;
-			dispatch({
-				type: 'SET_AUTH_MESSAGE',
-				payload: message,
-			});
-		}
-	};
-};
-
-export const forgetPassword = (email) => {
-	return async (dispatch) => {
-		try {
-			const response = await axiosClient().post(`auth/forgot`, { email });
-			sessionStorage.setItem('currentUser', JSON.stringify(response.data));
-			dispatch({
-				type: 'FORGET_PASSWORD',
-				message: response.data.message,
-			});
 		} catch (err) {
 			const { message } = err.response.data;
 			dispatch({

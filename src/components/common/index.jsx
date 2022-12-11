@@ -9,6 +9,10 @@ export { default as PanelLeft } from './Bootstrap/SplitPanel/PanelLeft';
 export { default as PanelRight } from './Bootstrap/SplitPanel/PanelRight';
 
 //Styled components
+export { default as ActionDelete } from './StyledComponent/Action/ActionDelete';
+export { default as ActionUpdate } from './StyledComponent/Action/ActionUpdate';
+export { default as ActionView } from './StyledComponent/Action/ActionView';
+export { default as ActionStatus } from './StyledComponent/Action/ActionStatus';
 export { default as Button } from './StyledComponent/Button/Button';
 export { default as SliderArrow } from './StyledComponent/Button/SliderArrow';
 export { default as Image } from './StyledComponent/Image/Image';

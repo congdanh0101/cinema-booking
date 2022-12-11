@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../../../service/actions/auth';
 import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
+import { toast } from 'react-toastify';
 import './styles.css';
 
 class NavbarComponent extends Component {
@@ -12,15 +13,18 @@ class NavbarComponent extends Component {
 		expired: this.props.auth.expired,
 		now: new Date().getTime(),
 	};
-	componentDidMount() {
+	async componentDidMount() {
+		const { history } = this.props;
 		if (this.props.auth.token !== null) {
 			if (this.state.now >= this.state.expired) {
-				this.props.logout();
+				this.handleLogout();
+				history.push(path.home);
 			}
 		}
 	}
-	handleLogout = () => {
-		this.props.logout();
+	handleLogout = async () => {
+		await this.props.logout();
+		toast.success('Successfully Logout');
 	};
 	render() {
 		const { user } = this.props;
@@ -30,12 +34,15 @@ class NavbarComponent extends Component {
 					<Navbar.Brand href="#home" as={Link} to="/" className="m-0 mr-5">
 						<Image src={tickitz_purple} />
 					</Navbar.Brand>
-					<Navbar.Toggle aria-controls="basic-navbar-nav" />
-					<Navbar.Collapse id="basic-navbar-nav">
+					<Navbar.Toggle aria-controls="responsive-navbar-nav" />
+					<Navbar.Collapse id="responsive-navbar-nav">
 						<Nav className="navbar-list mr-auto">
 							<Nav.Link className="nav-link" href={path.movies}>
 								Movies
 							</Nav.Link>
+							{/* <Nav.Link className="nav-link" href={path.history}>
+								My Tickets
+							</Nav.Link> */}
 							{user?.roles?.map((item) => {
 								if (item.name === 'ROLE_ADMIN') {
 									return (
@@ -61,7 +68,7 @@ class NavbarComponent extends Component {
 											className="img-avatar"
 										/>
 									}
-									id="basic-nav-dropdown"
+									id="responsive-nav-dropdown"
 									className="m-0"
 								>
 									<NavDropdown.Item href={path.home}>Home</NavDropdown.Item>

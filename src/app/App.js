@@ -22,18 +22,33 @@ import PaymentPage from '../pages/Public/PaymentPage/PaymentPage';
 import TicketResult from '../pages/Public/TicketResult/TicketResult';
 import ProfilePage from '../pages/Public/ProfilePage/ProfilePage';
 import Error from '../pages/Public/NotFound/NotFound';
+import UserHistory from '../pages/Public/History/UserHistory';
 
 //Admin
 import MoviePanel from '../pages/Admin/MoviePanel/MoviePanel';
-import ShowtimePanel from '../pages/Admin/ShowtimePanel/ShowtimePanel';
+// import ShowtimePanel from '../pages/Admin/ShowtimePanel/ShowtimePanel';
 import CinemaPanel from '../pages/Admin/CinemaPanel/CinemaPanel';
+import ShowtimePanel from '../pages/Admin/ShowtimePanel/ShowtimePanel';
+import GenrePanel from '../pages/Admin/GenrePanel/GenrePanel';
+// import ShowtimeUpdate from '../pages/Admin/Showtime/ShowtimeEdit';
+// import ShowtimeView from '../pages/Admin/Showtime/ShowtimeView';
 
 //Components
 import { MainLayout, AdminLayout } from '../layouts';
-import { WithLayoutRoute, ProtectedRoute, AdminRoute } from '../shared/routes';
+import {
+	WithLayoutRoute,
+	ProtectedRoute,
+	AdminRoute,
+	BlockedRoute,
+} from '../shared/routes';
 import ScrollToTop from '../shared/utils/utils';
+
+//Styles
 import Theme from '../shared/theme';
-import GenrePanel from '../pages/Admin/GenrePanel/GenrePanel';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 export default class App extends Component {
 	render() {
@@ -52,12 +67,12 @@ export default class App extends Component {
 										path={path.forgetPassword}
 										component={ForgetPassword}
 									/>
-									<Route
+
+									<BlockedRoute
 										path={path.emailVerifyRegister}
 										component={EmailVerificationRegister}
 									/>
-
-									<Route
+									<BlockedRoute
 										path={path.emailVerifyForgot}
 										component={EmailVerificationForgot}
 									/>
@@ -90,6 +105,11 @@ export default class App extends Component {
 										component={OrderPage}
 									/>
 									<ProtectedRoute
+										path={path.history}
+										layout={MainLayout}
+										component={UserHistory}
+									/>
+									<ProtectedRoute
 										path={path.payment}
 										layout={MainLayout}
 										component={PaymentPage}
@@ -103,26 +123,26 @@ export default class App extends Component {
 									<AdminRoute
 										exact
 										path={path.movieManage}
-										privateLayout={AdminLayout}
-										privateComponent={MoviePanel}
+										layout={AdminLayout}
+										component={MoviePanel}
 									/>
 									<AdminRoute
 										exact
 										path={path.showtimeManage}
-										privateLayout={AdminLayout}
-										privateComponent={ShowtimePanel}
+										layout={AdminLayout}
+										component={ShowtimePanel}
 									/>
 									<AdminRoute
 										exact
 										path={path.cinemaManage}
-										privateLayout={AdminLayout}
-										privateComponent={CinemaPanel}
+										layout={AdminLayout}
+										component={CinemaPanel}
 									/>
 									<AdminRoute
 										exact
 										path={path.genreManage}
-										privateLayout={AdminLayout}
-										privateComponent={GenrePanel}
+										layout={AdminLayout}
+										component={GenrePanel}
 									/>
 
 									<Route path={path.notFound} component={Error} />

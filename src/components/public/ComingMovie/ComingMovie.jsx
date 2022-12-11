@@ -69,14 +69,14 @@ class ComingComponent extends Component {
 												style={{ textDecoration: 'none' }}
 											>
 												<ImageResize
-													url={coming.image}
+													url={coming.img}
 													width="200"
 													className="img-fluid img-resize"
 													alt="image"
 												/>
 											</Link>
 											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{coming.name}
+												{coming.title}
 											</p>
 											<Button
 												href={`/movie-detail/${coming.id}`}

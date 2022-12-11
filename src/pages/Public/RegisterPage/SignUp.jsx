@@ -41,6 +41,10 @@ class SignUp extends Component {
 			? toast.success(this.props.auth.message)
 			: toast.error(this.props.auth.errorMsg);
 	};
+	componentDidMount() {
+		localStorage.clear();
+		sessionStorage.clear();
+	}
 	componentWillUnmount() {
 		this.setState = (state, callback) => {
 			return;
@@ -121,10 +125,8 @@ class SignUp extends Component {
 							gender: '',
 						}}
 						validationSchema={schemaYupSignUp}
-						onSubmit={(values, { resetForm }) => {
-							this.submitData(values).then(() => {
-								resetForm();
-							});
+						onSubmit={(values) => {
+							this.submitData(values);
 						}}
 					>
 						{({
