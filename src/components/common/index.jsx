@@ -30,13 +30,13 @@ export { default as LoadingSpinner } from './StyledComponent/Loading/LoadingSpin
 export { default as MovieCard } from './StyledComponent/Movie/MovieCard';
 export { default as MovieCardSkeleton } from './StyledComponent/Movie/MovieCardSkeleton';
 export { default as MovieList } from './StyledComponent/Movie/MovieList';
+export { default as MovieBanner } from '../common/StyledComponent/Movie/MovieBanner';
 export { default as MovieTitle } from './StyledComponent/Movie/MovieTitle';
+export { default as MovieTitleCard } from './StyledComponent/Movie/MovieTitleCard';
 export { default as Pagination } from './StyledComponent/Pagination/Pagination';
-export { default as PostRelated } from './StyledComponent/PostRelated/PostRelated';
 export { default as Table } from './StyledComponent/Table/Table';
 export { default as Tag } from './StyledComponent/Tag/Tag';
 export { default as TagSmall } from './StyledComponent/Tag/TagSmall';
-export { default as Text } from './StyledComponent/Text/Description';
 export { default as Textarea } from './StyledComponent/TextArea/TextArea';
 
 //Material UI

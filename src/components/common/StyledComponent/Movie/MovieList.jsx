@@ -50,7 +50,6 @@ const MovieList = ({
 	}
 	return (
 		<StyledMovieList>
-			<h2>{heading}</h2>
 			<div className="movie-list">
 				{data?.length > 0 &&
 					data.map((item) => (

@@ -1,8 +1,8 @@
 const listComingMovie = [
 	{
 		id: 1,
-		img: 'https://pbs.twimg.com/media/EPKOTsOX0AAaYeN.jpg',
-		title: 'Black Widow',
+		image: 'https://pbs.twimg.com/media/EPKOTsOX0AAaYeN.jpg',
+		name: 'Black Widow',
 		genre: 'Action, Adventure, Sci-Fi',
 		release: '',
 		directed: '',
@@ -12,8 +12,9 @@ const listComingMovie = [
 	},
 	{
 		id: 2,
-		img: 'https://upload.wikimedia.org/wikipedia/en/a/a7/The_Witches_%28Official_2020_Film_Poster%29.png ',
-		title: 'The Witches',
+		image:
+			'https://upload.wikimedia.org/wikipedia/en/a/a7/The_Witches_%28Official_2020_Film_Poster%29.png ',
+		name: 'The Witches',
 		genre: 'Adventure, Comedy, Family',
 		release: '',
 		directed: '',
@@ -23,8 +24,9 @@ const listComingMovie = [
 	},
 	{
 		id: 3,
-		img: 'https://m.media-amazon.com/images/M/MV5BYzg0NGM2NjAtNmIxOC00MDJmLTg5ZmYtYzM0MTE4NWE2NzlhXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_.jpg',
-		title: 'Tenet',
+		image:
+			'https://m.media-amazon.com/images/M/MV5BYzg0NGM2NjAtNmIxOC00MDJmLTg5ZmYtYzM0MTE4NWE2NzlhXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_.jpg',
+		name: 'Tenet',
 		genre: 'Action, Sci-Fi',
 		release: '',
 		directed: '',
@@ -34,8 +36,9 @@ const listComingMovie = [
 	},
 	{
 		id: 4,
-		img: 'https://m.media-amazon.com/images/M/MV5BMTg1MTY2MjYzNV5BMl5BanBnXkFtZTgwMTc4NTMwNDI@._V1_.jpg',
-		title: 'Black Panther',
+		image:
+			'https://m.media-amazon.com/images/M/MV5BMTg1MTY2MjYzNV5BMl5BanBnXkFtZTgwMTc4NTMwNDI@._V1_.jpg',
+		name: 'Black Panther',
 		genre: 'Action, Adventure, Sci-Fi',
 		release: '',
 		directed: '',
@@ -45,8 +48,9 @@ const listComingMovie = [
 	},
 	{
 		id: 5,
-		img: 'https://images-na.ssl-images-amazon.com/images/I/814V1XJaoAL._AC_SL1500_.jpg',
-		title: 'Mission Impossible',
+		image:
+			'https://images-na.ssl-images-amazon.com/images/I/814V1XJaoAL._AC_SL1500_.jpg',
+		name: 'Mission Impossible',
 		genre: 'Action, Adventure, Sci-Fi',
 		release: '',
 		directed: '',
@@ -56,8 +60,9 @@ const listComingMovie = [
 	},
 	{
 		id: 6,
-		img: 'https://images-na.ssl-images-amazon.com/images/I/81jOPH03PWL._AC_SY741_.jpg',
-		title: 'Spongebob Movie',
+		image:
+			'https://images-na.ssl-images-amazon.com/images/I/81jOPH03PWL._AC_SY741_.jpg',
+		name: 'Spongebob Movie',
 		genre: 'Adventure, Comedy',
 		release: '',
 		directed: '',

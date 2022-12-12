@@ -11,7 +11,7 @@ const StyledSearchCard = styled.div`
 		overflow: hidden;
 		background-color: var(--bg-skeleton);
 		aspect-ratio: 2/3;
-		border-radius: 20px;
+		border-radius: 10px;
 	}
 	.card-poster {
 		width: 100%;
@@ -32,6 +32,7 @@ const SearchCard = ({ movie }) => {
 					width="200"
 					className="card-poster"
 					alt="poster"
+					to={`/movie-detail/${id}`}
 				/>
 			</div>
 			<MovieTitle to={`/movie-detail/${id}`}>{name}</MovieTitle>

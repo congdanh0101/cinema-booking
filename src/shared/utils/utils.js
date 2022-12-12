@@ -78,3 +78,14 @@ export const scrollTop = () => {
 		behavior: 'smooth',
 	});
 };
+
+export const scrollBanner = () => {
+	window.scrollTo({
+		top: 750,
+		behavior: 'smooth',
+	});
+};
+
+export const capitalizeFirstLowercaseRest = (str) => {
+	return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};

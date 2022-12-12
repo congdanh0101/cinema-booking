@@ -36,7 +36,7 @@ class NavbarComponent extends Component {
 					</Navbar.Brand>
 					<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 					<Navbar.Collapse id="responsive-navbar-nav">
-						<Nav className="navbar-list mr-auto">
+						<Nav className="navbar-list me-auto">
 							<Nav.Link className="nav-link" href={path.movies}>
 								Movies
 							</Nav.Link>
@@ -68,7 +68,7 @@ class NavbarComponent extends Component {
 											className="img-avatar"
 										/>
 									}
-									id="responsive-nav-dropdown"
+									id="collasible-nav-dropdown"
 									className="m-0"
 								>
 									<NavDropdown.Item href={path.home}>Home</NavDropdown.Item>
@@ -87,7 +87,7 @@ class NavbarComponent extends Component {
 								<Nav.Item className="pt-1">
 									<Link
 										to={path.signIn}
-										className="btn btn-primary btn-nav mx-2"
+										className="btn btn-primary btn-nav mx-0"
 									>
 										Sign in
 									</Link>

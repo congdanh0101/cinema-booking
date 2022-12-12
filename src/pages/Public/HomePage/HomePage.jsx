@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Col, Container, Row, Image } from 'react-bootstrap';
-import { ShowingComponent, ComingComponent } from '../../../components/public';
-import './styles.css';
+import { Container, Row, Col, Image } from 'react-bootstrap';
+import { ListMovies } from '../../../components/public';
 import { login } from '../../../service/actions/auth';
 import { connect } from 'react-redux';
+import { MovieBanner, ButtonLeft } from '../../../components/common';
+import { scrollBanner } from '../../../shared/utils/utils';
+import './styles.css';
 
 class HomePage extends Component {
 	render() {
@@ -14,18 +16,32 @@ class HomePage extends Component {
 						<Row>
 							<Col
 								md={6}
-								sm={12}
+								sm={13}
 								className="flex-column justify-content-center d-flex"
 							>
 								<p className="text-color-placeholder text-display-xs m-0">
 									Nearest Cinema, Newest Movie,
 								</p>
 								<p className="text-display-lg-bold-56 text-primary m-0">
-									Find out now!
+									Never Wait !
 								</p>
+								<ButtonLeft
+									gobuttonleft="#"
+									buttontext="Find out now !"
+									className="pt-2"
+									onClick={() => scrollBanner()}
+								/>
 							</Col>
 							<Col md={6} sm={12}>
 								<Row md={3} lg={4}>
+									<Col style={{ paddingTop: 120 }}>
+										<div className="img-gradient">
+											<Image
+												src="https://source.unsplash.com/featured/?popcorn"
+												className="img-fluid"
+											/>
+										</div>
+									</Col>
 									<Col style={{ paddingTop: 80 }}>
 										<div className="img-gradient">
 											<Image
@@ -54,13 +70,11 @@ class HomePage extends Component {
 							</Col>
 						</Row>
 					</section>
-					<section>
-						<ShowingComponent />
-					</section>
-					<section>
-						<ComingComponent />
-					</section>
 				</Container>
+				<section>
+					<MovieBanner />
+				</section>
+				<ListMovies />
 			</div>
 		);
 	}

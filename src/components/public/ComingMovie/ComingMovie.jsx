@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Button } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import listComingMovie from '../../../shared/constants/data/listComingMovie';
 import { getMovieByComing } from '../../../service/actions/movie';
 import { ImageResize } from '../../../components/common';
+import { MovieTitleCard } from '../../../components/common';
 import { path } from '../../../shared/constants/path';
 import './styles.css';
 
@@ -44,17 +45,7 @@ class ComingComponent extends Component {
 													alt="image"
 												/>
 											</Link>
-											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{coming.name}
-											</p>
-											<Button
-												href={`/movie-detail/${coming.id}`}
-												variant="outline-primary"
-												className="btn-nav"
-												block
-											>
-												Book now
-											</Button>
+											<MovieTitleCard>{coming.name}</MovieTitleCard>
 										</Card.Body>
 									</Card>
 								);
@@ -69,23 +60,13 @@ class ComingComponent extends Component {
 												style={{ textDecoration: 'none' }}
 											>
 												<ImageResize
-													url={coming.img}
+													url={coming.image}
 													width="200"
 													className="img-fluid img-resize"
 													alt="image"
 												/>
 											</Link>
-											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{coming.title}
-											</p>
-											<Button
-												href={`/movie-detail/${coming.id}`}
-												variant="outline-primary"
-												className="btn-nav"
-												block
-											>
-												Detail
-											</Button>
+											<MovieTitleCard>{coming.name}</MovieTitleCard>
 										</Card.Body>
 									</Card>
 								);

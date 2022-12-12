@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Card, Col, Row, Button } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getMovieByShowing } from '../../../service/actions/movie';
-import listComingMovie from '../../../shared/constants/data/listComingMovie';
+import listMovie from '../../../shared/constants/data/listMovie';
 import { ImageResize } from '../../../components/common';
+import { MovieTitleCard } from '../../../components/common';
 import { path } from '../../../shared/constants/path';
 import './styles.css';
 
@@ -26,7 +27,6 @@ class ShowingComponent extends Component {
 						</Link>
 					</Col>
 				</Row>
-
 				<div className="scrollmenu text-center">
 					{movie.nowShowing.length > 0
 						? movie.nowShowing.map((showing) => {
@@ -45,22 +45,12 @@ class ShowingComponent extends Component {
 													alt="image"
 												/>
 											</Link>
-											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{showing.name}
-											</p>
-											<Button
-												href={`/movie-detail/${showing.id}`}
-												variant="outline-primary"
-												className="btn-nav"
-												block
-											>
-												Book now
-											</Button>
+											<MovieTitleCard>{showing.name}</MovieTitleCard>
 										</Card.Body>
 									</Card>
 								);
 						  })
-						: listComingMovie.map((showing) => {
+						: listMovie.map((showing) => {
 								return (
 									<Card key={showing.id} className="scroll card mr-4">
 										<Card.Body className="card-body">
@@ -70,23 +60,13 @@ class ShowingComponent extends Component {
 												style={{ textDecoration: 'none' }}
 											>
 												<ImageResize
-													url={showing.image}
+													url={showing.img}
 													width="200"
 													className="img-fluid img-resize"
 													alt="image"
 												/>
 											</Link>
-											<p className="pt-2 pb-2 text-display-xs-bold-18 card-title m-0">
-												{showing.name}
-											</p>
-											<Button
-												href={`/movie-detail/${showing.id}`}
-												variant="outline-primary"
-												className="btn-nav"
-												block
-											>
-												Detail
-											</Button>
+											<MovieTitleCard>{showing.title}</MovieTitleCard>
 										</Card.Body>
 									</Card>
 								);

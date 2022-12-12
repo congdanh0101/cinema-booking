@@ -4,8 +4,9 @@ import reportWebVitals from './reportWebVitals';
 import { GlobalStyle } from './assets/styles/GlobalStyles';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './assets/styles/custom.scss';
 import App from './app/App';
+
+
 
 ReactDOM.render(
 	<React.Fragment>

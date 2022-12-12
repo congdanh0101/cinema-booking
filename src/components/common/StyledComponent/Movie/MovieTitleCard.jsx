@@ -6,9 +6,8 @@ import { Link } from 'react-router-dom';
 const StyledMovieTitle = styled.h3`
 	margin: 10px 0 10px;
 	font-weight: 700;
-	font-size: 20px;
+	font-size: 18px;
 	text-transform: capitalize;
-	text-align: center;
 	${TextClamp.multilines(2)};
 	a {
 		font-weight: 500;
@@ -21,7 +20,7 @@ const StyledMovieTitle = styled.h3`
 	}
 `;
 
-const MovieTitle = ({ to, children }) => {
+const MovieTitleCard = ({ to, children }) => {
 	if (to)
 		return (
 			<StyledMovieTitle>
@@ -31,9 +30,9 @@ const MovieTitle = ({ to, children }) => {
 	return <StyledMovieTitle>{children}</StyledMovieTitle>;
 };
 
-MovieTitle.propTypes = {
+MovieTitleCard.propTypes = {
 	to: PropTypes.string,
 	children: PropTypes.node.isRequired,
 };
 
-export default MovieTitle;
+export default MovieTitleCard;
