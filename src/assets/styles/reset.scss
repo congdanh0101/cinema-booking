@@ -1,14 +1,4 @@
 // Reset SCSS
-
-* {
-	margin: 0;
-	padding: 0;
-}
-*,
-*:before,
-*:after {
-	box-sizing: border-box;
-}
 body,
 h1,
 h2,
@@ -28,8 +18,7 @@ ol {
 }
 input,
 textarea,
-select,
-button {
+select {
 	outline: none;
 	font: inherit;
 }

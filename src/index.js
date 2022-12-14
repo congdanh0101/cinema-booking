@@ -6,8 +6,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './app/App';
 
-
-
 ReactDOM.render(
 	<React.Fragment>
 		<GlobalStyle />

@@ -5,42 +5,27 @@ import { Button, Spinner } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { PanelLeft, PanelRight } from '../../../components/common';
 import { path } from '../../../shared/constants/path';
-import axios from 'axios';
 import { index, pay } from '../../../service/actions/payment';
-import axiosClient from '../../../shared/apis/axiosClient2';
 
 class PaymentPage extends Component {
 	state = {
 		isLoading: false,
 		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
+		order: JSON.parse(sessionStorage.getItem('order')),
 	};
 	openLink = (url) => window.open(url, '_blank')?.focus();
-	async componentDidMount() {
-		//const response = await axiosClient().get(`${78}`);
-		// await this.openLink('http://localhost:8888/78');
-	}
 	handlePayment = () => {
 		this.setState({ isLoading: true });
-		this.openLink('http://localhost:8888/78');
-		// const path = ` http://localhost:8888/pay?price=${30}`;
-		// axios(path, {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Access-Control-Allow-Credentials': true,
-		// 		'Content-Type': 'application/json',
-		// 	},
-		// });
+		const { id } = this.state.order;
+		this.openLink(`http://localhost:8888/${id}`);
 		this.setState({ isLoading: false });
 	};
 	render() {
 		return (
 			<div>
-				<PanelLeft title="Payment Info" body={<PayInfo />}>
-					<PanelRight title="Personal Info" body={<PersonalInfo />} />
-				</PanelLeft>
 				<PanelLeft
-					title="Payment Method"
-					body={<PayMethod />}
+					title="Payment Info"
+					body={<PayInfo />}
 					panel={
 						<div className="pt-4 checkout">
 							<Link to={path.order}>
@@ -80,7 +65,9 @@ class PaymentPage extends Component {
 							)}
 						</div>
 					}
-				></PanelLeft>
+				>
+					<PanelRight title="Personal Info" body={<PersonalInfo />} />
+				</PanelLeft>
 			</div>
 		);
 	}

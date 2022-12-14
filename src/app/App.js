@@ -1,6 +1,6 @@
 import { path } from '../shared/constants/path';
 import React, { Component, Suspense } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -26,7 +26,6 @@ import UserHistory from '../pages/Public/History/UserHistory';
 
 //Admin
 import MoviePanel from '../pages/Admin/MoviePanel/MoviePanel';
-// import ShowtimePanel from '../pages/Admin/ShowtimePanel/ShowtimePanel';
 import CinemaPanel from '../pages/Admin/CinemaPanel/CinemaPanel';
 import ShowtimePanel from '../pages/Admin/ShowtimePanel/ShowtimePanel';
 import GenrePanel from '../pages/Admin/GenrePanel/GenrePanel';
@@ -58,11 +57,11 @@ export default class App extends Component {
 	render() {
 		const { store, persistor } = persistedStore();
 		return (
-			<Suspense fallback={<></>}>
-				<Provider store={store}>
-					<ThemeProvider theme={Theme}>
-						<PersistGate persistor={persistor}>
-							<BrowserRouter>
+			<Provider store={store}>
+				<ThemeProvider theme={Theme}>
+					<PersistGate persistor={persistor}>
+						<Suspense fallback={<></>}>
+							<Router>
 								<ScrollToTop />
 								<Switch>
 									<Route path={path.signUp} component={SignUp} />
@@ -151,11 +150,11 @@ export default class App extends Component {
 
 									<Route path={path.notFound} component={Error} />
 								</Switch>
-							</BrowserRouter>
-						</PersistGate>
-					</ThemeProvider>
-				</Provider>
-			</Suspense>
+							</Router>
+						</Suspense>
+					</PersistGate>
+				</ThemeProvider>
+			</Provider>
 		);
 	}
 }

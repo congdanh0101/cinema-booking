@@ -74,22 +74,22 @@ function CinemaCard(props) {
 				<Typography className={classes.name} variant="h4">
 					{cinema.name}
 				</Typography>
-				<Typography className={classes.city} variant="body1">
+				{/* <Typography className={classes.city} variant="body1">
 					{cinema.city}
-				</Typography>
+				</Typography> */}
 			</div>
-			<div className={classes.stats}>
+			{/* <div className={classes.stats}>
 				<AttachMoney className={classes.eventIcon} />
 				<Typography className={classes.eventText} variant="body2">
 					{cinema.ticketPrice} <span>&euro;</span> per movie
 				</Typography>
-			</div>
-			<div className={classes.stats}>
+			</div> */}
+			{/* <div className={classes.stats}>
 				<EventSeat className={classes.eventIcon} />
 				<Typography className={classes.eventText} variant="body2">
 					{cinema.seatsAvailable} seats Available
 				</Typography>
-			</div>
+			</div> */}
 		</Paper>
 	);
 }

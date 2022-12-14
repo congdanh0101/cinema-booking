@@ -92,21 +92,6 @@ class Sidebar extends Component {
 							primary="Genres"
 						/>
 					</ListItem>
-					<ListItem
-						activeClassName={classes.activeListItem}
-						className={classes.listItem}
-						component={NavLink}
-						style={{ textDecoration: 'none' }}
-						to={path.userManage}
-					>
-						<ListItemIcon className={classes.listItemIcon}>
-							<PersonIcon />
-						</ListItemIcon>
-						<ListItemText
-							classes={{ primary: classes.listItemText }}
-							primary="Users"
-						/>
-					</ListItem>
 				</List>
 				<Divider className={classes.listDivider} />
 				<List component="div" disablePadding>

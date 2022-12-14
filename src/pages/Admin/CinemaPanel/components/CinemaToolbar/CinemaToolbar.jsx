@@ -39,7 +39,7 @@ class CinemaToolbar extends Component {
 							value={search}
 							onChange={onChangeSearch}
 						/>
-						<Button
+						{/* <Button
 							onClick={() => this.OpenAddDialog()}
 							className="float-right col-12 col-md-2"
 							variant="outline-primary"
@@ -47,7 +47,7 @@ class CinemaToolbar extends Component {
 							size="small"
 						>
 							Add Theater
-						</Button>
+						</Button> */}
 					</div>
 				</div>
 				<ResponsiveDialog

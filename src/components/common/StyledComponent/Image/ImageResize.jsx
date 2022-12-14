@@ -2,8 +2,17 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import noImage from '../../../../assets/images/no-image.png';
+import { path } from '../../../../shared/constants/path';
 
-const ImageResize = ({ to, url, alt, className, imageError = noImage }) => {
+const ImageResize = ({
+	to,
+	url,
+	width,
+	height,
+	alt,
+	className,
+	imageError = noImage,
+}) => {
 	const [fallback, setFallback] = useState('');
 	const handleErrorImage = () => {
 		setFallback(imageError);
@@ -14,7 +23,7 @@ const ImageResize = ({ to, url, alt, className, imageError = noImage }) => {
 				<LazyLoadImage
 					onError={handleErrorImage}
 					className={className}
-					src={url || fallback}
+					src={url || fallback || path.resizeImage(url, width, height)}
 					effect="opacity"
 					alt={alt}
 				/>
@@ -25,7 +34,7 @@ const ImageResize = ({ to, url, alt, className, imageError = noImage }) => {
 		<LazyLoadImage
 			onError={handleErrorImage}
 			className={className}
-			src={url || fallback}
+			src={url || fallback || path.resizeImage(url, width, height)}
 			effect="opacity"
 			alt={alt}
 		/>

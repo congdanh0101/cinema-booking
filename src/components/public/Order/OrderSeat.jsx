@@ -32,20 +32,21 @@ class OrderSeat extends Component {
 		this.setState({ isLoading: true });
 		this.props
 			.addManyTickets(selectShowtime.id, this.props.selectedSeats)
-			.then(async () => {
+			.then(() => {
 				let order = ticket.map((ticket) => {
 					return { ticket: ticket };
 				});
-				await this.props.createOrder(order);
+				this.props.createOrder(order);
 			});
-
 		this.setState({ isLoading: false });
 		sessionStorage.setItem('order', JSON.stringify(order.details));
+		sessionStorage.setItem('ticket', JSON.stringify(ticket));
 		history.push(path.payment);
 	};
 	render() {
 		const { selectShowtime } = this.state;
 		const { seat, selectedSeats } = this.props;
+		console.log(this.props);
 		return (
 			<Col xs={12} lg="auto">
 				<p className="text-display-xs-bold">Choose Your Seat</p>
@@ -74,13 +75,24 @@ class OrderSeat extends Component {
 						</Button>
 					</Link>
 					{this.state.isLoading === false ? (
-						<Button
-							variant="primary shadow"
-							className="float-right col-12 col-md-5"
-							onClick={this.handleCheckOut}
-						>
-							Checkout now
-						</Button>
+						selectedSeats.length > 0 ? (
+							<Button
+								variant="primary shadow"
+								className="float-right col-12 col-md-5"
+								onClick={this.handleCheckOut}
+							>
+								Checkout now
+							</Button>
+						) : (
+							<Button
+								variant="primary shadow"
+								className="float-right col-12 col-md-5"
+								onClick={this.handleCheckOut}
+								disabled
+							>
+								Checkout now
+							</Button>
+						)
 					) : (
 						<Button
 							variant="primary shadow"

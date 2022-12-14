@@ -27,6 +27,7 @@ export { default as Input } from './StyledComponent/Input/Input';
 export { default as Label } from './StyledComponent/Label/Label';
 export { default as LabelError } from './StyledComponent/Label/LabelError';
 export { default as LoadingSpinner } from './StyledComponent/Loading/LoadingSpinner';
+export { default as LoadingLogo } from './StyledComponent/Loading/LoadingLogo';
 export { default as MovieCard } from './StyledComponent/Movie/MovieCard';
 export { default as MovieCardSkeleton } from './StyledComponent/Movie/MovieCardSkeleton';
 export { default as MovieList } from './StyledComponent/Movie/MovieList';
