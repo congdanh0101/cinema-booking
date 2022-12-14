@@ -98,7 +98,7 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 				? Sort.by(sortBy).ascending()
 				: Sort.by(sortBy).descending();
 
-		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+		Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
 
 		Page<Movie> pageMovies = movieRepository.findAll(pageable);
 
@@ -111,6 +111,7 @@ public class MovieServiceImp implements MovieService, ModelMapping<Movie, MovieD
 				.pageNumber(pageMovies.getNumber())
 				.lastPage(pageMovies.isLast())
 				.pageSize(pageMovies.getSize())
+				.totalPages(pageMovies.getTotalPages())
 				.totalElements(pageMovies.getTotalElements())
 				.build();
 

@@ -3,6 +3,7 @@ package springboot.restful.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -99,7 +100,12 @@ public class OrderController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteOrderById(@PathVariable int id) {
 		orderService.deleteOrder(id);
-		return ResponseEntity.ok().body(new ApiRespone(new Date().toLocaleString(), "Delete was successfully", true));
+		return ResponseEntity.ok().body(new ApiRespone(new Date().toLocaleString(),
+				"Delete was successfully", true));
+		// return new ResponseEntity<ApiRespone>(
+		// new ApiRespone(new Date().toLocaleString(), "Order was deleted with id : " +
+		// id, true),
+		// HttpStatus.OK);
 	}
 
 	@GetMapping("/detail/ticket/{idTicket}")

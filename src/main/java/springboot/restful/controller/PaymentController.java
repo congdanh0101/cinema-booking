@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @Slf4j
+@CrossOrigin(origins = "*")
 public class PaymentController {
 
 	public static final String URL_PAYPAL_SUCCESS = "pay/success";
@@ -41,10 +43,12 @@ public class PaymentController {
 		if (session == null)
 			session = request.getSession();
 		OrderDTO orderDTO = orderService.getOrderById(id);
-		if (orderDTO.isPaid()) throw new ApiException("Order is paid");
+		if (orderDTO.isPaid())
+			throw new ApiException("Order is paid");
 		session.setAttribute("orderDTO", orderDTO);
 		model.addAttribute("total", Double.valueOf(orderDTO.getTotal()));
 		return "index";
+
 	}
 
 	@PostMapping("/pay")

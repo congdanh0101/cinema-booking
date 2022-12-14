@@ -379,7 +379,8 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 			// lcNewTimeStart.equals(lcShowTimeEndLast))
 			// return true;
 
-			if (hourNewTimeStart > hourShowTimeEndLast) return true;
+			if (hourNewTimeStart > hourShowTimeEndLast)
+				return true;
 			if (hourNewTimeStart == hourShowTimeEndLast)
 				return minuteNewTimeStart >= minuteShowTimeEndLast;
 		}
@@ -452,13 +453,13 @@ public class ShowTimeServiceImp implements ShowTimeService, ModelMapping<ShowTim
 
 		List<Ticket> tickets = ticketRepository.findByShowTime(showTime);
 		List<TicketDTO> ticketDTOs = tickets.stream().map(t -> modelMapper.map(t, TicketDTO.class))
-				.filter(t -> t.isSold() == true)
+
 				.collect(Collectors.toList());
 		return ticketDTOs;
 	}
 
 	private boolean isShowTimeAvailableForUpdate(int idShowTime, List<ShowTimeDTO> showTimeDTOS, String timeStart,
-	                                             Movie movie) {
+			Movie movie) {
 
 		ShowTime showTime = showTimeRepository.findById(idShowTime)
 				.orElseThrow(() -> new ResourceNotFoundException("ShowTime", "id", idShowTime));
