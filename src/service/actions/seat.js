@@ -30,7 +30,7 @@ export const getAllSeatsOrderedByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {
 			const response = await axiosClient().get(
-				`seats/available/showtimes/${showtimeId}`
+				`seats/ordered/showtimes/${showtimeId}`
 			);
 			dispatch({
 				type: 'GET_ALL_SEAT_ORDERED_BY_SHOWTIME',

@@ -15,7 +15,6 @@ import MovieIcon from '@material-ui/icons/Movie';
 import TheatersIcon from '@material-ui/icons/Theaters';
 import MovieFilterOutlinedIcon from '@material-ui/icons/MovieFilterOutlined';
 import TheatersOutlinedIcon from '@material-ui/icons/TheatersOutlined';
-import PersonIcon from '@material-ui/icons/Person';
 
 import { logout } from '../../../../service/actions/auth';
 import { path } from '../../../../shared/constants/path';

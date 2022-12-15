@@ -18,10 +18,12 @@ class AddShowtime extends Component {
 		movieId: '',
 		cinemaId: '',
 		timeStart: '',
-		showDate: new Date().toISOString(),
+		showDate: moment(new Date().toISOString().slice(0, 10)).format(
+			'YYYY-MM-DD'
+		),
 	};
 
-	async componentDidMount() {
+	componentDidMount() {
 		if (this.props.selectedShowtime) {
 			const { movie, theater, timeStart } = this.props.selectedShowtime;
 			this.setState({
@@ -45,9 +47,9 @@ class AddShowtime extends Component {
 		this.setState(newState);
 	};
 
-	onAddShowtime = () => {
+	onAddShowtime = async () => {
 		const { showDate, timeStart, movieId, cinemaId } = this.state;
-		this.props.addShowtime(
+		await this.props.addShowtime(
 			movieId,
 			cinemaId,
 			moment(showDate).format('DD-MM-YYYY'),
@@ -55,9 +57,9 @@ class AddShowtime extends Component {
 		);
 	};
 
-	onUpdateShowtime = () => {
+	onUpdateShowtime = async () => {
 		const { showDate, timeStart, movieId, cinemaId } = this.state;
-		this.props.updateShowtime(
+		await this.props.updateShowtime(
 			this.props.selectedShowtime.id,
 			movieId,
 			cinemaId,
@@ -78,11 +80,8 @@ class AddShowtime extends Component {
 			? 'Update Showtime'
 			: 'Save Details';
 		const submitAction = this.props.selectedShowtime
-			? () => this.onUpdateShowtime()
-			: () => this.onAddShowtime();
-
-		console.log(this.props);
-		console.log(this.state);
+			? () => this.onUpdateShowtime().then(() => window.location.reload())
+			: () => this.onAddShowtime().then(() => window.location.reload());
 
 		return (
 			<div className={rootClassName}>

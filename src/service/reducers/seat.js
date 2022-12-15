@@ -1,5 +1,6 @@
 const initialState = {
 	seats: [],
+	orderedSeats: [],
 	selectedSeats: [],
 	message: '',
 	errorMsg: '',
@@ -43,7 +44,7 @@ const seatReducer = (state = initialState, action) => {
 		case 'GET_ALL_SEAT_ORDERED_BY_SHOWTIME': {
 			return {
 				...state,
-				seats: action.payload,
+				orderedSeats: action.payload,
 				message: action.message,
 			};
 		}

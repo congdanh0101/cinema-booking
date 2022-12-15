@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../../../service/actions/auth';
 import tickitz_purple from '../../../../assets/images/tickitz-purple.svg';
+import Avatar, { ConfigProvider } from 'react-avatar';
 import { toast } from 'react-toastify';
 import './styles.css';
 
@@ -61,14 +62,18 @@ class NavbarComponent extends Component {
 							{this.props.auth.token !== null ? (
 								<NavDropdown
 									title={
-										<Image
-											src={
-												'https://icon-library.com/images/default-user-icon/default-user-icon-4.jpg'
-											}
-											className="img-avatar"
-										/>
+										<ConfigProvider colors={['red', 'green', 'blue']}>
+											<Avatar
+												name={user?.lastName}
+												alt={
+													'https://icon-library.com/images/default-user-icon/default-user-icon-4.jpg'
+												}
+												size="35px"
+												className="img-avatar"
+											/>
+										</ConfigProvider>
 									}
-									id="collasible-nav-dropdown"
+									id="responsive-nav-dropdown"
 									className="m-0"
 								>
 									<NavDropdown.Item href={path.home}>Home</NavDropdown.Item>

@@ -183,7 +183,7 @@ export const addMovie = (
 			dispatch({
 				type: 'ADD_MOVIE',
 				payload: response.data,
-				message: response.data.message,
+				message: 'Successfully added',
 			});
 		} catch (err) {
 			const { message } = err.response.data;
@@ -226,7 +226,7 @@ export const updateMovie = (
 			dispatch({
 				type: 'UPDATE_MOVIE',
 				payload: response.data,
-				message: response.data.message,
+				message: 'Successfully updated',
 			});
 		} catch (err) {
 			const { message } = err.response.data;

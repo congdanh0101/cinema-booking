@@ -2,7 +2,6 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import noImage from '../../../../assets/images/no-image.png';
-import { path } from '../../../../shared/constants/path';
 
 const ImageResize = ({
 	to,
@@ -23,7 +22,7 @@ const ImageResize = ({
 				<LazyLoadImage
 					onError={handleErrorImage}
 					className={className}
-					src={url || fallback || path.resizeImage(url, width, height)}
+					src={url || fallback}
 					effect="opacity"
 					alt={alt}
 				/>
@@ -34,7 +33,7 @@ const ImageResize = ({
 		<LazyLoadImage
 			onError={handleErrorImage}
 			className={className}
-			src={url || fallback || path.resizeImage(url, width, height)}
+			src={url || fallback}
 			effect="opacity"
 			alt={alt}
 		/>

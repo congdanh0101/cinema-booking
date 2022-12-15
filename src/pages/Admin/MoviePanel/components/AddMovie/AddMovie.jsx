@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
 import { withStyles, Select } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
-import { genreData } from '../../../../../shared/constants/data/listGenre.js';
 import { ImageResize } from '../../../../../components/common';
 import {
 	addMovie,
@@ -14,6 +13,7 @@ import {
 } from '../../../../../service/actions/movie';
 import moment from 'moment';
 import styles from './styles';
+import { toast } from 'react-toastify';
 
 class AddMovie extends Component {
 	state = {
@@ -41,9 +41,11 @@ class AddMovie extends Component {
 	}
 
 	componentDidMount() {
+		console.log(this.props);
 		if (this.props.edit) {
 			const { name, duration, description, image, trailer, releases, genres } =
 				this.props.edit;
+			console.log(genres);
 			this.setState({
 				name: name,
 				duration: duration,
@@ -96,12 +98,15 @@ class AddMovie extends Component {
 			moment(releases).format('DD-MM-YYYY'),
 			genres
 		);
+		this.props.movie.message !== ''
+			? toast.success(this.props.movie.message)
+			: toast.error('Insert failed! Server error');
 	};
 
 	onUpdateMovie = async () => {
 		const { name, duration, description, image, trailer, releases, genres } =
 			this.state;
-		this.props.updateMovie(
+		await this.props.updateMovie(
 			this.props.edit.id,
 			name,
 			duration,
@@ -111,12 +116,23 @@ class AddMovie extends Component {
 			moment(releases).format('DD-MM-YYYY'),
 			genres
 		);
+		this.props.movie.message !== 'undefined'
+			? toast.success(this.props.movie.message)
+			: toast.error('Update failed! Server error');
 	};
 
-	onRemoveMovie = () => this.props.deleteMovie(this.props.edit.id);
+	onRemoveMovie = async () => {
+		const { name } = this.state;
+		await this.props
+			.deleteMovie(this.props.edit.id)
+			.then(() => window.location.reload());
+		this.props.movie.message !== 'undefined'
+			? toast.success('Successfully deleted: ' + name)
+			: toast.error('Delete failed! Server error');
+	};
 
 	render() {
-		const { classes, className } = this.props;
+		const { classes, className, genre } = this.props;
 		const { name, duration, description, image, trailer, releases, genres } =
 			this.state;
 
@@ -159,22 +175,47 @@ class AddMovie extends Component {
 													}
 												/>
 												<Form.Label className="pt-2">Genres</Form.Label>
-												<Select
-													multiple
-													className={classes.textFieldSelect}
-													required
-													value={genres || []}
-													variant="outlined"
-													onChange={(event) =>
-														this.handleFieldChange('genres', event.target.value)
-													}
-												>
-													{genreData.map((genreItem, index) => (
-														<MenuItem key={index} value={genreItem}>
-															{genreItem.name}
-														</MenuItem>
-													))}
-												</Select>
+												{this.props.edit ? (
+													<Select
+														multiple
+														className={classes.textFieldSelect}
+														required
+														value={genres || []}
+														variant="outlined"
+														onChange={(event) =>
+															this.handleFieldChange(
+																'genres',
+																event.target.value
+															)
+														}
+													>
+														{genres.map((genreItem) => (
+															<MenuItem key={genreItem.id} value={genreItem}>
+																{genreItem.name}
+															</MenuItem>
+														))}
+													</Select>
+												) : (
+													<Select
+														multiple
+														className={classes.textFieldSelect}
+														required
+														value={genres || []}
+														variant="outlined"
+														onChange={(event) =>
+															this.handleFieldChange(
+																'genres',
+																event.target.value
+															)
+														}
+													>
+														{genre.genres.map((genreItem) => (
+															<MenuItem key={genreItem.id} value={genreItem}>
+																{genreItem.name}
+															</MenuItem>
+														))}
+													</Select>
+												)}
 												<Row>
 													<Col>
 														<Form.Label className="pt-2">
@@ -194,7 +235,7 @@ class AddMovie extends Component {
 													</Col>
 													<Col>
 														<Form.Label className="pt-2">
-															Duration (hour / minute)
+															Duration (minutes)
 														</Form.Label>
 														<Form.Control
 															type="number"
@@ -217,7 +258,6 @@ class AddMovie extends Component {
 										<Form.Label>Description</Form.Label>
 										<Form.Control
 											type="text"
-											as="textarea"
 											value={description}
 											onChange={(event) =>
 												this.handleFieldChange(
@@ -236,8 +276,6 @@ class AddMovie extends Component {
 								<Form.Control
 									className={classes.upload}
 									type="text"
-									as="textarea"
-									style={{ height: '100px' }}
 									value={image}
 									onChange={(event) =>
 										this.handleFieldChange('image', event.target.value)
@@ -249,8 +287,6 @@ class AddMovie extends Component {
 								<Form.Control
 									className={classes.upload}
 									type="text"
-									as="textarea"
-									style={{ height: '100px', resize: null }}
 									value={trailer}
 									onChange={(event) =>
 										this.handleFieldChange('trailer', event.target.value)
@@ -293,6 +329,7 @@ AddMovie.propTypes = {
 
 const mapStateToProps = (state) => ({
 	movie: state.movie,
+	genre: state.genre,
 });
 
 const mapDispatchToProps = { addMovie, updateMovie, deleteMovie };

@@ -6,7 +6,9 @@ import BookingSeating from './BookingSeating';
 import {
 	selectSeat,
 	getAllSeatsAvailableByShowtime,
+	getAllSeatsOrderedByShowtime,
 } from '../../../service/actions/seat';
+import { getTicketsByShowtime } from '../../../service/actions/ticket';
 import { createOrder } from '../../../service/actions/order';
 import { addManyTickets } from '../../../service/actions/ticket';
 import { path } from '../../../shared/constants/path';
@@ -18,35 +20,44 @@ class OrderSeat extends Component {
 		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
 	};
 	async componentDidMount() {
-		const { seat, getAllSeatsAvailableByShowtime } = this.props;
+		const {
+			seat,
+			ticket,
+			getAllSeatsAvailableByShowtime,
+			getAllSeatsOrderedByShowtime,
+			getTicketsByShowtime,
+		} = this.props;
 		const { selectShowtime } = this.state;
-		if (!seat.length) await getAllSeatsAvailableByShowtime(selectShowtime.id);
+		if (!seat.seats.length)
+			await getAllSeatsAvailableByShowtime(selectShowtime.id);
+		if (!seat.orderedSeats.length)
+			await getAllSeatsOrderedByShowtime(selectShowtime.id);
+		if (!ticket.length) await getTicketsByShowtime(selectShowtime.id);
 	}
 	handleClickSeat = (seat) => {
 		const { selectSeat } = this.props;
 		selectSeat(seat);
 	};
-	handleCheckOut = () => {
-		const { history, ticket, order } = this.props;
+	handleCheckOut = async () => {
+		const { history } = this.props;
 		const { selectShowtime } = this.state;
 		this.setState({ isLoading: true });
-		this.props
+		await this.props
 			.addManyTickets(selectShowtime.id, this.props.selectedSeats)
 			.then(() => {
-				let order = ticket.map((ticket) => {
+				let orderedTickets = this.props.ticket.map((ticket) => {
 					return { ticket: ticket };
 				});
-				this.props.createOrder(order);
+				this.props.createOrder(orderedTickets);
+				sessionStorage.setItem('ticket', JSON.stringify(orderedTickets));
 			});
 		this.setState({ isLoading: false });
-		sessionStorage.setItem('order', JSON.stringify(order.details));
-		sessionStorage.setItem('ticket', JSON.stringify(ticket));
 		history.push(path.payment);
 	};
 	render() {
 		const { selectShowtime } = this.state;
 		const { seat, selectedSeats } = this.props;
-		console.log(this.props);
+
 		return (
 			<Col xs={12} lg="auto">
 				<p className="text-display-xs-bold">Choose Your Seat</p>
@@ -60,6 +71,7 @@ class OrderSeat extends Component {
 					<Card.Body>
 						<BookingSeating
 							seats={seat.seats}
+							orderedSeats={seat.orderedSeats}
 							isSelecting={selectedSeats}
 							onClickSeat={this.handleClickSeat}
 						/>
@@ -128,6 +140,8 @@ const mapDispatchToProps = {
 	selectSeat,
 	createOrder,
 	getAllSeatsAvailableByShowtime,
+	getAllSeatsOrderedByShowtime,
+	getTicketsByShowtime,
 	addManyTickets,
 };
 

@@ -37,7 +37,7 @@ export { default as MovieTitleCard } from './StyledComponent/Movie/MovieTitleCar
 export { default as Pagination } from './StyledComponent/Pagination/Pagination';
 export { default as Table } from './StyledComponent/Table/Table';
 export { default as Tag } from './StyledComponent/Tag/Tag';
-export { default as TagSmall } from './StyledComponent/Tag/TagSmall';
+export { default as TagSmall } from './StyledComponent/Tag/TagSmall';   
 export { default as Textarea } from './StyledComponent/TextArea/TextArea';
 
 //Material UI
@@ -57,4 +57,3 @@ export { default as ResponsiveDialog } from './MaterialUI/ResponsiveDialog';
 export { default as SearchInput } from './MaterialUI/SearchInput';
 export { default as SnackbarContentWrapper } from './MaterialUI/SnackbarContentWrapper/SnackbarContentWrapper';
 export { default as Status } from './MaterialUI/Status';
-export { default as CinemaCard } from './MaterialUI/CinemaCard';

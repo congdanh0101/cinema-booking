@@ -27,16 +27,29 @@ export const StyledSeat = styled.button`
 	}
 `;
 
-const BookingSeating = ({ seats, isSelecting = [], onClickSeat }) => {
+const BookingSeating = ({
+	seats,
+	orderedSeats,
+	isSelecting = [],
+	onClickSeat,
+}) => {
 	const checkIsSelecting = (id) => {
 		const index = isSelecting.findIndex((item) => id === item.id);
 		return index !== -1 ? 'isSelecting' : 'normal';
+	};
+	const checkIsDisabled = (id) => {
+		const index = orderedSeats.findIndex((item) => id === item.id);
+		if (index !== -1) {
+			return 'disabled';
+		} else {
+			checkIsSelecting(id);
+		}
 	};
 	return (
 		<StyledBookingSeating>
 			{seats.map((seat) => (
 				<StyledSeat
-					disabled={seat.status}
+					disabled={checkIsDisabled(seat.id)}
 					key={seat.id}
 					onClick={() => onClickSeat(seat)}
 					status={checkIsSelecting(seat.id)}

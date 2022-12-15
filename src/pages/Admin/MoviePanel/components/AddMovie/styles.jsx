@@ -18,7 +18,7 @@ const styles = (theme) => ({
 	},
 	upload: {
 		width: '100%',
-		height: '100px',
+		height: '120px',
 	},
 	customClass: {
 		backgroundColor: theme.palette.primary.main,
@@ -33,7 +33,6 @@ const styles = (theme) => ({
 		minHeight: '56px',
 		borderRadius: '14px',
 	},
-
 	infoMessage: {
 		marginLeft: theme.spacing(3),
 	},

@@ -9,27 +9,27 @@ import {
 	getMovieWithPagination,
 	onSelectMovie,
 } from '../../../service/actions/movie';
-
+import { getAllGenre } from '../../../service/actions/genre';
 //Component
 import { MovieToolbar, MovieCard, AddMovie } from './components';
 import { ResponsiveDialog } from '../../../components/common';
-
 //Styles
 import { scrollTop } from '../../../shared/utils/utils';
 import styles from './styles';
-
+	
 class MoviePanel extends Component {
 	state = { search: '', pageNumber: 1 };
-	componentDidMount() {
-		const { movie, getMovieWithPagination } = this.props;
-		if (!movie.length) getMovieWithPagination(this.state.pageNumber);
+	async componentDidMount() {
+		const { movie, getMovieWithPagination, genre, getAllGenre } = this.props;
+		if (!movie.length) await getMovieWithPagination(this.state.pageNumber);
+		if (!genre.length) await getAllGenre();
 	}
 	componentDidUpdate(prevProps, prevState) {
 		const { movie, getMovieWithPagination } = this.props;
 		if (prevState.pageNumber !== this.state.pageNumber) {
 			if (!movie.length) getMovieWithPagination(this.state.pageNumber);
+			scrollTop();
 		}
-		scrollTop();
 	}
 	handleChangePage = (event, pageNumber) => {
 		this.setState({ pageNumber });
@@ -87,7 +87,9 @@ class MoviePanel extends Component {
 					title="Edit Movie"
 					id="Edit-movie"
 					open={Boolean(selectedMovie)}
-					handleClose={() => this.props.onSelectMovie(null)}
+					handleClose={() => {
+						this.props.onSelectMovie(null);
+					}}
 				>
 					<AddMovie edit={selectedMovie} />
 				</ResponsiveDialog>
@@ -102,11 +104,13 @@ MoviePanel.propTypes = {
 
 const mapStateToProps = (state) => ({
 	movie: state.movie,
+	genre: state.genre.genres,
 	selectedMovie: state.movie.selectedMovie,
 });
 
 const mapDispatchToProps = {
 	getMovieWithPagination,
+	getAllGenre,
 	onSelectMovie,
 };
 

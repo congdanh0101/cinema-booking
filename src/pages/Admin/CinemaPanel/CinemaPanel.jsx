@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles, CircularProgress, Grid } from '@material-ui/core';
 import { getAllTheater } from '../../../service/actions/theater';
-import { AddCinema, CinemaToolbar } from './components';
-import { ResponsiveDialog, CinemaCard } from '../../../components/common';
+import { CinemaToolbar, CinemaCard } from './components';
+//import { AddCinema } from './components';
+//import { ResponsiveDialog } from '../../../components/common';
 import { match } from '../../../shared/utils/utils';
 import styles from './styles';
 
@@ -37,7 +38,8 @@ class CinemaPanel extends Component {
 
 	render() {
 		const { classes, theater } = this.props;
-		const { editCinema, search } = this.state;
+		//const { editCinema } = this.state;
+		const { search } = this.state;
 		const filteredCinemas = match(search, theater, 'name');
 		return (
 			<div className={classes.root}>
@@ -65,7 +67,7 @@ class CinemaPanel extends Component {
 						</Grid>
 					)}
 				</div>
-				<ResponsiveDialog
+				{/* <ResponsiveDialog
 					id="Edit-cinema"
 					open={this.state.openEditDialog}
 					handleClose={() => this.CloseEditDialog()}
@@ -74,7 +76,7 @@ class CinemaPanel extends Component {
 						editCinema={editCinema}
 						handleClose={() => this.CloseEditDialog()}
 					/>
-				</ResponsiveDialog>
+				</ResponsiveDialog> */}
 			</div>
 		);
 	}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { PayInfo, PayMethod, PersonalInfo } from '../../../components/public';
+import { PayInfo, PersonalInfo } from '../../../components/public';
 import { Button, Spinner } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { PanelLeft, PanelRight } from '../../../components/common';
@@ -11,12 +11,11 @@ class PaymentPage extends Component {
 	state = {
 		isLoading: false,
 		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
-		order: JSON.parse(sessionStorage.getItem('order')),
 	};
 	openLink = (url) => window.open(url, '_blank')?.focus();
 	handlePayment = () => {
 		this.setState({ isLoading: true });
-		const { id } = this.state.order;
+		const { id } = this.props.order;
 		this.openLink(`http://localhost:8888/${id}`);
 		this.setState({ isLoading: false });
 	};
@@ -75,7 +74,7 @@ class PaymentPage extends Component {
 
 const mapStateToProps = (state) => ({
 	payment: state.payment,
-	order: state.order.details,
+	order: JSON.parse(sessionStorage.getItem('order')),
 });
 
 const mapDispatchToProps = {

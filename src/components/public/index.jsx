@@ -8,7 +8,6 @@ export { default as AccountProfile } from './Profile/AccountProfile';
 export { default as ShowtimeComponent } from './Showtime/ShowtimeComponent';
 export { default as TicketComponent } from './Ticket/TicketComponent';
 export { default as PayInfo } from './Payment/PayInfo';
-export { default as PayMethod } from './Payment/PayMethod';
 export { default as PersonalInfo } from './Payment/PersonalInfo';
 export { default as OrderInfo } from './Order/OrderInfo';
 export { default as OrderSeat } from './Order/OrderSeat';

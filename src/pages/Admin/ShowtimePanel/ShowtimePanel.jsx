@@ -52,7 +52,12 @@ class ShowtimeList extends Component {
 		} = this.props;
 		return (
 			<div className={classes.root}>
-				<ShowtimesToolbar openDialog={openDialog} toggleDialog={toggleDialog} />
+				<ShowtimesToolbar
+					showtimes={showtime}
+					toggleDialog={toggleDialog}
+					selectedShowtimes={selectedShowtimes}
+					deleteShowtime={this.handleDeleteShowtime}
+				/>
 				<div className={classes.content}>
 					{!showtime.length ? (
 						<Typography variant="h4">There are no showtimes</Typography>

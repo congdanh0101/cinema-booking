@@ -6,11 +6,11 @@ import { withRouter } from 'react-router-dom';
 class MovieDesc extends Component {
 	state = {
 		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
-		order: JSON.parse(sessionStorage.getItem('order')),
-		ticket: JSON.parse(sessionStorage.getItem('ticket')),
 	};
 	render() {
-		const { selectShowtime, order, ticket } = this.state;
+		const { selectShowtime } = this.state;
+		const { order, ticket } = this.props;
+		console.log(order);
 		return (
 			<div>
 				<ListGroup variant="flush">
@@ -48,7 +48,7 @@ class MovieDesc extends Component {
 						<p className="float-left text-lg-20 text-color-label">
 							Total payment
 						</p>
-						<p className="float-right text-link-lg">${order.total}</p>
+						<p className="float-right text-link-lg">${order?.total}</p>
 					</ListGroup.Item>
 				</ListGroup>
 			</div>
@@ -57,8 +57,8 @@ class MovieDesc extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	order: state.order,
-	ticket: state.ticket.tickets,
+	order: JSON.parse(sessionStorage.getItem('order')),
+	ticket: JSON.parse(sessionStorage.getItem('ticket')),
 	showtime: state.showtime.selectShowtime,
 });
 

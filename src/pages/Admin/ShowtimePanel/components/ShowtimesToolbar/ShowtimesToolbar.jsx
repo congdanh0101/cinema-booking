@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
-import { ResponsiveDialog } from '../../../../../components/common';
-import AddShowtime from '../AddShowtime/AddShowtime';
+import { IconButton } from '@material-ui/core';
+import { Delete as DeleteIcon } from '@material-ui/icons';
 import { Button } from 'react-bootstrap';
 import styles from './styles';
 
@@ -13,12 +13,26 @@ class ShowtimesToolbar extends Component {
 		classes: PropTypes.object.isRequired,
 	};
 	render() {
-		const { classes, className, toggleDialog, openDialog } = this.props;
+		const {
+			classes,
+			className,
+			selectedShowtimes,
+			toggleDialog,
+			deleteShowtime,
+		} = this.props;
 		const rootClassName = classNames(classes.root, className);
 		return (
 			<Fragment>
 				<div className={rootClassName}>
 					<div className={classes.row}>
+						{selectedShowtimes.length > 0 && (
+							<IconButton
+								className={classes.deleteButton}
+								onClick={deleteShowtime}
+							>
+								<DeleteIcon />
+							</IconButton>
+						)}
 						<Button
 							onClick={() => toggleDialog()}
 							className="float-right col-12 col-md-2"
@@ -26,7 +40,9 @@ class ShowtimesToolbar extends Component {
 							block
 							size="small"
 						>
-							{'Add Showtime'}
+							{selectedShowtimes.length === 1
+								? 'Edit Showtime'
+								: 'Add Showtime'}
 						</Button>
 					</div>
 				</div>

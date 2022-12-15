@@ -1,10 +1,11 @@
 import axiosClient from '../../shared/apis/axiosClient';
 
-export const createOrder = (ticket) => {
+export const createOrder = (order) => {
 	return async (dispatch) => {
-		const token = localStorage.getItem('token');
-		const response = await axiosClient(token).post(`orders`, ticket);
 		try {
+			const token = localStorage.getItem('token');
+			const response = await axiosClient(token).post(`orders`, order);
+			sessionStorage.setItem('order', JSON.stringify(response.data));
 			dispatch({
 				type: 'CREATE_ORDER',
 				payload: response.data,
