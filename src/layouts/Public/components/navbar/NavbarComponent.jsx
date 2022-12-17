@@ -14,12 +14,10 @@ class NavbarComponent extends Component {
 		expired: this.props.auth.expired,
 		now: new Date().getTime(),
 	};
-	async componentDidMount() {
-		const { history } = this.props;
+	componentDidMount() {
 		if (this.props.auth.token !== null) {
 			if (this.state.now >= this.state.expired) {
 				this.handleLogout();
-				history.push(path.home);
 			}
 		}
 	}
@@ -41,9 +39,9 @@ class NavbarComponent extends Component {
 							<Nav.Link className="nav-link" href={path.movies}>
 								Movies
 							</Nav.Link>
-							{/* <Nav.Link className="nav-link" href={path.history}>
-								My Tickets
-							</Nav.Link> */}
+							<Nav.Link className="nav-link" href={path.ticket}>
+								Tickets
+							</Nav.Link>
 							{user?.roles?.map((item) => {
 								if (item.name === 'ROLE_ADMIN') {
 									return (

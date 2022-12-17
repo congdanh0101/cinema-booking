@@ -29,8 +29,6 @@ import MoviePanel from '../pages/Admin/MoviePanel/MoviePanel';
 import CinemaPanel from '../pages/Admin/CinemaPanel/CinemaPanel';
 import ShowtimePanel from '../pages/Admin/ShowtimePanel/ShowtimePanel';
 import GenrePanel from '../pages/Admin/GenrePanel/GenrePanel';
-// import ShowtimeUpdate from '../pages/Admin/Showtime/ShowtimeEdit';
-// import ShowtimeView from '../pages/Admin/Showtime/ShowtimeView';
 
 //Components
 import { MainLayout, AdminLayout } from '../layouts';

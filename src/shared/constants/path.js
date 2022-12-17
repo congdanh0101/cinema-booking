@@ -13,6 +13,7 @@ export const path = {
 	profile: '/profile',
 	profilePrivacy: '/profile/privacy',
 	history: '/history',
+	ticket: '/ticket',
 	article: '/article',
 	order: '/order',
 	payment: '/payment',

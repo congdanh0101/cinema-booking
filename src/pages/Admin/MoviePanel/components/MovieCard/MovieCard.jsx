@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { makeStyles } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import { AccessTime as AccessTimeIcon } from '@material-ui/icons';
-import { Paper } from '../../../../../components/common';
-import { Image } from '../../../../../components/common';
+import { Paper, Image } from '../../../../../components/common';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,10 +25,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	details: { padding: theme.spacing(3) },
 	title: {
-		fontSize: '18px',
+		fontSize: '25px',
 		lineHeight: '21px',
 		marginTop: theme.spacing(2),
 		textTransform: 'capitalize',
+		overflow: 'hidden',
+		whiteSpace: 'nowrap',
+		textOverflow: 'ellipsis',
 	},
 	description: {
 		lineHeight: '16px',
@@ -67,9 +68,7 @@ function MovieCard(props) {
 				<Image alt="movie" className={classes.image} url={movie.image} />
 			</div>
 			<div className={classes.details}>
-				<Typography className={classes.name} variant="h4">
-					{movie.name}
-				</Typography>
+				<Typography className={classes.title}>{movie.name}</Typography>
 				<Typography className={classes.description} variant="body1">
 					{movie.description}
 				</Typography>

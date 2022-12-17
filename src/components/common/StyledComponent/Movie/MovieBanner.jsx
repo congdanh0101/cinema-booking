@@ -79,6 +79,7 @@ const MovieBanner = () => {
 
 	useEffect(() => {
 		fetchMovieList();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

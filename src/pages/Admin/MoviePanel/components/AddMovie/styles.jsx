@@ -1,5 +1,9 @@
 const styles = (theme) => ({
 	root: {},
+	title: {
+		textTransform: 'uppercase',
+		textAlign: 'center',
+	},
 	field: {
 		margin: theme.spacing(3),
 		display: 'flex',

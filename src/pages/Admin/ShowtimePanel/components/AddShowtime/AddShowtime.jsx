@@ -4,14 +4,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles, Typography, MenuItem, Select } from '@material-ui/core';
 import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
+import { listTime } from '../../../../../shared/constants/data/listTime';
 import styles from './styles';
 import moment from 'moment';
+import { ImageResize } from '../../../../../components/common';
 import {
 	addShowtime,
 	updateShowtime,
 	deleteShowtime,
 	deleteShowtimeForce,
 } from '../../../../../service/actions/showtime';
+import { toast } from 'react-toastify';
 
 class AddShowtime extends Component {
 	state = {
@@ -23,14 +26,27 @@ class AddShowtime extends Component {
 		),
 	};
 
+	formatDate = (dateStr) => {
+		const [year, month, day] = dateStr.split('-');
+		let newDate = `${day}-${month}-${year}`;
+		return newDate;
+	};
+
+	componentWillUnmount() {
+		this.setState = (state, callback) => {
+			return;
+		};
+	}
+
 	componentDidMount() {
 		if (this.props.selectedShowtime) {
-			const { movie, theater, timeStart } = this.props.selectedShowtime;
+			const { movie, theater, timeStart, showDate } =
+				this.props.selectedShowtime;
 			this.setState({
 				movieId: movie.id,
 				cinemaId: theater.id,
 				timeStart: timeStart,
-				showDate: null,
+				showDate: this.formatDate(showDate),
 			});
 		}
 	}
@@ -55,6 +71,9 @@ class AddShowtime extends Component {
 			moment(showDate).format('DD-MM-YYYY'),
 			timeStart
 		);
+		this.props.showtimes.message !== ''
+			? toast.success('Successfully Added').then(() => window.location.reload())
+			: toast.error(this.props.showtimes.errorMsg);
 	};
 
 	onUpdateShowtime = async () => {
@@ -66,10 +85,18 @@ class AddShowtime extends Component {
 			moment(showDate).format('DD-MM-YYYY'),
 			timeStart
 		);
+
+		if (this.props.showtimes.message !== '') {
+			toast.success('Successfully Updated');
+			window.location.reload();
+		} else {
+			toast.error(this.props.showtimes.errorMsg);
+		}
 	};
 
 	render() {
 		const { movie, theater, classes, className } = this.props;
+		console.log(this.props);
 		const { timeStart, showDate, movieId, cinemaId } = this.state;
 
 		const rootClassName = classNames(classes.root, className);
@@ -80,15 +107,18 @@ class AddShowtime extends Component {
 			? 'Update Showtime'
 			: 'Save Details';
 		const submitAction = this.props.selectedShowtime
-			? () => this.onUpdateShowtime().then(() => window.location.reload())
-			: () => this.onAddShowtime().then(() => window.location.reload());
+			? () => this.onUpdateShowtime()
+			: () => this.onAddShowtime();
+
+		console.log(this.props);
 
 		return (
 			<div className={rootClassName}>
-				<Container>
+				<Container fluid>
 					<Typography variant="h4" className={classes.title}>
 						{title}
 					</Typography>
+					<hr />
 					<Row>
 						<Col>
 							<Card className="border-0">
@@ -96,93 +126,114 @@ class AddShowtime extends Component {
 									<Row>
 										<Col>
 											<Form.Group autoComplete="off" noValidate>
-												<div>
-													<Form.Label>Movie</Form.Label>
-													<Select
-														className={classes.textFieldSelect}
-														fullWidth
-														required
-														value={movieId}
-														variant="outlined"
-														onChange={(event) =>
-															this.handleFieldChange(
-																'movieId',
-																event.target.value
-															)
-														}
-													>
-														{movie.map((movie) => (
-															<MenuItem key={movie.id} value={movie.id}>
-																{movie.name}
-															</MenuItem>
-														))}
-													</Select>
-												</div>
-												<div className="pt-2">
-													<Form.Label>Theater</Form.Label>
-													<Select
-														className={classes.textFieldSelect}
-														fullWidth
-														required
-														value={cinemaId}
-														variant="outlined"
-														onChange={(event) =>
-															this.handleFieldChange(
-																'cinemaId',
-																event.target.value
-															)
-														}
-													>
-														{theater.map((theater) => (
-															<MenuItem key={theater.id} value={theater.id}>
-																{theater.name}
-															</MenuItem>
-														))}
-													</Select>
-												</div>
-												<div className="pt-2">
-													<Form.Label>Date Show</Form.Label>
-													<Form.Control
-														type="date"
-														value={showDate}
-														onChange={(event) =>
-															this.handleFieldChange(
-																'showDate',
-																event.target.value
-															)
-														}
-													/>
-												</div>
-												<div className="pt-2">
-													<Form.Label>Time Start</Form.Label>
-													<Select
-														className={classes.textFieldSelect}
-														fullWidth
-														placeholder="Please specify the Time"
-														required
-														value={timeStart}
-														variant="outlined"
-														onChange={(event) =>
-															this.handleFieldChange(
-																'timeStart',
-																event.target.value
-															)
-														}
-													>
-														{[
-															'18:00',
-															'19:00',
-															'20:00',
-															'21:00',
-															'22:00',
-															'23:00',
-														].map((time) => (
-															<MenuItem key={`time-${time}`} value={time}>
-																{time}
-															</MenuItem>
-														))}
-													</Select>
-												</div>
+												<Row>
+													<Col>
+														<Form.Label>Movie</Form.Label>
+														<Select
+															className={classes.textFieldSelect}
+															fullWidth
+															required
+															value={movieId || ''}
+															variant="outlined"
+															onChange={(event) =>
+																this.handleFieldChange(
+																	'movieId',
+																	event.target.value
+																)
+															}
+														>
+															{movie?.map((movie) => (
+																<MenuItem key={movie.id} value={movie.id}>
+																	<div className={classes.selectMovie}>
+																		<ImageResize
+																			width="40"
+																			className={classes.selectPoster}
+																			url={movie.image}
+																			alt="poster"
+																		/>
+																		<span>{movie.name}</span>
+																	</div>
+																</MenuItem>
+															))}
+														</Select>
+													</Col>
+													<Col>
+														<Form.Label>Theater</Form.Label>
+														<Select
+															className={classes.textFieldSelect}
+															fullWidth
+															required
+															value={cinemaId || ''}
+															variant="outlined"
+															onChange={(event) =>
+																this.handleFieldChange(
+																	'cinemaId',
+																	event.target.value
+																)
+															}
+														>
+															{theater?.map((theater) => (
+																<MenuItem key={theater.id} value={theater.id}>
+																	<div className={classes.selectMovie}>
+																		<ImageResize
+																			width="40"
+																			className={classes.selectPoster}
+																			url={
+																				'https://source.unsplash.com/featured/?cinema'
+																			}
+																			alt="poster"
+																		/>
+																		<span>{theater.name}</span>
+																	</div>
+																</MenuItem>
+															))}
+														</Select>
+													</Col>
+												</Row>
+												<Row>
+													<Col className="pt-3">
+														<Form.Label>Date Show</Form.Label>
+														<Form.Control
+															type="date"
+															value={showDate}
+															onChange={(event) =>
+																this.handleFieldChange(
+																	'showDate',
+																	event.target.value
+																)
+															}
+														/>
+													</Col>
+													<Col className="pt-3">
+														<Form.Label>Time Start</Form.Label>
+														<Select
+															className={classes.textFieldSelect}
+															fullWidth
+															placeholder="Please specify the Time"
+															required
+															value={timeStart || ''}
+															variant="outlined"
+															onChange={(event) =>
+																this.handleFieldChange(
+																	'timeStart',
+																	event.target.value
+																)
+															}
+														>
+															{listTime?.map((time) => {
+																return time <= '12:00' ? (
+																	<MenuItem key={`time-${time}`} value={time}>
+																		{time} AM
+																	</MenuItem>
+																) : (
+																	<MenuItem key={`time-${time}`} value={time}>
+																		{time} PM
+																	</MenuItem>
+																);
+															})}
+														</Select>
+													</Col>
+												</Row>
 											</Form.Group>
 										</Col>
 									</Row>
@@ -211,7 +262,7 @@ AddShowtime.propTypes = {
 
 const mapStateToProps = (state) => ({
 	theater: state.theater.theaters,
-	movie: state.movie.movies,
+	movie: state.movie.displaying,
 	showtimes: state.showtime,
 });
 

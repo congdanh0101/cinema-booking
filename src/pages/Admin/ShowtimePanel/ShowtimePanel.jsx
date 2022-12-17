@@ -12,8 +12,9 @@ import {
 	deleteShowtime,
 } from '../../../service/actions/showtime';
 import { getAllTheater } from '../../../service/actions/theater';
-import { getAllMovie } from '../../../service/actions/movie';
+import { getMovieByDisplay } from '../../../service/actions/movie';
 import { ResponsiveDialog } from '../../../components/common';
+import { toast } from 'react-toastify';
 
 class ShowtimeList extends Component {
 	static propTypes = {
@@ -23,27 +24,31 @@ class ShowtimeList extends Component {
 
 	async componentDidMount() {
 		const {
-			showtime,
+			showtimes,
 			movie,
 			theater,
 			getAllShowtime,
-			getAllMovie,
+			getMovieByDisplay,
 			getAllTheater,
 		} = this.props;
-		if (!movie.length) await getAllMovie();
-		if (!showtime.length) await getAllShowtime();
+		if (!movie.length) await getMovieByDisplay();
+		if (!showtimes.length) await getAllShowtime();
 		if (!theater.length) await getAllTheater();
 	}
 
 	handleDeleteShowtime = () => {
-		const { selectedShowtimes, deleteShowtime } = this.props;
+		const { selectedShowtimes, deleteShowtime, showtime } = this.props;
+		console.log(showtime);
 		selectedShowtimes.forEach((element) => deleteShowtime(element));
+		showtime.message !== ''
+			? toast.success('Successfully Deleted')
+			: toast.error(this.props.showtime.errorMsg);
 	};
 
 	render() {
 		const {
 			classes,
-			showtime,
+			showtimes,
 			selectedShowtimes,
 			openDialog,
 			toggleDialog,
@@ -53,20 +58,20 @@ class ShowtimeList extends Component {
 		return (
 			<div className={classes.root}>
 				<ShowtimesToolbar
-					showtimes={showtime}
+					showtimes={showtimes}
 					toggleDialog={toggleDialog}
 					selectedShowtimes={selectedShowtimes}
 					deleteShowtime={this.handleDeleteShowtime}
 				/>
 				<div className={classes.content}>
-					{!showtime.length ? (
+					{!showtimes.length ? (
 						<Typography variant="h4">There are no showtimes</Typography>
 					) : (
 						<ShowtimesTable
 							onSelectShowtime={selectShowtime}
 							selectedShowtimes={selectedShowtimes}
 							selectAllShowtimes={selectAllShowtimes}
-							showtimes={showtime}
+							showtimes={showtimes}
 						/>
 					)}
 				</div>
@@ -76,7 +81,7 @@ class ShowtimeList extends Component {
 					handleClose={() => toggleDialog()}
 				>
 					<AddShowtime
-						selectedShowtime={showtime.find(
+						selectedShowtime={showtimes.find(
 							(showtime) => showtime.id === selectedShowtimes[0]
 						)}
 					/>
@@ -88,14 +93,15 @@ class ShowtimeList extends Component {
 
 const mapStateToProps = (state) => ({
 	openDialog: state.showtime.openDialog,
-	movie: state.movie.movies,
-	showtime: state.showtime.showtimes,
+	movie: state.movie.displaying,
+	showtimes: state.showtime.showtimes,
+	showtime: state.showtime,
 	theater: state.theater.theaters,
 	selectedShowtimes: state.showtime.selectedShowtimes,
 });
 
 const mapDispatchToProps = {
-	getAllMovie,
+	getMovieByDisplay,
 	getAllShowtime,
 	getAllTheater,
 	toggleDialog,

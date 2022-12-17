@@ -5,20 +5,53 @@ import { Button, Spinner } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { PanelLeft, PanelRight } from '../../../components/common';
 import { path } from '../../../shared/constants/path';
-import { index, pay } from '../../../service/actions/payment';
+import {
+	requestPayment,
+	createPayment,
+} from '../../../service/actions/payment';
 
 class PaymentPage extends Component {
-	state = {
-		isLoading: false,
-		selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
-	};
-	openLink = (url) => window.open(url, '_blank')?.focus();
-	handlePayment = () => {
+	constructor(props) {
+		super(props);
+		this.popOut = this.popOut.bind(this);
+		this.popOutClosed = this.popOutClosed.bind(this);
+		this.state = {
+			isPoppedOut: false,
+			isLoading: false,
+			selectShowtime: JSON.parse(sessionStorage.getItem('selectShowtime')),
+		};
+	}
+
+	componentDidMount() {
+		const { payment, requestPayment } = this.props;
+		if (!payment.length) {
+			requestPayment();
+		}
+	}
+
+	openLink = (url) => window.location.assign(url)?.focus();
+
+	popOut() {
+		this.setState({ isPoppedOut: true });
+	}
+
+	popOutClosed() {
+		this.setState({ isPoppedOut: false });
+	}
+
+	handlePayment = async () => {
+		const { createPayment } = this.props;
 		this.setState({ isLoading: true });
-		const { id } = this.props.order;
-		this.openLink(`http://localhost:8888/${id}`);
+		await createPayment(
+			this.props.payment.accessToken,
+			this.props.order.total
+		).then(() => {
+			console.log(this.props.payment.payment[1].href);
+			this.openLink(this.props.payment.payment[1].href);
+		});
 		this.setState({ isLoading: false });
 	};
+
 	render() {
 		return (
 			<div>
@@ -78,8 +111,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-	index,
-	pay,
+	requestPayment,
+	createPayment,
 };
 
 export default withRouter(

@@ -56,8 +56,9 @@ const UserHistory = () => {
 		swalDelete('ticket', () => dispatch(deleteOrderById(idOrder)));
 	};
 	useEffect(() => {
-		window.scrollTo(0, 0);
 		fetchMyBookings();
+		window.scrollTo(0, 0);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (loading) return <LoadingSpinner />;

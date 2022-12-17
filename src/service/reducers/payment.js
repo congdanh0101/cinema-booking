@@ -1,4 +1,5 @@
 const initialState = {
+	accessToken: '',
 	payment: [],
 	message: '',
 	errorMsg: '',
@@ -6,28 +7,14 @@ const initialState = {
 
 const paymentReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case 'INDEX': {
+		case 'REQUEST_PAYMENT': {
 			return {
 				...state,
-				payment: action.payload,
+				accessToken: action.payload,
 				message: action.message,
 			};
 		}
-		case 'PAY': {
-			return {
-				...state,
-				payment: action.payload,
-				message: action.message,
-			};
-		}
-		case 'CANCEL_PAY': {
-			return {
-				...state,
-				payment: action.payload,
-				message: action.message,
-			};
-		}
-		case 'SUCCESS_PAY': {
+		case 'CREATE_PAYMENT': {
 			return {
 				...state,
 				payment: action.payload,

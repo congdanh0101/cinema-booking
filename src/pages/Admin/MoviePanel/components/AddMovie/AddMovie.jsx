@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
-import { withStyles, Select } from '@material-ui/core';
+import { withStyles, Select, Typography } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
 import { ImageResize } from '../../../../../components/common';
 import {
@@ -41,11 +41,9 @@ class AddMovie extends Component {
 	}
 
 	componentDidMount() {
-		console.log(this.props);
 		if (this.props.edit) {
 			const { name, duration, description, image, trailer, releases, genres } =
 				this.props.edit;
-			console.log(genres);
 			this.setState({
 				name: name,
 				duration: duration,
@@ -137,6 +135,7 @@ class AddMovie extends Component {
 			this.state;
 
 		const rootClassName = classNames(classes.root, className);
+		const title = this.props.edit ? 'Edit Movie' : 'Add Movie';
 		const submitButton = this.props.edit ? 'Update Movie' : 'Save Details';
 		const submitAction = this.props.edit
 			? () => this.onUpdateMovie().then(() => window.location.reload())
@@ -144,8 +143,11 @@ class AddMovie extends Component {
 
 		return (
 			<div className={rootClassName}>
-				<hr />
 				<Container fluid>
+					<Typography variant="h4" className={classes.title}>
+						{title}
+					</Typography>
+					<hr />
 					<Row>
 						<Col xs={12} lg={8}>
 							<Card className="border-0">
@@ -169,7 +171,7 @@ class AddMovie extends Component {
 													label="Title"
 													type="text"
 													placeholder="Please specify the title"
-													value={name}
+													value={name || ''}
 													onChange={(event) =>
 														this.handleFieldChange('name', event.target.value)
 													}
@@ -189,7 +191,7 @@ class AddMovie extends Component {
 															)
 														}
 													>
-														{genres.map((genreItem) => (
+														{genres?.map((genreItem) => (
 															<MenuItem key={genreItem.id} value={genreItem}>
 																{genreItem.name}
 															</MenuItem>
@@ -224,7 +226,7 @@ class AddMovie extends Component {
 														<Form.Control
 															type="date"
 															label="Release date"
-															value={releases}
+															value={releases || ''}
 															onChange={(event) =>
 																this.handleFieldChange(
 																	'releases',
@@ -241,7 +243,7 @@ class AddMovie extends Component {
 															type="number"
 															label="Duration"
 															placeholder="Please specify the duration"
-															value={duration}
+															value={duration || 0}
 															onChange={(event) =>
 																this.handleFieldChange(
 																	'duration',
@@ -258,7 +260,7 @@ class AddMovie extends Component {
 										<Form.Label>Description</Form.Label>
 										<Form.Control
 											type="text"
-											value={description}
+											value={description || ''}
 											onChange={(event) =>
 												this.handleFieldChange(
 													'description',
@@ -276,7 +278,7 @@ class AddMovie extends Component {
 								<Form.Control
 									className={classes.upload}
 									type="text"
-									value={image}
+									value={image || ''}
 									onChange={(event) =>
 										this.handleFieldChange('image', event.target.value)
 									}
@@ -287,7 +289,7 @@ class AddMovie extends Component {
 								<Form.Control
 									className={classes.upload}
 									type="text"
-									value={trailer}
+									value={trailer || ''}
 									onChange={(event) =>
 										this.handleFieldChange('trailer', event.target.value)
 									}

@@ -5,6 +5,10 @@ export const selectSeat = (seat) => ({
 	payload: seat,
 });
 
+export const resetSelectingSeat = () => ({
+	type: 'RESET_SELECT_SEAT',
+});
+
 export const getAllSeatsAvailableByShowtime = (showtimeId) => {
 	return async (dispatch) => {
 		try {

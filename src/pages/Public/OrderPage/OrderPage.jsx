@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Button, Container, Navbar, Row } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { OrderInfo, OrderSeat } from '../../../components/public';
-import './styles.css';
 import { connect } from 'react-redux';
 import { createOrder, getOrderById } from '../../../service/actions/order';
+import './styles.css';
 
 class OrderPage extends Component {
 	state = {

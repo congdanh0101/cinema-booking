@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Card, Col } from 'react-bootstrap';
 import { Ticket } from 'react-bootstrap-icons';
 import Moment from 'react-moment';
@@ -13,6 +13,18 @@ class OrderInfo extends Component {
 	render() {
 		const { selectShowtime } = this.state;
 		const { selectedSeats } = this.props;
+		const commaSeparationSeat = (array, key) => {
+			const count = array.length - 1;
+			return array.map((item, index) => {
+				if (array.id === count) return <span key={index}>{item.name + 1}</span>;
+				return (
+					<p key={index} className="text-right text-link-xs text-color-title">
+						<span key={index}>{item.name + 1 + ', '}</span>
+					</p>
+				);
+			});
+		};
+		const isHaveSelecting = selectedSeats.length > 0;
 		return (
 			<Col xs={12} lg={4}>
 				<p className="text-display-xs-bold">Order Info</p>
@@ -43,21 +55,17 @@ class OrderInfo extends Component {
 							</p>
 						</div>
 						<div className="d-flex justify-content-between">
-							<p className="text-xs text-color-label">Seat chosen</p>
+							<p className="text-xs text-color-label">Your selecting</p>
+						</div>
+						<div className="d-flex justify-content-between">
 							<div className="d-flex justify-content-end">
-								{selectedSeats
-									.map((seat) => (
-										<Fragment key={seat.id}>
-											<p className="text-right text-link-xs text-color-title">
-												<span>{seat.name}</span>
-											</p>
-										</Fragment>
-									))
-									.reduce(
-										(prev, curr) =>
-											prev === null ? [curr] : [prev, ', ', curr],
-										null
-									)}
+								{isHaveSelecting ? (
+									commaSeparationSeat(selectedSeats, 'idDisplay')
+								) : (
+									<p className="text-right text-link-xs text-color-title">
+										No thing
+									</p>
+								)}
 							</div>
 						</div>
 					</Card.Body>
@@ -70,6 +78,7 @@ class OrderInfo extends Component {
 					</Card.Body>
 				</Card>
 			</Col>
+			
 		);
 	}
 }

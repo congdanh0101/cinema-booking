@@ -109,7 +109,7 @@ class AddCinema extends Component {
 
 	render() {
 		const { classes, className } = this.props;
-		const { name, image, ticketPrice, city, seatsAvailable, notification } =
+		const { name, ticketPrice, city, seatsAvailable, notification } =
 			this.state;
 
 		const rootClassName = classNames(classes.root, className);

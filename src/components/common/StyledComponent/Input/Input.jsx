@@ -6,7 +6,7 @@ const StyledInput = styled.input`
 	width: 100%;
 	padding: 12px 14px;
 	background-color: transparent;
-	color: var(--white);
+	color: var(--black);
 	border: 1px solid #656293;
 	font-size: 1.8rem;
 	&:focus {

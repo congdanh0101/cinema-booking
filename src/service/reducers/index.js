@@ -22,12 +22,12 @@ const authConfig = {
 
 const reducer = combineReducers({
 	auth: persistReducer(authConfig, authReducer),
+	payment: paymentReducer,
 	user: userReducer,
 	movie: movieReducer,
 	showtime: showtimeReducer,
 	order: orderReducer,
 	ticket: ticketReducer,
-	product: paymentReducer,
 	seat: seatReducer,
 	theater: theaterReducer,
 	genre: genreReducer,

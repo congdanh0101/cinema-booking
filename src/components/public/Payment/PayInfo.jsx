@@ -10,7 +10,6 @@ class MovieDesc extends Component {
 	render() {
 		const { selectShowtime } = this.state;
 		const { order, ticket } = this.props;
-		console.log(order);
 		return (
 			<div>
 				<ListGroup variant="flush">

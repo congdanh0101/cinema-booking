@@ -5,7 +5,7 @@ const styles = (theme) => ({
 		textAlign: 'center',
 	},
 	field: {
-		paddingTop: theme.spacing(2),
+		margin: theme.spacing(3),
 		display: 'flex',
 	},
 	textField: {
@@ -39,6 +39,17 @@ const styles = (theme) => ({
 	},
 	infoMessage: {
 		marginLeft: theme.spacing(3),
+	},
+	selectMovie: {
+		display: 'flex',
+		alignItems: 'center',
+		gap: '10px',
+		width: '100%',
+	},
+	selectPoster: {
+		width: '40px',
+		height: '40px',
+		borderRadius: '50%',
 	},
 });
 

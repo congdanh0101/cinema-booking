@@ -107,13 +107,6 @@ class SignIn extends Component {
 								</Form.Group>
 								<Row className="justify-content-md-between">
 									<Col lg="auto">
-										<Form.Check
-											type="checkbox"
-											id="custom-switch"
-											label="Stay signed in"
-										/>
-									</Col>
-									<Col lg="auto">
 										<p className="pt-0 pl-lg-0">
 											<Link
 												style={{ textDecoration: 'none' }}

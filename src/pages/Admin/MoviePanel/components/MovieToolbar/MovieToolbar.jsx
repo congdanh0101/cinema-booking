@@ -6,7 +6,6 @@ import classNames from 'classnames';
 
 // Material helpers
 import { withStyles } from '@material-ui/core';
-
 // Material components
 import { Button } from 'react-bootstrap';
 
@@ -15,7 +14,6 @@ import {
 	SearchInput,
 	ResponsiveDialog,
 } from '../../../../../components/common';
-
 // Component styles
 import styles from './styles';
 import AddMovie from '../AddMovie/AddMovie';
@@ -59,7 +57,6 @@ class MovieToolbar extends Component {
 					</div>
 				</div>
 				<ResponsiveDialog
-					title="Add Movie"
 					id="Add-movie"
 					open={openAddDialog}
 					handleClose={() => this.CloseAddDialog()}

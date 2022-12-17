@@ -9,7 +9,7 @@ export const createOrder = (order) => {
 			dispatch({
 				type: 'CREATE_ORDER',
 				payload: response.data,
-				message: response.data.message,
+				message: 'Booking Ticket successfully',
 			});
 		} catch (err) {
 			const { message } = err.response.data;

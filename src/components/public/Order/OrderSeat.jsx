@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Card, Col, Spinner } from 'react-bootstrap';
+import { Button, Card, Row, Col, Spinner } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
-import BookingSeating from './BookingSeating';
+import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+import SeatBooking from './SeatBooking/SeatBooking';
+import { TagSmall } from '../../common';
 import {
 	selectSeat,
+	resetSelectingSeat,
 	getAllSeatsAvailableByShowtime,
 	getAllSeatsOrderedByShowtime,
 } from '../../../service/actions/seat';
-import { getTicketsByShowtime } from '../../../service/actions/ticket';
+import {
+	addManyTickets,
+	getTicketsByShowtime,
+} from '../../../service/actions/ticket';
 import { createOrder } from '../../../service/actions/order';
-import { addManyTickets } from '../../../service/actions/ticket';
 import { path } from '../../../shared/constants/path';
 import './styles.css';
 
@@ -39,42 +45,67 @@ class OrderSeat extends Component {
 		selectSeat(seat);
 	};
 	handleCheckOut = async () => {
-		const { history } = this.props;
+		const {
+			order,
+			ticket,
+			selectedSeats,
+			history,
+			addManyTickets,
+			createOrder,
+			resetSelectingSeat,
+		} = this.props;
 		const { selectShowtime } = this.state;
+		if (selectedSeats.length > 5) {
+			return Swal.fire('Too Many Tickets!', 'Maximum number of tickets is 5');
+		}
 		this.setState({ isLoading: true });
-		await this.props
-			.addManyTickets(selectShowtime.id, this.props.selectedSeats)
+		await addManyTickets(selectShowtime.id, selectedSeats)
 			.then(() => {
-				let orderedTickets = this.props.ticket.map((ticket) => {
+				let orderedTickets = ticket.map((ticket) => {
 					return { ticket: ticket };
 				});
-				this.props.createOrder(orderedTickets);
+				createOrder(orderedTickets);
 				sessionStorage.setItem('ticket', JSON.stringify(orderedTickets));
+				toast.success(order.message);
+			})
+			.catch(function (error) {
+				let errorMsg = error.message;
+				toast.error(errorMsg);
 			});
 		this.setState({ isLoading: false });
+		resetSelectingSeat();
 		history.push(path.payment);
 	};
 	render() {
 		const { selectShowtime } = this.state;
 		const { seat, selectedSeats } = this.props;
-
+		const isHaveSelecting = selectedSeats.length > 0;
 		return (
-			<Col xs={12} lg="auto">
+			<Col xs={12} lg="8">
 				<p className="text-display-xs-bold">Choose Your Seat</p>
 				<Card className="border-0 p-5 order-seat">
-					<Card.Body className="row text-center">
-						<Col xs={12}>
-							<p className="text-link-xs">Screen</p>
-							<div className="line-screen"></div>
-						</Col>
-					</Card.Body>
 					<Card.Body>
-						<BookingSeating
+						<SeatBooking
 							seats={seat.seats}
 							orderedSeats={seat.orderedSeats}
 							isSelecting={selectedSeats}
 							onClickSeat={this.handleClickSeat}
 						/>
+						<p className="text-link-lg pt-4">Seating key</p>
+						<Row lg="auto">
+							<Col>
+								<div className="availableBox float-left mr-3"></div>
+								<TagSmall kind="normal">Seats normal</TagSmall>
+							</Col>
+							<Col>
+								<div className="selectBox float-left mr-3"></div>
+								<TagSmall kind="normal">Seats are booking</TagSmall>
+							</Col>
+							<Col>
+								<div className="soldBox float-left mr-3"></div>
+								<TagSmall kind="normal">Seats are booked</TagSmall>
+							</Col>
+						</Row>
 					</Card.Body>
 				</Card>
 				<div className="pt-4 checkout">
@@ -87,24 +118,14 @@ class OrderSeat extends Component {
 						</Button>
 					</Link>
 					{this.state.isLoading === false ? (
-						selectedSeats.length > 0 ? (
-							<Button
-								variant="primary shadow"
-								className="float-right col-12 col-md-5"
-								onClick={this.handleCheckOut}
-							>
-								Checkout now
-							</Button>
-						) : (
-							<Button
-								variant="primary shadow"
-								className="float-right col-12 col-md-5"
-								onClick={this.handleCheckOut}
-								disabled
-							>
-								Checkout now
-							</Button>
-						)
+						<Button
+							disabled={!isHaveSelecting}
+							variant="primary shadow"
+							className="float-right col-12 col-md-5"
+							onClick={this.handleCheckOut}
+						>
+							Checkout now
+						</Button>
 					) : (
 						<Button
 							variant="primary shadow"
@@ -138,6 +159,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
 	selectSeat,
+	resetSelectingSeat,
 	createOrder,
 	getAllSeatsAvailableByShowtime,
 	getAllSeatsOrderedByShowtime,

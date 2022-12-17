@@ -1,5 +1,6 @@
 const initialState = {
 	movies: [],
+	displaying: [],
 	latestMovies: [],
 	nowShowing: [],
 	comingSoon: [],
@@ -63,7 +64,7 @@ const movieReducer = (state = initialState, action) => {
 		case 'GET_MOVIE_BY_DISPLAY': {
 			return {
 				...state,
-				movies: action.payload,
+				displaying: action.payload,
 				message: action.message,
 			};
 		}

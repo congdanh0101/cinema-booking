@@ -34,6 +34,11 @@ const seatReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case 'SELECT_SEAT':
 			return selectSeats(state, action.payload);
+		case 'RESET_SELECT_SEAT':
+			return {
+				...state,
+				selectedSeats: [],
+			};
 		case 'GET_ALL_SEAT_AVAILABLE_BY_SHOWTIME': {
 			return {
 				...state,

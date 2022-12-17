@@ -29,12 +29,10 @@ export default class PersonalInfo extends Component {
 						</Col>
 					</Row>
 				</Form.Group>
-
 				<Form.Group>
 					<Form.Label>Email</Form.Label>
 					<Form.Control readOnly type="email" name="email" value={user.email} />
 				</Form.Group>
-
 				<Form.Group>
 					<Form.Label>Phone Number</Form.Label>
 					<InputGroup className="mb-3">

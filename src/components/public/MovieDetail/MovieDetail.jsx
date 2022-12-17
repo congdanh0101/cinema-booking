@@ -33,7 +33,6 @@ class MovieDetailComponent extends Component {
 
 	componentDidMount() {
 		const { id } = this.props.match.params;
-		console.log(this.props);
 		const token = localStorage.getItem('token');
 		this.props.getMovieDetail(id);
 		let showDate = formatLocaleDateString(this.state.today);
@@ -49,7 +48,6 @@ class MovieDetailComponent extends Component {
 
 	handleChange = async (val) => {
 		const [startValue, endValue, rangeDates] = val;
-
 		if (this.state.today === startValue && this.state.today <= endValue) {
 			this.setState({
 				today: rangeDates[rangeDates.length - 1],

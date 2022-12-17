@@ -6,13 +6,26 @@ import { autoLogin } from '../../service/actions/auth';
 import { path } from '../constants/path';
 
 const AdminRoute = (props) => {
-	const { layout: Layout, component: Component, token, user, ...rest } = props;
+	const {
+		layout: Layout,
+		component: Component,
+		token,
+		user,
+		auth,
+		...rest
+	} = props;
+	const expired = auth.expired;
+	const now = new Date().getTime();
 	return (
 		<Route
 			{...rest}
 			render={(props) =>
 				token !== null ? (
-					user.roles.some((role) => role.name === 'ROLE_ADMIN') ? (
+					now >= expired ? (
+						<Redirect
+							to={{ pathname: path.home, state: { from: props.location } }}
+						/>
+					) : user.roles.some((role) => role.name === 'ROLE_ADMIN') ? (
 						<Layout {...props}>
 							<Component {...props} />
 						</Layout>
@@ -37,9 +50,11 @@ AdminRoute.propTypes = {
 AdminRoute.defaultProps = {
 	token: '',
 	user: '',
+	auth: '',
 };
 const mapStateToProps = (state) => ({
 	token: state.auth.token,
+	auth: state.auth,
 	user: JSON.parse(localStorage.getItem('currentUser')),
 });
 const mapDispatchToProps = { autoLogin };

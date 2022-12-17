@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
 import {
 	SearchInput,
 	ResponsiveDialog,

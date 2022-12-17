@@ -153,7 +153,7 @@ export const schemaYupChangePassword = yup.object({
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
 			{
 				message:
-					'Password must have at least 1 uppercase, 1 lowercase, 1 special character',
+					'Password must have at least 1 uppercase, 1 lowercase, 1 special scharacter',
 			}
 		)
 		.required('Please enter your new password'),
