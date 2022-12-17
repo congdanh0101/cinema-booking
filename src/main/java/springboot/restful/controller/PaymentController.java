@@ -12,15 +12,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import springboot.restful.exception.ApiException;
-import springboot.restful.model.payloads.OrderDTO;
-import springboot.restful.model.payloads.PaymentMethod;
-import springboot.restful.model.payloads.PaypalPaymentIntent;
+import springboot.restful.model.payloads.*;
+import springboot.restful.service.EmailSenderService;
+import springboot.restful.service.OrderDetailService;
 import springboot.restful.service.OrderService;
 import springboot.restful.service.PaymentService;
 import springboot.restful.util.Utils;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -34,6 +37,12 @@ public class PaymentController {
 	private OrderService orderService;
 	@Autowired
 	private HttpServletRequest request;
+
+	@Autowired
+	private EmailSenderService emailSenderService;
+
+	@Autowired
+	private OrderDetailService orderDetailService;
 
 	@GetMapping("/{id}")
 	public String index(Model model, @PathVariable int id) {
@@ -85,11 +94,17 @@ public class PaymentController {
 				HttpSession session = request.getSession();
 				OrderDTO orderDTO = (OrderDTO) session.getAttribute("orderDTO");
 				orderService.payOrder(orderDTO.getId(), true);
-
+				OrderDTO dto = orderService.getOrderById(orderDTO.getId());
+				List<OrderDetailDTO> orderDetailDTOList = orderDetailService.getOrderDetailsByOrder(orderDTO.getId());
+				List<TicketDTO> ticketDTOS = new ArrayList<>();
+				orderDetailDTOList.forEach(odd -> ticketDTOS.add(odd.getTicket()));
+				emailSenderService.sendEmail(dto.getUser().getEmail(), "BILL ORDER DETAIL", emailSenderService.htmlGenerateTicket(ticketDTOS));
 				return "success";
 			}
 		} catch (PayPalRESTException e) {
 			log.error(e.getMessage());
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
 		}
 		return "redirect:/";
 	}
