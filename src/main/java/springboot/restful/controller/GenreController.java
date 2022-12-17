@@ -25,10 +25,10 @@ public class GenreController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
-    public ResponseEntity<?> createGenre(@RequestBody GenreDTO genreDTO) {
+    public ResponseEntity<?> createGenre(@Valid @RequestBody GenreDTO genreDTO) {
         // return new ResponseEntity<GenreDTO>(genreService.createGenre(genreDTO), ttpStatus.CREATED);
         log.error(genreDTO.getName());
-        return ResponseEntity.ok().body(genreService.createGenre(genreDTO));
+        return new ResponseEntity<>(genreService.createGenre(genreDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("")

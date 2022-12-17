@@ -60,7 +60,7 @@ public class InitData implements CommandLineRunner {
 		genres.add(new Genre(2, String.valueOf(EGenre.COMEDIES)));
 		genres.add(new Genre(3, String.valueOf(EGenre.ANIMATION)));
 		genres.add(new Genre(4, String.valueOf(EGenre.DOCUMENTARIES)));
-		genres.add(new Genre(5, String.valueOf(EGenre.ROMANACE)));
+		genres.add(new Genre(5, String.valueOf(EGenre.ROMANCE)));
 		genres.add(new Genre(6, String.valueOf(EGenre.HOLLYWOOD)));
 		genres.add(new Genre(7, String.valueOf(EGenre.CRIME)));
 		genres.add(new Genre(8, String.valueOf(EGenre.THRILLER)));

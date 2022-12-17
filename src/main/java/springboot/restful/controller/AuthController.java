@@ -156,6 +156,7 @@ public class AuthController {
 			session.setAttribute("userDTO", userDTO);
 
 			Map res = new HashMap<>();
+			res.put("password", userDTO.getPassword());
 			res.put("expired", new Date(System.currentTimeMillis() + VERIFICATION_CODE_VALIDITY * 1000));
 			res.put("message", "Please go to your email and get verification code to finish sign up a new account");
 			res.put("user", userDTO);
@@ -251,6 +252,7 @@ public class AuthController {
 
 	@PostMapping("/register/verify")
 	public ResponseEntity<?> createNewUser(@Valid @RequestBody UserDTO userDTO) {
+
 		return ResponseEntity.ok().body(userService.createUser(userDTO));
 	}
 
