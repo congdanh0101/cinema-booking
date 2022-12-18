@@ -21,7 +21,7 @@ const BookingSeating = ({
 	const navigate = useHistory();
 	const checkIsSelecting = (id) => {
 		const index = isSelecting.findIndex((item) => id === item.id);
-		return index !== -1 ? 'isSelecting' : 'normal';
+		return index !== -1 ? 'isSelecting' : 'selected';
 	};
 	const checkIsDisabled = (id) => {
 		const index = orderedSeats.findIndex((item) => id === item.id);
@@ -35,6 +35,7 @@ const BookingSeating = ({
 		COUNTDOWN_MINUTES,
 		COUNTDOWN_SECONDS
 	);
+
 	useEffect(() => {
 		if (minutes === 0 && seconds === 0) {
 			Swal.fire({
@@ -65,6 +66,7 @@ const BookingSeating = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [seconds]);
+
 	return (
 		<div className="Cinema">
 			<div className="countdown">

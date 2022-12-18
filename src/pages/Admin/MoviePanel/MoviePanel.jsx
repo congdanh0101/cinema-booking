@@ -30,7 +30,7 @@ class MoviePanel extends Component {
 		isShowing: false,
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		const {
 			movie,
 			getMovieWithPagination,
@@ -41,10 +41,10 @@ class MoviePanel extends Component {
 			getAllGenre,
 		} = this.props;
 		if (!movie.length) {
-			getMovieWithPagination(this.state.pageNumber);
-			getMovieByComing();
-			getMovieByDisplay();
-			getMovieByShowing();
+			await getMovieWithPagination(this.state.pageNumber);
+			await getMovieByComing();
+			await getMovieByDisplay();
+			await getMovieByShowing();
 		}
 
 		if (!genre.length) getAllGenre();
@@ -98,23 +98,24 @@ class MoviePanel extends Component {
 
 	renderMovies() {
 		const { classes } = this.props;
-		const { isAll, isComing, isDisplaying, isShowing } = this.state;
+		const { isAll, isDisplaying } = this.state;
+		//const {isComing ,isShowing } = this.state;
 		const movies = match(this.state.search, this.props.movie.movies, 'name');
 		const display = match(
 			this.state.search,
 			this.props.movie.displaying,
 			'name'
 		);
-		const coming = match(
-			this.state.search,
-			this.props.movie.comingSoon,
-			'name'
-		);
-		const showing = match(
-			this.state.search,
-			this.props.movie.nowShowing,
-			'name'
-		);
+		// const coming = match(
+		// 	this.state.search,
+		// 	this.props.movie.comingSoon,
+		// 	'name'
+		// );
+		// const showing = match(
+		// 	this.state.search,
+		// 	this.props.movie.nowShowing,
+		// 	'name'
+		// );
 		if (!movies.length) {
 			return (
 				<div className={classes.progressWrapper}>
@@ -129,20 +130,20 @@ class MoviePanel extends Component {
 				</div>
 			);
 		}
-		if (!coming.length) {
-			return (
-				<div className={classes.progressWrapper}>
-					<CircularProgress />
-				</div>
-			);
-		}
-		if (!showing.length) {
-			return (
-				<div className={classes.progressWrapper}>
-					<CircularProgress />
-				</div>
-			);
-		}
+		// if (!coming.length) {
+		// 	return (
+		// 		<div className={classes.progressWrapper}>
+		// 			<CircularProgress />
+		// 		</div>
+		// 	);
+		// }
+		// if (!showing.length) {
+		// 	return (
+		// 		<div className={classes.progressWrapper}>
+		// 			<CircularProgress />
+		// 		</div>
+		// 	);
+		// }
 		if (isAll === true) {
 			return (
 				<div className={classes.content}>
@@ -172,24 +173,24 @@ class MoviePanel extends Component {
 				</div>
 			);
 		}
-		if (isComing === true) {
-			return (
-				<Grid container spacing={3}>
-					{coming.map((movie) => (
-						<Grid
-							item
-							key={movie.id}
-							lg={4}
-							md={6}
-							xs={12}
-							onClick={() => this.props.onSelectMovie(movie)}
-						>
-							<MovieCard movie={movie} />
-						</Grid>
-					))}
-				</Grid>
-			);
-		}
+		// if (isComing === true) {
+		// 	return (
+		// 		<Grid container spacing={3}>
+		// 			{coming.map((movie) => (
+		// 				<Grid
+		// 					item
+		// 					key={movie.id}
+		// 					lg={4}
+		// 					md={6}
+		// 					xs={12}
+		// 					onClick={() => this.props.onSelectMovie(movie)}
+		// 				>
+		// 					<MovieCard movie={movie} />
+		// 				</Grid>
+		// 			))}
+		// 		</Grid>
+		// 	);
+		// }
 		if (isDisplaying === true) {
 			return (
 				<Grid container spacing={3}>
@@ -208,24 +209,24 @@ class MoviePanel extends Component {
 				</Grid>
 			);
 		}
-		if (isShowing === true) {
-			return (
-				<Grid container spacing={3}>
-					{showing.map((movie) => (
-						<Grid
-							item
-							key={movie.id}
-							lg={4}
-							md={6}
-							xs={12}
-							onClick={() => this.props.onSelectMovie(movie)}
-						>
-							<MovieCard movie={movie} />
-						</Grid>
-					))}
-				</Grid>
-			);
-		}
+		// if (isShowing === true) {
+		// 	return (
+		// 		<Grid container spacing={3}>
+		// 			{showing.map((movie) => (
+		// 				<Grid
+		// 					item
+		// 					key={movie.id}
+		// 					lg={4}
+		// 					md={6}
+		// 					xs={12}
+		// 					onClick={() => this.props.onSelectMovie(movie)}
+		// 				>
+		// 					<MovieCard movie={movie} />
+		// 				</Grid>
+		// 			))}
+		// 		</Grid>
+		// 	);
+		// }
 	}
 
 	render() {
@@ -246,14 +247,14 @@ class MoviePanel extends Component {
 							variant="outlined"
 							onClick={this.handleAll}
 						/>
-						<Chip
+						{/* <Chip
 							className={classes.chip}
 							label="Coming"
 							clickable
 							color="secondary"
 							variant="outlined"
 							onClick={this.handleComing}
-						/>
+						/> */}
 						<Chip
 							className={classes.chip}
 							label="Display"
@@ -262,14 +263,14 @@ class MoviePanel extends Component {
 							variant="outlined"
 							onClick={this.handleDisplay}
 						/>
-						<Chip
+						{/* <Chip
 							className={classes.chip}
 							label="Showing"
 							clickable
 							color="secondary"
 							variant="outlined"
 							onClick={this.handleShowing}
-						/>
+						/> */}
 					</div>
 					{this.renderMovies()}
 				</div>

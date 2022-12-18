@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles, Typography, MenuItem, Select } from '@material-ui/core';
 import { Container, Row, Form, Col, Card, Button } from 'react-bootstrap';
-import { listTime } from '../../../../../shared/constants/data/listTime';
 import styles from './styles';
 import moment from 'moment';
 import { ImageResize } from '../../../../../components/common';
@@ -71,9 +69,13 @@ class AddShowtime extends Component {
 			moment(showDate).format('DD-MM-YYYY'),
 			timeStart
 		);
-		this.props.showtimes.message !== ''
-			? toast.success('Successfully Added').then(() => window.location.reload())
-			: toast.error(this.props.showtimes.errorMsg);
+
+		if (this.props.showtimes.message !== '') {
+			toast.success('Successfully Added');
+			window.location.reload();
+		} else {
+			toast.error(this.props.showtimes.errorMsg);
+		}
 	};
 
 	onUpdateShowtime = async () => {
@@ -206,32 +208,16 @@ class AddShowtime extends Component {
 													</Col>
 													<Col className="pt-3">
 														<Form.Label>Time Start</Form.Label>
-														<Select
-															className={classes.textFieldSelect}
-															fullWidth
-															placeholder="Please specify the Time"
-															required
+														<Form.Control
+															type="time"
 															value={timeStart || ''}
-															variant="outlined"
 															onChange={(event) =>
 																this.handleFieldChange(
 																	'timeStart',
 																	event.target.value
 																)
 															}
-														>
-															{listTime?.map((time) => {
-																return time <= '12:00' ? (
-																	<MenuItem key={`time-${time}`} value={time}>
-																		{time} AM
-																	</MenuItem>
-																) : (
-																	<MenuItem key={`time-${time}`} value={time}>
-																		{time} PM
-																	</MenuItem>
-																);
-															})}
-														</Select>
+														/>
 													</Col>
 												</Row>
 											</Form.Group>
@@ -254,11 +240,6 @@ class AddShowtime extends Component {
 		);
 	}
 }
-
-AddShowtime.propTypes = {
-	className: PropTypes.string,
-	classes: PropTypes.object.isRequired,
-};
 
 const mapStateToProps = (state) => ({
 	theater: state.theater.theaters,

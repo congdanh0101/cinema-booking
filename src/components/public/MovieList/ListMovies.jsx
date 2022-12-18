@@ -41,7 +41,7 @@ const ListMovies = () => {
 						<Tag kind="gray">Now Showing</Tag>
 						<Col>
 							<Link to={path.movies}>
-								<h4 className="text-primary pt-2 float-right">Explore All</h4>
+								<h5 className="text-primary pt-3 float-right">Explore All</h5>
 							</Link>
 						</Col>
 					</Row>

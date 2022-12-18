@@ -5,7 +5,7 @@ import Avatar from 'react-avatar';
 import { withStyles } from '@material-ui/core';
 import MaterialTable from '@material-table/core';
 import { Portlet, PortletContent } from '../../../../../components/common';
-import { TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
@@ -44,9 +44,9 @@ class GenreTable extends Component {
 		const rootClassName = classNames(classes.root, className);
 		const columns = [
 			{
-				title: 'Image',
+				title: 'Avatar',
 				readonly: true,
-				align: 'center',
+
 				render: (rowData) => (
 					<Avatar
 						maxInitials={1}
@@ -60,7 +60,7 @@ class GenreTable extends Component {
 				title: 'Genre',
 				field: 'name',
 				readonly: true,
-				align: 'center',
+
 				render: (rowData) => (
 					<Typography className={classes.nameText} variant="body1">
 						{rowData.name}
@@ -76,25 +76,15 @@ class GenreTable extends Component {
 						columns={columns}
 						data={genres}
 						icons={tableIcons}
-						components={{
-							Header: () => (
-								<TableHead>
-									<TableRow className={classes.tableRowHeader}>
-										<TableCell
-											className={classes.tableCellHeader}
-											align="center"
-										>
-											Genre Avatar
-										</TableCell>
-										<TableCell
-											className={classes.tableCellHeader}
-											align="center"
-										>
-											Genre Name
-										</TableCell>
-									</TableRow>
-								</TableHead>
-							),
+						options={{
+							headerStyle: {
+								height: '64px',
+								backgroundColor: '#7d58ff',
+								fontSize: '20px',
+								whiteSpace: 'nowrap',
+							},
+							maxColumnSort: 2,
+							droppable: false,
 						}}
 					/>
 				</PortletContent>

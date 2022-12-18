@@ -115,6 +115,26 @@ export const getOrderDetailsById = (orderId) => {
 	};
 };
 
+export const updateOrder = (id) => {
+	return async (dispatch) => {
+		try {
+			const token = localStorage.getItem('token');
+			const response = await axiosClient(token).post(`/pay/orders/${id}`);
+			sessionStorage.setItem('order', JSON.stringify(response.data));
+			dispatch({
+				type: 'UPDATE_ORDER',
+				payload: response.data,
+			});
+		} catch (err) {
+			const { message } = err.response.data;
+			dispatch({
+				type: 'SET_ORDER_MESSAGE',
+				payload: message,
+			});
+		}
+	};
+};
+
 export const deleteOrderById = (orderId) => {
 	return async (dispatch) => {
 		try {

@@ -26,6 +26,9 @@ class AddMovie extends Component {
 			'YYYY-MM-DD'
 		),
 		genres: [],
+		display: true,
+		showing: false,
+		coming: false,
 	};
 
 	formatDate = (dateStr) => {
@@ -131,8 +134,18 @@ class AddMovie extends Component {
 
 	render() {
 		const { classes, className, genre } = this.props;
-		const { name, duration, description, image, trailer, releases, genres } =
-			this.state;
+		const {
+			name,
+			duration,
+			description,
+			image,
+			trailer,
+			releases,
+			genres,
+			display,
+		} = this.state;
+
+		console.log(this.state);
 
 		const rootClassName = classNames(classes.root, className);
 		const title = this.props.edit ? 'Edit Movie' : 'Add Movie';
@@ -260,6 +273,8 @@ class AddMovie extends Component {
 										<Form.Label>Description</Form.Label>
 										<Form.Control
 											type="text"
+											as="textarea"
+											rows={3}
 											value={description || ''}
 											onChange={(event) =>
 												this.handleFieldChange(
@@ -295,6 +310,22 @@ class AddMovie extends Component {
 									}
 								/>
 							</Form.Group>
+							<p className="text-display-xs-bold">Display</p>
+							<Form.Group>
+								<Form.Control
+									as="select"
+									name="display"
+									value={display}
+									onChange={(e) =>
+										this.setState((prevState) => ({
+											display: !prevState.display,
+										}))
+									}
+								>
+									<option>true</option>
+									<option>false</option>
+								</Form.Control>
+							</Form.Group>
 						</Col>
 						<Col>
 							<Button
@@ -305,7 +336,7 @@ class AddMovie extends Component {
 							>
 								{submitButton}
 							</Button>
-							{this.props.edit && (
+							{/* {this.props.edit && (
 								<Button
 									className={classes.buttonFooter}
 									variant="secondary"
@@ -314,7 +345,7 @@ class AddMovie extends Component {
 								>
 									Delete Movie
 								</Button>
-							)}
+							)} */}
 						</Col>
 					</Row>
 				</Container>

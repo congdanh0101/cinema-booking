@@ -84,9 +84,7 @@ class ShowtimesTable extends Component {
 						</TableHead>
 						<TableBody>
 							{showtimes
-								.filter((showtime) => {
-									return showtime;
-								})
+								
 								.map((showtime) => (
 									<TableRow
 										hover

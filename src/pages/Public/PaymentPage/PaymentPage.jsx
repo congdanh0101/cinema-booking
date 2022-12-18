@@ -5,10 +5,12 @@ import { Button, Spinner } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { PanelLeft, PanelRight } from '../../../components/common';
 import { path } from '../../../shared/constants/path';
+import { toast } from 'react-toastify';
 import {
 	requestPayment,
 	createPayment,
 } from '../../../service/actions/payment';
+import { createOrder, updateOrder } from '../../../service/actions/order';
 
 class PaymentPage extends Component {
 	constructor(props) {
@@ -42,12 +44,20 @@ class PaymentPage extends Component {
 	handlePayment = async () => {
 		const { createPayment } = this.props;
 		this.setState({ isLoading: true });
-		await createPayment(
-			this.props.payment.accessToken,
-			this.props.order.total
-		).then(() => {
-			console.log(this.props.payment.payment[1].href);
-			this.openLink(this.props.payment.payment[1].href);
+		console.log(this.props);
+		await this.props.createOrder(sessionStorage.getItem('ticket')).then(() => {
+			createPayment(
+				this.props.payment.accessToken,
+				this.props.order.details.total
+			)
+				.then(() => {
+					console.log(this.props.payment.payment[1].href);
+					this.openLink(this.props.payment.payment[1].href);
+				})
+				.then(() => {
+					toast.success(this.props.order.message);
+					this.props.updateOrder(this.props.order.details.id);
+				});
 		});
 		this.setState({ isLoading: false });
 	};
@@ -107,12 +117,15 @@ class PaymentPage extends Component {
 
 const mapStateToProps = (state) => ({
 	payment: state.payment,
-	order: JSON.parse(sessionStorage.getItem('order')),
+	order: state.order,
+	ticket: JSON.parse(sessionStorage.getItem('ticket')),
 });
 
 const mapDispatchToProps = {
 	requestPayment,
 	createPayment,
+	createOrder,
+	updateOrder,
 };
 
 export default withRouter(

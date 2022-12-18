@@ -9,7 +9,7 @@ class MovieDesc extends Component {
 	};
 	render() {
 		const { selectShowtime } = this.state;
-		const { order, ticket } = this.props;
+		const { ticket } = this.props;
 		return (
 			<div>
 				<ListGroup variant="flush">
@@ -47,7 +47,9 @@ class MovieDesc extends Component {
 						<p className="float-left text-lg-20 text-color-label">
 							Total payment
 						</p>
-						<p className="float-right text-link-lg">${order?.total}</p>
+						<p className="float-right text-link-lg">
+							${selectShowtime.price * ticket.length}
+						</p>
 					</ListGroup.Item>
 				</ListGroup>
 			</div>
@@ -56,7 +58,6 @@ class MovieDesc extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	order: JSON.parse(sessionStorage.getItem('order')),
 	ticket: JSON.parse(sessionStorage.getItem('ticket')),
 	showtime: state.showtime.selectShowtime,
 });

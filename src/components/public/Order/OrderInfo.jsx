@@ -13,17 +13,6 @@ class OrderInfo extends Component {
 	render() {
 		const { selectShowtime } = this.state;
 		const { selectedSeats } = this.props;
-		const commaSeparationSeat = (array, key) => {
-			const count = array.length - 1;
-			return array.map((item, index) => {
-				if (array.id === count) return <span key={index}>{item.name + 1}</span>;
-				return (
-					<p key={index} className="text-right text-link-xs text-color-title">
-						<span key={index}>{item.name + 1 + ', '}</span>
-					</p>
-				);
-			});
-		};
 		const isHaveSelecting = selectedSeats.length > 0;
 		return (
 			<Col xs={12} lg={4}>
@@ -55,12 +44,23 @@ class OrderInfo extends Component {
 							</p>
 						</div>
 						<div className="d-flex justify-content-between">
-							<p className="text-xs text-color-label">Your selecting</p>
-						</div>
-						<div className="d-flex justify-content-between">
+							<p className="text-xs text-color-label">Seat chosen</p>
 							<div className="d-flex justify-content-end">
 								{isHaveSelecting ? (
-									commaSeparationSeat(selectedSeats, 'idDisplay')
+									selectedSeats
+										.map((seat) => (
+											<p
+												key={seat.id}
+												className="text-right text-link-xs text-color-title"
+											>
+												<span>{seat.name}</span>
+											</p>
+										))
+										.reduce(
+											(prev, curr) =>
+												prev === null ? [curr] : [prev, ', ', curr],
+											null
+										)
 								) : (
 									<p className="text-right text-link-xs text-color-title">
 										No thing
@@ -78,7 +78,6 @@ class OrderInfo extends Component {
 					</Card.Body>
 				</Card>
 			</Col>
-			
 		);
 	}
 }

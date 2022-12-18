@@ -13,6 +13,13 @@ const orderReducer = (state = initialState, action) => {
 				message: action.message,
 			};
 		}
+		case 'UPDATE_ORDER': {
+			return {
+				...state,
+				orders: action.payload,
+				message: action.message,
+			};
+		}
 		case 'GET_ALL_ORDER': {
 			return {
 				...state,

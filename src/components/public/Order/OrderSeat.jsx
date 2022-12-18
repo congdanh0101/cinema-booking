@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Card, Row, Col, Spinner } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import SeatBooking from './SeatBooking/SeatBooking';
 import { TagSmall } from '../../common';
@@ -45,35 +44,25 @@ class OrderSeat extends Component {
 		selectSeat(seat);
 	};
 	handleCheckOut = async () => {
-		const {
-			order,
-			ticket,
-			selectedSeats,
-			history,
-			addManyTickets,
-			createOrder,
-			resetSelectingSeat,
-		} = this.props;
+		const { history } = this.props;
 		const { selectShowtime } = this.state;
-		if (selectedSeats.length > 5) {
-			return Swal.fire('Too Many Tickets!', 'Maximum number of tickets is 5');
-		}
 		this.setState({ isLoading: true });
-		await addManyTickets(selectShowtime.id, selectedSeats)
+		await this.props
+			.addManyTickets(selectShowtime.id, this.props.selectedSeats)
 			.then(() => {
-				let orderedTickets = ticket.map((ticket) => {
+				let orderedTickets = this.props.ticket.map((ticket) => {
 					return { ticket: ticket };
 				});
-				createOrder(orderedTickets);
+				//this.props.createOrder(orderedTickets);
 				sessionStorage.setItem('ticket', JSON.stringify(orderedTickets));
-				toast.success(order.message);
+				//toast.success(this.props.order.message);
 			})
 			.catch(function (error) {
 				let errorMsg = error.message;
 				toast.error(errorMsg);
 			});
 		this.setState({ isLoading: false });
-		resetSelectingSeat();
+		this.props.resetSelectingSeat();
 		history.push(path.payment);
 	};
 	render() {

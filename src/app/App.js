@@ -42,14 +42,6 @@ import ScrollToTop from '../shared/utils/utils';
 
 //Styles
 import Theme from '../shared/theme';
-import '../assets/styles/reset.scss';
-import '../assets/styles/main.scss';
-import '../assets/styles/custom.scss';
-import 'antd/dist/antd.min.css';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 
 export default class App extends Component {
 	render() {
