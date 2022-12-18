@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import { GlobalStyle } from './assets/styles/GlobalStyles';
 import { ToastContainer } from 'react-toastify';
+import * as serviceWorker from './serviceWorker';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './app/App';
 //Styles
@@ -24,4 +25,5 @@ ReactDOM.render(
 	document.getElementById('root')
 );
 
+serviceWorker.unregister();
 reportWebVitals();
